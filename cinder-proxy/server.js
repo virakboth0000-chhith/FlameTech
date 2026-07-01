@@ -14,13 +14,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Redirect root / to the real FlameTech home page
+app.get('/', (req, res) => {
+  res.redirect('/Flametech.html');
+});
+
 // Serve static files
 app.use(express.static(SITE_ROOT));
 
-// Redirect root / to the real FlameTech home page
-app.get('/', (req, res) => {
-  res.redirect('/h.html');
-});
 
 const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-oss-120b:free';
 
