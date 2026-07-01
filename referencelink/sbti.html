@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>SBTI Cheat Sheet — FlameTech</title>
+  <meta name="description" content="SBTI 备忘单，快速了解这套娱乐人格测试的玩法、记分逻辑、15 个维度和 27 个结果代码。">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#ff6b3d}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,107,61,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Other</span>
+    <span>›</span>
+    <span>SBTI</span>
+  </div>
+  <div class="post-icon">SB</div>
+  <h1>SBTI <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>SBTI 备忘单，快速了解这套娱乐人格测试的玩法、记分逻辑、15 个维度和 27 个结果代码。</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Other</span>
+    <span class="meta-tag">Personality</span> <span class="meta-tag">Test</span> <span class="meta-tag">Entertainment</span> <span class="meta-tag">Reference</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="_1">
+<h2 id="_1">快速上手</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="_2">先看这里</h3>
+<div class="section">
+<ul>
+<li><a href="https://sbti.now/">开始测试</a></li>
+<li><a href="https://sbti.now/types">全部类型</a></li>
+<li><a href="https://sbti.now/what-is-sbti">什么是 SBTI</a></li>
+<li><a href="https://sbti.now/sbti-vs-mbti">SBTI vs MBTI</a></li>
+<li><a href="https://sbti.now/official">官网入口说明</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_3">一句话认识</h3>
+<div class="section">
+<ul>
+<li><code>SBTI</code> 是娱乐人格测试，不是严肃心理评估。</li>
+<li>它最强的不是科学性，而是题短、结果怪、截图好发。</li>
+<li>官网逻辑本质是前端规则匹配，不是后台深度计算。</li>
+<li>英文搜索更适合用 <code>SBTI personality test</code> 这类长词。</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_4">这篇怎么用</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>你现在想做什么</th>
+<th>建议看哪里</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>先搞懂这是啥</td>
+<td><code>一句话认识</code>、<code>一眼看懂</code></td>
+</tr>
+<tr>
+<td>直接开始测</td>
+<td><code>先看这里</code></td>
+</tr>
+<tr>
+<td>想看记分逻辑</td>
+<td><code>规则总览</code></td>
+</tr>
+<tr>
+<td>想认代码和名字</td>
+<td><code>类型速查</code></td>
+</tr>
+<tr>
+<td>想跟 MBTI 对比</td>
+<td><code>和 MBTI 的区别</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_5">常见搜索意图</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>搜索词</th>
+<th>大概率意图</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sbti 人格</code></td>
+<td>直接开测</td>
+</tr>
+<tr>
+<td><code>sbti 人格测试</code></td>
+<td>找入口</td>
+</tr>
+<tr>
+<td><code>sbti 类型</code></td>
+<td>看全部结果</td>
+</tr>
+<tr>
+<td><code>sbti 结果</code></td>
+<td>看结果解释</td>
+</tr>
+<tr>
+<td><code>sbti vs mbti</code></td>
+<td>看差异</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="_6">
+<h2 id="_6">规则总览</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="_7">一眼看懂</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>产品形态</td>
+<td>纯前端、单页、规则驱动的人格匹配器</td>
+</tr>
+<tr>
+<td>正式题</td>
+<td>30 题</td>
+</tr>
+<tr>
+<td>特殊题</td>
+<td>2 题</td>
+</tr>
+<tr>
+<td>实际答题数</td>
+<td>通常 31 题，触发饮酒分支时 32 题</td>
+</tr>
+<tr>
+<td>维度数</td>
+<td>15 维</td>
+</tr>
+<tr>
+<td>标准人格</td>
+<td>25 个预设原型</td>
+</tr>
+<tr>
+<td>特殊结果</td>
+<td><code>DRUNK</code>、<code>HHHH</code></td>
+</tr>
+<tr>
+<td>最终机制</td>
+<td>15 维 <code>L/M/H</code> 向量 + 最近邻匹配</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_8">测试流程</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>会发生什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>1</code></td>
+<td>开始后先打乱 <code>30</code> 道正式题</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>drink_gate_q1</code> 会随机插入，而且不会是第一题</td>
+</tr>
+<tr>
+<td><code>3</code></td>
+<td>命中饮酒分支时，才会出现 <code>drink_gate_q2</code></td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td>正式题负责记分，特殊题只负责分支和覆盖</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td>最终通常命中 <code>25</code> 个标准人格之一</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="15">15 个维度</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>模型组</th>
+<th>维度</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>自我模型</td>
+<td><code>S1 自尊自信</code>、<code>S2 自我清晰度</code>、<code>S3 核心价值</code></td>
+</tr>
+<tr>
+<td>情感模型</td>
+<td><code>E1 依恋安全感</code>、<code>E2 情感投入度</code>、<code>E3 边界与依赖</code></td>
+</tr>
+<tr>
+<td>态度模型</td>
+<td><code>A1 世界观倾向</code>、<code>A2 规则与灵活度</code>、<code>A3 人生意义感</code></td>
+</tr>
+<tr>
+<td>行动驱力模型</td>
+<td><code>Ac1 动机导向</code>、<code>Ac2 决策风格</code>、<code>Ac3 执行模式</code></td>
+</tr>
+<tr>
+<td>社交模型</td>
+<td><code>So1 社交主动性</code>、<code>So2 人际边界感</code>、<code>So3 表达与真实度</code></td>
+</tr>
+</tbody>
+</table>
+<p>每个维度固定 2 道题，15 个维度彼此等权。<br />
+它更像“把你压缩成一个人格向量”，再去找最像的结果原型。</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="l-m-h">L / M / H 映射</h3>
+<div class="section">
+<p>每个维度两题相加后，按下面规则压缩：</p>
+<table>
+<thead>
+<tr>
+<th>原始分</th>
+<th>映射</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>2-3</code></td>
+<td><code>L</code></td>
+</tr>
+<tr>
+<td><code>4</code></td>
+<td><code>M</code></td>
+</tr>
+<tr>
+<td><code>5-6</code></td>
+<td><code>H</code></td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="nx">each</span><span class="w"> </span><span class="nx">dimension</span><span class="o">:</span>
+<span class="w">  </span><span class="nx">raw</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">q1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">q2</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">3</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">L</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mf">4</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">M</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nx">raw</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mf">5</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">H</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="_9">两个特殊结果</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>结果</th>
+<th>触发方式</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DRUNK</code></td>
+<td>饮酒隐藏题命中指定选项</td>
+<td>直接覆盖正常结果</td>
+</tr>
+<tr>
+<td><code>HHHH</code></td>
+<td>最近人格相似度仍低于 <code>60%</code></td>
+<td>兜底人格</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_10">记住这几点</h3>
+<div class="section">
+<ul>
+<li>只有 30 道正式题参与正式记分。</li>
+<li>没有复杂加权，也没有临床测评意义。</li>
+<li><code>q22</code> 是强制决策题，辨识度很高。</li>
+<li><code>drink_gate_q2</code> 不是加分题，而是结果开关。</li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="_11">
+<h2 id="_11">类型速查</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="_12">高频类型</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>名称</th>
+<th>气质标签</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CTRL</code></td>
+<td>拿捏者</td>
+<td>控场型幕后导演</td>
+</tr>
+<tr>
+<td><code>BOSS</code></td>
+<td>领导者</td>
+<td>接管型执行者</td>
+</tr>
+<tr>
+<td><code>MALO</code></td>
+<td>吗喽</td>
+<td>混乱型快乐源</td>
+</tr>
+<tr>
+<td><code>FAKE</code></td>
+<td>伪人</td>
+<td>适配型表演家</td>
+</tr>
+<tr>
+<td><code>LOVE-R</code></td>
+<td>多情者</td>
+<td>心动型情绪玩家</td>
+</tr>
+<tr>
+<td><code>MUM</code></td>
+<td>妈妈</td>
+<td>照顾型稳定器</td>
+</tr>
+<tr>
+<td><code>THIN-K</code></td>
+<td>思考者</td>
+<td>分析型脑内戏导演</td>
+</tr>
+<tr>
+<td><code>OJBK</code></td>
+<td>无所谓人</td>
+<td>低耗型佛系选手</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_13">怎么读结果</h3>
+<div class="section">
+<ul>
+<li><code>CTRL</code>、<code>MALO</code> 这类大写词是结果代码。</li>
+<li>中文名负责让结果更好记、更适合传播。</li>
+<li>真正的底层结果不是四个字母，而是 15 维 <code>L/M/H</code> 组合。</li>
+<li><code>DRUNK</code> 和 <code>HHHH</code> 都属于特殊分支，不完全按普通类型逻辑出现。</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_14">全部结果代码</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>代码</th>
+<th>名称</th>
+<th>代码</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CTRL</code></td>
+<td>拿捏者</td>
+<td><code>ATM-er</code></td>
+<td>送钱者</td>
+</tr>
+<tr>
+<td><code>Dior-s</code></td>
+<td>屌丝</td>
+<td><code>BOSS</code></td>
+<td>领导者</td>
+</tr>
+<tr>
+<td><code>THAN-K</code></td>
+<td>感恩者</td>
+<td><code>OH-NO</code></td>
+<td>哦不人</td>
+</tr>
+<tr>
+<td><code>GOGO</code></td>
+<td>行者</td>
+<td><code>SEXY</code></td>
+<td>尤物</td>
+</tr>
+<tr>
+<td><code>LOVE-R</code></td>
+<td>多情者</td>
+<td><code>MUM</code></td>
+<td>妈妈</td>
+</tr>
+<tr>
+<td><code>FAKE</code></td>
+<td>伪人</td>
+<td><code>OJBK</code></td>
+<td>无所谓人</td>
+</tr>
+<tr>
+<td><code>MALO</code></td>
+<td>吗喽</td>
+<td><code>JOKE-R</code></td>
+<td>小丑</td>
+</tr>
+<tr>
+<td><code>WOC!</code></td>
+<td>握草人</td>
+<td><code>THIN-K</code></td>
+<td>思考者</td>
+</tr>
+<tr>
+<td><code>SHIT</code></td>
+<td>愤世者</td>
+<td><code>ZZZZ</code></td>
+<td>装死者</td>
+</tr>
+<tr>
+<td><code>POOR</code></td>
+<td>贫困者</td>
+<td><code>MONK</code></td>
+<td>僧人</td>
+</tr>
+<tr>
+<td><code>IMSB</code></td>
+<td>傻者</td>
+<td><code>SOLO</code></td>
+<td>孤儿</td>
+</tr>
+<tr>
+<td><code>FUCK</code></td>
+<td>草者</td>
+<td><code>DEAD</code></td>
+<td>死者</td>
+</tr>
+<tr>
+<td><code>IMFW</code></td>
+<td>废物</td>
+<td><code>HHHH</code></td>
+<td>傻乐者</td>
+</tr>
+<tr>
+<td><code>DRUNK</code></td>
+<td>酒鬼</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="_15">
+<h2 id="_15">检索与导航</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="mbti">和 MBTI 的区别</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>SBTI</th>
+<th>MBTI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>娱乐导向</td>
+<td>心理类型框架导向</td>
+</tr>
+<tr>
+<td>题短、结果怪、传播性强</td>
+<td>结果更正经、语义更稳定</td>
+</tr>
+<tr>
+<td>15 维 <code>L/M/H</code> + 原型匹配</td>
+<td>4 个字母维度更常见</td>
+</tr>
+<tr>
+<td>更适合截图、转发、拉朋友一起测</td>
+<td>更适合长期做性格讨论</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_16">推荐访问顺序</h3>
+<div class="section">
+<ol>
+<li>先去 <a href="https://sbti.now/">开始测试</a></li>
+<li>再看 <a href="https://sbti.now/types">全部类型</a></li>
+<li>想补背景就看 <a href="https://sbti.now/what-is-sbti">什么是 SBTI</a></li>
+<li>想对比就看 <a href="https://sbti.now/sbti-vs-mbti">SBTI vs MBTI</a></li>
+</ol>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_17">为什么英文搜索容易歪</h3>
+<div class="section">
+<ul>
+<li><code>SBTI</code> 在英文里还常指 <code>Science Based Targets initiative</code>。</li>
+<li>所以只搜裸词 <code>sbti</code>，很容易被气候或 ESG 结果截流。</li>
+<li>更稳妥的写法通常是 <code>SBTI test</code>、<code>SBTI personality test</code>、<code>Silly Big Personality Test</code>。</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="_18">适合收藏的部分</h3>
+<div class="section">
+<ul>
+<li>想快速解释给朋友听：看 <code>一句话认识</code></li>
+<li>想理解它到底怎么算：看 <code>规则总览</code></li>
+<li>想认人设代码：看 <code>全部结果代码</code></li>
+<li>想找官方入口：看 <code>先看这里</code></li>
+</ul>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1765 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>AI Directory Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This is a quick reference list of cheat sheets for the AI Navigation Directory, designed to help you discover exciting
+  AI tools.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#9333ea}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(147,51,234,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Other</span>
+    <span>›</span>
+    <span>AI Directory</span>
+  </div>
+  <div class="post-icon">AD</div>
+  <h1>AI Directory <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This is a quick reference list of cheat sheets for the AI Navigation Directory, designed to help you discover exciting
+  AI tools.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Other</span>
+    <span class="meta-tag">AI</span> <span class="meta-tag">List</span> <span class="meta-tag">Tools</span> <span class="meta-tag">Resources</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="health-fitness">Health &amp; fitness</h3>
+<div class="section">
+<ul>
+<li><a href="https://buoyhealth.com"><img alt="Favicon" src="https://icon.horse/icon/buoyhealth.com" /> Buoy health</a></li>
+<li><a href="https://mdacne.com"><img alt="Favicon" src="https://icon.horse/icon/mdacne.com" /> Mdacne</a></li>
+<li><a href="https://youper.ai"><img alt="Favicon" src="https://icon.horse/icon/youper.ai" /> Youper</a></li>
+<li><a href="https://endel.io/sleep"><img alt="Favicon" src="https://icon.horse/icon/endel.io/sleep" /> Endel × james blake: wind down</a></li>
+<li><a href="https://nowdialogue.com"><img alt="Favicon" src="https://icon.horse/icon/nowdialogue.com" /> Dialogue</a></li>
+<li><a href="https://maslo.ai"><img alt="Favicon" src="https://icon.horse/icon/maslo.ai" /> Maslo ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text">Text</h3>
+<div class="section">
+<ul>
+<li><a href="https://quillbot.com"><img alt="Favicon" src="https://icon.horse/icon/quillbot.com" /> Quillbot paraphraser</a></li>
+<li><a href="https://notion.so/product/ai"><img alt="Favicon" src="https://icon.horse/icon/notion.so/product/ai" /> Notion ai</a></li>
+<li><a href="https://naturalreaders.com"><img alt="Favicon" src="https://icon.horse/icon/naturalreaders.com" /> Naturalreader</a></li>
+<li><a href="https://wordtune.com/read"><img alt="Favicon" src="https://icon.horse/icon/wordtune.com/read" /> Wordtune read</a></li>
+<li><a href="https://uberduck.ai"><img alt="Favicon" src="https://icon.horse/icon/uberduck.ai" /> Underduck</a></li>
+<li><a href="https://aiseo.ai/templates/slogan-generator.html"><img alt="Favicon" src="https://icon.horse/icon/aiseo.ai/templates/slogan-generator.html" /> Slogan generator</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="writing">Writing</h3>
+<div class="section">
+<ul>
+<li><a href="https://prowritingaid.com"><img alt="Favicon" src="https://icon.horse/icon/prowritingaid.com" /> Prowritingaid</a></li>
+<li><a href="https://sapling.ai"><img alt="Favicon" src="https://icon.horse/icon/sapling.ai" /> Sapling</a></li>
+<li><a href="https://coschedule.com/headline-studio"><img alt="Favicon" src="https://icon.horse/icon/coschedule.com/headline-studio" /> Headline studio</a></li>
+<li><a href="https://trinka.ai"><img alt="Favicon" src="https://icon.horse/icon/trinka.ai" /> Trinka</a></li>
+<li><a href="https://benchmarkemail.com/features/smart-content"><img alt="Favicon" src="https://icon.horse/icon/benchmarkemail.com/features/smart-content" /> Benchmark email</a></li>
+<li><a href="https://sassbook.com/ai-writer"><img alt="Favicon" src="https://icon.horse/icon/sassbook.com/ai-writer" /> Sassbook ai writer</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="image-editing">Image editing</h3>
+<div class="section">
+<ul>
+<li><a href="https://remove.bg"><img alt="Favicon" src="https://icon.horse/icon/remove.bg" /> Remove.bg</a></li>
+<li><a href="https://tools.picsart.com/image"><img alt="Favicon" src="https://icon.horse/icon/tools.picsart.com/image" /> Quicktools by picsart</a></li>
+<li><a href="https://befunky.com"><img alt="Favicon" src="https://icon.horse/icon/befunky.com" /> Befunky</a></li>
+<li><a href="https://topazlabs.com/topaz-photo-ai"><img alt="Favicon" src="https://icon.horse/icon/topazlabs.com/topaz-photo-ai" /> Topaz photo ai</a></li>
+<li><a href="https://photoroom.com"><img alt="Favicon" src="https://icon.horse/icon/photoroom.com" /> Photoroom</a></li>
+<li><a href="https://erase.bg"><img alt="Favicon" src="https://icon.horse/icon/erase.bg" /> Erase.bg</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="productivity">Productivity</h3>
+<div class="section">
+<ul>
+<li><a href="https://openai.com/blog/dall-e"><img alt="Favicon" src="https://icon.horse/icon/openai.com/blog/dall-e" /> Dall-e</a></li>
+<li><a href="https://flowrite.com"><img alt="Favicon" src="https://icon.horse/icon/flowrite.com" /> Flowrite</a></li>
+<li><a href="https://golden.com"><img alt="Favicon" src="https://icon.horse/icon/golden.com" /> Golden</a></li>
+<li><a href="https://picturethisai.com"><img alt="Favicon" src="https://icon.horse/icon/picturethisai.com" /> Picturethis</a></li>
+<li><a href="https://wandb.ai/site"><img alt="Favicon" src="https://icon.horse/icon/wandb.ai/site" /> Weights &amp; biases</a></li>
+<li><a href="https://vwo.com/ab-testing-openai-gpt-3"><img alt="Favicon" src="https://icon.horse/icon/vwo.com/ab-testing-openai-gpt-3" /> Vwo humans vs ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="music">Music</h3>
+<div class="section">
+<ul>
+<li><a href="https://openai.com/blog/musenet"><img alt="Favicon" src="https://icon.horse/icon/openai.com/blog/musenet" /> Musenet (openai)</a></li>
+<li><a href="https://sites.research.google/trc"><img alt="Favicon" src="https://icon.horse/icon/sites.research.google/trc" /> Tensorflow research cloud</a></li>
+<li><a href="https://moises.ai"><img alt="Favicon" src="https://icon.horse/icon/moises.ai" /> Moises app</a></li>
+<li><a href="https://soundraw.io"><img alt="Favicon" src="https://icon.horse/icon/soundraw.io" /> Soundraw</a></li>
+<li><a href="https://theselyricsdonotexist.com"><img alt="Favicon" src="https://icon.horse/icon/theselyricsdonotexist.com" /> Ai lyrics generator</a></li>
+<li><a href="https://phonicmind.com"><img alt="Favicon" src="https://icon.horse/icon/phonicmind.com" /> Phonicmind</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="design-assistant">Design assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://kapwing.com/cartoonify"><img alt="Favicon" src="https://icon.horse/icon/kapwing.com/cartoonify" /> Cartoonify</a></li>
+<li><a href="https://icons8.com/upscaler"><img alt="Favicon" src="https://icon.horse/icon/icons8.com/upscaler" /> Smart upscaler</a></li>
+<li><a href="https://icons8.com/bgremover"><img alt="Favicon" src="https://icon.horse/icon/icons8.com/bgremover" /> Background remover</a></li>
+<li><a href="https://icons8.com/lunacy"><img alt="Favicon" src="https://icon.horse/icon/icons8.com/lunacy" /> Lunacy</a></li>
+<li><a href="https://pixlr.com"><img alt="Favicon" src="https://icon.horse/icon/pixlr.com" /> Pixlr</a></li>
+<li><a href="https://namecheap.com/logo-maker"><img alt="Favicon" src="https://icon.horse/icon/namecheap.com/logo-maker" /> Launchaco free logo builder</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="image">Image</h3>
+<div class="section">
+<ul>
+<li><a href="https://icons8.com/swapper"><img alt="Favicon" src="https://icon.horse/icon/icons8.com/swapper" /> Swapper</a></li>
+<li><a href="https://movavi.com/photo-editor"><img alt="Favicon" src="https://icon.horse/icon/movavi.com/photo-editor" /> Movavi picverse</a></li>
+<li><a href="https://clipstudio.net/en"><img alt="Favicon" src="https://icon.horse/icon/clipstudio.net/en" /> Clipstudio</a></li>
+<li><a href="https://looka.com"><img alt="Favicon" src="https://icon.horse/icon/looka.com" /> Looka</a></li>
+<li><a href="https://midjourney.com"><img alt="Favicon" src="https://icon.horse/icon/midjourney.com" /> Midjourney</a></li>
+<li><a href="https://deepai.org/machine-learning-model/text2img"><img alt="Favicon" src="https://icon.horse/icon/deepai.org/machine-learning-model/text2img" /> Text to image api</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="business">Business</h3>
+<div class="section">
+<ul>
+<li><a href="https://tools.picsart.com/text/ai-writer"><img alt="Favicon" src="https://icon.horse/icon/tools.picsart.com/text/ai-writer" /> Ai writer by picsart</a></li>
+<li><a href="https://aiseo.ai/tools/paraphrasing-tool.html"><img alt="Favicon" src="https://icon.horse/icon/aiseo.ai/tools/paraphrasing-tool.html" /> Intelligent paraphraser</a></li>
+<li><a href="https://bardeen.ai"><img alt="Favicon" src="https://icon.horse/icon/bardeen.ai" /> Bardeen ai</a></li>
+<li><a href="https://wonsulting.com/resumai"><img alt="Favicon" src="https://icon.horse/icon/wonsulting.com/resumai" /> Resumai</a></li>
+<li><a href="https://durable.co/ai-website-builder"><img alt="Favicon" src="https://icon.horse/icon/durable.co/ai-website-builder" /> Durable ai site builder</a></li>
+<li><a href="https://tally.so/r/npeJgq"><img alt="Favicon" src="https://icon.horse/icon/tally.so/r/npeJgq" /> Startup pitch generator</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="virtual-reality">Virtual reality</h3>
+<div class="section">
+<ul>
+<li><a href="https://myheritage.com/deep-nostalgia"><img alt="Favicon" src="https://icon.horse/icon/myheritage.com/deep-nostalgia" /> Deep nostalgia™</a></li>
+<li><a href="https://resemble.ai/gpt-3"><img alt="Favicon" src="https://icon.horse/icon/resemble.ai/gpt-3" /> Gpt-3 custom ai voices</a></li>
+<li><a href="https://sketchar.io"><img alt="Favicon" src="https://icon.horse/icon/sketchar.io" /> Ai portraits by sketchar</a></li>
+<li><a href="https://anything.world"><img alt="Favicon" src="https://icon.horse/icon/anything.world" /> Anything world</a></li>
+<li><a href="https://aipoly.com"><img alt="Favicon" src="https://icon.horse/icon/aipoly.com" /> Aipoly</a></li>
+<li><a href="https://aws.amazon.com/comprehend"><img alt="Favicon" src="https://icon.horse/icon/aws.amazon.com/comprehend" /> Amazon comprehend</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="developer-tools">Developer tools</h3>
+<div class="section">
+<ul>
+<li><a href="https://coda.io/@coda/openai-for-coda"><img alt="Favicon" src="https://icon.horse/icon/coda.io/@coda/openai-for-coda" /> Openai for coda</a></li>
+<li><a href="https://case-study-page-nanonets.webflow.io/ocr-api"><img alt="Favicon" src="https://icon.horse/icon/case-study-page-nanonets.webflow.io/ocr-api" /> Nanonets ocr</a></li>
+<li><a href="https://ai.google"><img alt="Favicon" src="https://icon.horse/icon/ai.google" /> Google.ai</a></li>
+<li><a href="https://assemblyai.com"><img alt="Favicon" src="https://icon.horse/icon/assemblyai.com" /> Assemblyai</a></li>
+<li><a href="https://httpie.io"><img alt="Favicon" src="https://icon.horse/icon/httpie.io" /> Httpie ai</a></li>
+<li><a href="https://runpod.io"><img alt="Favicon" src="https://icon.horse/icon/runpod.io" /> Runpod</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="avatar">Avatar</h3>
+<div class="section">
+<ul>
+<li><a href="https://myheritage.com/ai-time-machine"><img alt="Favicon" src="https://icon.horse/icon/myheritage.com/ai-time-machine" /> Ai time machine</a></li>
+<li><a href="https://readyplayer.me"><img alt="Favicon" src="https://icon.horse/icon/readyplayer.me" /> Ready player me</a></li>
+<li><a href="https://openart.ai/photobooth"><img alt="Favicon" src="https://icon.horse/icon/openart.ai/photobooth" /> Openart photo booth</a></li>
+<li><a href="https://hey.reface.ai"><img alt="Favicon" src="https://icon.horse/icon/hey.reface.ai" /> Reface ai</a></li>
+<li><a href="https://socialbook.io/ai-avatar"><img alt="Favicon" src="https://icon.horse/icon/socialbook.io/ai-avatar" /> Pandora avatars</a></li>
+<li><a href="https://livereacting.com/ai-host-for-live-stream"><img alt="Favicon" src="https://icon.horse/icon/livereacting.com/ai-host-for-live-stream" /> Livereacting ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fun-tools">Fun tools</h3>
+<div class="section">
+<ul>
+<li><a href="https://transformer.huggingface.co"><img alt="Favicon" src="https://icon.horse/icon/transformer.huggingface.co" /> Write with artificial intelligence</a></li>
+<li><a href="https://chai.ml"><img alt="Favicon" src="https://icon.horse/icon/chai.ml" /> Chai</a></li>
+<li><a href="https://pudding.cool/2020/12/judge-my-spotify"><img alt="Favicon" src="https://icon.horse/icon/pudding.cool/2020/12/judge-my-spotify" /> How bad is your spotify?</a></li>
+<li><a href="https://playphrase.me/"><img alt="Favicon" src="https://icon.horse/icon/playphrase.me/" /> Playphrase.me</a></li>
+<li><a href="https://dreamily.ai/editor"><img alt="Favicon" src="https://icon.horse/icon/dreamily.ai/editor" /> Dreamily</a></li>
+<li><a href="https://supermeme.ai"><img alt="Favicon" src="https://icon.horse/icon/supermeme.ai" /> Supermeme.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="seo">Seo</h3>
+<div class="section">
+<ul>
+<li><a href="https://writer.com"><img alt="Favicon" src="https://icon.horse/icon/writer.com" /> Writer</a></li>
+<li><a href="https://jenni.ai"><img alt="Favicon" src="https://icon.horse/icon/jenni.ai" /> Jenni</a></li>
+<li><a href="https://articleforge.com"><img alt="Favicon" src="https://icon.horse/icon/articleforge.com" /> Articleforge</a></li>
+<li><a href="https://wordhero.co"><img alt="Favicon" src="https://icon.horse/icon/wordhero.co" /> Wordhero</a></li>
+<li><a href="https://ai-writer.com"><img alt="Favicon" src="https://icon.horse/icon/ai-writer.com" /> Ai-writer</a></li>
+<li><a href="https://growthbarseo.com"><img alt="Favicon" src="https://icon.horse/icon/growthbarseo.com" /> Growthbar</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="video-editing">Video editing</h3>
+<div class="section">
+<ul>
+<li><a href="https://wave.video"><img alt="Favicon" src="https://icon.horse/icon/wave.video" /> Wave.video</a></li>
+<li><a href="https://topazlabs.com/topaz-video-ai"><img alt="Favicon" src="https://icon.horse/icon/topazlabs.com/topaz-video-ai" /> Topaz video ai</a></li>
+<li><a href="https://unscreen.com"><img alt="Favicon" src="https://icon.horse/icon/unscreen.com" /> Unscreen.com</a></li>
+<li><a href="https://pictory.ai"><img alt="Favicon" src="https://icon.horse/icon/pictory.ai" /> Pictory</a></li>
+<li><a href="https://typestudio.co/tool/video-to-text"><img alt="Favicon" src="https://icon.horse/icon/typestudio.co/tool/video-to-text" /> Type studio</a></li>
+<li><a href="https://papercup.com"><img alt="Favicon" src="https://icon.horse/icon/papercup.com" /> Papercup</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="code-assistant">Code assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://replit.com/site/ghostwriter"><img alt="Favicon" src="https://icon.horse/icon/replit.com/site/ghostwriter" /> Ghostwriter</a></li>
+<li><a href="https://fig.io/user-manual/ai"><img alt="Favicon" src="https://icon.horse/icon/fig.io/user-manual/ai" /> Fig ai</a></li>
+<li><a href="https://continual.ai"><img alt="Favicon" src="https://icon.horse/icon/continual.ai" /> Continual</a></li>
+<li><a href="https://cheatlayer.com"><img alt="Favicon" src="https://icon.horse/icon/cheatlayer.com" /> Cheat layer</a></li>
+<li><a href="https://kodezi.com"><img alt="Favicon" src="https://icon.horse/icon/kodezi.com" /> Kodezi ai</a></li>
+<li><a href="https://whatthediff.ai"><img alt="Favicon" src="https://icon.horse/icon/whatthediff.ai" /> Whatthediff</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="mac">Mac</h3>
+<div class="section">
+<ul>
+<li><a href="https://myfonts.com"><img alt="Favicon" src="https://icon.horse/icon/myfonts.com" /> Whatthefont</a></li>
+<li><a href="https://references.design"><img alt="Favicon" src="https://icon.horse/icon/references.design" /> References.design</a></li>
+<li><a href="https://github.com/Swift-AI/Swift-AI"><img alt="Favicon" src="https://icon.horse/icon/github.com/Swift-AI/Swift-AI" /> Swift ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="audio-editing">Audio editing</h3>
+<div class="section">
+<ul>
+<li><a href="https://voicemod.net"><img alt="Favicon" src="https://icon.horse/icon/voicemod.net" /> Voicemod</a></li>
+<li><a href="https://podcastle.ai"><img alt="Favicon" src="https://icon.horse/icon/podcastle.ai" /> Podcastle</a></li>
+<li><a href="https://beatoven.ai"><img alt="Favicon" src="https://icon.horse/icon/beatoven.ai" /> Beatoven.ai</a></li>
+<li><a href="https://altered.ai"><img alt="Favicon" src="https://icon.horse/icon/altered.ai" /> Altered</a></li>
+<li><a href="https://cleanvoice.ai"><img alt="Favicon" src="https://icon.horse/icon/cleanvoice.ai" /> Cleanvoice ai</a></li>
+<li><a href="https://krisp.ai"><img alt="Favicon" src="https://icon.horse/icon/krisp.ai" /> Krisp</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="copywriting">Copywriting</h3>
+<div class="section">
+<ul>
+<li><a href="https://inkforall.com"><img alt="Favicon" src="https://icon.horse/icon/inkforall.com" /> Ink</a></li>
+<li><a href="https://boomeranggmail.com/respondable"><img alt="Favicon" src="https://icon.horse/icon/boomeranggmail.com/respondable" /> Respondable</a></li>
+<li><a href="https://frase.io"><img alt="Favicon" src="https://icon.horse/icon/frase.io" /> Frase</a></li>
+<li><a href="https://anyword.com"><img alt="Favicon" src="https://icon.horse/icon/anyword.com" /> Anyword</a></li>
+<li><a href="https://copysmith.ai"><img alt="Favicon" src="https://icon.horse/icon/copysmith.ai" /> Copysmith</a></li>
+<li><a href="https://hypotenuse.ai"><img alt="Favicon" src="https://icon.horse/icon/hypotenuse.ai" /> Hypotenuse ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="general-writing">General writing</h3>
+<div class="section">
+<ul>
+<li><a href="https://languagetool.org"><img alt="Favicon" src="https://icon.horse/icon/languagetool.org" /> Languagetool</a></li>
+<li><a href="https://wordtune.com"><img alt="Favicon" src="https://icon.horse/icon/wordtune.com" /> Wordtune</a></li>
+<li><a href="https://kickresume.com"><img alt="Favicon" src="https://icon.horse/icon/kickresume.com" /> Kickresume</a></li>
+<li><a href="https://nichesss.com"><img alt="Favicon" src="https://icon.horse/icon/nichesss.com" /> Nichess</a></li>
+<li><a href="https://wordai.com"><img alt="Favicon" src="https://icon.horse/icon/wordai.com" /> Wordai</a></li>
+<li><a href="https://corrector.app"><img alt="Favicon" src="https://icon.horse/icon/corrector.app" /> Corrector app</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="summarizer">Summarizer</h3>
+<div class="section">
+<ul>
+<li><a href="https://otter.ai"><img alt="Favicon" src="https://icon.horse/icon/otter.ai" /> Otter ai</a></li>
+<li><a href="https://tldrthis.com"><img alt="Favicon" src="https://icon.horse/icon/tldrthis.com" /> Tldr this</a></li>
+<li><a href="https://summari.com"><img alt="Favicon" src="https://icon.horse/icon/summari.com" /> Summari</a></li>
+<li><a href="https://tactiq.io"><img alt="Favicon" src="https://icon.horse/icon/tactiq.io" /> Tactiq</a></li>
+<li><a href="https://genei.io"><img alt="Favicon" src="https://icon.horse/icon/genei.io" /> Genei</a></li>
+<li><a href="https://upword.ai"><img alt="Favicon" src="https://icon.horse/icon/upword.ai" /> Upword</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="video-generator">Video generator</h3>
+<div class="section">
+<ul>
+<li><a href="https://invideo.io"><img alt="Favicon" src="https://icon.horse/icon/invideo.io" /> Invideo</a></li>
+<li><a href="https://replicate.com/google-research/frame-interpolation"><img alt="Favicon" src="https://icon.horse/icon/replicate.com/google-research/frame-interpolation" /> Film</a></li>
+<li><a href="https://synthesia.io"><img alt="Favicon" src="https://icon.horse/icon/synthesia.io" /> Synthesia</a></li>
+<li><a href="https://movio.la"><img alt="Favicon" src="https://icon.horse/icon/movio.la" /> Movio</a></li>
+<li><a href="https://hourone.ai"><img alt="Favicon" src="https://icon.horse/icon/hourone.ai" /> Hourone</a></li>
+<li><a href="https://colossyan.com"><img alt="Favicon" src="https://icon.horse/icon/colossyan.com" /> Colossyan</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="legal-assistant">Legal assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://donotpay.com"><img alt="Favicon" src="https://icon.horse/icon/donotpay.com" /> Donotpay</a></li>
+<li><a href="https://darrow.ai"><img alt="Favicon" src="https://icon.horse/icon/darrow.ai" /> Darrow ai</a></li>
+<li><a href="https://spellbook.legal"><img alt="Favicon" src="https://icon.horse/icon/spellbook.legal" /> Spellbook</a></li>
+<li><a href="https://patentpal.com"><img alt="Favicon" src="https://icon.horse/icon/patentpal.com" /> Patentpal</a></li>
+<li><a href="https://legalrobot.com"><img alt="Favicon" src="https://icon.horse/icon/legalrobot.com" /> Legal robot</a></li>
+<li><a href="https://detangle.ai"><img alt="Favicon" src="https://icon.horse/icon/detangle.ai" /> Detangle.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generative-art">Generative art</h3>
+<div class="section">
+<ul>
+<li><a href="https://hotpot.ai/art-generator"><img alt="Favicon" src="https://icon.horse/icon/hotpot.ai/art-generator" /> Hotpot art generator</a></li>
+<li><a href="https://bannerbear.com"><img alt="Favicon" src="https://icon.horse/icon/bannerbear.com" /> Bannerbear</a></li>
+<li><a href="https://6pen.art"><img alt="Favicon" src="https://icon.horse/icon/6pen.art" /> 6pen art</a></li>
+<li><a href="https://admaker.memorable.io"><img alt="Favicon" src="https://icon.horse/icon/admaker.memorable.io" /> Memorable ad maker</a></li>
+<li><a href="https://withflair.ai"><img alt="Favicon" src="https://icon.horse/icon/withflair.ai" /> Flair</a></li>
+<li><a href="https://designedwithai.com"><img alt="Favicon" src="https://icon.horse/icon/designedwithai.com" /> Designed with ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-to-speech">Text to speech</h3>
+<div class="section">
+<ul>
+<li><a href="https://speechify.com"><img alt="Favicon" src="https://icon.horse/icon/speechify.com" /> Speechify</a></li>
+<li><a href="https://fakeyou.com"><img alt="Favicon" src="https://icon.horse/icon/fakeyou.com" /> Fakeyou</a></li>
+<li><a href="https://play.ht"><img alt="Favicon" src="https://icon.horse/icon/play.ht" /> Play.ht</a></li>
+<li><a href="https://wellsaidlabs.com"><img alt="Favicon" src="https://icon.horse/icon/wellsaidlabs.com" /> Wellsaidlabs</a></li>
+<li><a href="https://resemble.ai"><img alt="Favicon" src="https://icon.horse/icon/resemble.ai" /> Resemble</a></li>
+<li><a href="https://aiva.ai"><img alt="Favicon" src="https://icon.horse/icon/aiva.ai" /> Aiva</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="life-assistant">Life assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://resumeworded.com/index.php"><img alt="Favicon" src="https://icon.horse/icon/resumeworded.com/index.php" /> Resume worded</a></li>
+<li><a href="https://replika.com"><img alt="Favicon" src="https://icon.horse/icon/replika.com" /> Replika</a></li>
+<li><a href="https://justlearn.com"><img alt="Favicon" src="https://icon.horse/icon/justlearn.com" /> Justlearn</a></li>
+<li><a href="https://thekeys.ai"><img alt="Favicon" src="https://icon.horse/icon/thekeys.ai" /> Thekeys</a></li>
+<li><a href="https://looria.com"><img alt="Favicon" src="https://icon.horse/icon/looria.com" /> Looria</a></li>
+<li><a href="https://woebothealth.com"><img alt="Favicon" src="https://icon.horse/icon/woebothealth.com" /> Woebot health</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="image-generator">Image generator</h3>
+<div class="section">
+<ul>
+<li><a href="https://hotpot.ai"><img alt="Favicon" src="https://icon.horse/icon/hotpot.ai" /> Hotpot.ai</a></li>
+<li><a href="https://generated.photos"><img alt="Favicon" src="https://icon.horse/icon/generated.photos" /> Generated photos</a></li>
+<li><a href="https://imgcreator.zmo.ai"><img alt="Favicon" src="https://icon.horse/icon/imgcreator.zmo.ai" /> Imgcreator</a></li>
+<li><a href="https://getimg.ai"><img alt="Favicon" src="https://icon.horse/icon/getimg.ai" /> Getimg.ai</a></li>
+<li><a href="https://stockai.com"><img alt="Favicon" src="https://icon.horse/icon/stockai.com" /> Stock ai</a></li>
+<li><a href="https://gocharlie.ai"><img alt="Favicon" src="https://icon.horse/icon/gocharlie.ai" /> Go charlie</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="book">Book</h3>
+<div class="section">
+<ul>
+<li><a href="https://readthistwice.com/sona"><img alt="Favicon" src="https://icon.horse/icon/readthistwice.com/sona" /> Sona</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="gaming">Gaming</h3>
+<div class="section">
+<ul>
+<li><a href="https://play.aidungeon.io"><img alt="Favicon" src="https://icon.horse/icon/play.aidungeon.io" /> Aidungeon</a></li>
+<li><a href="https://beam.eyeware.tech"><img alt="Favicon" src="https://icon.horse/icon/beam.eyeware.tech" /> Eyeware beam</a></li>
+<li><a href="https://litrpgadventures.com"><img alt="Favicon" src="https://icon.horse/icon/litrpgadventures.com" /> Litrpg adventures</a></li>
+<li><a href="https://charisma.ai"><img alt="Favicon" src="https://icon.horse/icon/charisma.ai" /> Charisma</a></li>
+<li><a href="https://hiddendoor.co"><img alt="Favicon" src="https://icon.horse/icon/hiddendoor.co" /> Hidden door</a></li>
+<li><a href="https://ggpredict.io"><img alt="Favicon" src="https://icon.horse/icon/ggpredict.io" /> Ggpredict</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="image-scanning">Image scanning</h3>
+<div class="section">
+<ul>
+<li><a href="https://experiments.withgoogle.com/thing-translator"><img alt="Favicon" src="https://icon.horse/icon/experiments.withgoogle.com/thing-translator" /> Thing translator</a></li>
+<li><a href="https://poly.cam"><img alt="Favicon" src="https://icon.horse/icon/poly.cam" /> Polycam</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sales">Sales</h3>
+<div class="section">
+<ul>
+<li><a href="https://klaviyo.com/product/whats-new/sms-assistant"><img alt="Favicon" src="https://icon.horse/icon/klaviyo.com/product/whats-new/sms-assistant" /> Klaviyo sms assistant</a></li>
+<li><a href="https://instantly.ai"><img alt="Favicon" src="https://icon.horse/icon/instantly.ai" /> Instantly</a></li>
+<li><a href="https://affinity.co"><img alt="Favicon" src="https://icon.horse/icon/affinity.co" /> Affinity</a></li>
+<li><a href="https://trywingman.com"><img alt="Favicon" src="https://icon.horse/icon/trywingman.com" /> Wingman</a></li>
+<li><a href="https://lavender.ai"><img alt="Favicon" src="https://icon.horse/icon/lavender.ai" /> Lavender</a></li>
+<li><a href="https://cresta.com"><img alt="Favicon" src="https://icon.horse/icon/cresta.com" /> Cresta</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="audio">Audio</h3>
+<div class="section">
+<ul>
+<li><a href="https://descript.com"><img alt="Favicon" src="https://icon.horse/icon/descript.com" /> Descript</a></li>
+<li><a href="https://lalal.ai"><img alt="Favicon" src="https://icon.horse/icon/lalal.ai" /> Lalal.ai voice cleaner</a></li>
+<li><a href="https://poly.ai"><img alt="Favicon" src="https://icon.horse/icon/poly.ai" /> Poly ai</a></li>
+<li><a href="https://wzrd.ai"><img alt="Favicon" src="https://icon.horse/icon/wzrd.ai" /> Wzrd.ai</a></li>
+<li><a href="https://rythmex.com"><img alt="Favicon" src="https://icon.horse/icon/rythmex.com" /> Rythmex</a></li>
+<li><a href="https://blogaudio.co"><img alt="Favicon" src="https://icon.horse/icon/blogaudio.co" /> Blogaudio</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="analytics">Analytics</h3>
+<div class="section">
+<ul>
+<li><a href="https://paperswithcode.com"><img alt="Favicon" src="https://icon.horse/icon/paperswithcode.com" /> Papers with code</a></li>
+<li><a href="https://explainpaper.com"><img alt="Favicon" src="https://icon.horse/icon/explainpaper.com" /> Explainpaper</a></li>
+<li><a href="https://anania.ai"><img alt="Favicon" src="https://icon.horse/icon/anania.ai" /> Anania</a></li>
+<li><a href="https://voiceops.com"><img alt="Favicon" src="https://icon.horse/icon/voiceops.com" /> Voiceops</a></li>
+<li><a href="https://stormly.com"><img alt="Favicon" src="https://icon.horse/icon/stormly.com" /> Stormly 2.0</a></li>
+<li><a href="https://sahha.ai"><img alt="Favicon" src="https://icon.horse/icon/sahha.ai" /> Sahha</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fintech">Fintech</h3>
+<div class="section">
+<ul>
+<li><a href="https://novamoney.app.link/PH"><img alt="Favicon" src="https://icon.horse/icon/novamoney.app.link/PH" /> Nova money</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="marketing">Marketing</h3>
+<div class="section">
+<ul>
+<li><a href="https://monkeylearn.com"><img alt="Favicon" src="https://icon.horse/icon/monkeylearn.com" /> Monkeylearn</a></li>
+<li><a href="https://wonsulting.com/networkai"><img alt="Favicon" src="https://icon.horse/icon/wonsulting.com/networkai" /> Networkai</a></li>
+<li><a href="https://reply.io"><img alt="Favicon" src="https://icon.horse/icon/reply.io" /> Reply.io</a></li>
+<li><a href="https://outranking.io"><img alt="Favicon" src="https://icon.horse/icon/outranking.io" /> Outranking</a></li>
+<li><a href="https://linkgraph.io/seo-content-assistant"><img alt="Favicon" src="https://icon.horse/icon/linkgraph.io/seo-content-assistant" /> Seo content assistant by searchatlas</a></li>
+<li><a href="https://adcreative.ai"><img alt="Favicon" src="https://icon.horse/icon/adcreative.ai" /> Adcreative.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="story-teller">Story teller</h3>
+<div class="section">
+<ul>
+<li><a href="https://novelai.net"><img alt="Favicon" src="https://icon.horse/icon/novelai.net" /> Novelai</a></li>
+<li><a href="https://artflow.ai"><img alt="Favicon" src="https://icon.horse/icon/artflow.ai" /> Artflow ai</a></li>
+<li><a href="https://subtxt.app"><img alt="Favicon" src="https://icon.horse/icon/subtxt.app" /> Subtxt</a></li>
+<li><a href="https://sceneone.app"><img alt="Favicon" src="https://icon.horse/icon/sceneone.app" /> Scene one</a></li>
+<li><a href="https://storypath.app"><img alt="Favicon" src="https://icon.horse/icon/storypath.app" /> Story path</a></li>
+<li><a href="https://whatonearth.xyz"><img alt="Favicon" src="https://icon.horse/icon/whatonearth.xyz" /> What on earth?</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="low-codeno-code">Low-code/no-code</h3>
+<div class="section">
+<ul>
+<li><a href="https://vwo.com/testing"><img alt="Favicon" src="https://icon.horse/icon/vwo.com/testing" /> Vwo</a></li>
+<li><a href="https://mutinyhq.com"><img alt="Favicon" src="https://icon.horse/icon/mutinyhq.com" /> Mutiny</a></li>
+<li><a href="https://nanonets.com"><img alt="Favicon" src="https://icon.horse/icon/nanonets.com" /> Nanonets</a></li>
+<li><a href="https://axiom.ai"><img alt="Favicon" src="https://icon.horse/icon/axiom.ai" /> Axiom</a></li>
+<li><a href="https://askviable.com"><img alt="Favicon" src="https://icon.horse/icon/askviable.com" /> Viable</a></li>
+<li><a href="https://durable.co"><img alt="Favicon" src="https://icon.horse/icon/durable.co" /> Durable</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="art">Art</h3>
+<div class="section">
+<ul>
+<li><a href="https://wombo.art"><img alt="Favicon" src="https://icon.horse/icon/wombo.art" /> Wombo</a></li>
+<li><a href="https://neural.love"><img alt="Favicon" src="https://icon.horse/icon/neural.love" /> Neural.love art generator</a></li>
+<li><a href="https://promptomania.com"><img alt="Favicon" src="https://icon.horse/icon/promptomania.com" /> Promptomania</a></li>
+<li><a href="https://lexica.art"><img alt="Favicon" src="https://icon.horse/icon/lexica.art" /> Lexica</a></li>
+<li><a href="https://alethea.ai/avatars"><img alt="Favicon" src="https://icon.horse/icon/alethea.ai/avatars" /> Ai avatars</a></li>
+<li><a href="https://diffusionbee.com"><img alt="Favicon" src="https://icon.horse/icon/diffusionbee.com" /> Diffusionbee</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="customer-communication">Customer communication</h3>
+<div class="section">
+<ul>
+<li><a href="https://algolia.com/products/recommendations"><img alt="Favicon" src="https://icon.horse/icon/algolia.com/products/recommendations" /> Algolia recommend</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="chrome-extensions">Chrome extensions</h3>
+<div class="section">
+<ul>
+<li><a href="https://sendpulse.com"><img alt="Favicon" src="https://icon.horse/icon/sendpulse.com" /> Sendpulse for slack</a></li>
+<li><a href="https://bizzabo.com"><img alt="Favicon" src="https://icon.horse/icon/bizzabo.com" /> X.ai</a></li>
+<li><a href="https://pipecandy.com"><img alt="Favicon" src="https://icon.horse/icon/pipecandy.com" /> Pipecandy</a></li>
+<li><a href="https://surferseo.com/free-article-outline-generator"><img alt="Favicon" src="https://icon.horse/icon/surferseo.com/free-article-outline-generator" /> Free article outline generator</a></li>
+<li><a href="https://fylehq.com"><img alt="Favicon" src="https://icon.horse/icon/fylehq.com" /> Fyle</a></li>
+<li><a href="https://socialbook.io/cartoonize"><img alt="Favicon" src="https://icon.horse/icon/socialbook.io/cartoonize" /> Socialbook cartoonizer</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="search-engine">Search engine</h3>
+<div class="section">
+<ul>
+<li><a href="https://algolia.com"><img alt="Favicon" src="https://icon.horse/icon/algolia.com" /> Algolia</a></li>
+<li><a href="https://everypixel.com"><img alt="Favicon" src="https://icon.horse/icon/everypixel.com" /> Everypixel</a></li>
+<li><a href="https://andisearch.com"><img alt="Favicon" src="https://icon.horse/icon/andisearch.com" /> Andi</a></li>
+<li><a href="https://onemoreai.com"><img alt="Favicon" src="https://icon.horse/icon/onemoreai.com" /> One more ai</a></li>
+<li><a href="https://imaiger.com"><img alt="Favicon" src="https://icon.horse/icon/imaiger.com" /> Imaiger</a></li>
+<li><a href="https://dreamsands.ai"><img alt="Favicon" src="https://icon.horse/icon/dreamsands.ai" /> Dreamsands</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="research">Research</h3>
+<div class="section">
+<ul>
+<li><a href="https://elicit.org"><img alt="Favicon" src="https://icon.horse/icon/elicit.org" /> Elicit</a></li>
+<li><a href="https://typeset.io"><img alt="Favicon" src="https://icon.horse/icon/typeset.io" /> Scispace</a></li>
+<li><a href="https://adept.ai"><img alt="Favicon" src="https://icon.horse/icon/adept.ai" /> Adept</a></li>
+<li><a href="https://scholarcy.com"><img alt="Favicon" src="https://icon.horse/icon/scholarcy.com" /> Scholarcy</a></li>
+<li><a href="https://consensus.app"><img alt="Favicon" src="https://icon.horse/icon/consensus.app" /> Consensus</a></li>
+<li><a href="https://akkio.com"><img alt="Favicon" src="https://icon.horse/icon/akkio.com" /> Akkio</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="browser-extensions">Browser extensions</h3>
+<div class="section">
+<ul>
+<li><a href="https://usemotion.com"><img alt="Favicon" src="https://icon.horse/icon/usemotion.com" /> Motion task manager</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pc">Pc</h3>
+<div class="section">
+<ul>
+<li><a href="https://paperspace.com/gradient"><img alt="Favicon" src="https://icon.horse/icon/paperspace.com/gradient" /> Gradient°</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="prompt">Prompt</h3>
+<div class="section">
+<ul>
+<li><a href="https://replicate.com/methexis-inc/img2prompt"><img alt="Favicon" src="https://icon.horse/icon/replicate.com/methexis-inc/img2prompt" /> Img2prompt</a></li>
+<li><a href="https://openart.ai"><img alt="Favicon" src="https://icon.horse/icon/openart.ai" /> Openart</a></li>
+<li><a href="https://decktopus.com/blog/chatgpt-prompts-for-your-next-launch"><img alt="Favicon" src="https://icon.horse/icon/decktopus.com/blog/chatgpt-prompts-for-your-next-launch" /> Decktopus</a></li>
+<li><a href="https://promptbase.com"><img alt="Favicon" src="https://icon.horse/icon/promptbase.com" /> Promptbase</a></li>
+<li><a href="https://krea.ai"><img alt="Favicon" src="https://icon.horse/icon/krea.ai" /> Krea</a></li>
+<li><a href="https://pyttipanna.xyz"><img alt="Favicon" src="https://icon.horse/icon/pyttipanna.xyz" /> Pyttipanna</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="email">Email</h3>
+<div class="section">
+<ul>
+<li><a href="https://unbounce.com"><img alt="Favicon" src="https://icon.horse/icon/unbounce.com" /> The landing page analyzer by unbounce</a></li>
+<li><a href="https://unbounce.com/smart-copy-everywhere"><img alt="Favicon" src="https://icon.horse/icon/unbounce.com/smart-copy-everywhere" /> Smart copy everywhere</a></li>
+<li><a href="https://breadcrumbs.io/reveal"><img alt="Favicon" src="https://icon.horse/icon/breadcrumbs.io/reveal" /> Breadcrumbs reveal</a></li>
+<li><a href="https://emergingtechbrew.com"><img alt="Favicon" src="https://icon.horse/icon/emergingtechbrew.com" /> Emerging tech brew</a></li>
+<li><a href="https://snazzy.ai"><img alt="Favicon" src="https://icon.horse/icon/snazzy.ai" /> Snazzy ai</a></li>
+<li><a href="https://conduithq.com"><img alt="Favicon" src="https://icon.horse/icon/conduithq.com" /> Conduit</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="image-improvement">Image improvement</h3>
+<div class="section">
+<ul>
+<li><a href="https://vanceai.com/image-enlarger"><img alt="Favicon" src="https://icon.horse/icon/vanceai.com/image-enlarger" /> Vanceai image upscaler</a></li>
+<li><a href="https://cloudinary.com"><img alt="Favicon" src="https://icon.horse/icon/cloudinary.com" /> Cloudinary</a></li>
+<li><a href="https://ai.nero.com/image-upscaler"><img alt="Favicon" src="https://icon.horse/icon/ai.nero.com/image-upscaler" /> Nero image upscaler</a></li>
+<li><a href="https://prisma-ai.com/lensa"><img alt="Favicon" src="https://icon.horse/icon/prisma-ai.com/lensa" /> Lensa</a></li>
+<li><a href="https://convert.leiapix.com"><img alt="Favicon" src="https://icon.horse/icon/convert.leiapix.com" /> Leiapix</a></li>
+<li><a href="https://github.com/Sanster/lama-cleaner"><img alt="Favicon" src="https://icon.horse/icon/github.com/Sanster/lama-cleaner" /> Lama cleaner</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="human-resources">Human resources</h3>
+<div class="section">
+<ul>
+<li><a href="https://chatbot.com/features"><img alt="Favicon" src="https://icon.horse/icon/chatbot.com/features" /> Chatbot</a></li>
+<li><a href="https://moveworks.com"><img alt="Favicon" src="https://icon.horse/icon/moveworks.com" /> Moveworks</a></li>
+<li><a href="https://findem.ai"><img alt="Favicon" src="https://icon.horse/icon/findem.ai" /> Findem</a></li>
+<li><a href="https://skillroads.com"><img alt="Favicon" src="https://icon.horse/icon/skillroads.com" /> Skillroads</a></li>
+<li><a href="https://qatalog.com"><img alt="Favicon" src="https://icon.horse/icon/qatalog.com" /> Qatalog</a></li>
+<li><a href="https://hellotars.com/ph"><img alt="Favicon" src="https://icon.horse/icon/hellotars.com/ph" /> Tars</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="website">Website</h3>
+<div class="section">
+<ul>
+<li><a href="https://getresponse.com/features/website-builder"><img alt="Favicon" src="https://icon.horse/icon/getresponse.com/features/website-builder" /> Getresponse</a></li>
+<li><a href="https://bookmark.com/ai-website-builder"><img alt="Favicon" src="https://icon.horse/icon/bookmark.com/ai-website-builder" /> Aida</a></li>
+<li><a href="https://studio.design"><img alt="Favicon" src="https://icon.horse/icon/studio.design" /> Studio design</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="branding">Branding</h3>
+<div class="section">
+<ul>
+<li><a href="https://namesnack.com"><img alt="Favicon" src="https://icon.horse/icon/namesnack.com" /> Namesnack</a></li>
+<li><a href="https://namify.tech"><img alt="Favicon" src="https://icon.horse/icon/namify.tech" /> Namify</a></li>
+<li><a href="https://namefruits.com"><img alt="Favicon" src="https://icon.horse/icon/namefruits.com" /> Namefruits</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="speech">Speech</h3>
+<div class="section">
+<ul>
+<li><a href="https://speechanalyzer.elsaspeak.com"><img alt="Favicon" src="https://icon.horse/icon/speechanalyzer.elsaspeak.com" /> Elsa speech analyzer</a></li>
+<li><a href="https://resemble.ai/speech-to-speech"><img alt="Favicon" src="https://icon.horse/icon/resemble.ai/speech-to-speech" /> Speech-to-speech</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="communication">Communication</h3>
+<div class="section">
+<ul>
+<li><a href="https://poised.com"><img alt="Favicon" src="https://icon.horse/icon/poised.com" /> Poised 2.0</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="other">Other</h3>
+<div class="section">
+<ul>
+<li><a href="https://pjreddie.com/darknet/yolo"><img alt="Favicon" src="https://icon.horse/icon/pjreddie.com/darknet/yolo" /> Yolo</a></li>
+<li><a href="https://hownormalami.eu"><img alt="Favicon" src="https://icon.horse/icon/hownormalami.eu" /> How normal am i?</a></li>
+<li><a href="https://toonify.photos"><img alt="Favicon" src="https://icon.horse/icon/toonify.photos" /> Toonify</a></li>
+<li><a href="https://gptcrush.com/resources"><img alt="Favicon" src="https://icon.horse/icon/gptcrush.com/resources" /> Gpt-3 crush</a></li>
+<li><a href="https://handl.ai"><img alt="Favicon" src="https://icon.horse/icon/handl.ai" /> Handl</a></li>
+<li><a href="https://aicheatsheet.comuzi.xyz"><img alt="Favicon" src="https://icon.horse/icon/aicheatsheet.comuzi.xyz" /> Ai cheatsheet</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="health">Health</h3>
+<div class="section">
+<ul>
+<li><a href="https://ubiehealth.com"><img alt="Favicon" src="https://icon.horse/icon/ubiehealth.com" /> Ubie ai symptom checker</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="aggregator">Aggregator</h3>
+<div class="section">
+<ul>
+<li><a href="https://gpt3demo.com"><img alt="Favicon" src="https://icon.horse/icon/gpt3demo.com" /> Gpt-3 demo</a></li>
+<li><a href="https://futurepedia.io"><img alt="Favicon" src="https://icon.horse/icon/futurepedia.io" /> Futurepedia</a></li>
+<li><a href="https://library.phygital.plus"><img alt="Favicon" src="https://icon.horse/icon/library.phygital.plus" /> Ai library</a></li>
+<li><a href="https://smokingrobot.ai"><img alt="Favicon" src="https://icon.horse/icon/smokingrobot.ai" /> Smoking robot ai</a></li>
+<li><a href="https://allthingsai.com"><img alt="Favicon" src="https://icon.horse/icon/allthingsai.com" /> All things ai</a></li>
+<li><a href="https://aitogrow.com"><img alt="Favicon" src="https://icon.horse/icon/aitogrow.com" /> Aitogrow</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="customer-support">Customer support</h3>
+<div class="section">
+<ul>
+<li><a href="https://hiverhq.com/harvey-ai-customer-support"><img alt="Favicon" src="https://icon.horse/icon/hiverhq.com/harvey-ai-customer-support" /> Harvey</a></li>
+<li><a href="https://forethought.ai"><img alt="Favicon" src="https://icon.horse/icon/forethought.ai" /> Forethought</a></li>
+<li><a href="https://kore.ai"><img alt="Favicon" src="https://icon.horse/icon/kore.ai" /> Kore.ai</a></li>
+<li><a href="https://regie.ai"><img alt="Favicon" src="https://icon.horse/icon/regie.ai" /> Regie</a></li>
+<li><a href="https://typewise.app"><img alt="Favicon" src="https://icon.horse/icon/typewise.app" /> Typewise</a></li>
+<li><a href="https://quickchat.ai"><img alt="Favicon" src="https://icon.horse/icon/quickchat.ai" /> Quickchat</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="movies">Movies</h3>
+<div class="section">
+<ul>
+<li><a href="https://taste.io"><img alt="Favicon" src="https://icon.horse/icon/taste.io" /> Taste</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="video">Video</h3>
+<div class="section">
+<ul>
+<li><a href="https://deepfakesweb.com"><img alt="Favicon" src="https://icon.horse/icon/deepfakesweb.com" /> Deepfakesweb</a></li>
+<li><a href="https://fineshare.com/finecam"><img alt="Favicon" src="https://icon.horse/icon/fineshare.com/finecam" /> Fineshare</a></li>
+<li><a href="https://wisecut.video"><img alt="Favicon" src="https://icon.horse/icon/wisecut.video" /> Wisecut</a></li>
+<li><a href="https://elai.io"><img alt="Favicon" src="https://icon.horse/icon/elai.io" /> Elai</a></li>
+<li><a href="https://move.ai"><img alt="Favicon" src="https://icon.horse/icon/move.ai" /> Move</a></li>
+<li><a href="https://twelvelabs.io"><img alt="Favicon" src="https://icon.horse/icon/twelvelabs.io" /> Twelve labs</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="email-assistant">Email assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://missiveapp.com"><img alt="Favicon" src="https://icon.horse/icon/missiveapp.com" /> Missive</a></li>
+<li><a href="https://magicreach.ai"><img alt="Favicon" src="https://icon.horse/icon/magicreach.ai" /> Magicreach</a></li>
+<li><a href="https://ellieai.com"><img alt="Favicon" src="https://icon.horse/icon/ellieai.com" /> Ellie</a></li>
+<li><a href="https://superreply.co"><img alt="Favicon" src="https://icon.horse/icon/superreply.co" /> Superreply</a></li>
+<li><a href="https://chatgptwriter.ai"><img alt="Favicon" src="https://icon.horse/icon/chatgptwriter.ai" /> Chatgpt writer</a></li>
+<li><a href="https://superhuman.com"><img alt="Favicon" src="https://icon.horse/icon/superhuman.com" /> Superhuman</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="messaging">Messaging</h3>
+<div class="section">
+<ul>
+<li><a href="https://madgicx.com"><img alt="Favicon" src="https://icon.horse/icon/madgicx.com" /> Madgicx for facebook ads</a></li>
+<li><a href="https://bottr.me"><img alt="Favicon" src="https://icon.horse/icon/bottr.me" /> Bottr.me</a></li>
+<li><a href="https://octaneai.com"><img alt="Favicon" src="https://icon.horse/icon/octaneai.com" /> Octane ai</a></li>
+<li><a href="https://gonerdify.com/nerdybot"><img alt="Favicon" src="https://icon.horse/icon/gonerdify.com/nerdybot" /> Nerdify bot</a></li>
+<li><a href="https://fritz.ai/launch"><img alt="Favicon" src="https://icon.horse/icon/fritz.ai/launch" /> Fritz</a></li>
+<li><a href="https://abe.ai"><img alt="Favicon" src="https://icon.horse/icon/abe.ai" /> Abe</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generative-video">Generative video</h3>
+<div class="section">
+<ul>
+<li><a href="https://lumen5.com"><img alt="Favicon" src="https://icon.horse/icon/lumen5.com" /> Lumen5</a></li>
+<li><a href="https://livereacting.com"><img alt="Favicon" src="https://icon.horse/icon/livereacting.com" /> Livereacting</a></li>
+<li><a href="https://reachout.ai"><img alt="Favicon" src="https://icon.horse/icon/reachout.ai" /> Reachout.ai</a></li>
+<li><a href="https://huggingface.co/spaces/camenduru/one-shot-talking-face"><img alt="Favicon" src="https://icon.horse/icon/huggingface.co/spaces/camenduru/one-shot-talking-face" /> One shot talking face</a></li>
+<li><a href="https://boolvideoinvite.carrd.co"><img alt="Favicon" src="https://icon.horse/icon/boolvideoinvite.carrd.co" /> Boolvideo</a></li>
+<li><a href="https://quickvid.ai"><img alt="Favicon" src="https://icon.horse/icon/quickvid.ai" /> Quickvid</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="safari-extensions">Safari extensions</h3>
+<div class="section">
+<ul>
+<li><a href="https://rezi.ai/ai-resume-builder"><img alt="Favicon" src="https://icon.horse/icon/rezi.ai/ai-resume-builder" /> Rezi 3.0</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="transcriber">Transcriber</h3>
+<div class="section">
+<ul>
+<li><a href="https://fireflies.ai"><img alt="Favicon" src="https://icon.horse/icon/fireflies.ai" /> Fireflies.ai</a></li>
+<li><a href="https://steno.ai"><img alt="Favicon" src="https://icon.horse/icon/steno.ai" /> Steno</a></li>
+<li><a href="https://peech-ai.com"><img alt="Favicon" src="https://icon.horse/icon/peech-ai.com" /> Peech</a></li>
+<li><a href="https://anypod.ai"><img alt="Favicon" src="https://icon.horse/icon/anypod.ai" /> Anypod</a></li>
+<li><a href="https://supertranslate.ai"><img alt="Favicon" src="https://icon.horse/icon/supertranslate.ai" /> Supertranslate</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="motion-capture">Motion capture</h3>
+<div class="section">
+<ul>
+<li><a href="https://rokoko.com"><img alt="Favicon" src="https://icon.horse/icon/rokoko.com" /> Rokoko</a></li>
+<li><a href="https://cascadeur.com"><img alt="Favicon" src="https://icon.horse/icon/cascadeur.com" /> Cascadeur</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="voice">Voice</h3>
+<div class="section">
+<ul>
+<li><a href="https://fineshare.com/finevoice"><img alt="Favicon" src="https://icon.horse/icon/fineshare.com/finevoice" /> Fineshare</a></li>
+<li><a href="https://voice.ai"><img alt="Favicon" src="https://icon.horse/icon/voice.ai" /> Voice ai</a></li>
+<li><a href="https://vocads.com"><img alt="Favicon" src="https://icon.horse/icon/vocads.com" /> Vocads survey</a></li>
+<li><a href="https://whisperapi.com"><img alt="Favicon" src="https://icon.horse/icon/whisperapi.com" /> Whisperapi</a></li>
+<li><a href="https://createaivoiceovers.com"><img alt="Favicon" src="https://icon.horse/icon/createaivoiceovers.com" /> Createaivoiceovers</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="machine-learning">Machine learning</h3>
+<div class="section">
+<ul>
+<li><a href="https://h2o.ai"><img alt="Favicon" src="https://icon.horse/icon/h2o.ai" /> H2o ai</a></li>
+<li><a href="https://nocodebooth.com"><img alt="Favicon" src="https://icon.horse/icon/nocodebooth.com" /> Nocodebooth</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="social-media-assistant">Social media assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://tweethunter.io"><img alt="Favicon" src="https://icon.horse/icon/tweethunter.io" /> Tweet hunter</a></li>
+<li><a href="https://socialbu.com"><img alt="Favicon" src="https://icon.horse/icon/socialbu.com" /> Socialbu</a></li>
+<li><a href="https://predis.ai"><img alt="Favicon" src="https://icon.horse/icon/predis.ai" /> Predis</a></li>
+<li><a href="https://feedhive.com"><img alt="Favicon" src="https://icon.horse/icon/feedhive.com" /> Feedhive</a></li>
+<li><a href="https://audiolabs.io"><img alt="Favicon" src="https://icon.horse/icon/audiolabs.io" /> Audiolabs</a></li>
+<li><a href="https://zaap.ai"><img alt="Favicon" src="https://icon.horse/icon/zaap.ai" /> Zaap.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="inspiration">Inspiration</h3>
+<div class="section">
+<ul>
+<li><a href="https://entreresource.com/chatgpt-cheat-sheet"><img alt="Favicon" src="https://icon.horse/icon/entreresource.com/chatgpt-cheat-sheet" /> Gpt cheat sheet</a></li>
+<li><a href="https://trello.com/b/4BPkSY1w/100-ai-prompts-resources-prompt-lovers"><img alt="Favicon" src="https://icon.horse/icon/trello.com/b/4BPkSY1w/100-ai-prompts-resources-prompt-lovers" /> 100+ ai prompts</a></li>
+<li><a href="https://aealexander.com/midjourney-prompt-database"><img alt="Favicon" src="https://icon.horse/icon/aealexander.com/midjourney-prompt-database" /> Midjourney prompt database</a></li>
+<li><a href="https://prompt.noonshot.com"><img alt="Favicon" src="https://icon.horse/icon/prompt.noonshot.com" /> Midjourney prompt tool</a></li>
+<li><a href="https://saaslibrary.dev"><img alt="Favicon" src="https://icon.horse/icon/saaslibrary.dev" /> Saas library</a></li>
+<li><a href="https://ordinarypeopleprompts.com"><img alt="Favicon" src="https://icon.horse/icon/ordinarypeopleprompts.com" /> Ordinary prompts</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="stocks">Stocks</h3>
+<div class="section">
+<ul>
+<li><a href="https://torto.ai/welcome"><img alt="Favicon" src="https://icon.horse/icon/torto.ai/welcome" /> Torto.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="voice-modulation">Voice modulation</h3>
+<div class="section">
+<ul>
+<li><a href="https://voice.ai/voice-ai-beta/I2p6L"><img alt="Favicon" src="https://icon.horse/icon/voice.ai/voice-ai-beta/I2p6L" /> Voice.ai</a></li>
+<li><a href="https://studio.themetavoice.xyz"><img alt="Favicon" src="https://icon.horse/icon/studio.themetavoice.xyz" /> Metavoice studio</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="paraphraser">Paraphraser</h3>
+<div class="section">
+<ul>
+<li><a href="https://paraphrasetool.com"><img alt="Favicon" src="https://icon.horse/icon/paraphrasetool.com" /> Paraphraser</a></li>
+<li><a href="https://rephrasely.com"><img alt="Favicon" src="https://icon.horse/icon/rephrasely.com" /> Rephrasely</a></li>
+<li><a href="https://bearly.ai"><img alt="Favicon" src="https://icon.horse/icon/bearly.ai" /> Bearly</a></li>
+<li><a href="https://wordfixerbot.com"><img alt="Favicon" src="https://icon.horse/icon/wordfixerbot.com" /> Wordfixerbot</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="amazon">Amazon</h3>
+<div class="section">
+<ul>
+<li><a href="https://TheReviewIndex.com/us"><img alt="Favicon" src="https://icon.horse/icon/TheReviewIndex.com/us" /> Thereviewindex</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="personalized-videos">Personalized videos</h3>
+<div class="section">
+<ul>
+<li><a href="https://windsor.io"><img alt="Favicon" src="https://icon.horse/icon/windsor.io" /> Windsor</a></li>
+<li><a href="https://rephrase.ai"><img alt="Favicon" src="https://icon.horse/icon/rephrase.ai" /> Rephrase</a></li>
+<li><a href="https://trymaverick.com"><img alt="Favicon" src="https://icon.horse/icon/trymaverick.com" /> Maverick</a></li>
+<li><a href="https://bhuman.ai"><img alt="Favicon" src="https://icon.horse/icon/bhuman.ai" /> Bhuman</a></li>
+<li><a href="https://vidyo.ai"><img alt="Favicon" src="https://icon.horse/icon/vidyo.ai" /> Vidyo</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="spreadsheets">Spreadsheets</h3>
+<div class="section">
+<ul>
+<li><a href="https://excelformulabot.com"><img alt="Favicon" src="https://icon.horse/icon/excelformulabot.com" /> Excel formula bot</a></li>
+<li><a href="https://boloforms.com/sheetgod"><img alt="Favicon" src="https://icon.horse/icon/boloforms.com/sheetgod" /> Sheetgod</a></li>
+<li><a href="https://sheetai.app"><img alt="Favicon" src="https://icon.horse/icon/sheetai.app" /> Sheet ai</a></li>
+<li><a href="https://sheetplus.ai"><img alt="Favicon" src="https://icon.horse/icon/sheetplus.ai" /> Sheet+</a></li>
+<li><a href="https://workspace.google.com/marketplace/app/simple_ml_for_sheets/685936641092"><img alt="Favicon" src="https://icon.horse/icon/workspace.google.com/marketplace/app/simple_ml_for_sheets/685936641092" /> Simple ml</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ipad">Ipad</h3>
+<div class="section">
+<ul>
+<li><a href="https://brain.fm"><img alt="Favicon" src="https://icon.horse/icon/brain.fm" /> Brain.fm</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="task-management">Task management</h3>
+<div class="section">
+<ul>
+<li><a href="https://levity.ai"><img alt="Favicon" src="https://icon.horse/icon/levity.ai" /> Levity</a></li>
+<li><a href="https://apac.ai"><img alt="Favicon" src="https://icon.horse/icon/apac.ai" /> Athena</a></li>
+<li><a href="https://teacherbot.io"><img alt="Favicon" src="https://icon.horse/icon/teacherbot.io" /> Teacherbot</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="email-marketing">Email marketing</h3>
+<div class="section">
+<ul>
+<li><a href="https://phrasee.co"><img alt="Favicon" src="https://icon.horse/icon/phrasee.co" /> Phrasee</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fashion">Fashion</h3>
+<div class="section">
+<ul>
+<li><a href="https://ca.la"><img alt="Favicon" src="https://icon.horse/icon/ca.la" /> Cala</a></li>
+<li><a href="https://botika.io"><img alt="Favicon" src="https://icon.horse/icon/botika.io" /> Botika</a></li>
+<li><a href="https://fashionadvisorai.com"><img alt="Favicon" src="https://icon.horse/icon/fashionadvisorai.com" /> Fashionadvisorai</a></li>
+<li><a href="https://visualhound.com"><img alt="Favicon" src="https://icon.horse/icon/visualhound.com" /> Visualhound</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generator">Generator</h3>
+<div class="section">
+<ul>
+<li><a href="https://blocksurvey.io/ai-surveys"><img alt="Favicon" src="https://icon.horse/icon/blocksurvey.io/ai-surveys" /> Blocksurvey</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="3d">3d</h3>
+<div class="section">
+<ul>
+<li><a href="https://deepmotion.com"><img alt="Favicon" src="https://icon.horse/icon/deepmotion.com" /> Deepmotion</a></li>
+<li><a href="https://plask.ai"><img alt="Favicon" src="https://icon.horse/icon/plask.ai" /> Plask</a></li>
+<li><a href="https://captures.lumalabs.ai/imagine"><img alt="Favicon" src="https://icon.horse/icon/captures.lumalabs.ai/imagine" /> Imagine 3d</a></li>
+<li><a href="https://lumalabs.ai"><img alt="Favicon" src="https://icon.horse/icon/lumalabs.ai" /> Luma ai</a></li>
+<li><a href="https://kaedim3d.com"><img alt="Favicon" src="https://icon.horse/icon/kaedim3d.com" /> Kaedim</a></li>
+<li><a href="https://masterpiecestudio.com"><img alt="Favicon" src="https://icon.horse/icon/masterpiecestudio.com" /> Masterpiece studio</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="home">Home</h3>
+<div class="section">
+<ul>
+<li><a href="https://shapescale.com"><img alt="Favicon" src="https://icon.horse/icon/shapescale.com" /> Shapescale</a></li>
+<li><a href="https://github.com/Shinao/SmartMirror"><img alt="Favicon" src="https://icon.horse/icon/github.com/Shinao/SmartMirror" /> Smartmirror</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="api">Api</h3>
+<div class="section">
+<ul>
+<li><a href="https://deepgram.com"><img alt="Favicon" src="https://icon.horse/icon/deepgram.com" /> Deepgram</a></li>
+<li><a href="https://banana.dev"><img alt="Favicon" src="https://icon.horse/icon/banana.dev" /> Banana</a></li>
+<li><a href="https://perspectiveapi.com"><img alt="Favicon" src="https://icon.horse/icon/perspectiveapi.com" /> Perspective</a></li>
+<li><a href="https://theneo.io"><img alt="Favicon" src="https://icon.horse/icon/theneo.io" /> Theneo</a></li>
+<li><a href="https://base64.ai"><img alt="Favicon" src="https://icon.horse/icon/base64.ai" /> Base64.ai</a></li>
+<li><a href="https://trueface.ai"><img alt="Favicon" src="https://icon.horse/icon/trueface.ai" /> Trueface.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="software-engineering">Software engineering</h3>
+<div class="section">
+<ul>
+<li><a href="https://prodi.gy"><img alt="Favicon" src="https://icon.horse/icon/prodi.gy" /> Prodigy</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="open-source">Open source</h3>
+<div class="section">
+<ul>
+<li><a href="https://blog.floydhub.com"><img alt="Favicon" src="https://icon.horse/icon/blog.floydhub.com" /> Floyd</a></li>
+<li><a href="https://cloud.mindsdb.com"><img alt="Favicon" src="https://icon.horse/icon/cloud.mindsdb.com" /> Mindsdb</a></li>
+<li><a href="https://evidentlyai.com"><img alt="Favicon" src="https://icon.horse/icon/evidentlyai.com" /> Evidently ai</a></li>
+<li><a href="https://warrior.js.org"><img alt="Favicon" src="https://icon.horse/icon/warrior.js.org" /> Warriorjs</a></li>
+<li><a href="https://datature.io"><img alt="Favicon" src="https://icon.horse/icon/datature.io" /> Datature</a></li>
+<li><a href="https://bot.viseo.io"><img alt="Favicon" src="https://icon.horse/icon/bot.viseo.io" /> Viseo bot maker</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="chat">Chat</h3>
+<div class="section">
+<ul>
+<li><a href="https://poppylist.com/askpoppy"><img alt="Favicon" src="https://icon.horse/icon/poppylist.com/askpoppy" /> Ask poppy</a></li>
+<li><a href="https://chatbotgpt3.bubbleapps.io/version-test"><img alt="Favicon" src="https://icon.horse/icon/chatbotgpt3.bubbleapps.io/version-test" /> Gpt chatbot</a></li>
+<li><a href="https://voiceflow.com"><img alt="Favicon" src="https://icon.horse/icon/voiceflow.com" /> Voiceflow</a></li>
+<li><a href="https://mobilespoon.net/2023/01/how-to-activate-chatgpt-with-siri-and-save-response.html"><img alt="Favicon" src="https://icon.horse/icon/mobilespoon.net/2023/01/how-to-activate-chatgpt-with-siri-and-save-response.html" /> Chatgpt for siri</a></li>
+<li><a href="https://trudo.ai"><img alt="Favicon" src="https://icon.horse/icon/trudo.ai" /> Trudo</a></li>
+<li><a href="https://unschooler.me"><img alt="Favicon" src="https://icon.horse/icon/unschooler.me" /> Unschooler</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="playstation">Playstation</h3>
+<div class="section">
+<ul>
+<li><a href="https://chatfuel.com"><img alt="Favicon" src="https://icon.horse/icon/chatfuel.com" /> Chatfuel</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="startup">Startup</h3>
+<div class="section">
+<ul>
+<li><a href="https://rationale.jina.ai"><img alt="Favicon" src="https://icon.horse/icon/rationale.jina.ai" /> Rationale</a></li>
+<li><a href="https://trustfinta.com"><img alt="Favicon" src="https://icon.horse/icon/trustfinta.com" /> Finta</a></li>
+<li><a href="https://ideabuddy.com"><img alt="Favicon" src="https://icon.horse/icon/ideabuddy.com" /> Ideabuddy</a></li>
+<li><a href="https://broadn.io"><img alt="Favicon" src="https://icon.horse/icon/broadn.io" /> Broadn</a></li>
+<li><a href="https://validatorai.com"><img alt="Favicon" src="https://icon.horse/icon/validatorai.com" /> Validator ai</a></li>
+<li><a href="https://namelix.com"><img alt="Favicon" src="https://icon.horse/icon/namelix.com" /> Namelix</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="experiments">Experiments</h3>
+<div class="section">
+<ul>
+<li><a href="https://alethea.ai"><img alt="Favicon" src="https://icon.horse/icon/alethea.ai" /> Alethea</a></li>
+<li><a href="https://thismodeldoesnotexist.co"><img alt="Favicon" src="https://icon.horse/icon/thismodeldoesnotexist.co" /> This model does not exist</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="windows">Windows</h3>
+<div class="section">
+<ul>
+<li><a href="https://superannotate.com"><img alt="Favicon" src="https://icon.horse/icon/superannotate.com" /> Superannotate desktop</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generative-code">Generative code</h3>
+<div class="section">
+<ul>
+<li><a href="https://gradio.app"><img alt="Favicon" src="https://icon.horse/icon/gradio.app" /> Gradio</a></li>
+<li><a href="https://obviously.ai"><img alt="Favicon" src="https://icon.horse/icon/obviously.ai" /> Obviously ai</a></li>
+<li><a href="https://sourceai.dev"><img alt="Favicon" src="https://icon.horse/icon/sourceai.dev" /> Sourceai</a></li>
+<li><a href="https://no-code-ai-model-builder.com"><img alt="Favicon" src="https://icon.horse/icon/no-code-ai-model-builder.com" /> No-code ai model builder</a></li>
+<li><a href="https://codesquire.ai"><img alt="Favicon" src="https://icon.horse/icon/codesquire.ai" /> Codesquire</a></li>
+<li><a href="https://aigur.dev"><img alt="Favicon" src="https://icon.horse/icon/aigur.dev" /> Aigur</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="photography">Photography</h3>
+<div class="section">
+<ul>
+<li><a href="https://portrait.vana.com"><img alt="Favicon" src="https://icon.horse/icon/portrait.vana.com" /> Portrait by vana</a></li>
+<li><a href="https://photorestoration.ai"><img alt="Favicon" src="https://icon.horse/icon/photorestoration.ai" /> Photorestoration</a></li>
+<li><a href="https://ecosnap.vercel.app"><img alt="Favicon" src="https://icon.horse/icon/ecosnap.vercel.app" /> Ecosnap</a></li>
+<li><a href="https://github.com/yemount/pose-animator"><img alt="Favicon" src="https://icon.horse/icon/github.com/yemount/pose-animator" /> Pose animator</a></li>
+<li><a href="https://github.com/ageitgey/show-facebook-computer-vision-tags"><img alt="Favicon" src="https://icon.horse/icon/github.com/ageitgey/show-facebook-computer-vision-tags" /> Facebook computer vision tags</a></li>
+<li><a href="https://dpth.app"><img alt="Favicon" src="https://icon.horse/icon/dpth.app" /> Dpth</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="healthcare">Healthcare</h3>
+<div class="section">
+<ul>
+<li><a href="https://whisper.ai"><img alt="Favicon" src="https://icon.horse/icon/whisper.ai" /> Whisper ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="resources">Resources</h3>
+<div class="section">
+<ul>
+<li><a href="https://lablab.ai"><img alt="Favicon" src="https://icon.horse/icon/lablab.ai" /> Lablab.ai</a></li>
+<li><a href="https://aiartapps.com"><img alt="Favicon" src="https://icon.horse/icon/aiartapps.com" /> Ai art apps database</a></li>
+<li><a href="https://experiments.withgoogle.com/collection/ai"><img alt="Favicon" src="https://icon.horse/icon/experiments.withgoogle.com/collection/ai" /> Ai experiments</a></li>
+<li><a href="https://flowgpt.com"><img alt="Favicon" src="https://icon.horse/icon/flowgpt.com" /> Flowgpt</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="growth-hacking">Growth hacking</h3>
+<div class="section">
+<ul>
+<li><a href="https://depict.ai"><img alt="Favicon" src="https://icon.horse/icon/depict.ai" /> Depict.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="kids">Kids</h3>
+<div class="section">
+<ul>
+<li><a href="https://brickit.app"><img alt="Favicon" src="https://icon.horse/icon/brickit.app" /> Brickit</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="search">Search</h3>
+<div class="section">
+<ul>
+<li><a href="https://open.ai"><img alt="Favicon" src="https://icon.horse/icon/open.ai" /> Open</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="speech-to-text">Speech-to-text</h3>
+<div class="section">
+<ul>
+<li><a href="https://glasp.co/youtube-summary"><img alt="Favicon" src="https://icon.horse/icon/glasp.co/youtube-summary" /> Glasp youtube summarizer</a></li>
+<li><a href="https://relayed.ai"><img alt="Favicon" src="https://icon.horse/icon/relayed.ai" /> Relayed</a></li>
+<li><a href="https://meeple.ai"><img alt="Favicon" src="https://icon.horse/icon/meeple.ai" /> Meeple</a></li>
+<li><a href="https://app.towords.io"><img alt="Favicon" src="https://icon.horse/icon/app.towords.io" /> Towords</a></li>
+<li><a href="https://usemelville.com"><img alt="Favicon" src="https://icon.horse/icon/usemelville.com" /> Melville app</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="articles">Articles</h3>
+<div class="section">
+<ul>
+<li><a href="https://riku.ai/creators"><img alt="Favicon" src="https://icon.horse/icon/riku.ai/creators" /> Riku</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="podcast">Podcast</h3>
+<div class="section">
+<ul>
+<li><a href="https://snipd.com/ai-podcast-summaries"><img alt="Favicon" src="https://icon.horse/icon/snipd.com/ai-podcast-summaries" /> Snipd podcast summaries</a></li>
+<li><a href="https://sumly.ai"><img alt="Favicon" src="https://icon.horse/icon/sumly.ai" /> Sumly</a></li>
+<li><a href="https://tapesearch.com"><img alt="Favicon" src="https://icon.horse/icon/tapesearch.com" /> Tapesearch</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="parenting">Parenting</h3>
+<div class="section">
+<ul>
+<li><a href="https://smartivity.in/pages/parentivity_bot"><img alt="Favicon" src="https://icon.horse/icon/smartivity.in/pages/parentivity_bot" /> Parentivity</a></li>
+<li><a href="https://gosesh.com"><img alt="Favicon" src="https://icon.horse/icon/gosesh.com" /> Sesh</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="education-assistant">Education assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://brain-buddy.com/"><img alt="Favicon" src="https://icon.horse/icon/brain-buddy.com" /> Brain Buddy</a></li>
+<li><a href="https://kobra.dev"><img alt="Favicon" src="https://icon.horse/icon/kobra.dev" /> Kobra</a></li>
+<li><a href="https://boldvoice.com"><img alt="Favicon" src="https://icon.horse/icon/boldvoice.com" /> Boldvoice</a></li>
+<li><a href="https://prepai.in/us"><img alt="Favicon" src="https://icon.horse/icon/prepai.in/us" /> Prepai</a></li>
+<li><a href="https://explainlikeimfive.io"><img alt="Favicon" src="https://icon.horse/icon/explainlikeimfive.io" /> Eli5</a></li>
+<li><a href="https://tutorai.me"><img alt="Favicon" src="https://icon.horse/icon/tutorai.me" /> Tutorai</a></li>
+<li><a href="https://yippity.io"><img alt="Favicon" src="https://icon.horse/icon/yippity.io" /> Yip</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tracking">Tracking</h3>
+<div class="section">
+<ul>
+<li><a href="https://hexowatch.com"><img alt="Favicon" src="https://icon.horse/icon/hexowatch.com" /> Hexowatch</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="privacy">Privacy</h3>
+<div class="section">
+<ul>
+<li><a href="https://playground.ai"><img alt="Favicon" src="https://icon.horse/icon/playground.ai" /> Anonymous camera</a></li>
+<li><a href="https://useguard.com"><img alt="Favicon" src="https://icon.horse/icon/useguard.com" /> Guard</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="vehicle">Vehicle</h3>
+<div class="section">
+<ul>
+<li><a href="https://polymathrobotics.com"><img alt="Favicon" src="https://icon.horse/icon/polymathrobotics.com" /> Polymath robotics</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="twitter">Twitter</h3>
+<div class="section">
+<ul>
+<li><a href="https://tribescaler.com"><img alt="Favicon" src="https://icon.horse/icon/tribescaler.com" /> Tribescaler</a></li>
+<li><a href="https://kanyegenerator.com"><img alt="Favicon" src="https://icon.horse/icon/kanyegenerator.com" /> Kanye tweet generator</a></li>
+<li><a href="https://tweetspear.com"><img alt="Favicon" src="https://icon.horse/icon/tweetspear.com" /> Tweetspear</a></li>
+<li><a href="https://tweept3.com"><img alt="Favicon" src="https://icon.horse/icon/tweept3.com" /> Tweept3</a></li>
+<li><a href="https://tweetai.com"><img alt="Favicon" src="https://icon.horse/icon/tweetai.com" /> Tweetai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dev">Dev</h3>
+<div class="section">
+<ul>
+<li><a href="https://edenai.co"><img alt="Favicon" src="https://icon.horse/icon/edenai.co" /> Eden ai</a></li>
+<li><a href="https://meetmaya.world"><img alt="Favicon" src="https://icon.horse/icon/meetmaya.world" /> Maya ai</a></li>
+<li><a href="https://testkit.app"><img alt="Favicon" src="https://icon.horse/icon/testkit.app" /> Testkit</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="saas">Saas</h3>
+<div class="section">
+<ul>
+<li><a href="https://yous.ai"><img alt="Favicon" src="https://icon.horse/icon/yous.ai" /> Yous</a></li>
+<li><a href="https://trydocent.ai"><img alt="Favicon" src="https://icon.horse/icon/trydocent.ai" /> Docent</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="podcasting">Podcasting</h3>
+<div class="section">
+<ul>
+<li><a href="https://audo.ai"><img alt="Favicon" src="https://icon.horse/icon/audo.ai" /> Audo ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bot">Bot</h3>
+<div class="section">
+<ul>
+<li><a href="https://hirex.ai"><img alt="Favicon" src="https://icon.horse/icon/hirex.ai" /> Hirex.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="finance">Finance</h3>
+<div class="section">
+<ul>
+<li><a href="https://glean.ai"><img alt="Favicon" src="https://icon.horse/icon/glean.ai" /> Glean ai</a></li>
+<li><a href="https://avanz.ai"><img alt="Favicon" src="https://icon.horse/icon/avanz.ai" /> Avanzai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="self-improvement">Self-improvement</h3>
+<div class="section">
+<ul>
+<li><a href="https://huberman.rile.yt"><img alt="Favicon" src="https://icon.horse/icon/huberman.rile.yt" /> Huberman ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="robots">Robots</h3>
+<div class="section">
+<ul>
+<li><a href="https://activechat.ai/intents-and-insights"><img alt="Favicon" src="https://icon.horse/icon/activechat.ai/intents-and-insights" /> Activechat bot trainer</a></li>
+<li><a href="https://motion.ai"><img alt="Favicon" src="https://icon.horse/icon/motion.ai" /> Motion ai</a></li>
+<li><a href="https://apitobot.io"><img alt="Favicon" src="https://icon.horse/icon/apitobot.io" /> Api to bot</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="slack">Slack</h3>
+<div class="section">
+<ul>
+<li><a href="https://thegist.ai"><img alt="Favicon" src="https://icon.horse/icon/thegist.ai" /> Thegist</a></li>
+<li><a href="https://chatbottle.co"><img alt="Favicon" src="https://icon.horse/icon/chatbottle.co" /> Chatbottle</a></li>
+<li><a href="https://cai.tools.sap"><img alt="Favicon" src="https://icon.horse/icon/cai.tools.sap" /> Bot builder by recast.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="investing">Investing</h3>
+<div class="section">
+<ul>
+<li><a href="https://koble.ai/founderfit"><img alt="Favicon" src="https://icon.horse/icon/koble.ai/founderfit" /> Founderfit by koble</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="questions">Questions</h3>
+<div class="section">
+<ul>
+<li><a href="https://therocketbrew.com/jeeves"><img alt="Favicon" src="https://icon.horse/icon/therocketbrew.com/jeeves" /> Jeeves</a></li>
+<li><a href="https://godinabox.co"><img alt="Favicon" src="https://icon.horse/icon/godinabox.co" /> God in a box</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="construction">Construction</h3>
+<div class="section">
+<ul>
+<li><a href="https://aim.vision"><img alt="Favicon" src="https://icon.horse/icon/aim.vision" /> Aim</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="data">Data</h3>
+<div class="section">
+<ul>
+<li><a href="https://geniussheets.com"><img alt="Favicon" src="https://icon.horse/icon/geniussheets.com" /> Genius sheets</a></li>
+<li><a href="https://askcommand.com"><img alt="Favicon" src="https://icon.horse/icon/askcommand.com" /> Ask command</a></li>
+<li><a href="https://noluai.com"><img alt="Favicon" src="https://icon.horse/icon/noluai.com" /> Nolu</a></li>
+<li><a href="https://uselookup.com"><img alt="Favicon" src="https://icon.horse/icon/uselookup.com" /> Lookup</a></li>
+<li><a href="https://olli.ai"><img alt="Favicon" src="https://icon.horse/icon/olli.ai" /> Olli</a></li>
+<li><a href="https://autopredict.co.uk"><img alt="Favicon" src="https://icon.horse/icon/autopredict.co.uk" /> Autopredict</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="plugin">Plugin</h3>
+<div class="section">
+<ul>
+<li><a href="https://tldrdev.ai"><img alt="Favicon" src="https://icon.horse/icon/tldrdev.ai" /> Jetbrains ide plugin</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pet">Pet</h3>
+<div class="section">
+<ul>
+<li><a href="https://digitaldogs.ai"><img alt="Favicon" src="https://icon.horse/icon/digitaldogs.ai" /> Digital dogs</a></li>
+<li><a href="https://aipetavatar.com"><img alt="Favicon" src="https://icon.horse/icon/aipetavatar.com" /> Aipetavatar</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sports">Sports</h3>
+<div class="section">
+<ul>
+<li><a href="https://sportsprediction.ai"><img alt="Favicon" src="https://icon.horse/icon/sportsprediction.ai" /> Ai sports prediction</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-experience">User experience</h3>
+<div class="section">
+<ul>
+<li><a href="https://arcopypaste.app"><img alt="Favicon" src="https://icon.horse/icon/arcopypaste.app" /> Clipdrop</a></li>
+<li><a href="https://getairim.com"><img alt="Favicon" src="https://icon.horse/icon/getairim.com" /> Airim 2.0</a></li>
+<li><a href="https://akin.nz"><img alt="Favicon" src="https://icon.horse/icon/akin.nz" /> Akin</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="quiz">Quiz</h3>
+<div class="section">
+<ul>
+<li><a href="https://quizgecko.com"><img alt="Favicon" src="https://icon.horse/icon/quizgecko.com" /> Quizgecko</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sql">Sql</h3>
+<div class="section">
+<ul>
+<li><a href="https://decile.app"><img alt="Favicon" src="https://icon.horse/icon/decile.app" /> Decile</a></li>
+<li><a href="https://aihelperbot.com"><img alt="Favicon" src="https://icon.horse/icon/aihelperbot.com" /> Aihelperbot</a></li>
+<li><a href="https://aiquery.co"><img alt="Favicon" src="https://icon.horse/icon/aiquery.co" /> Ai query</a></li>
+<li><a href="https://ai2sql.io"><img alt="Favicon" src="https://icon.horse/icon/ai2sql.io" /> Ai2sql</a></li>
+<li><a href="https://usechannel.com"><img alt="Favicon" src="https://icon.horse/icon/usechannel.com" /> Channel</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="linkedin">Linkedin</h3>
+<div class="section">
+<ul>
+<li><a href="https://sid.black/tools/linkedin-post-generator"><img alt="Favicon" src="https://icon.horse/icon/sid.black/tools/linkedin-post-generator" /> Linkedin posts generator</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="food">Food</h3>
+<div class="section">
+<ul>
+<li><a href="https://ai-recipes.softr.app"><img alt="Favicon" src="https://icon.horse/icon/ai-recipes.softr.app" /> Ai recipe generator</a></li>
+<li><a href="https://foodai.app"><img alt="Favicon" src="https://icon.horse/icon/foodai.app" /> Foodai</a></li>
+<li><a href="https://whatcaketobake.com"><img alt="Favicon" src="https://icon.horse/icon/whatcaketobake.com" /> What cake to bake?</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tool">Tool</h3>
+<div class="section">
+<ul>
+<li><a href="https://autoname.org"><img alt="Favicon" src="https://icon.horse/icon/autoname.org" /> Autoname</a></li>
+<li><a href="https://assetsai.art"><img alt="Favicon" src="https://icon.horse/icon/assetsai.art" /> Assetsai</a></li>
+<li><a href="https://aibusinesstool.com"><img alt="Favicon" src="https://icon.horse/icon/aibusinesstool.com" /> Aibusinesstool</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="emoji">Emoji</h3>
+<div class="section">
+<ul>
+<li><a href="https://phben.ch"><img alt="Favicon" src="https://icon.horse/icon/phben.ch" /> Ph bench</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="newsletters">Newsletters</h3>
+<div class="section">
+<ul>
+<li><a href="https://subscribe.machinelearnings.co"><img alt="Favicon" src="https://icon.horse/icon/subscribe.machinelearnings.co" /> Machine learnings</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="streaming-services">Streaming services</h3>
+<div class="section">
+<ul>
+<li><a href="https://their.tube"><img alt="Favicon" src="https://icon.horse/icon/their.tube" /> Theirtube</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="excel">Excel</h3>
+<div class="section">
+<ul>
+<li><a href="https://formula.dog"><img alt="Favicon" src="https://icon.horse/icon/formula.dog" /> Formula dog</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ai-detection">Ai detection</h3>
+<div class="section">
+<ul>
+<li><a href="https://thomas.io/detect-gpt"><img alt="Favicon" src="https://icon.horse/icon/thomas.io/detect-gpt" /> Detect gpt</a></li>
+<li><a href="https://nsfw.m1guelpf.me"><img alt="Favicon" src="https://icon.horse/icon/nsfw.m1guelpf.me" /> Is this image nsfw?</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="news">News</h3>
+<div class="section">
+<ul>
+<li><a href="https://speechkit.io"><img alt="Favicon" src="https://icon.horse/icon/speechkit.io" /> Speechkit</a></li>
+<li><a href="https://useclarity.com"><img alt="Favicon" src="https://icon.horse/icon/useclarity.com" /> Clarity</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="vacation">Vacation</h3>
+<div class="section">
+<ul>
+<li><a href="https://letsroam.app"><img alt="Favicon" src="https://icon.horse/icon/letsroam.app" /> Roamr</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="logo-generator">Logo generator</h3>
+<div class="section">
+<ul>
+<li><a href="https://makelogoai.com"><img alt="Favicon" src="https://icon.horse/icon/makelogoai.com" /> Make logo ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="real-estate">Real estate</h3>
+<div class="section">
+<ul>
+<li><a href="https://airoomplanner.com"><img alt="Favicon" src="https://icon.horse/icon/airoomplanner.com" /> Ai room planner</a></li>
+<li><a href="https://coolaiid.com"><img alt="Favicon" src="https://icon.horse/icon/coolaiid.com" /> Coolaiid</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="assistant">Assistant</h3>
+<div class="section">
+<ul>
+<li><a href="https://eddyai.com"><img alt="Favicon" src="https://icon.horse/icon/eddyai.com" /> Eddyai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bots">Bots</h3>
+<div class="section">
+<ul>
+<li><a href="https://ai-chatbots.pulse.is"><img alt="Favicon" src="https://icon.horse/icon/ai-chatbots.pulse.is" /> Ai chatbots in messengers</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="advertising">Advertising</h3>
+<div class="section">
+<ul>
+<li><a href="https://jotapp.tech"><img alt="Favicon" src="https://icon.horse/icon/jotapp.tech" /> Jot</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="gift-ideas">Gift ideas</h3>
+<div class="section">
+<ul>
+<li><a href="https://giftastic.ai"><img alt="Favicon" src="https://icon.horse/icon/giftastic.ai" /> Giftastic.ai</a></li>
+<li><a href="https://coolgiftideas.io"><img alt="Favicon" src="https://icon.horse/icon/coolgiftideas.io" /> Cool gift ideas</a></li>
+<li><a href="https://elfhelp.ai"><img alt="Favicon" src="https://icon.horse/icon/elfhelp.ai" /> Elf help</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-to-speech_1">Text-to-speech</h3>
+<div class="section">
+<ul>
+<li><a href="https://verbatik.com"><img alt="Favicon" src="https://icon.horse/icon/verbatik.com" /> Verbatik</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="character">Character</h3>
+<div class="section">
+<ul>
+<li><a href="https://salewhale.chat"><img alt="Favicon" src="https://icon.horse/icon/salewhale.chat" /> Salewhale</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="memory">Memory</h3>
+<div class="section">
+<ul>
+<li><a href="https://heyday.xyz"><img alt="Favicon" src="https://icon.horse/icon/heyday.xyz" /> Heyday</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="feedback">Feedback</h3>
+<div class="section">
+<ul>
+<li><a href="https://myess.ai"><img alt="Favicon" src="https://icon.horse/icon/myess.ai" /> Myess</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="background">Background</h3>
+<div class="section">
+<ul>
+<li><a href="https://zoomscape.ai"><img alt="Favicon" src="https://icon.horse/icon/zoomscape.ai" /> Zoomscape</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="support">Support</h3>
+<div class="section">
+<ul>
+<li><a href="https://resolveai.co"><img alt="Favicon" src="https://icon.horse/icon/resolveai.co" /> Resolveai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="rank">Rank</h3>
+<div class="section">
+<ul>
+<li><a href="https://reviewz.ai"><img alt="Favicon" src="https://icon.horse/icon/reviewz.ai" /> Reviewz</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="letter">Letter</h3>
+<div class="section">
+<ul>
+<li><a href="https://recommendme.to"><img alt="Favicon" src="https://icon.horse/icon/recommendme.to" /> Recommendme</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="gift">Gift</h3>
+<div class="section">
+<ul>
+<li><a href="https://text2present.com"><img alt="Favicon" src="https://icon.horse/icon/text2present.com" /> Text2present</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dream">Dream</h3>
+<div class="section">
+<ul>
+<li><a href="https://scarlettpanda.com"><img alt="Favicon" src="https://icon.horse/icon/scarlettpanda.com" /> Scarlettpanda</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="excuse">Excuse</h3>
+<div class="section">
+<ul>
+<li><a href="https://excuses.ai"><img alt="Favicon" src="https://icon.horse/icon/excuses.ai" /> Excuses ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="game">Game</h3>
+<div class="section">
+<ul>
+<li><a href="https://huggingface.co/spaces/huggingface-projects/stable-diffusion-multiplayer"><img alt="Favicon" src="https://icon.horse/icon/huggingface.co/spaces/huggingface-projects/stable-diffusion-multiplayer" /> Stable diffusion multiplayer</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="edit">Edit</h3>
+<div class="section">
+<ul>
+<li><a href="https://bigmp4.com"><img alt="Favicon" src="https://icon.horse/icon/bigmp4.com" /> Bigmp4</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="translation">Translation</h3>
+<div class="section">
+<ul>
+<li><a href="https://bot.petit.today"><img alt="Favicon" src="https://icon.horse/icon/bot.petit.today" /> Languagepro</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="startup-tools">Startup tools</h3>
+<div class="section">
+<ul>
+<li><a href="https://releasenote.ai"><img alt="Favicon" src="https://icon.horse/icon/releasenote.ai" /> Releasenote.ai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="e-commerce">E-commerce</h3>
+<div class="section">
+<ul>
+<li><a href="https://recommendix.com/es-ar"><img alt="Favicon" src="https://icon.horse/icon/recommendix.com/es-ar" /> Recommendix</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="beauty">Beauty</h3>
+<div class="section">
+<ul>
+<li><a href="https://hairbyai.com"><img alt="Favicon" src="https://icon.horse/icon/hairbyai.com" /> Hairbyai</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="photo">Photo</h3>
+<div class="section">
+<ul>
+<li><a href="https://camira.ai"><img alt="Favicon" src="https://icon.horse/icon/camira.ai" /> Camira</a></li>
+</ul>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

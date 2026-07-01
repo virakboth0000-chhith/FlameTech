@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Java Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This cheat sheet is a crash course for Java beginners and help review the basic syntax of the Java language.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#d33731}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(211,55,49,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>Java</span>
+  </div>
+  <div class="post-icon">JA</div>
+  <h1>Java <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This cheat sheet is a crash course for Java beginners and help review the basic syntax of the Java language.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">object-oriented</span> <span class="meta-tag">class</span> <span class="meta-tag">Programming</span> <span class="meta-tag">tooltip</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="hellojava">Hello.java</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Hello</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Compiling and running</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>javac<span class="w"> </span>Hello.java
+$<span class="w"> </span>java<span class="w"> </span>Hello
+Hello,<span class="w"> </span>world!
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="variables">Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="kt">float</span><span class="w"> </span><span class="n">floatNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">5.99f</span><span class="p">;</span>
+<span class="kt">char</span><span class="w"> </span><span class="n">letter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;D&#39;</span><span class="p">;</span>
+<span class="kt">boolean</span><span class="w"> </span><span class="n">bool</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">site</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;cheatsheets.zip&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="primitive-data-types">Primitive Data Types</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Size</th>
+<th>Default</th>
+<th style="text-align: left;">Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>byte</code></td>
+<td>1 byte</td>
+<td>0</td>
+<td style="text-align: left;">-128 ^to^ 127</td>
+</tr>
+<tr>
+<td><code>short</code></td>
+<td>2 byte</td>
+<td>0</td>
+<td style="text-align: left;">-2^15^ ^to^ 2^15^-1</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td>4 byte</td>
+<td>0</td>
+<td style="text-align: left;">-2^31^ ^to^ 2^31^-1</td>
+</tr>
+<tr>
+<td><code>long</code></td>
+<td>8 byte</td>
+<td>0</td>
+<td style="text-align: left;">-2^63^ ^to^ 2^63^-1</td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td>4 byte</td>
+<td>0.0f</td>
+<td style="text-align: left;"><em>N/A</em></td>
+</tr>
+<tr>
+<td><code>double</code></td>
+<td>8 byte</td>
+<td>0.0d</td>
+<td style="text-align: left;"><em>N/A</em></td>
+</tr>
+<tr>
+<td><code>char</code></td>
+<td>2 byte</td>
+<td>\u0000</td>
+<td style="text-align: left;">0 ^to^ 65535</td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td><em>N/A</em></td>
+<td>false</td>
+<td style="text-align: left;">true / false</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="strings">Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;John&quot;</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">last</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Doe&quot;</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">last</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">name</span><span class="p">);</span>
+</code></pre></div>
+
+<p>See: <a href="#java-strings">Strings</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="loops">Loops</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CheatSheets&quot;</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="p">:</span><span class="w"> </span><span class="n">word</span><span class="p">.</span><span class="na">toCharArray</span><span class="p">())</span><span class="w"> </span>
+<span class="c1">// Outputs: C-h-e-a-t-S-h-e-e-t-s-</span>
+</code></pre></div>
+
+<p>See: <a href="#java-loops">Loops</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrays">Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">char</span><span class="o">[]</span><span class="w"> </span><span class="n">chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">char</span><span class="o">[</span><span class="mi">10</span><span class="o">]</span><span class="p">;</span>
+<span class="n">chars</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;a&#39;</span>
+<span class="n">chars</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;b&#39;</span>
+
+<span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">letters</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">mylist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="kt">boolean</span><span class="o">[]</span><span class="w"> </span><span class="n">answers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+</code></pre></div>
+
+<p>See: <a href="#java-arrays">Arrays</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="swap">Swap</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="c1">// 1 2</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+<span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+<span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">);</span><span class="w"> </span><span class="c1">// 2 1</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="type-casting">Type Casting</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// Widening</span>
+<span class="c1">// byte&lt;short&lt;int&lt;long&lt;float&lt;double</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="kt">long</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w">               </span><span class="c1">// 10</span>
+
+<span class="c1">// Narrowing</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">10.02</span><span class="p">;</span>
+<span class="kt">long</span><span class="w"> </span><span class="n">l</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">long</span><span class="p">)</span><span class="n">d</span><span class="p">;</span><span class="w">         </span><span class="c1">// 10</span>
+
+<span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w">       </span><span class="c1">// &quot;10&quot;</span>
+<span class="n">Integer</span><span class="p">.</span><span class="na">parseInt</span><span class="p">(</span><span class="s">&quot;10&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// 10</span>
+<span class="n">Double</span><span class="p">.</span><span class="na">parseDouble</span><span class="p">(</span><span class="s">&quot;10&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// 10.0</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="conditionals">Conditionals</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w">  </span><span class="k">else</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#java-conditionals">Conditionals</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-input">User Input</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">Scanner</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">Scanner</span><span class="p">(</span><span class="n">System</span><span class="p">.</span><span class="na">in</span><span class="p">);</span>
+<span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in</span><span class="p">.</span><span class="na">nextLine</span><span class="p">();</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">in</span><span class="p">.</span><span class="na">nextInt</span><span class="p">();</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">num</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="java-strings">
+<h2 id="java-strings">Java Strings</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basic">Basic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">str1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;value&quot;</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">str2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">);</span>
+<span class="n">String</span><span class="w"> </span><span class="n">str3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">String</span><span class="p">.</span><span class="na">valueOf</span><span class="p">(</span><span class="mi">123</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="concatenation">Concatenation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;str&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">     </span><span class="c1">// 3str3</span>
+<span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;str&quot;</span><span class="p">;</span><span class="w">     </span><span class="c1">// 6str</span>
+<span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;str&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1">// 33str</span>
+<span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;3&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;23&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// 3323</span>
+<span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot;23&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1">// 3323</span>
+<span class="n">String</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">23</span><span class="p">;</span><span class="w">        </span><span class="c1">// Incompatible types</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="stringbuilder">StringBuilder</h3>
+<div class="section">
+<p><code>StringBuilder sb = new StringBuilder(10);</code></p>
+<div class="codehilite"><pre><span></span><code><span class="err">┌───┬───┬───┬───┬───┬───┬───┬───┬───┐</span>
+<span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span>
+<span class="err">└───┴───┴───┴───┴───┴───┴───┴───┴───┘</span>
+<span class="mi">0</span><span class="w">   </span><span class="mi">1</span><span class="w">   </span><span class="mi">2</span><span class="w">   </span><span class="mi">3</span><span class="w">   </span><span class="mi">4</span><span class="w">   </span><span class="mi">5</span><span class="w">   </span><span class="mi">6</span><span class="w">   </span><span class="mi">7</span><span class="w">   </span><span class="mi">8</span><span class="w">   </span><span class="mi">9</span>
+</code></pre></div>
+
+<p><code>sb.append("QuickRef");</code></p>
+<div class="codehilite"><pre><span></span><code><span class="err">┌───┬───┬───┬───┬───┬───┬───┬───┬───┐</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Q</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">R</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="o">|</span>
+<span class="err">└───┴───┴───┴───┴───┴───┴───┴───┴───┘</span>
+<span class="mi">0</span><span class="w">   </span><span class="mi">1</span><span class="w">   </span><span class="mi">2</span><span class="w">   </span><span class="mi">3</span><span class="w">   </span><span class="mi">4</span><span class="w">   </span><span class="mi">5</span><span class="w">   </span><span class="mi">6</span><span class="w">   </span><span class="mi">7</span><span class="w">   </span><span class="mi">8</span><span class="w">   </span><span class="mi">9</span>
+</code></pre></div>
+
+<p><code>sb.delete(5, 9);</code></p>
+<div class="codehilite"><pre><span></span><code><span class="err">┌───┬───┬───┬───┬───┬───┬───┬───┬───┐</span>
+<span class="o">|</span><span class="w"> </span><span class="n">Q</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w">   </span><span class="o">|</span>
+<span class="err">└───┴───┴───┴───┴───┴───┴───┴───┴───┘</span>
+<span class="mi">0</span><span class="w">   </span><span class="mi">1</span><span class="w">   </span><span class="mi">2</span><span class="w">   </span><span class="mi">3</span><span class="w">   </span><span class="mi">4</span><span class="w">   </span><span class="mi">5</span><span class="w">   </span><span class="mi">6</span><span class="w">   </span><span class="mi">7</span><span class="w">   </span><span class="mi">8</span><span class="w">   </span><span class="mi">9</span>
+</code></pre></div>
+
+<p><code>sb.insert(0, "My ");</code></p>
+<div class="codehilite"><pre><span></span><code><span class="err">┌───┬───┬───┬───┬───┬───┬───┬───┬───┐</span>
+<span class="o">|</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Q</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="o">|</span>
+<span class="err">└───┴───┴───┴───┴───┴───┴───┴───┴───┘</span>
+<span class="mi">0</span><span class="w">   </span><span class="mi">1</span><span class="w">   </span><span class="mi">2</span><span class="w">   </span><span class="mi">3</span><span class="w">   </span><span class="mi">4</span><span class="w">   </span><span class="mi">5</span><span class="w">   </span><span class="mi">6</span><span class="w">   </span><span class="mi">7</span><span class="w">   </span><span class="mi">8</span><span class="w">   </span><span class="mi">9</span>
+</code></pre></div>
+
+<p><code>sb.append("!");</code></p>
+<div class="codehilite"><pre><span></span><code><span class="err">┌───┬───┬───┬───┬───┬───┬───┬───┬───┐</span>
+<span class="o">|</span><span class="w"> </span><span class="n">M</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">|</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="n">Q</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">u</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">!</span><span class="w"> </span><span class="o">|</span>
+<span class="err">└───┴───┴───┴───┴───┴───┴───┴───┴───┘</span>
+<span class="mi">0</span><span class="w">   </span><span class="mi">1</span><span class="w">   </span><span class="mi">2</span><span class="w">   </span><span class="mi">3</span><span class="w">   </span><span class="mi">4</span><span class="w">   </span><span class="mi">5</span><span class="w">   </span><span class="mi">6</span><span class="w">   </span><span class="mi">7</span><span class="w">   </span><span class="mi">8</span><span class="w">   </span><span class="mi">9</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comparison">Comparison</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="s">&quot;cheatsheets.zip&quot;</span><span class="p">);</span>
+<span class="n">String</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">String</span><span class="p">(</span><span class="s">&quot;cheatsheets.zip&quot;</span><span class="p">);</span>
+
+<span class="n">s1</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">s2</span><span class="w">          </span><span class="c1">// false</span>
+<span class="n">s1</span><span class="p">.</span><span class="na">equals</span><span class="p">(</span><span class="n">s2</span><span class="p">)</span><span class="w">     </span><span class="c1">// true</span>
+
+<span class="s">&quot;AB&quot;</span><span class="p">.</span><span class="na">equalsIgnoreCase</span><span class="p">(</span><span class="s">&quot;ab&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">// true</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="manipulation">Manipulation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Abcd&quot;</span><span class="p">;</span>
+
+<span class="n">str</span><span class="p">.</span><span class="na">toUpperCase</span><span class="p">();</span><span class="w">     </span><span class="c1">// ABCD</span>
+<span class="n">str</span><span class="p">.</span><span class="na">toLowerCase</span><span class="p">();</span><span class="w">     </span><span class="c1">// abcd</span>
+<span class="n">str</span><span class="p">.</span><span class="na">concat</span><span class="p">(</span><span class="s">&quot;#&quot;</span><span class="p">);</span><span class="w">       </span><span class="c1">// Abcd#</span>
+<span class="n">str</span><span class="p">.</span><span class="na">replace</span><span class="p">(</span><span class="s">&quot;b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// A-cd</span>
+
+<span class="s">&quot;  abc &quot;</span><span class="p">.</span><span class="na">trim</span><span class="p">();</span><span class="w">       </span><span class="c1">// abc</span>
+<span class="s">&quot;ab&quot;</span><span class="p">.</span><span class="na">toCharArray</span><span class="p">();</span><span class="w">    </span><span class="c1">// </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="information">Information</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;abcd&quot;</span><span class="p">;</span>
+
+<span class="n">str</span><span class="p">.</span><span class="na">charAt</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w">       </span><span class="c1">// c</span>
+<span class="n">str</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">// 0</span>
+<span class="n">str</span><span class="p">.</span><span class="na">indexOf</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">)</span><span class="w">     </span><span class="c1">// -1</span>
+<span class="n">str</span><span class="p">.</span><span class="na">length</span><span class="p">();</span><span class="w">        </span><span class="c1">// 4</span>
+<span class="n">str</span><span class="p">.</span><span class="na">toString</span><span class="p">();</span><span class="w">      </span><span class="c1">// abcd</span>
+<span class="n">str</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span><span class="w">    </span><span class="c1">// cd</span>
+<span class="n">str</span><span class="p">.</span><span class="na">substring</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span><span class="w">  </span><span class="c1">// c</span>
+<span class="n">str</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;c&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// true</span>
+<span class="n">str</span><span class="p">.</span><span class="na">endsWith</span><span class="p">(</span><span class="s">&quot;d&quot;</span><span class="p">);</span><span class="w">   </span><span class="c1">// true</span>
+<span class="n">str</span><span class="p">.</span><span class="na">startsWith</span><span class="p">(</span><span class="s">&quot;a&quot;</span><span class="p">);</span><span class="w"> </span><span class="c1">// true</span>
+<span class="n">str</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">();</span><span class="w">       </span><span class="c1">// false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="immutable">Immutable</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">;</span>
+<span class="n">str</span><span class="p">.</span><span class="na">concat</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">);</span>
+
+<span class="c1">// Outputs: hello</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">concat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">str</span><span class="p">.</span><span class="na">concat</span><span class="p">(</span><span class="s">&quot;world&quot;</span><span class="p">);</span>
+
+<span class="c1">// Outputs: helloworld</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">concat</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Once created cannot be modified, any modification creates a new String</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="java-arrays">
+<h2 id="java-arrays">Java Arrays</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="declare">Declare</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">a1</span><span class="p">;</span>
+<span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">a2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">a3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[]</span><span class="p">;</span>
+
+<span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">a4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="kt">int</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="p">;</span>
+<span class="n">a4</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="n">a4</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="n">a4</span><span class="o">[</span><span class="mi">3</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="modify">Modify</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">);</span><span class="w"> </span><span class="c1">// 1</span>
+
+<span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">);</span><span class="w"> </span><span class="c1">// 9</span>
+
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">length</span><span class="p">);</span><span class="w"> </span><span class="c1">// 3</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="loop-read-modify">Loop (Read &amp; Modify)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">arr</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// Outputs: 2 4 6</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="loop-read">Loop (Read)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="o">[]</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="n">arr</span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// Outputs: a b c</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multidimensional-arrays">Multidimensional Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="o">[][]</span><span class="w"> </span><span class="n">matrix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="p">};</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="o">[</span><span class="mi">1</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span><span class="w">  </span><span class="c1">// 4</span>
+<span class="c1">// [[1, 2, 3], [4, 5]]</span>
+<span class="n">Arrays</span><span class="p">.</span><span class="na">deepToString</span><span class="p">(</span><span class="n">matrix</span><span class="p">);</span>
+
+<span class="kt">int</span><span class="o">[][]</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">matrix</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="na">length</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span>
+<span class="p">}</span>
+<span class="c1">// Outputs: 1 2 3 4 5 6 7</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="sort">Sort</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">char</span><span class="o">[]</span><span class="w"> </span><span class="n">chars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="n">Arrays</span><span class="p">.</span><span class="na">sort</span><span class="p">(</span><span class="n">chars</span><span class="p">);</span>
+
+<span class="c1">// [a, b, c]</span>
+<span class="n">Arrays</span><span class="p">.</span><span class="na">toString</span><span class="p">(</span><span class="n">chars</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="java-conditionals">
+<h2 id="java-conditionals">Java Conditionals</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="operators">Operators</h3>
+<div class="section">
+<ul>
+<li><a data-tooltip="Additive operator (also used for String concatenation)">+</a></li>
+<li><a data-tooltip="Subtraction operator">-</a></li>
+<li><a data-tooltip="Multiplication operator">*</a></li>
+<li><a data-tooltip="Division operator">/</a></li>
+<li><a data-tooltip="Remainder operator">%</a></li>
+<li><a data-tooltip="Simple assignment operator">=</a></li>
+<li><a data-tooltip="Increment operator; increments a value by 1">++</a></li>
+<li><a data-tooltip="Decrement operator; decrements a value by 1">--</a></li>
+<li><a data-tooltip="Logical complement operator; inverts the value of a boolean">!</a></li>
+</ul>
+<hr />
+<ul>
+<li><a data-tooltip="Equal to">==</a></li>
+<li><a data-tooltip="Not equal to">!=</a></li>
+<li><a data-tooltip="Greater than">&gt;</a></li>
+<li><a data-tooltip="Greater than or equal to">&gt;=</a></li>
+<li><a data-tooltip="Less than">&lt;</a></li>
+<li><a data-tooltip="Less than or equal to">&lt;=</a></li>
+</ul>
+<hr />
+<ul>
+<li><a data-tooltip="Conditional-AND">&amp;&amp;</a></li>
+<li><a data-tooltip="Conditional-OR">||</a></li>
+<li><a href="#ternary-operator">?:</a></li>
+</ul>
+<hr />
+<ul>
+<li><a data-tooltip="Compares an object to a specified type">instanceof</a></li>
+</ul>
+<hr />
+<ul>
+<li><a data-tooltip="Unary bitwise complement">~</a></li>
+<li><a data-tooltip="Signed left shift">&lt;&lt;</a></li>
+<li><a data-tooltip="Signed right shift">&gt;&gt;</a></li>
+<li><a data-tooltip="Unsigned right shift">&gt;&gt;&gt;</a></li>
+<li><a data-tooltip="Bitwise AND">&amp;</a></li>
+<li><a data-tooltip="Bitwise exclusive OR">^</a></li>
+<li><a data-tooltip="Bitwise inclusive OR">|</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="if-else">If else</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">20</span><span class="p">)</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w">  </span><span class="k">else</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch">Switch</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">month</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="p">;</span>
+<span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">month</span><span class="p">)</span><span class="w"> </span>
+
+<span class="c1">// Outputs: Result March</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="s">&quot;Result &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">str</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="ternary-operator">Ternary operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+
+<span class="c1">// Outputs: 20</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">max</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="java-loops">
+<h2 id="java-loops">Java Loops</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="for-loop">For Loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// Outputs: 0123456789</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="n">j</span><span class="o">--</span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// Outputs: 0|0 -1|1 -2|2</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="enhanced-for-loop">Enhanced For Loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="o">[]</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="p">:</span><span class="w"> </span><span class="n">numbers</span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// Outputs: 12345</span>
+</code></pre></div>
+
+<p>Used to loop around array's or List's</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="while-loop">While Loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// Outputs: 01234</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="do-while-loop">Do While Loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">do</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+<span class="c1">// Outputs: 01234</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue-statement">Continue Statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+<span class="w">  </span><span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">print</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="c1">// Outputs: 0124</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="break-statement">Break Statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+<span class="p">}</span>
+<span class="c1">// Outputs: 0123</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="java-collections-framework">
+<h2 id="java-collections-framework">Java Collections Framework</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="java-collections">Java Collections</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Collection</th>
+<th>Interface</th>
+<th>Ordered</th>
+<th>Sorted</th>
+<th>Thread safe</th>
+<th>Duplicate</th>
+<th>Nullable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html">ArrayList</a></td>
+<td>List</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Vector.html">Vector</a></td>
+<td>List</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/LinkedList.html">LinkedList</a></td>
+<td>List, Deque</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CopyOnWriteArrayList.html">CopyOnWriteArrayList</a></td>
+<td>List</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/HashSet.html">HashSet</a></td>
+<td>Set</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>One <code>null</code></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashSet.html">LinkedHashSet</a></td>
+<td>Set</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>One <code>null</code></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/TreeSet.html">TreeSet</a></td>
+<td>Set</td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CopyOnWriteArraySet.html">CopyOnWriteArraySet</a></td>
+<td>Set</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>One <code>null</code></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentSkipListSet.html">ConcurrentSkipListSet</a></td>
+<td>Set</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html">HashMap</a></td>
+<td>Map</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N (key)</em></td>
+<td>One <code>null</code> <em>(key)</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html">HashTable</a></td>
+<td>Map</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>Y</td>
+<td><em>N (key)</em></td>
+<td><em>N (key)</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html">LinkedHashMap</a></td>
+<td>Map</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N (key)</em></td>
+<td>One <code>null</code> <em>(key)</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/TreeMap.html">TreeMap</a></td>
+<td>Map</td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N (key)</em></td>
+<td><em>N (key)</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentHashMap.html">ConcurrentHashMap</a></td>
+<td>Map</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>Y</td>
+<td><em>N (key)</em></td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentSkipListMap.html">ConcurrentSkipListMap</a></td>
+<td>Map</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N (key)</em></td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/ArrayDeque.html">ArrayDeque</a></td>
+<td>Deque</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/PriorityQueue.html">PriorityQueue</a></td>
+<td>Queue</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedQueue.html">ConcurrentLinkedQueue</a></td>
+<td>Queue</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ConcurrentLinkedDeque.html">ConcurrentLinkedDeque</a></td>
+<td>Deque</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ArrayBlockingQueue.html">ArrayBlockingQueue</a></td>
+<td>Queue</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/LinkedBlockingDeque.html">LinkedBlockingDeque</a></td>
+<td>Deque</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/PriorityBlockingQueue.html">PriorityBlockingQueue</a></td>
+<td>Queue</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arraylist">ArrayList</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">List</span><span class="o">&lt;</span><span class="n">Integer</span><span class="o">&gt;</span><span class="w"> </span><span class="n">nums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+
+<span class="c1">// Adding</span>
+<span class="n">nums</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">nums</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="n">nums</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="mi">8</span><span class="p">);</span>
+
+<span class="c1">// Retrieving</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">));</span>
+
+<span class="c1">// Indexed for loop iteration</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">nums</span><span class="p">.</span><span class="na">size</span><span class="p">();</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+
+<span class="n">nums</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="n">nums</span><span class="p">.</span><span class="na">size</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="n">nums</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w"> </span><span class="c1">// VERY slow</span>
+
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Integer</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">nums</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hashmap">HashMap</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">Map</span><span class="o">&lt;</span><span class="n">Integer</span><span class="p">,</span><span class="w"> </span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashMap</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="n">m</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Five&quot;</span><span class="p">);</span>
+<span class="n">m</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Eight&quot;</span><span class="p">);</span>
+<span class="n">m</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Six&quot;</span><span class="p">);</span>
+<span class="n">m</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Four&quot;</span><span class="p">);</span>
+<span class="n">m</span><span class="p">.</span><span class="na">put</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Two&quot;</span><span class="p">);</span>
+
+<span class="c1">// Retrieving</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">6</span><span class="p">));</span>
+
+<span class="c1">// Lambda forEach</span>
+<span class="n">m</span><span class="p">.</span><span class="na">forEach</span><span class="p">((</span><span class="n">key</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hashset">HashSet</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">Set</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">set</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">HashSet</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">set</span><span class="p">.</span><span class="na">isEmpty</span><span class="p">())</span><span class="w"> </span>
+
+<span class="n">set</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;dog&quot;</span><span class="p">);</span>
+<span class="n">set</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;cat&quot;</span><span class="p">);</span>
+<span class="n">set</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;mouse&quot;</span><span class="p">);</span>
+<span class="n">set</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;snake&quot;</span><span class="p">);</span>
+<span class="n">set</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;bear&quot;</span><span class="p">);</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">set</span><span class="p">.</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;cat&quot;</span><span class="p">))</span><span class="w"> </span>
+
+<span class="n">set</span><span class="p">.</span><span class="na">remove</span><span class="p">(</span><span class="s">&quot;cat&quot;</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">String</span><span class="w"> </span><span class="n">element</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">set</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="arraydeque">ArrayDeque</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">Deque</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayDeque</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+
+<span class="c1">// Using add()</span>
+<span class="n">a</span><span class="p">.</span><span class="na">add</span><span class="p">(</span><span class="s">&quot;Dog&quot;</span><span class="p">);</span>
+
+<span class="c1">// Using addFirst()</span>
+<span class="n">a</span><span class="p">.</span><span class="na">addFirst</span><span class="p">(</span><span class="s">&quot;Cat&quot;</span><span class="p">);</span>
+
+<span class="c1">// Using addLast()</span>
+<span class="n">a</span><span class="p">.</span><span class="na">addLast</span><span class="p">(</span><span class="s">&quot;Horse&quot;</span><span class="p">);</span>
+
+<span class="c1">// [Cat, Dog, Horse]</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+
+<span class="c1">// Access element</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">peek</span><span class="p">());</span>
+
+<span class="c1">// Remove element</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="na">pop</span><span class="p">());</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="misc">
+<h2 id="misc">Misc</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="access-modifiers">Access Modifiers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Modifier</th>
+<th>Class</th>
+<th>Package</th>
+<th>Subclass</th>
+<th>World</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>protected</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td>no modifier</td>
+<td>Y</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+</tr>
+<tr>
+<td>private</td>
+<td>Y</td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+<td><em>N</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="regular-expressions">Regular expressions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;I am learning Java&quot;</span><span class="p">;</span>
+<span class="c1">// Removing All Whitespace</span>
+<span class="n">text</span><span class="p">.</span><span class="na">replaceAll</span><span class="p">(</span><span class="s">&quot;\\s+&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;&quot;</span><span class="p">);</span>
+
+<span class="c1">// Splitting a String</span>
+<span class="n">text</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="s">&quot;\\|&quot;</span><span class="p">);</span>
+<span class="n">text</span><span class="p">.</span><span class="na">split</span><span class="p">(</span><span class="n">Pattern</span><span class="p">.</span><span class="na">quote</span><span class="p">(</span><span class="s">&quot;|&quot;</span><span class="p">));</span>
+</code></pre></div>
+
+<p>See: <a href="regex.html#regex-in-java">Regex in java</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="comment">Comment</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// I am a single line comment!</span>
+
+<span class="cm">/*</span>
+<span class="cm">And I am a</span>
+<span class="cm">multi-line comment!</span>
+<span class="cm">*/</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * This</span>
+<span class="cm"> * is</span>
+<span class="cm"> * documentation</span>
+<span class="cm"> * comment</span>
+<span class="cm"> */</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="keywords">Keywords</h3>
+<div class="section">
+<ul>
+<li><code>abstract</code></li>
+<li><code>continue</code></li>
+<li><code>for</code></li>
+<li><code>new</code></li>
+<li><code>switch</code></li>
+<li><code>assert</code></li>
+<li><code>default</code></li>
+<li><code>goto</code></li>
+<li><code>package</code></li>
+<li><code>synchronized</code></li>
+<li><code>boolean</code></li>
+<li><code>do</code></li>
+<li><code>if</code></li>
+<li><code>private</code></li>
+<li><code>this</code></li>
+<li><code>break</code></li>
+<li><code>double</code></li>
+<li><code>implements</code></li>
+<li><code>protected</code></li>
+<li><code>throw</code></li>
+<li><code>byte</code></li>
+<li><code>else</code></li>
+<li><code>import</code></li>
+<li><code>public</code></li>
+<li><code>throws</code></li>
+<li><code>case</code></li>
+<li><code>enum</code></li>
+<li><code>instanceof</code></li>
+<li><code>return</code></li>
+<li><code>transient</code></li>
+<li><code>catch</code></li>
+<li><code>extends</code></li>
+<li><code>int</code></li>
+<li><code>short</code></li>
+<li><code>try</code></li>
+<li><code>char</code></li>
+<li><code>final</code></li>
+<li><code>interface</code></li>
+<li><code>static</code></li>
+<li><code>void</code></li>
+<li><code>class</code></li>
+<li><code>finally</code></li>
+<li><code>long</code></li>
+<li><code>strictfp</code></li>
+<li><code>volatile</code></li>
+<li><code>const</code></li>
+<li><code>float</code></li>
+<li><code>native</code></li>
+<li><code>super</code></li>
+<li><code>while</code></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="math-methods">Math methods</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Math.max(a,b)</code></td>
+<td style="text-align: left;">Maximum of a and b</td>
+</tr>
+<tr>
+<td><code>Math.min(a,b)</code></td>
+<td style="text-align: left;">Minimum of a and b</td>
+</tr>
+<tr>
+<td><code>Math.abs(a)</code></td>
+<td style="text-align: left;">Absolute value a</td>
+</tr>
+<tr>
+<td><code>Math.sqrt(a)</code></td>
+<td style="text-align: left;">Square-root of a</td>
+</tr>
+<tr>
+<td><code>Math.pow(a,b)</code></td>
+<td style="text-align: left;">Power of b</td>
+</tr>
+<tr>
+<td><code>Math.round(a)</code></td>
+<td style="text-align: left;">Closest integer</td>
+</tr>
+<tr>
+<td><code>Math.sin(ang)</code></td>
+<td style="text-align: left;">Sine of ang</td>
+</tr>
+<tr>
+<td><code>Math.cos(ang)</code></td>
+<td style="text-align: left;">Cosine of ang</td>
+</tr>
+<tr>
+<td><code>Math.tan(ang)</code></td>
+<td style="text-align: left;">Tangent of ang</td>
+</tr>
+<tr>
+<td><code>Math.asin(ang)</code></td>
+<td style="text-align: left;">Inverse sine of ang</td>
+</tr>
+<tr>
+<td><code>Math.log(a)</code></td>
+<td style="text-align: left;">Natural logarithm of a</td>
+</tr>
+<tr>
+<td><code>Math.toDegrees(rad)</code></td>
+<td style="text-align: left;">Angle rad in degrees</td>
+</tr>
+<tr>
+<td><code>Math.toRadians(deg)</code></td>
+<td style="text-align: left;">Angle deg in radians</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="trycatchfinally">Try/Catch/Finally</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">try</span><span class="w">  </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="n">Exception</span><span class="w"> </span><span class="n">e</span><span class="p">)</span><span class="w">  </span><span class="k">finally</span><span class="w"> </span>
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

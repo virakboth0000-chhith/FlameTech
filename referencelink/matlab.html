@@ -1,0 +1,4345 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>MATLAB Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This quick reference cheat sheet provides an example introduction to using the [MATLAB](https://mathworks.cn/) scientific computing language to get started quic">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#692316}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(105,35,22,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>MATLAB</span>
+  </div>
+  <div class="post-icon">MA</div>
+  <h1>MATLAB <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This quick reference cheat sheet provides an example introduction to using the <a href="https://mathworks.cn/">MATLAB</a> scientific computing language to get started quickly</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<p>MATLAB is short for <code>matrix laboratory</code></p>
+<hr />
+<ul>
+<li><a href="https://www.mathworks.com">MATLAB official website</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="matrix-and-array-operations">Matrix and array operations</h3>
+<div class="section">
+<p>MATLAB allows you to use a single arithmetic operator or function to manipulate all values in a matrix</p>
+<div class="codehilite"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+
+<p>MATLAB will execute the above statement and return the following results:</p>
+<div class="codehilite"><pre><span></span><code>ans = 3×3
+    11    13    15
+    12    14    16
+    17    18    20
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">sin</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div>
+
+<p>MATLAB will execute the above statement and return the following results:</p>
+<div class="codehilite"><pre><span></span><code>ans = 3×3
+    0.8415    0.1411   -0.9589
+    0.9093   -0.7568   -0.2794
+    0.6570    0.9894   -0.5440
+</code></pre></div>
+
+<p>To transpose a matrix, use single quotes (<code>'</code>)</p>
+<div class="codehilite"><pre><span></span><code><span class="n">a</span><span class="o">&#39;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>ans = 3×3
+     1     2     7
+     3     4     8
+     5     6    10
+</code></pre></div>
+
+<p>Perform standard matrix multiplication using the <code>*</code> operator, which computes the inner product between rows and columns</p>
+<div class="codehilite"><pre><span></span><code><span class="n">p</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">a</span><span class="o">*</span><span class="nb">inv</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>p = 3×3
+    1.0000         0         0
+         0    1.0000         0
+         0         0    1.0000
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="concatenation">concatenation</h3>
+<div class="section">
+<p>Concatenation is the process of joining arrays to form larger arrays. In fact, the first array is formed by
+concatenating its elements. Pairs of square brackets <code>[]</code> are concatenation operators.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">a</span><span class="p">]</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>A = 3×6
+
+     1     3     5     1     3     5
+     2     4     6     2     4     6
+     7     8    10     7     8    10
+</code></pre></div>
+
+<p>Concatenating arrays next to each other using commas is called horizontal concatenation. Each array must have the same
+number of rows. Likewise, semicolons can be used for vertical concatenation if the arrays have the same number of
+columns.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">A</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="n">a</span><span class="p">;</span><span class="w"> </span><span class="n">a</span><span class="p">]</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>A = 6×3
+
+     1     3     5
+     2     4     6
+     7     8    10
+     1     3     5
+     2     4     6
+     7     8    10
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="matrices-and-arrays">Matrices and arrays</h3>
+<div class="section">
+<p>To create an array with four elements per row, separate elements with commas (<code>,</code>) or spaces</p>
+<div class="codehilite"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">4</span><span class="p">]</span>
+</code></pre></div>
+
+<p>MATLAB will execute the above statement and return the following results:</p>
+<div class="codehilite"><pre><span></span><code>a = 1×4
+     1     2     3     4
+</code></pre></div>
+
+<h4 id="create-a-matrix-with-multiple-rows">Create a matrix with multiple rows</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w"> </span><span class="n">2</span><span class="w"> </span><span class="s">4</span><span class="w"> </span><span class="s">6</span><span class="p">;</span><span class="w"> </span><span class="n">7</span><span class="w"> </span><span class="s">8</span><span class="w"> </span><span class="s">10]</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>a = 3×3
+     1     3     5
+     2     4     6
+     7     8    10
+</code></pre></div>
+
+<h4 id="51-column-vector-of-zeros">5×1 column vector of zeros</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">z</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>z = 5×1
+     0
+     0
+     0
+     0
+     0
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="complex-number">Complex number</h3>
+<div class="section">
+<p>A complex number has a real part and an imaginary part, and the imaginary unit is the square root of -1.</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">sqrt</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>ans = 0.0000 + 1.0000i
+</code></pre></div>
+
+<p>To represent the imaginary part of a complex number, use i or j.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">c</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">3</span><span class="o">+</span>4<span class="nb">i</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">+</span>3<span class="nb">j</span><span class="p">;</span><span class="w"> </span><span class="o">-</span><span class="nb">i</span><span class="p">,</span><span class="w"> </span>10<span class="nb">j</span><span class="p">]</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>c = 2×2 complex
+
+   3.0000 + 4.0000i   4.0000 + 3.0000i
+   0.0000 - 1.0000i   0.0000 +10.0000i
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="basic-knowledge">
+<h2 id="basic-knowledge">Basic knowledge</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="input-the-command">Input the command</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ans.html">ans</a></td>
+<td style="text-align: left;">Most recently calculated answer</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/clc.html">clc</a></td>
+<td style="text-align: left;">Clear the command line window</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/diary.html">diary</a></td>
+<td style="text-align: left;">Record the text of the command line window into the log file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/format.html">format</a></td>
+<td style="text-align: left;">Set the output display format</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/home.html">home</a></td>
+<td style="text-align: left;">Send cursor reset</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/iskeyword.html">iskeyword</a></td>
+<td style="text-align: left;">Determine if the input is a <span class="trademark">MATLAB</span> keyword</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/more.html">more</a></td>
+<td style="text-align: left;">Control paging output in the command line window</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/commandwindow.html">commandwindow</a></td>
+<td style="text-align: left;">Select command window</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/commandhistory.html">commandhistory</a></td>
+<td style="text-align: left;">Open command history window</td>
+</tr>
+</tbody>
+</table>
+<h4 id="objects">Objects</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ans.html">DisplayFormatOptions</a></td>
+<td style="text-align: left;">Output display format in the command line window</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="matrices-and-arrays_1">Matrices and Arrays</h3>
+<div class="section">
+<p>Create and combine arrays</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/zeros.html">zeros</a></td>
+<td style="text-align: left;">Create an array of all zeros</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ones.html">ones</a></td>
+<td style="text-align: left;">Create an array of all 1s</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/rand.html">rand</a></td>
+<td style="text-align: left;">Uniformly distributed random numbers</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/true.html">true</a></td>
+<td style="text-align: left;">Logical value 1 (true)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/false.html">false</a></td>
+<td style="text-align: left;">logical 0 (false)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/eye.html">eye</a></td>
+<td style="text-align: left;">identity matrix</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/diag.html">diag</a></td>
+<td style="text-align: left;">Create a diagonal matrix or get the diagonal elements of a matrix</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/blkdiag.html">blkdiag</a></td>
+<td style="text-align: left;">block diagonal matrix</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.cat.html">cat</a></td>
+<td style="text-align: left;">Concatenate arrays.</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/horzcat.html">horzcat</a></td>
+<td style="text-align: left;">Concatenate arrays horizontally</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/vertcat.html">vertcat</a></td>
+<td style="text-align: left;">Concatenate arrays vertically</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/repelem.html">repelem</a></td>
+<td style="text-align: left;">Repeat array element copy</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/repmat.html">repmat</a></td>
+<td style="text-align: left;">Repeat array copy</td>
+</tr>
+</tbody>
+</table>
+<p>Create grid</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/linspace.html">linspace</a></td>
+<td style="text-align: left;">Generate linearly spaced vectors</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/logspace.html">logspace</a></td>
+<td style="text-align: left;">Generate logarithmic spaced vectors</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/freqspace.html">freqspace</a></td>
+<td style="text-align: left;">frequency spacing of frequency response</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/meshgrid.html">meshgrid</a></td>
+<td style="text-align: left;">2D and 3D grids</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ndgrid.html">ndgrid</a></td>
+<td style="text-align: left;">Rectangular grid in N-dimensional space</td>
+</tr>
+</tbody>
+</table>
+<p>Determine size, shape and order</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/length.html">length</a></td>
+<td style="text-align: left;">The length of the largest array dimension</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/size.html">size</a></td>
+<td style="text-align: left;">array size</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.ndims.html">ndims</a></td>
+<td style="text-align: left;">Number of dimensions of the array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.numel.html">numel</a></td>
+<td style="text-align: left;">the number of array elements</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isscalar.html">isscalar</a></td>
+<td style="text-align: left;">Determine whether the input is a scalar</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/issorted.html">issorted</a></td>
+<td style="text-align: left;">Determine if the array is sorted</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/issortedrows.html">issortedrows</a></td>
+<td style="text-align: left;">Determine whether the rows of a matrix or table are sorted</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isvector.html">isvector</a></td>
+<td style="text-align: left;">Determine whether the input is a vector</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ismatrix.html">ismatrix</a></td>
+<td style="text-align: left;">Determine whether the input is a matrix</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isrow.html">isrow</a></td>
+<td style="text-align: left;">Determine whether the input is a row vector</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/iscolumn.html">iscolumn</a></td>
+<td style="text-align: left;">Determine whether the input is a column vector</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isempty.html">isempty</a></td>
+<td style="text-align: left;">Determine whether the array is empty</td>
+</tr>
+</tbody>
+</table>
+<p>Refactor and rearrange</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sort.html">sort</a></td>
+<td style="text-align: left;">Sort array</td>
+</tr>
+<tr>
+<td>elements <a href="https://www.mathworks.com/help/matlab/ref/double.sortrows.html">sortrows</a></td>
+<td style="text-align: left;">Sort matrix rows or table rows</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/flip.html">flip</a></td>
+<td style="text-align: left;">Flip the order of elements</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fliplr.html">fliplr</a></td>
+<td style="text-align: left;">Flip the array from left to right</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/flipud.html">flipud</a></td>
+<td style="text-align: left;">Flip the array from top to bottom</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/rot90.html">rot90</a></td>
+<td style="text-align: left;">Rotate an array by 90 degrees</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/transpose.html">transpose</a></td>
+<td style="text-align: left;">Transpose a vector or matrix</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ctranspose.html">ctranspose</a></td>
+<td style="text-align: left;">complex conjugate transpose</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/permute.html">permute</a></td>
+<td style="text-align: left;">permute array dimension</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ipermute.html">ipermute</a></td>
+<td style="text-align: left;">Inverse permutation of array dimensions.</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/circshift.html">circshift</a></td>
+<td style="text-align: left;">Circular shift array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/shiftdim.html">shiftdim</a></td>
+<td style="text-align: left;">shift array dimension</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/reshape.html">reshape</a></td>
+<td style="text-align: left;">Reshape array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/squeeze.html">squeeze</a></td>
+<td style="text-align: left;">Remove dimensions of length 1</td>
+</tr>
+</tbody>
+</table>
+<p>index</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/colon.html">colon</a></td>
+<td style="text-align: left;">vector creation, array subscript and <code class="literal">for</code> loop iteration</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/end.html">end</a></td>
+<td style="text-align: left;">Terminate a code block or indicate the maximum array index</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ind2sub.html">ind2sub</a></td>
+<td style="text-align: left;">Convert linear index to subscript</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sub2ind.html">sub2ind</a></td>
+<td style="text-align: left;">Convert subscript to linear index</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="value-type">Value type</h3>
+<div class="section">
+<p>Create numeric variables</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.html">double</a></td>
+<td style="text-align: left;">double precision array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/single.html">single</a></td>
+<td style="text-align: left;">single precision array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/int8.html">int8</a></td>
+<td style="text-align: left;">8-bit signed integer array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/int16.html">int16</a></td>
+<td style="text-align: left;">16-bit signed integer array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/int32.html">int32</a></td>
+<td style="text-align: left;">32-bit signed integer array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/int64.html">int64</a></td>
+<td style="text-align: left;">64-bit signed integer array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/uint8.html">uint8</a></td>
+<td style="text-align: left;">Array of 8-bit unsigned integers</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/uint16.html">uint16</a></td>
+<td style="text-align: left;">16-bit unsigned integer array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/uint32.html">uint32</a></td>
+<td style="text-align: left;">32-bit unsigned integer array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/uint64.html">uint64</a></td>
+<td style="text-align: left;">64-bit unsigned integer array</td>
+</tr>
+</tbody>
+</table>
+<p>Convert between numeric types</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/cast.html">cast</a></td>
+<td style="text-align: left;">Convert variables to different data types</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/typecast.html">typecast</a></td>
+<td style="text-align: left;">Convert data types without changing the underlying data</td>
+</tr>
+</tbody>
+</table>
+<p>Query type and value</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/allfinite.html&quot;">allfinite</a></td>
+<td style="text-align: left;">Determine if all array elements are finite</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/anynan.html&quot;">anynan</a></td>
+<td style="text-align: left;">Determine if any array element is NaN</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isinteger.html">isinteger</a></td>
+<td style="text-align: left;">Determine whether the input is an integer array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isfloat.html">isfloat</a></td>
+<td style="text-align: left;">Determine whether the input is a floating-point array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isnumeric.html">isnumeric</a></td>
+<td style="text-align: left;">Determine whether the input is a numeric array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isreal.html">isreal</a></td>
+<td style="text-align: left;">Determine whether the array uses complex storage</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isfinite.html">isfinite</a></td>
+<td style="text-align: left;">Determine which array elements are finite</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isinf.html">isinf</a></td>
+<td style="text-align: left;">Determine which array elements are infinite</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isnan.html">isnan</a></td>
+<td style="text-align: left;">Determine which array elements are NaN</td>
+</tr>
+</tbody>
+</table>
+<p>Value range</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/eps.html">eps</a></td>
+<td style="text-align: left;">Floating point relative precision</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/flintmax.html">flintmax</a></td>
+<td style="text-align: left;">The largest consecutive integer in floating point format</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/inf.html">Inf</a></td>
+<td style="text-align: left;">Create an array with all values <code>Inf</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/intmax.html">intmax</a></td>
+<td style="text-align: left;">The maximum value of a specific integer type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/intmin.html">intmin</a></td>
+<td style="text-align: left;">The minimum value of a specific integer type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/nan.html">NaN</a></td>
+<td style="text-align: left;">Create an array where all values are <code class="literal">NaN</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/realmax.html">realmax</a></td>
+<td style="text-align: left;">The largest positive floating point number</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/realmin.html">realmin</a></td>
+<td style="text-align: left;">Minimum standard floating point number</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="loops-and-conditional-statements">Loops and conditional statements</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/if.html">if, elseif, else</a></td>
+<td style="text-align: left;">Execute statement when condition is true</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/switch.html">switch, case, otherwise</a></td>
+<td style="text-align: left;">Execute one of multiple sets of statements</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/for.html">for</a></td>
+<td style="text-align: left;">A <code>for</code> loop used to repeat a specified number of times</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/while.html">while</a></td>
+<td style="text-align: left;">A <code>while</code> loop that executes repeatedly while a condition is true</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/try.html">try, catch</a></td>
+<td style="text-align: left;">Execute the statement and catch the resulting error</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/break.html">break</a></td>
+<td style="text-align: left;">Terminate execution of a for or while loop</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/return.html">return</a></td>
+<td style="text-align: left;">Return control to the calling script or function</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/continue.html">continue</a></td>
+<td style="text-align: left;">Passes control to the next iteration of a <code>for</code> or <code>while</code> loop</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/pause.html">pause</a></td>
+<td style="text-align: left;">Temporarily suspend the execution of <code>MATLAB</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/parfor.html">parfor</a></td>
+<td style="text-align: left;">Parallel for loop</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/end.html">end</a></td>
+<td style="text-align: left;">Terminate a code block or indicate the maximum array index</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="array-of-strings">Array of strings</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/string.html">string</a></td>
+<td style="text-align: left;">string array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strings.html">strings</a></td>
+<td style="text-align: left;">Create a string array that does not contain characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/join.html">join</a></td>
+<td style="text-align: left;">Merge strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/plus.html">plus</a></td>
+<td style="text-align: left;">Add numbers, append strings</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="character-array">Character array</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/char.html">char</a></td>
+<td style="text-align: left;">character array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/cellstr.html">cellstr</a></td>
+<td style="text-align: left;">Convert to a cell array of character vectors</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/blanks.html">blanks</a></td>
+<td style="text-align: left;">Create a blank character array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/newline.html">newline</a></td>
+<td style="text-align: left;">Create newline</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="character-or-string-array">Character or string array</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/compose.html">compose</a></td>
+<td style="text-align: left;">Format data into multiple strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sprintf.html">sprintf</a></td>
+<td style="text-align: left;">Format data as string or character vector</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strcat.html">strcat</a></td>
+<td style="text-align: left;">Concatenate strings horizontally</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/append.html">append</a></td>
+<td style="text-align: left;">Merge strings</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="char-or-string-convert-input-arguments">Char or string -convert input arguments</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/convertcharstostrings.html">convertCharsToStrings</a></td>
+<td style="text-align: left;">convert character array to string array, other arrays remain unchanged</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/convertstringstochars.html">convertStringsToChars</a></td>
+<td style="text-align: left;">Convert string array to character array, other arrays remain unchanged</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/convertcontainedstringstochars.html">convertContainedStringsToChars</a></td>
+<td style="text-align: left;">Convert an array of strings at any level of a cell array or structure</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="char-or-string-convert-between-numeric-and-string">CHAR or STRING -convert between numeric and string</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.html">double</a></td>
+<td style="text-align: left;">double precision array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/string.html">string</a></td>
+<td style="text-align: left;">string array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/str2double.html">str2double</a></td>
+<td style="text-align: left;">Convert a string to a double value</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/num2str.html">num2str</a></td>
+<td style="text-align: left;">Convert numbers to character arrays</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="character-or-string-determine-type-and-attributes">Character or string -determine type and attributes</h3>
+<div class="section">
+<p>Type of data</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ischar.html">ischar</a></td>
+<td style="text-align: left;">Determine whether the input is a character array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/iscellstr.html">iscellstr</a></td>
+<td style="text-align: left;">Determines if input is a cell array of character vectors</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isstring.html">isstring</a></td>
+<td style="text-align: left;">Determine whether the input is an array of strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isstringscalar.html">isStringScalar</a></td>
+<td style="text-align: left;">Determine whether the input is a string array containing one element</td>
+</tr>
+</tbody>
+</table>
+<p>Text attribute</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strlength.html">strlength</a></td>
+<td style="text-align: left;">string length</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isstrprop.html">isstrprop</a></td>
+<td style="text-align: left;">Determine which characters in the input string belong to the specified category</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isletter.html">isletter</a></td>
+<td style="text-align: left;">Determine which characters are letters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isspace.html">isspace</a></td>
+<td style="text-align: left;">Determine which characters are whitespace characters</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="character-or-string-find-and-replace">character or string -find and replace</h3>
+<div class="section">
+<p>Look up</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/contains.html">contains</a></td>
+<td style="text-align: left;">Determine if there is a pattern in the string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matches.html">matches</a></td>
+<td style="text-align: left;">Determine if a pattern matches a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/count.html">count</a></td>
+<td style="text-align: left;">Count the number of occurrences of a pattern in a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/endswith.html">endsWith</a></td>
+<td style="text-align: left;">Determine if a string ends with a pattern</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/startswith.html">startsWith</a></td>
+<td style="text-align: left;">Determine whether a string starts with a pattern</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strfind.html">strfind</a></td>
+<td style="text-align: left;">Find a string in other strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sscanf.html">sscanf</a></td>
+<td style="text-align: left;">Read formatted data from a string</td>
+</tr>
+</tbody>
+</table>
+<p>replace</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/replace.html">replace</a></td>
+<td style="text-align: left;">Find and replace one or more substrings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/replacebetween.html">replaceBetween</a></td>
+<td style="text-align: left;">Replace the substring between the start and end</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strrep.html">strrep</a></td>
+<td style="text-align: left;">Find and replace substring</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-matching-pattern-build-pattern">String matching pattern -build pattern</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/pattern.html">pattern</a></td>
+<td style="text-align: left;">pattern for searching and matching text</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-match-pattern-character-match-pattern">String match pattern -character match pattern</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/alphanumericspattern.html">alphanumericsPattern</a></td>
+<td style="text-align: left;">match alphanumeric characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/characterlistpattern.html">characterListPattern</a></td>
+<td style="text-align: left;">Match characters in the list</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/digitspattern.html">digitsPattern</a></td>
+<td style="text-align: left;">Match digit characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/letterspattern.html">lettersPattern</a></td>
+<td style="text-align: left;">match letter pattern</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/whitespacepattern.html">whitespacePattern</a></td>
+<td style="text-align: left;">match whitespace characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/wildcardpattern.html">wildcardPattern</a></td>
+<td style="text-align: left;">Match as few characters of any type as possible</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-matching-pattern-pattern-search-rules">String matching pattern -pattern search rules</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/optionalpattern.html">optionalPattern</a></td>
+<td style="text-align: left;">Make pattern matching optional</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/possessivepattern.html">possessivePattern</a></td>
+<td style="text-align: left;">Match pattern without backtracking</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/casesensitivepattern.html">caseSensitivePattern</a></td>
+<td style="text-align: left;">Match patterns in a case-sensitive manner</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/caseinsensitivepattern.html">caseInsensitivePattern</a></td>
+<td style="text-align: left;">Match patterns in a case-insensitive manner</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/asfewofpattern.html">asFewOfPattern</a></td>
+<td style="text-align: left;">The number of pattern matches should be as few as possible</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/asmanyofpattern.html">asManyOfPattern</a></td>
+<td style="text-align: left;">Pattern matching as many times as possible</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-matching-pattern-boundary-pattern">String matching pattern -Boundary pattern</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/alphanumericboundary.html">alphanumericBoundary</a></td>
+<td style="text-align: left;">Matches the boundary between alphanumeric and non-alphanumeric characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/digitboundary.html">digitBoundary</a></td>
+<td style="text-align: left;">Matches the boundary between digit characters and non-digit characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/letterboundary.html">letterBoundary</a></td>
+<td style="text-align: left;">Matches the boundary between alphabetic and non-alphabetic characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/whitespaceboundary.html">whitespaceBoundary</a></td>
+<td style="text-align: left;">Matches the boundary between whitespace and non-whitespace characters</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/lineboundary.html">lineBoundary</a></td>
+<td style="text-align: left;">match the beginning or end of a line</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/textboundary.html">textBoundary</a></td>
+<td style="text-align: left;">match the beginning or end of the text</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/lookaheadboundary.html">lookAheadBoundary</a></td>
+<td style="text-align: left;">match the boundary before the specified pattern</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/lookbehindboundary.html">lookBehindBoundary</a></td>
+<td style="text-align: left;">Boundary after matching the specified pattern</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-matching-pattern-custom-pattern-display">String matching pattern -custom pattern display</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/maskedpattern.html">maskedPattern</a></td>
+<td style="text-align: left;">pattern with specified display name</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/namedpattern.html">namedPattern</a></td>
+<td style="text-align: left;">Specify a named pattern</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-matching-pattern-regular-expression">String matching pattern -regular expression</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/regexp.html">regexp</a></td>
+<td style="text-align: left;">match regular expression (case sensitive)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/regexpi.html">regexpi</a></td>
+<td style="text-align: left;">Match regular expressions (case insensitive)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/regexprep.html">regexprep</a></td>
+<td style="text-align: left;">Replace text using regular expressions</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/regexptranslate.html">regexptranslate</a></td>
+<td style="text-align: left;">Convert text to regular expressions</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/regexppattern.html">regexpPattern</a></td>
+<td style="text-align: left;">Match the pattern of the specified regular expression</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-matching-pattern-join-and-split">String matching pattern -join and split</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/join.html">join</a></td>
+<td style="text-align: left;">Merge strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/plus.html">plus</a></td>
+<td style="text-align: left;">Add numbers, append strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/split.html">split</a></td>
+<td style="text-align: left;">Split string at delimiter</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/splitlines.html">splitlines</a></td>
+<td style="text-align: left;">Split a string at newlines</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strjoin.html">strjoin</a></td>
+<td style="text-align: left;">join the strings in the array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strsplit.html">strsplit</a></td>
+<td style="text-align: left;">Splits a string or character vector at the specified delimiter</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strtok.html">strtok</a></td>
+<td style="text-align: left;">Selected string part</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extract.html">extract</a></td>
+<td style="text-align: left;">Extract a substring from a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extractafter.html">extractAfter</a></td>
+<td style="text-align: left;">Extract the substring after the specified position</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extractbefore.html">extractBefore</a></td>
+<td style="text-align: left;">Extract the substring before the specified position</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extractbetween.html">extractBetween</a></td>
+<td style="text-align: left;">Extract the substring between the starting point and the ending point</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-editing">String editing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/erase.html">erase</a></td>
+<td style="text-align: left;">Delete a substring in a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/erasebetween.html">eraseBetween</a></td>
+<td style="text-align: left;">Delete the substring between the start and end</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extract.html">extract</a></td>
+<td style="text-align: left;">Extract a substring from a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extractafter.html">extractAfter</a></td>
+<td style="text-align: left;">Extract the substring after the specified position</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extractbefore.html">extractBefore</a></td>
+<td style="text-align: left;">Extract the substring before the specified position</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/extractbetween.html">extractBetween</a></td>
+<td style="text-align: left;">Extract the substring between the starting point and the ending point</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/insertafter.html">insertAfter</a></td>
+<td style="text-align: left;">Insert a string after the specified substring</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/insertbefore.html">insertBefore</a></td>
+<td style="text-align: left;">Insert a string before the specified substring</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/pad.html">pad</a></td>
+<td style="text-align: left;">Add leading or trailing characters to a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strip.html">strip</a></td>
+<td style="text-align: left;">Remove leading and trailing characters in a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/lower.html">lower</a></td>
+<td style="text-align: left;">convert string to lowercase</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/upper.html">upper</a></td>
+<td style="text-align: left;">convert string to uppercase</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/reverse.html">reverse</a></td>
+<td style="text-align: left;">Reverse the order of characters in a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/deblank.html">deblank</a></td>
+<td style="text-align: left;">Remove trailing blanks at the end of a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strtrim.html">strtrim</a></td>
+<td style="text-align: left;">Remove leading and trailing blanks from a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strjust.html">strjust</a></td>
+<td style="text-align: left;">align string</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-comparison">String comparison</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matches.html">matches</a></td>
+<td style="text-align: left;">Determine if a pattern matches a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strcmp.html">strcmp</a></td>
+<td style="text-align: left;">Compare strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strcmpi.html">strcmpi</a></td>
+<td style="text-align: left;">Compare strings (case insensitive)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strncmp.html">strncmp</a></td>
+<td style="text-align: left;">compares the first <code class="literal">n</code> characters of a string (case sensitive)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/strncmpi.html">strncmpi</a></td>
+<td style="text-align: left;">Compare the first <code class="literal">n</code> characters of a string (case insensitive )</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="basic-arithmetic">Basic Arithmetic</h3>
+<div class="section">
+<h4 id="addition">Addition</h4>
+<ul>
+<li><a href="https://www.mathworks.com/help/matlab/ref/plus.html">+</a> Add numbers, append strings</li>
+<li><a href="https://www.mathworks.com/help/matlab/ref/sum.html">sum</a> sum of array elements</li>
+<li><a href="https://www.mathworks.com/help/matlab/ref/cumsum.html">cumsum</a> cumulative sum</li>
+<li><a href="https://www.mathworks.com/help/matlab/ref/movsum.html">movsum</a> moving sum</li>
+</ul>
+<h4 id="subtraction">Subtraction</h4>
+<ul>
+<li><a href="https://www.mathworks.com/help/matlab/ref/minus.html">-</a> subtraction</li>
+<li><a href="https://www.mathworks.com/help/matlab/ref/diff.html">diff</a> difference and approximate derivative</li>
+</ul>
+<h4 id="multiplication">Multiplication</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/times.html">.*</a></td>
+<td style="text-align: left;">Multiplication</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/mtimes.html">*</a></td>
+<td style="text-align: left;">Matrix multiplication</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/prod.html">prod</a></td>
+<td style="text-align: left;">product of array elements</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/cumprod.html">cumprod</a></td>
+<td style="text-align: left;">cumulative product</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/pagemtimes.html">pagemtimes</a></td>
+<td style="text-align: left;">Matrix multiplication by page</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tensorprod.html">tensorprod</a></td>
+<td style="text-align: left;">Tensor products between two tensors</td>
+</tr>
+</tbody>
+</table>
+<h4 id="division">Division</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/rdivide.html">./</a></td>
+<td style="text-align: left;">Array right division</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ldivide.html">.\</a></td>
+<td style="text-align: left;">Array left division</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/mrdivide.html">/</a></td>
+<td style="text-align: left;">Solve the system of linear equations xA = B about x</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/mldivide.html">\</a></td>
+<td style="text-align: left;">Solve the system of linear equations Ax = B with respect to x</td>
+</tr>
+</tbody>
+</table>
+<h4 id="power">Power</h4>
+<ul>
+<li><a href="https://www.mathworks.com/help/matlab/ref/power.html">.^</a> Element-wise exponentiation</li>
+<li><a href="https://www.mathworks.com/help/matlab/ref/mpower.html">^</a> matrix power</li>
+</ul>
+<h4 id="transpose">Transpose</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/transpose.html">.'</a></td>
+<td style="text-align: left;">Transpose a vector or matrix</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ctranspose.html">'</a></td>
+<td style="text-align: left;">complex conjugate transpose</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/pagetranspose.html">pagetranspose</a></td>
+<td style="text-align: left;">Transpose by page</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/pagectranspose.html">pagectranspose</a></td>
+<td style="text-align: left;">Complex conjugate transpose by page</td>
+</tr>
+</tbody>
+</table>
+<h4 id="array-notation">Array notation</h4>
+<ul>
+<li><a href="https://www.mathworks.com/help/matlab/ref/uminus.html">uminus</a> unary subtraction</li>
+<li><a href="https://www.mathworks.com/help/matlab/ref/uplus.html">uplus</a> unary addition</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="modular-division-and-rounding">Modular division and rounding</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/mod.html">mod</a></td>
+<td style="text-align: left;">Remainder after division (modulo operation)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/rem.html">rem</a></td>
+<td style="text-align: left;">Remainder after division</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/idivide.html">idivide</a></td>
+<td style="text-align: left;">Divisibility with rounding options</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ceil.html">ceil</a></td>
+<td style="text-align: left;">round towards positive infinity</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fix.html">fix</a></td>
+<td style="text-align: left;">round towards zero</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/floor.html">floor</a></td>
+<td style="text-align: left;">round towards negative infinity</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/round.html">round</a></td>
+<td style="text-align: left;">round to the nearest decimal or integer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="custom-binary-functions">Custom Binary Functions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bsxfun.html">bsxfun</a></td>
+<td style="text-align: left;">Apply element-wise operations on two arrays (with implicit expansion enabled)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="relational-operations">Relational operations</h3>
+<div class="section">
+<p>value comparison</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/eq.html">==</a></td>
+<td style="text-align: left;">Determine equality</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ge.html">&gt;=</a></td>
+<td style="text-align: left;">Determine greater than or equal to</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/gt.html">&gt;</a></td>
+<td style="text-align: left;">Determine greater than</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/le.html">&lt;=</a></td>
+<td style="text-align: left;">Determine less than or equal to</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/lt.html">&lt;</a></td>
+<td style="text-align: left;">Determine less than</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ne.html">~=</a></td>
+<td style="text-align: left;">Determine Inequality</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isequal.html">isequal</a></td>
+<td style="text-align: left;">Determine array equality</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/isequaln.html">isequaln</a></td>
+<td style="text-align: left;">Test array equality, treat <code>NaN</code> values as equal</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical-boolean-operations">Logical (Boolean) operations</h3>
+<div class="section">
+<p>true or false condition</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/logicaloperatorsshortcircuit.html">Short-circuit &amp;&amp;, ||</a></td>
+<td style="text-align: left;">Logical operators with short-circuit function</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/and.html">&amp;</a></td>
+<td style="text-align: left;">Computational logic <code>AND</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/not.html">~</a></td>
+<td style="text-align: left;">Computational logic <code>NOT</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/or.html">|</a></td>
+<td style="text-align: left;">Calculation logic <code>OR</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/xor.html">xor</a></td>
+<td style="text-align: left;">Compute logical exclusive <code>OR</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/all.html">all</a></td>
+<td style="text-align: left;">Determine whether all array elements are non-zero or <code>true</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/any.html">any</a></td>
+<td style="text-align: left;">Determine if any array elements are non-zero</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/false.html">false</a></td>
+<td style="text-align: left;">logical <code>0</code> (false)</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/find.html">find</a></td>
+<td style="text-align: left;">Find the index and value of non-zero elements</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/islogical.html">islogical</a></td>
+<td style="text-align: left;">Determine whether the input is a logical array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/logical.html">logical</a></td>
+<td style="text-align: left;">Convert numeric values to logical values</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/true.html">true</a></td>
+<td style="text-align: left;">Logical value <code>1</code> (true)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="set-operation">Set operation</h3>
+<div class="section">
+<p>union, intersection, set relationship</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.intersect.html">intersect</a></td>
+<td style="text-align: left;">Set the intersection of two arrays</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.ismember.html">ismember</a></td>
+<td style="text-align: left;">Determine whether an array element is a set array member</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.setdiff.html">setdiff</a></td>
+<td style="text-align: left;">Set the difference between two arrays</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.setxor.html">setxor</a></td>
+<td style="text-align: left;">Set XOR of two arrays</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.union.html">union</a></td>
+<td style="text-align: left;">Set the union of two arrays</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/double.unique.html">unique</a></td>
+<td style="text-align: left;">Unique value in an array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ismembertol.html">ismembertol</a></td>
+<td style="text-align: left;">set membership within tolerance</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/uniquetol.html">uniquetol</a></td>
+<td style="text-align: left;">unique values within tolerance</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/table.join.html">join</a></td>
+<td style="text-align: left;">Merge two tables or timetables row by row using a key variable</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/innerjoin.html">innerjoin</a></td>
+<td style="text-align: left;">Inner join between two tables or timetables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/outerjoin.html">outerjoin</a></td>
+<td style="text-align: left;">Outer join between two tables or timetables</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bitwise-operations">Bitwise operations</h3>
+<div class="section">
+<p>set, offset, or compare specific bitfields</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bitand.html">bitand</a></td>
+<td style="text-align: left;">Bitwise <code>AND</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bitor.html">bitor</a></td>
+<td style="text-align: left;">Bitwise <code>OR</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bitxor.html">bitxor</a></td>
+<td style="text-align: left;">Bitwise <code>XOR</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bitcmp.html">bitcmp</a></td>
+<td style="text-align: left;">Bitwise complement</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bitget.html">bitget</a></td>
+<td style="text-align: left;">Get the bit at the specified position</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bitset.html">bitset</a></td>
+<td style="text-align: left;">Set the bit at the specified position</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bitshift.html">bitshift</a></td>
+<td style="text-align: left;">Shift bits by specified number of bits</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/swapbytes.html">swapbytes</a></td>
+<td style="text-align: left;">swap byte order</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="data-import-and-export">
+<h2 id="data-import-and-export">Data import and export</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="text-file-read-and-write-table-or-timetable">text file -read and write table or timetable</h3>
+<div class="section">
+<h4 id="basic-import-and-export">Basic import and export</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readtable.html">readtable</a></td>
+<td style="text-align: left;">Create a table based on a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writetable.html">writetable</a></td>
+<td style="text-align: left;">write table to file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readtimetable.html">readtimetable</a></td>
+<td style="text-align: left;">Create a timetable based on a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writetimetable.html">writetimetable</a></td>
+<td style="text-align: left;">Write timetable to file</td>
+</tr>
+</tbody>
+</table>
+<h4 id="define-import-rules">Define import rules</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/detectimportoptions.html">detectImportOptions</a></td>
+<td style="text-align: left;">Generate import options based on file content</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.html">delimitedTextImportOptions</a></td>
+<td style="text-align: left;">Import options object for delimited text</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.fixedwidthimportoptions.html">fixedWidthImportOptions</a></td>
+<td style="text-align: left;">Import options object for fixed-width text files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.xmlimportoptions.html">xmlImportOptions</a></td>
+<td style="text-align: left;">Import options object for XML file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.html.htmlimportoptions.html">htmlImportOptions</a></td>
+<td style="text-align: left;">Import options object for HTML files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.word.worddocumentimportoptions.html">wordDocumentImportOptions</a></td>
+<td style="text-align: left;"><code>Microsoft Word</code> file import options object</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.getvaropts.html">getvaropts</a></td>
+<td style="text-align: left;">Get variable import options</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.setvaropts.html">setvaropts</a></td>
+<td style="text-align: left;">Set variable import options</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.setvartype.html">setvartype</a></td>
+<td style="text-align: left;">Set variable data type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.preview.html">preview</a></td>
+<td style="text-align: left;">Preview eight lines of data in the file with import options</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-files-read-and-write-matrices-and-arrays">Text files -read and write matrices and arrays</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readmatrix.html">readmatrix</a></td>
+<td style="text-align: left;">Read a matrix from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writematrix.html">writematrix</a></td>
+<td style="text-align: left;">Write matrix to file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readcell.html">readcell</a></td>
+<td style="text-align: left;">Read a cell array from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writecell.html">writecell</a></td>
+<td style="text-align: left;">Write a cell array to a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readvars.html">readvars</a></td>
+<td style="text-align: left;">Read variables from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/textscan.html">textscan</a></td>
+<td style="text-align: left;">Read formatted data from a text file or string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/type.html">type</a></td>
+<td style="text-align: left;">Display file content</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fileread.html">fileread</a></td>
+<td style="text-align: left;">Read file content in text format</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readlines.html">readlines</a></td>
+<td style="text-align: left;">Read lines of a file as an array of strings</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writelines.html">writelines</a></td>
+<td style="text-align: left;">Write text to file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="spreadsheet-read-and-write-table-or-timetable">Spreadsheet -Read and Write Table or Timetable</h3>
+<div class="section">
+<p>Basic import and export</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readtable.html">readtable</a></td>
+<td style="text-align: left;">Create a table from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writetable.html">writetable</a></td>
+<td style="text-align: left;">write table to file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readtimetable.html">readtimetable</a></td>
+<td style="text-align: left;">Create a timetable from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writetimetable.html">writetimetable</a></td>
+<td style="text-align: left;">Write timetable to file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sheetnames.html">sheetnames</a></td>
+<td style="text-align: left;">Get sheetnames from a spreadsheet file</td>
+</tr>
+</tbody>
+</table>
+<p>Define import rules</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/detectimportoptions.html">detectImportOptions</a></td>
+<td style="text-align: left;">Generate import options based on file content</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.spreadsheet.spreadsheetimportoptions.html">spreadsheetImportOptions</a></td>
+<td style="text-align: left;">Spreadsheet import options object</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.getvaropts.html">getvaropts</a></td>
+<td style="text-align: left;">Get variable import options</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.setvaropts.html">setvaropts</a></td>
+<td style="text-align: left;">Set variable import options</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.setvartype.html">setvartype</a></td>
+<td style="text-align: left;">Set variable data type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.text.delimitedtextimportoptions.preview.html">preview</a></td>
+<td style="text-align: left;">Preview eight rows of data in a file with import options</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="spreadsheet-reading-and-writing-matrices-and-arrays">Spreadsheet -Reading and writing matrices and arrays</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readmatrix.html">readmatrix</a></td>
+<td style="text-align: left;">Read a matrix from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writematrix.html">writematrix</a></td>
+<td style="text-align: left;">Write matrix to file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readcell.html">readcell</a></td>
+<td style="text-align: left;">Read a cell array from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/writecell.html">writecell</a></td>
+<td style="text-align: left;">Write a cell array to a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/readvars.html">readvars</a></td>
+<td style="text-align: left;">Read variables from a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/importdata.html">importdata</a></td>
+<td style="text-align: left;">Load data from a file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="images">images</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/imfinfo.html">imfinfo</a></td>
+<td style="text-align: left;">Information about graphics files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/imread.html">imread</a></td>
+<td style="text-align: left;">Reads an image from a graphics file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/imwrite.html">imwrite</a></td>
+<td style="text-align: left;">Writes an image to a graphics file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tiff.html">Tiff</a></td>
+<td style="text-align: left;">MATLAB entry for LibTIFF library routines</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="read-or-write-a-netcdf-file">Read or write a NetCDF file</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/nccreate.html">nccreate</a></td>
+<td style="text-align: left;">Create variables in a NetCDF file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ncdisp.html">ncdisp</a></td>
+<td style="text-align: left;">Displays NetCDF data source content in the command line window</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ncinfo.html">ncinfo</a></td>
+<td style="text-align: left;">Returns information about a NetCDF data source</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ncread.html">ncread</a></td>
+<td style="text-align: left;">Read variable data from a NetCDF data source</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ncreadatt.html">ncreadatt</a></td>
+<td style="text-align: left;">Read attribute values in a NetCDF data source</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ncwrite.html">ncwrite</a></td>
+<td style="text-align: left;">Write data to a NetCDF file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ncwriteatt.html">ncwriteatt</a></td>
+<td style="text-align: left;">Write attributes to a NetCDF file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ncwriteschema.html">ncwriteschema</a></td>
+<td style="text-align: left;">Adds a NetCDF schema definition to a NetCDF file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-library-functions">NetCDF library package -library functions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.getchunkcache.html">netcdf.getChunkCache</a></td>
+<td style="text-align: left;">Retrieves the chunk cache settings for the NetCDF library</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqlibvers.html">netcdf.inqLibVers</a></td>
+<td style="text-align: left;">Returns NetCDF library version information</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.setchunkcache.html">netcdf.setChunkCache</a></td>
+<td style="text-align: left;">Sets the default chunk cache settings for the NetCDF library</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.setdefaultformat.html">netcdf.setDefaultFormat</a></td>
+<td style="text-align: left;">Change the default netCDF file format</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-file-operations">NetCDF library package -file operations</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.abort.html">netcdf.abort</a></td>
+<td style="text-align: left;">restores the most recent netCDF file definition</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.close.html">netcdf.close</a></td>
+<td style="text-align: left;">Closes a netCDF file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.create.html">netcdf.create</a></td>
+<td style="text-align: left;">Create a new NetCDF dataset</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.enddef.html">netcdf.endDef</a></td>
+<td style="text-align: left;">End netCDF file definition mode</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inq.html">netcdf.inq</a></td>
+<td style="text-align: left;">returns information about a netCDF file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqformat.html">netcdf.inqFormat</a></td>
+<td style="text-align: left;">Determines the format of a NetCDF file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqgrps.html">netcdf.inqGrps</a></td>
+<td style="text-align: left;">Retrieves an array of subgroup IDs</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqunlimdims.html">netcdf.inqUnlimDims</a></td>
+<td style="text-align: left;">Retrieves a list of infinite dimensions in a group</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.open.html">netcdf.open</a></td>
+<td style="text-align: left;">Open NetCDF data source</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.redef.html">netcdf.reDef</a></td>
+<td style="text-align: left;">puts an open netCDF file into definition mode</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.setfill.html">netcdf.setFill</a></td>
+<td style="text-align: left;">Set netCDF fill mode</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.sync.html">netcdf.sync</a></td>
+<td style="text-align: left;">Synchronize netCDF files to disk</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-dimensions">NetCDF Library Package -Dimensions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defdim.html">netcdf.defdim</a></td>
+<td style="text-align: left;">Create netCDF dimensions</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqdim.html">netcdf.inqDim</a></td>
+<td style="text-align: left;">Returns netCDF dimension names and lengths</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqdimid.html">netcdf.inqDimID</a></td>
+<td style="text-align: left;">Returns the dimension ID</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.renamedim.html">netcdf.renameDim</a></td>
+<td style="text-align: left;">Change netCDF dimension names</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-group">NetCDF library package -group</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defgrp.html">netcdf.defGrp</a></td>
+<td style="text-align: left;">Create groups in a NetCDF file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqdimids.html">netcdf.inqDimIDs</a></td>
+<td style="text-align: left;">Retrieves a list of dimension identifiers in a group</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqgrpname.html">netcdf.inqGrpName</a></td>
+<td style="text-align: left;">Retrieve group name</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqgrpnamefull.html">netcdf.inqGrpNameFull</a></td>
+<td style="text-align: left;">the full pathname of the group</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqgrpparent.html">netcdf.inqGrpParent</a></td>
+<td style="text-align: left;">Retrieves the ID of the parent group.</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqncid.html">netcdf.inqNcid</a></td>
+<td style="text-align: left;">Returns the ID of a named group</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvarids.html">netcdf.inqVarIDs</a></td>
+<td style="text-align: left;">IDs of all variables in the group</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-variable">NetCDF library package -variable</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defvarfill.html">netcdf.defVarFill</a></td>
+<td style="text-align: left;">Defines the fill parameter for a NetCDF variable</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defvar.html">netcdf.defVar</a></td>
+<td style="text-align: left;">Create a NetCDF variable</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defvarchunking.html">netcdf.defVarChunking</a></td>
+<td style="text-align: left;">Defines chunking behavior for NetCDF variables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defvardeflate.html">netcdf.defVarDeflate</a></td>
+<td style="text-align: left;">Defines compression parameters for NetCDF variables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defvarfletcher32.html">netcdf.defVarFletcher32</a></td>
+<td style="text-align: left;">Defines validation parameters for NetCDF variables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.getvar.html">netcdf.getVar</a></td>
+<td style="text-align: left;">Read data in a NetCDF variable</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvar.html">netcdf.inqVar</a></td>
+<td style="text-align: left;">Information about variables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvarchunking.html">netcdf.inqVarChunking</a></td>
+<td style="text-align: left;">Determines chunking settings for NetCDF variables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvardeflate.html">netcdf.inqVarDeflate</a></td>
+<td style="text-align: left;">Determines compression settings for NetCDF variables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvarfill.html">netcdf.inqVarFill</a></td>
+<td style="text-align: left;">Determines the fill parameter value for a NetCDF variable</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvarfletcher32.html">netcdf.inqVarFletcher32</a></td>
+<td style="text-align: left;">About Fletcher32 checksum settings for NetCDF variables</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvarid.html">netcdf.inqVarID</a></td>
+<td style="text-align: left;">Returns the ID associated with the variable name</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.putvar.html">netcdf.putVar</a></td>
+<td style="text-align: left;">Writes data to a netCDF variable</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.renamevar.html">netcdf.renameVar</a></td>
+<td style="text-align: left;">Change netCDF variable name</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-properties">NetCDF library package -properties</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.copyatt.html">netcdf.copyAtt</a></td>
+<td style="text-align: left;">Copy an attribute to a new location</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.delatt.html">netcdf.delAtt</a></td>
+<td style="text-align: left;">Remove netCDF attribute</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.getatt.html">netcdf.getAtt</a></td>
+<td style="text-align: left;">Returns the NetCDF attribute</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqatt.html">netcdf.inqAtt</a></td>
+<td style="text-align: left;">Returns information about netCDF attributes</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqattid.html">netcdf.inqAttID</a></td>
+<td style="text-align: left;">Returns the ID of a netCDF attribute</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqattname.html">netcdf.inqAttName</a></td>
+<td style="text-align: left;">Returns the netCDF attribute name</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.putatt.html">netcdf.putAtt</a></td>
+<td style="text-align: left;">Write netCDF attributes</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.renameatt.html">netcdf.renameAtt</a></td>
+<td style="text-align: left;">Change Attribute Name</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-user-defined-types">NetCDF library package -user-defined types</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><a href="https://www.mathworks.com/help/matlab/ref/netcdf.defvlen.html">netcdf.defVlen</a></td>
+<td style="text-align: left;">Define user-defined variable length array type (NC_VLEN)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqusertype.html">netcdf.inqUserType</a></td>
+<td style="text-align: left;">Return information about user-defined type</td>
+</tr>
+<tr>
+<td style="text-align: left;"><a href="https://www.mathworks.com/help/matlab/ref/netcdf.inqvlen.html">netcdf.inqVlen</a></td>
+<td style="text-align: left;">Return information about user-defined <code>NC_VLEN</code> type</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="netcdf-library-package-utilities">NetCDF library package -Utilities</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.getconstant.html">netcdf.getConstant</a></td>
+<td style="text-align: left;">returns the value of the named constant</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/netcdf.getconstantnames.html">netcdf.getConstantNames</a></td>
+<td style="text-align: left;">returns a list of constants known to the netCDF library</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="read-or-write-hdf5-files">Read or write HDF5 files</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/h5create.html">h5create</a></td>
+<td style="text-align: left;">Create HDF5 dataset</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/h5disp.html">h5disp</a></td>
+<td style="text-align: left;">Display the content of HDF5 files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/h5info.html">h5info</a></td>
+<td style="text-align: left;">Information about HDF5 files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/h5read.html">h5read</a></td>
+<td style="text-align: left;">Read data from HDF5 dataset</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/h5readatt.html">h5readatt</a></td>
+<td style="text-align: left;">Read attributes from HDF5 files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/h5write.html">h5write</a></td>
+<td style="text-align: left;">Write HDF5 dataset</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/h5writeatt.html">h5writeatt</a></td>
+<td style="text-align: left;">Write HDF5 attributes</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hdf5-library-package">HDF5 library package</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/libraryh5.html">Library (H5)</a></td>
+<td style="text-align: left;">General-purpose functions for use with entire HDF5 library</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/attributeh5a.html">Attribute (H5A)</a></td>
+<td style="text-align: left;">Metadata associated with datasets or groups</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/dataseth5d.html">Dataset (H5D)</a></td>
+<td style="text-align: left;">Multidimensional arrays of data elements and supporting metadata</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/dimensionscaleh5ds.html">Dimension Scale (H5DS)</a></td>
+<td style="text-align: left;">Dimension scale associated with dataset dimensions</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/errorh5e.html">Error (H5E)</a></td>
+<td style="text-align: left;">Error handling</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fileh5f.html">File (H5F)</a></td>
+<td style="text-align: left;">HDF5 file access</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/grouph5g.html">Group (H5G)</a></td>
+<td style="text-align: left;">Organization of objects in file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/identifierh5i.html">Identifier (H5I)</a></td>
+<td style="text-align: left;">HDF5 object identifiers</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/linkh5l.html">Link (H5L)</a></td>
+<td style="text-align: left;">Links in HDF5 file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlabh5ml.html">MATLAB (H5ML)</a></td>
+<td style="text-align: left;"><code>MATLAB</code> utility functions not part of the HDF5 C library</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/objecth5o.html">Object (H5O)</a></td>
+<td style="text-align: left;">Objects in file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/propertyh5p.html">Property (H5P)</a></td>
+<td style="text-align: left;">Object property lists</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/referenceh5r.html">Reference (H5R)</a></td>
+<td style="text-align: left;">HDF5 references</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/dataspaceh5s.html">Dataspace (H5S)</a></td>
+<td style="text-align: left;">Dimensionality of dataset</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/datatypeh5t.html">Datatype (H5T)</a></td>
+<td style="text-align: left;">Datatype of elements in a dataset</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hdf4-files-advanced-functions">HDF4 Files -Advanced Functions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfinfo.html">hdfinfo</a></td>
+<td style="text-align: left;">Information about HDF4 or HDF-EOS files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfread.html">hdfread</a></td>
+<td style="text-align: left;">Read data from HDF4 or HDF-EOS files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/imread.html">imread</a></td>
+<td style="text-align: left;">Read an image from a graphics file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/imwrite.html">imwrite</a></td>
+<td style="text-align: left;">Write image to graphics file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="low-level-functions-package">Low-level functions -package</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.hdf4.sd.html">matlab.io.hdf4.sd</a></td>
+<td style="text-align: left;">Interact directly with the HDF4 multi-file scientific dataset (SD) interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.hdfeos.gd.html">matlab.io.hdfeos.gd</a></td>
+<td style="text-align: left;">Low-level access to HDF-EOS grid data</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.hdfeos.sw.html">matlab.io.hdfeos.sw</a></td>
+<td style="text-align: left;">Low-level access to HDF-EOS segmented files</td>
+</tr>
+</tbody>
+</table>
+<h4 id="low-level-functions-functions">Low Level Functions -Functions</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfan.html">hdfan</a></td>
+<td style="text-align: left;">The entry of HDF multi-file annotation (AN) interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfhx.html">hdfhx</a></td>
+<td style="text-align: left;">The entry of HDF external data (HX) interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfh.html">hdfh</a></td>
+<td style="text-align: left;">The entry of HDF H interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfhd.html">hdfhd</a></td>
+<td style="text-align: left;">The entry of HDF HD interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfhe.html">hdfhe</a></td>
+<td style="text-align: left;">The entry of HDF HE interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfml.html">hdfml</a></td>
+<td style="text-align: left;">Utilities for use with <code>MATLAB</code> HDF entry functions</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfpt.html">hdfpt</a></td>
+<td style="text-align: left;">Interface of HDF-EOS point object</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfv.html">hdfv</a></td>
+<td style="text-align: left;">The entry of HDF Vgroup (V) interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfvf.html">hdfvf</a></td>
+<td style="text-align: left;">The entry of VF function in HDF Vdata interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfvh.html">hdfvh</a></td>
+<td style="text-align: left;">The entry of VH function in HDF Vdata interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfvs.html">hdfvs</a></td>
+<td style="text-align: left;">The entry of VS function in HDF Vdata interface</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfdf24.html">hdfdf24</a></td>
+<td style="text-align: left;">HDF 24-bit raster image (DF24) interface entry</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/hdfdfr8.html">hdfdfr8</a></td>
+<td style="text-align: left;">HDF 8-bit raster image (DFR8) interface entry</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-file-function">FITS file -function</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fitsdisp.html">fitsdisp</a></td>
+<td style="text-align: left;">Display FITS metadata</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fitsinfo.html">fitsinfo</a></td>
+<td style="text-align: left;">Information about FITS files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fitsread.html">fitsread</a></td>
+<td style="text-align: left;">Read data in FITS files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fitswrite.html">fitswrite</a></td>
+<td style="text-align: left;">Write image to FITS file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-files-file-access">FITS files -file access</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.createfile.html">createFile</a></td>
+<td style="text-align: left;">Create FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.openfile.html">openFile</a></td>
+<td style="text-align: left;">Open FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.opendiskfile.html">openDiskFile</a></td>
+<td style="text-align: left;">Open FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.closefile.html">closeFile</a></td>
+<td style="text-align: left;">Close FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.deletefile.html">deleteFile</a></td>
+<td style="text-align: left;">Delete FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.filename.html">fileName</a></td>
+<td style="text-align: left;">The name of the FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.filemode.html">fileMode</a></td>
+<td style="text-align: left;">I/O mode for FITS files</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-files-image-processing">FITS files -image processing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.createimg.html">createImg</a></td>
+<td style="text-align: left;">Create FITS image</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getimgsize.html">getImgSize</a></td>
+<td style="text-align: left;">image size</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getimgtype.html">getImgType</a></td>
+<td style="text-align: left;">The data type of the image</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.insertimg.html">insertImg</a></td>
+<td style="text-align: left;">Insert a FITS image after the current image</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readimg.html">readImg</a></td>
+<td style="text-align: left;">read image data</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.setbscale.html">setBscale</a></td>
+<td style="text-align: left;">Reset image scaling</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writeimg.html">writeImg</a></td>
+<td style="text-align: left;">write FITS image</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-file-keyword">FITS file -keyword</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readcard.html">readCard</a></td>
+<td style="text-align: left;">Header record of keywords</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readkey.html">readKey</a></td>
+<td style="text-align: left;">Keyword</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readkeycmplx.html">readKeyCmplx</a></td>
+<td style="text-align: left;">A keyword in the form of a complex scalar value</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readkeydbl.html">readKeyDbl</a></td>
+<td style="text-align: left;">Keyword in the form of double precision value</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readkeylonglong.html">readKeyLongLong</a></td>
+<td style="text-align: left;">Keyword in the form of <code>int64</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readkeylongstr.html">readKeyLongStr</a></td>
+<td style="text-align: left;">long string value</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readkeyunit.html">readKeyUnit</a></td>
+<td style="text-align: left;">The physical unit string in the key</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readrecord.html">readRecord</a></td>
+<td style="text-align: left;">Header record specified by number</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writecomment.html">writeComment</a></td>
+<td style="text-align: left;">Write or append COMMENT keyword to CHU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writedate.html">writeDate</a></td>
+<td style="text-align: left;">Write DATE keyword to CHU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writekey.html">writeKey</a></td>
+<td style="text-align: left;">Update or add new keywords to the current HDU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writekeyunit.html">writeKeyUnit</a></td>
+<td style="text-align: left;">write physical unit string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writehistory.html">writeHistory</a></td>
+<td style="text-align: left;">Write or append HISTORY keyword to CHU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.deletekey.html">deleteKey</a></td>
+<td style="text-align: left;">Delete key by name</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.deleterecord.html">deleteRecord</a></td>
+<td style="text-align: left;">Delete keywords by record number</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.gethdrspace.html">getHdrSpace</a></td>
+<td style="text-align: left;">The number of keywords in the header</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-files-header-data-unit-hdu-access">FITS files -Header Data Unit (HDU) access</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.copyhdu.html">copyHDU</a></td>
+<td style="text-align: left;">Copy current HDU from one file to another</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.gethdunum.html">getHDUnum</a></td>
+<td style="text-align: left;">The number of the current HDU in the FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.gethdutype.html">getHDUtype</a></td>
+<td style="text-align: left;">current HDU type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getnumhdus.html">getNumHDUs</a></td>
+<td style="text-align: left;">Total number of HDUs in FITS file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.movabshdu.html">movAbsHDU</a></td>
+<td style="text-align: left;">Move to Absolute HDU Numbering</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.movnamhdu.html">movNamHDU</a></td>
+<td style="text-align: left;">Move to the first HDU containing a specific type and keyword value</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.movrelhdu.html">movRelHDU</a></td>
+<td style="text-align: left;">Move relative amount of HDU from current HDU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writechecksum.html">writeChecksum</a></td>
+<td style="text-align: left;">Calculate and write the checksum of the current HDU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.deletehdu.html">deleteHDU</a></td>
+<td style="text-align: left;">Delete the current HDU in the FITS file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-files-image-compression">FITS files -image compression</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.imgcompress.html">imgCompress</a></td>
+<td style="text-align: left;">Compress HDU from one file to another</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.iscompressedimg.html">isCompressedImg</a></td>
+<td style="text-align: left;">Determine whether the current image is compressed</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.setcompressiontype.html">setCompressionType</a></td>
+<td style="text-align: left;">Set image compression type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.sethcompscale.html">setHCompScale</a></td>
+<td style="text-align: left;">Set the scaling parameters of the HCOMPRESS algorithm</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.sethcompsmooth.html">setHCompSmooth</a></td>
+<td style="text-align: left;">Sets smoothing for images compressed with HCOMPRESS</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.settiledim.html">setTileDim</a></td>
+<td style="text-align: left;">Set tile dimensions</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-file-ascii-table-and-binary-table">FITS file -ASCII table and binary table</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.createtbl.html">createTbl</a></td>
+<td style="text-align: left;">Create a new ASCII or binary table extension</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.insertcol.html">insertCol</a></td>
+<td style="text-align: left;">Insert a column into a table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.insertrows.html">insertRows</a></td>
+<td style="text-align: left;">Insert rows into the table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.insertatbl.html">insertATbl</a></td>
+<td style="text-align: left;">Insert an ASCII table after the current HDU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.insertbtbl.html">insertBTbl</a></td>
+<td style="text-align: left;">Insert a binary table behind the current HDU</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.deletecol.html">deleteCol</a></td>
+<td style="text-align: left;">Delete a column from a table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.deleterows.html">deleteRows</a></td>
+<td style="text-align: left;">Delete rows from the table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getacolparms.html">getAColParms</a></td>
+<td style="text-align: left;">ASCII table information</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getbcolparms.html">getBColParms</a></td>
+<td style="text-align: left;">binary table information</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getcolname.html">getColName</a></td>
+<td style="text-align: left;">table column name</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getcoltype.html">getColType</a></td>
+<td style="text-align: left;">Data type, repeat value, width of scaled column</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.geteqcoltype.html">getEqColType</a></td>
+<td style="text-align: left;">column data type, repeated value, width</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getnumcols.html">getNumCols</a></td>
+<td style="text-align: left;">The number of columns in the table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getnumrows.html">getNumRows</a></td>
+<td style="text-align: left;">the number of rows in the table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readatblhdr.html">readATblHdr</a></td>
+<td style="text-align: left;">Read the header information from the current ASCII table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readbtblhdr.html">readBTblHdr</a></td>
+<td style="text-align: left;">Read the header information from the current binary table</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.readcol.html">readCol</a></td>
+<td style="text-align: left;">Reads rows of ASCII or binary table columns</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.settscale.html">setTscale</a></td>
+<td style="text-align: left;">reset image scaling</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.writecol.html">writeCol</a></td>
+<td style="text-align: left;">Write elements to an ASCII or binary table column</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fits-files-utilities">FITS files -Utilities</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getconstantvalue.html">getConstantValue</a></td>
+<td style="text-align: left;">specify the constant value</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getversion.html">getVersion</a></td>
+<td style="text-align: left;">The revision number of the CFITSIO library</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.fits.getopenfiles.html">getOpenFiles</a></td>
+<td style="text-align: left;">list of opened FITS files</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="stripe-interleaved-file">Stripe interleaved file</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/multibandread.html">multibandread</a></td>
+<td style="text-align: left;">Read a striped interleaved file from a binary file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/multibandwrite.html">multibandwrite</a></td>
+<td style="text-align: left;">Write strip interleaved data to a file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="common-data-format-cdf">Common Data Format (CDF)</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/cdfinfo.html">cdfinfo</a></td>
+<td style="text-align: left;">Information on Common Data Format (CDF) files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/cdfread.html">cdfread</a></td>
+<td style="text-align: left;">Read data in Common Data Format (CDF) files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/cdfepoch.html">cdfepoch</a></td>
+<td style="text-align: left;">Converts a date literal or date sequence value to a date in CDF format</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/todatenum.html">todatenum</a></td>
+<td style="text-align: left;">Convert CDF epoch objects to <code>MATLAB</code> date serial values</td>
+</tr>
+</tbody>
+</table>
+<h4 id="bag">Bag</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/cdflib.html">cdflib</a></td>
+<td style="text-align: left;">Direct interaction with CDF library</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="read-video-data">Read video data</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videoreader.html">VideoReader</a></td>
+<td style="text-align: left;">Create an object to read a video file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videoreader.read.html">read</a></td>
+<td style="text-align: left;">Read one or more video frames</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videoreader.readframe.html">readFrame</a></td>
+<td style="text-align: left;">Read the next video frame</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videoreader.hasframe.html">hasFrame</a></td>
+<td style="text-align: left;">Determine whether there are video frames available for reading</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videoreader.getfileformats.html">getFileFormats</a></td>
+<td style="text-align: left;">File formats supported by <code>VideoReader</code></td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/mmfileinfo.html">mmfileinfo</a></td>
+<td style="text-align: left;">Information about multimedia files</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="write-video-data">Write video data</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videowriter.html">VideoWriter</a></td>
+<td style="text-align: left;">Create an object to write a video file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videowriter.open.html">open</a></td>
+<td style="text-align: left;">Open a file to write video data</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videowriter.writevideo.html">writeVideo</a></td>
+<td style="text-align: left;">Write video data to a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videowriter.close.html">close</a></td>
+<td style="text-align: left;">close the file after writing video data</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/videowriter.getprofiles.html">getProfiles</a></td>
+<td style="text-align: left;">Description files and file formats supported by <code>VideoWriter</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="read-or-write-audio">Read or write audio</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioread.html">audioread</a></td>
+<td style="text-align: left;">Read audio files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiowrite.html">audiowrite</a></td>
+<td style="text-align: left;">Write audio files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/lin2mu.html">lin2mu</a></td>
+<td style="text-align: left;">Convert linear audio signal to mu-law</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/mu2lin.html">mu2lin</a></td>
+<td style="text-align: left;">Convert mu-law audio signal to linear format</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioinfo.html">audioinfo</a></td>
+<td style="text-align: left;">Information about audio files</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="play-audio">Play audio</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioplayer.html">audioplayer</a></td>
+<td style="text-align: left;">Object for playing audio</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioplayer.isplaying.html">isplaying</a></td>
+<td style="text-align: left;">Determine whether playback is in progress</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioplayer.pause.html">pause</a></td>
+<td style="text-align: left;">Pause playback or recording</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioplayer.play.html">play</a></td>
+<td style="text-align: left;">Play audio from <code>audioplayer</code> object</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioplayer.playblocking.html">playblocking</a></td>
+<td style="text-align: left;">Play audio in <code>audioplayer</code> object, keep control until playback is complete</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioplayer.resume.html">resume</a></td>
+<td style="text-align: left;">Resume playback or recording from the paused state</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audioplayer.stop.html">stop</a></td>
+<td style="text-align: left;">Stop playing or recording</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="record-audio">Record audio</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiorecorder.html">audiorecorder</a></td>
+<td style="text-align: left;">object for recording audio</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiorecorder.getaudiodata.html">getaudiodata</a></td>
+<td style="text-align: left;">Store the recorded audio signal in a numeric array</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiorecorder.getplayer.html">getplayer</a></td>
+<td style="text-align: left;">Create an associated <code>audioplayer</code> object</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiorecorder.isrecording.html">isrecording</a></td>
+<td style="text-align: left;">Determine if recording is in progress</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiorecorder.record.html">record</a></td>
+<td style="text-align: left;">Record audio into <code>audiorecorder</code> object</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiorecorder.recordblocking.html">recordblocking</a></td>
+<td style="text-align: left;">Record audio into an <code>audiorecorder</code> object, keep control until recording is complete</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="play-sound">Play sound</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiodevinfo.html">audiodevinfo</a></td>
+<td style="text-align: left;">Information about audio devices</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/audiodevreset.html">audiodevreset</a></td>
+<td style="text-align: left;">Refresh the list of available audio devices</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sound.html">sound</a></td>
+<td style="text-align: left;">Convert signal data matrix to sound</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/soundsc.html">soundsc</a></td>
+<td style="text-align: left;">Scale data and play it as sound</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/beep.html">beep</a></td>
+<td style="text-align: left;">generate operating system beep</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="reading-and-writing-xml-documents">Reading and writing XML documents</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.domwriter-class.html">matlab.io.xml.dom.DOMWriter</a></td>
+<td style="text-align: left;">Write serialized XML documents Injector</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.entityresolver-class.html">matlab.io.xml.dom.EntityResolver</a></td>
+<td style="text-align: left;">Abstract base class of entity resolver</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.filewriter-class.html">matlab.io.xml.dom.FileWriter</a></td>
+<td style="text-align: left;">Writer for creating text files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.locator-class.html">matlab.io.xml.dom.Locator</a></td>
+<td style="text-align: left;">The location of the element in the XML file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.parser-class.html">matlab.io.xml.dom.Parser</a></td>
+<td style="text-align: left;">XML markup parser</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.parserconfiguration-class.html">matlab.io.xml.dom.ParserConfiguration</a></td>
+<td style="text-align: left;">XML parser options</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.parseerror-class.html">matlab.io.xml.dom.ParseError</a></td>
+<td style="text-align: left;">Specified XML tag parsing error</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.parseerrorhandler-class.html">matlab.io.xml.dom.ParseErrorHandler</a></td>
+<td style="text-align: left;">Abstract base class for parse error handlers</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.parseerrorlocator-class.html">matlab.io.xml.dom.ParseErrorLocator</a></td>
+<td style="text-align: left;">Specifies location of parse error</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.parseerrorseverity-class.html">matlab.io.xml.dom.ParseErrorSeverity</a></td>
+<td style="text-align: left;">Indicates the severity of XML tag parsing errors enum class</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.resourceidentifier-class.html">matlab.io.xml.dom.ResourceIdentifier</a></td>
+<td style="text-align: left;">XML resource identifier</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.resourceidentifiertype-class.html">matlab.io.xml.dom.ResourceIdentifierType</a></td>
+<td style="text-align: left;">XML resource identifier type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.writerconfiguration-class.html">matlab.io.xml.dom.WriterConfiguration</a></td>
+<td style="text-align: left;">XML DOM Writer Options</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="w3c-dom">W3C DOM</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.attr-class.html">matlab.io.xml.dom.Attr</a></td>
+<td style="text-align: left;">Attributes of XML elements</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.cdatasection-class.html">matlab.io.xml.dom.CDATASection</a></td>
+<td style="text-align: left;">CDATA section</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.comment-class.html">matlab.io.xml.dom.Comment</a></td>
+<td style="text-align: left;">Comments in XML documents</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.document-class.html">matlab.io.xml.dom.Document</a></td>
+<td style="text-align: left;">XML document</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.documentfragment-class.html">matlab.io.xml.dom.DocumentFragment</a></td>
+<td style="text-align: left;">document node group</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.documenttype-class.html">matlab.io.xml.dom.DocumentType</a></td>
+<td style="text-align: left;">document type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.element-class.html">matlab.io.xml.dom.Element</a></td>
+<td style="text-align: left;">element of XML document</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.entity-class.html">matlab.io.xml.dom.Entity</a></td>
+<td style="text-align: left;">Entity defined by document type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.namednodemap-class.html">matlab.io.xml.dom.NamedNodeMap</a></td>
+<td style="text-align: left;">A set of document nodes with names</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.nodelist-class.html">matlab.io.xml.dom.NodeList</a></td>
+<td style="text-align: left;">document node list</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.notation-class.html">matlab.io.xml.dom.Notation</a></td>
+<td style="text-align: left;">Notation in document type definition</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.processinginstruction-class.html">matlab.io.xml.dom.ProcessingInstruction</a></td>
+<td style="text-align: left;">XML processing instruction</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.text-class.html">matlab.io.xml.dom.Text</a></td>
+<td style="text-align: left;">Text in an XML document</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.dom.typeinfo-class.html">matlab.io.xml.dom.TypeInfo</a></td>
+<td style="text-align: left;">schema type information</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="xml-transformation">XML Transformation</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.compiledstylesheet-class.html">matlab.io.xml.transform.CompiledStylesheet</a></td>
+<td style="text-align: left;">Compiled stylesheet</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.resultdocument-class.html">matlab.io.xml.transform.ResultDocument</a></td>
+<td style="text-align: left;">Store the transformation result as a document</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.resultstring-class.html">matlab.io.xml.transform.ResultString</a></td>
+<td style="text-align: left;">Store the transformation result as a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.resultfile-class.html">matlab.io.xml.transform.ResultFile</a></td>
+<td style="text-align: left;">Store the transformation result as a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.sourcedocument-class.html">matlab.io.xml.transform.SourceDocument</a></td>
+<td style="text-align: left;">XML source document for transformation</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.sourcefile-class.html">matlab.io.xml.transform.SourceFile</a></td>
+<td style="text-align: left;">XML source file for transformation</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.sourcestring-class.html">matlab.io.xml.transform.SourceString</a></td>
+<td style="text-align: left;">XML source string for transformation string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.stylesheetsourcedocument-class.html">matlab.io.xml.transform.StylesheetSourceDocument</a></td>
+<td style="text-align: left;">Stylesheet source for transformation document</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.stylesheetsourcefile-class.html">matlab.io.xml.transform.StylesheetSourceFile</a></td>
+<td style="text-align: left;">Stylesheet source for transformation document</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.stylesheetsourcestring-class.html">matlab.io.xml.transform.StylesheetSourceString</a></td>
+<td style="text-align: left;">XSL source string for transformation string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.transform.tracer-class.html">matlab.io.xml.transform.Tracer</a></td>
+<td style="text-align: left;">Trace execution of stylesheet</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="xpath-query">XPath query</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.xpath.compiledexpression-class.html">matlab.io.xml.xpath.CompiledExpression</a></td>
+<td style="text-align: left;">Compiled XPath expression</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.xpath.evalresulttype-class.html">matlab.io.xml.xpath.EvalResultType</a></td>
+<td style="text-align: left;">The result type of XPath expression calculation</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.xpath.evaluator-class.html">matlab.io.xml.xpath.Evaluator</a></td>
+<td style="text-align: left;">XPath expression evaluator</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.xml.xpath.prefixresolver-class.html">matlab.io.xml.xpath.PrefixResolver</a></td>
+<td style="text-align: left;">For namespace prefix resolver Abstract base class for</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="json-format">JSON format</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/jsondecode.html">jsondecode</a></td>
+<td style="text-align: left;">Decode text in JSON format</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/jsonencode.html">jsonencode</a></td>
+<td style="text-align: left;">Create JSON-formatted text from structured <code>MATLAB</code> data</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="workspace-variables-and-mat-file">Workspace variables and MAT-file</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/load.html">load</a></td>
+<td style="text-align: left;">Load file variables into the workspace</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/save.html">save</a></td>
+<td style="text-align: left;">Save workspace variables to a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlab.io.matfile.html">matfile</a></td>
+<td style="text-align: left;">Access and change variables in a MAT-file without loading the file into memory</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/disp.html">disp</a></td>
+<td style="text-align: left;">Display the value of the variable</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/formatteddisplaytext.html">formattedDisplayText</a></td>
+<td style="text-align: left;">Capture display output as a string</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/who.html">who</a></td>
+<td style="text-align: left;">List variables in the workspace</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/whos.html">whos</a></td>
+<td style="text-align: left;">List variables in the workspace with their size and type</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/clear.html">clear</a></td>
+<td style="text-align: left;">Delete items from the workspace and release system memory</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/clearvars.html">clearvars</a></td>
+<td style="text-align: left;">Clear variables in memory</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/openvar.html">openvar</a></td>
+<td style="text-align: left;">Open a workspace variable in the variable editor or other graphical editing tools</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/workspace.html">Workspace Browser</a></td>
+<td style="text-align: left;">Open the Workspace Browser to manage the workspace</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="low-level-file-io">Low-level file I/O</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fclose.html">fclose</a></td>
+<td style="text-align: left;">close one or all open files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/feof.html">feof</a></td>
+<td style="text-align: left;">Detect the end of the file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ferror.html">ferror</a></td>
+<td style="text-align: left;">File I/O error message</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fgetl.html">fgetl</a></td>
+<td style="text-align: left;">Read lines in a file and remove line breaks</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fgets.html">fgets</a></td>
+<td style="text-align: left;">Read lines in a file and keep newlines</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fileread.html">fileread</a></td>
+<td style="text-align: left;">Read file content in text format</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fopen.html">fopen</a></td>
+<td style="text-align: left;">Open a file or get information about opening a file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fprintf.html">fprintf</a></td>
+<td style="text-align: left;">Write data to a text file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fread.html">fread</a></td>
+<td style="text-align: left;">Read data in binary files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/frewind.html">frewind</a></td>
+<td style="text-align: left;">Move the file position indicator to the beginning of the opened file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fscanf.html">fscanf</a></td>
+<td style="text-align: left;">Read the data in the text file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fseek.html">fseek</a></td>
+<td style="text-align: left;">Move to the specified position in the file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftell.html">ftell</a></td>
+<td style="text-align: left;">current location</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/fwrite.html">fwrite</a></td>
+<td style="text-align: left;">Write data to a binary file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="serial-and-usb-communication-connection-and-configuration">Serial and USB Communication -Connection and Configuration</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialportlist.html">serialportlist</a></td>
+<td style="text-align: left;">List of serial ports connected to your system</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.html">serialport</a></td>
+<td style="text-align: left;">Connect to a serial port</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.configureterminator.html">configureTerminator</a></td>
+<td style="text-align: left;">Set the terminator for ASCII string communication with the serial port</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.configurecallback.html">configureCallback</a></td>
+<td style="text-align: left;">Set callback function and trigger conditions for communication with serial port devices</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="serial-and-usb-communication-read-and-write">Serial and USB communication -read and write</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.read.html">read</a></td>
+<td style="text-align: left;">Read data from the serial port</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.readline.html">readline</a></td>
+<td style="text-align: left;">Read ASCII string data line from serial port</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.write.html">write</a></td>
+<td style="text-align: left;">write data to serial port</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.writeline.html">writeline</a></td>
+<td style="text-align: left;">Write ASCII data line to serial port</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="serial-and-usb-communication-control-pins-and-memory">Serial and USB communication -control pins and memory</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.flush.html">flush</a></td>
+<td style="text-align: left;">Clear the serial port device buffer</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.getpinstatus.html">getpinstatus</a></td>
+<td style="text-align: left;">Get the serial port status</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.setrts.html">setRTS</a></td>
+<td style="text-align: left;">Set the serial port RTS pin</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/serialport.setdtr.html">setDTR</a></td>
+<td style="text-align: left;">Set the serial DTR pin</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tcpip-communication-connection-and-configuration">TCP/IP communication -connection and configuration</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.html">tcpclient</a></td>
+<td style="text-align: left;">Create a TCP/IP client connection to a TCP/IP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/echotcpip.html">echotcpip</a></td>
+<td style="text-align: left;">Start or stop the TCP/IP echo server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.configureterminator.html">configureTerminator</a></td>
+<td style="text-align: left;">Set terminator for ASCII string communication with remote host via TCP/IP</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.configurecallback.html">configureCallback</a></td>
+<td style="text-align: left;">Set callback function and trigger condition for communication with remote host via TCP/IP</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tcpip-communication-read-and-write">TCP/IP communication -read and write</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.read.html">read</a></td>
+<td style="text-align: left;">Read data on a remote host via TCP/IP</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.readline.html">readline</a></td>
+<td style="text-align: left;">Read ASCII string data line from remote host via TCP/IP</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.write.html">write</a></td>
+<td style="text-align: left;">Write data to a remote host via TCP/IP</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.writeline.html">writeline</a></td>
+<td style="text-align: left;">Write ASCII data line to remote host via TCP/IP</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/tcpclient.flush.html">flush</a></td>
+<td style="text-align: left;">Flush buffers for communication with remote hosts via TCP/IP</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bluetooth-communication-connection-and-configuration">Bluetooth communication -connection and configuration</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetoothlist.html">bluetoothlist</a></td>
+<td style="text-align: left;">Scan for nearby <code>Bluetooth</code> classic devices</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.html">bluetooth</a></td>
+<td style="text-align: left;">Connect to <code>Bluetooth</code> classic device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.configureterminator.html">configureTerminator</a></td>
+<td style="text-align: left;">Set terminator for ASCII string communication with <code>Bluetooth</code> device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.configurecallback.html">configureCallback</a></td>
+<td style="text-align: left;">Set callback function and trigger condition for communication with <code>Bluetooth</code> device</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bluetooth-communication-read-and-write">Bluetooth communication -read and write</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.read.html">read</a></td>
+<td style="text-align: left;">Read data from a <code>Bluetooth</code> device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.readline.html">readline</a></td>
+<td style="text-align: left;">Read ASCII string data line from <code>Bluetooth</code> device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.write.html">write</a></td>
+<td style="text-align: left;">write data to <code>Bluetooth</code> device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.writeline.html">writeline</a></td>
+<td style="text-align: left;">Write ASCII data line to <code>Bluetooth</code> device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/bluetooth.flush.html">flush</a></td>
+<td style="text-align: left;">Clear <code>Bluetooth</code> device buffer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bluetooth-low-energy-communication">Bluetooth Low Energy Communication</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/blelist.html">blelist</a></td>
+<td style="text-align: left;">Scan for nearby low energy <code>Bluetooth</code> peripherals</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ble.html">ble</a></td>
+<td style="text-align: left;">Connect to low energy <code>Bluetooth</code> peripherals</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlabshared.blelib.characteristic.html">characteristic</a></td>
+<td style="text-align: left;">Access to characteristics of <code>Bluetooth</code> low energy peripherals</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlabshared.blelib.descriptor.html">descriptor</a></td>
+<td style="text-align: left;">Access descriptors on <code>Bluetooth</code> low energy peripherals</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlabshared.blelib.characteristic.read.html">read</a></td>
+<td style="text-align: left;">Read characteristic or descriptor data on a <code>Bluetooth</code> low energy peripheral device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlabshared.blelib.characteristic.write.html">write</a></td>
+<td style="text-align: left;">Write data to a characteristic or descriptor of a <code>Bluetooth</code> low energy peripheral device</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlabshared.blelib.characteristic.subscribe.html">subscribe</a></td>
+<td style="text-align: left;">Subscribe to characteristic notifications or instructions</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/matlabshared.blelib.characteristic.unsubscribe.html">unsubscribe</a></td>
+<td style="text-align: left;">Unsubscribe characteristic notifications and instructions</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="web-services">Web Services</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/webread.html">webread</a></td>
+<td style="text-align: left;">Read content from RESTful web services</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/webwrite.html">webwrite</a></td>
+<td style="text-align: left;">Write data to RESTful web service</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/websave.html">websave</a></td>
+<td style="text-align: left;">Save content in RESTful web service to file</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/weboptions.html">weboptions</a></td>
+<td style="text-align: left;">Specify parameters for RESTful web services</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/web.html">web</a></td>
+<td style="text-align: left;">Open a webpage or file in a browser</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sendmail.html">sendmail</a></td>
+<td style="text-align: left;">Send email to address list</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ftp-file-operations">FTP file operations</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.html">ftp</a></td>
+<td style="text-align: left;">Connect to an FTP server to access its files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/sftp.html">sftp</a></td>
+<td style="text-align: left;">Connection to SFTP server to access its files</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.ascii.html">ascii</a></td>
+<td style="text-align: left;">Set FTP transfer mode to ASCII</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.binary.html">binary</a></td>
+<td style="text-align: left;">Set FTP transfer mode to binary</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.cd.html">cd</a></td>
+<td style="text-align: left;">Change or view the current folder on an SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.close.html">close</a></td>
+<td style="text-align: left;">Close the connection to the SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.delete.html">delete</a></td>
+<td style="text-align: left;">Delete files on SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.dir.html">dir</a></td>
+<td style="text-align: left;">List folder contents on SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.mget.html">mget</a></td>
+<td style="text-align: left;">Download files from SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.mkdir.html">mkdir</a></td>
+<td style="text-align: left;">Create a new folder on an SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.mput.html">mput</a></td>
+<td style="text-align: left;">Upload files or folders to SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.rename.html">rename</a></td>
+<td style="text-align: left;">Rename a file on an SFTP or FTP server</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/ftp.rmdir.html">rmdir</a></td>
+<td style="text-align: left;">Delete a folder on an SFTP or FTP server</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="internet-of-things-iot-data">Internet of Things (IoT) Data</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/thingspeakread.html">thingSpeakRead</a></td>
+<td style="text-align: left;">Read data stored in <code>ThingSpeak</code> channel</td>
+</tr>
+<tr>
+<td><a href="https://www.mathworks.com/help/matlab/ref/thingspeakwrite.html">thingSpeakWrite</a></td>
+<td style="text-align: left;">write data to <code>ThingSpeak</code> channel</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

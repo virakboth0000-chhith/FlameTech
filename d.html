@@ -1,0 +1,1119 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="ft.png" type="image/x-icon">
+    <title>FlameTech | Contribute - Dev Resources</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #ff2a6d;
+            --secondary: #05d9e8;
+            --dark: #01012b;
+            --darker: #000015;
+            --light: #f0f0f0;
+            --accent: #d1f7ff;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(0, 0, 20, 0.8);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 42, 109, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            color: var(--secondary);
+            animation: pulse 2s infinite;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--light);
+            font-weight: 600;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 8px 15px;
+        }
+
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            outline: none;
+            width: 200px;
+        }
+
+        .search-box button {
+            background: transparent;
+            border: none;
+            color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 150px 0 100px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--darker), var(--dark));
+            opacity: 0.9;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            text-shadow: 0 0 15px rgba(255, 42, 109, 0.7);
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: #d1f7ff;
+            max-width: 700px;
+            margin: 30px auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 50px;
+        }
+
+        .btn {
+            padding: 15px 35px;
+            border-radius: 30px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+            font-size: 1.1rem;
+            border: 2px solid;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 42, 109, 0.5);
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 42, 109, 0.7);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(5, 217, 232, 0.5);
+        }
+
+        /* Contribution Section */
+        .contribution {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5rem;
+            position: relative;
+            color: var(--accent);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .contribution-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .contribution-info {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 42, 109, 0.2);
+        }
+
+        .contribution-info h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .contribution-info p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .contribution-info ul {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+
+        .contribution-info li {
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* Form Styles */
+        .contribution-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 42, 109, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            background: transparent;
+            border: 2px solid var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 42, 109, 0.7);
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 60px 0;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 42, 109, 0.2);
+        }
+
+        .faq-question {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: var(--accent);
+        }
+
+        .faq-answer {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-answer.active {
+            max-height: 300px;
+            padding: 0 20px 20px;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active i {
+            transform: rotate(180deg);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(255, 42, 109, 0.3);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            color: var(--secondary);
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 15px;
+        }
+
+        .footer-column ul li a {
+            color: #aaa;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+            
+            .contribution-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 20, 0.95);
+                flex-direction: column;
+                padding: 20px;
+                text-align: center;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links li {
+                margin: 15px 0;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .search-box {
+                display: none;
+            }
+            
+            .hero {
+                padding: 120px 0 80px;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 80%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .search-box input {
+                width: 150px;
+            }
+        }
+
+        /* Add these variables to your :root (at the top of your CSS) */
+:root {
+    /* Dark mode variables (default) */
+    --primary: #ff2a6d;
+    --secondary: #05d9e8;
+    --dark: #01012b;
+    --darker: #000015;
+    --light: #f0f0f0;
+    --accent: #d1f7ff;
+    --primary-dark: #d1004a;
+    
+    /* Background colors */
+    --bg-primary: linear-gradient(135deg, var(--darker), var(--dark));
+    --bg-secondary: rgba(0, 0, 20, 0.8);
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-card-hover: rgba(255, 255, 255, 0.1);
+    
+    /* Text colors */
+    --text-primary: var(--light);
+    --text-secondary: #aaa;
+    --text-accent: var(--accent);
+    
+    /* Border colors */
+    --border-primary: rgba(255, 42, 109, 0.3);
+    --border-secondary: rgba(255, 42, 109, 0.2);
+    
+    /* Shadow colors */
+    --shadow-primary: rgba(0, 0, 0, 0.3);
+    --shadow-secondary: rgba(255, 42, 109, 0.5);
+}
+
+/* Light mode variables */
+.light-mode {
+    /* Main brand colors from your logo */
+    --primary: #ff2a6d; /* Keep the same pink from your logo */
+    --secondary: #05d9e8; /* Keep the same cyan from your logo */
+    
+    /* Light mode backgrounds */
+    --dark: #ffffff;
+    --darker: #f8fafc;
+    --light: #1a1a2e; /* Dark blue-gray for text */
+    --accent: #334155; /* Medium gray for secondary text */
+    
+    /* Background colors */
+    --bg-primary: linear-gradient(135deg, #ffffff, #f0f2f5);
+    --bg-secondary: rgba(255, 255, 255, 0.95);
+    --bg-card: rgba(255, 255, 255, 0.98);
+    --bg-card-hover: rgba(5, 217, 232, 0.05); /* Light cyan tint on hover */
+    
+    /* Text colors */
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a5568;
+    --text-accent: #ff2a6d; /* Use logo pink for accent text */
+    
+    /* Border colors */
+    --border-primary: rgba(255, 42, 109, 0.25);
+    --border-secondary: rgba(5, 217, 232, 0.25);
+    
+    /* Shadow colors */
+    --shadow-primary: rgba(0, 0, 0, 0.08);
+    --shadow-secondary: rgba(255, 42, 109, 0.2);
+}
+
+/* Update body background to use variable */
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
+}
+
+/* Update header background */
+header {
+    background: var(--bg-secondary);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-primary);
+}
+
+/* Update nav links color */
+.nav-links a {
+    color: var(--text-primary);
+}
+
+/* Update search box */
+.search-box {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.search-box input {
+    color: var(--text-primary);
+}
+
+/* Light mode specific search box */
+.light-mode .search-box {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(209, 213, 219, 0.8);
+}
+
+.light-mode .search-box input {
+    color: #111827;
+}
+
+.light-mode .search-box input::placeholder {
+    color: #9ca3af;
+}
+
+/* Update hero section */
+.hero::before {
+    background: linear-gradient(135deg, rgba(1,1,43,0.8), rgba(0,0,15,0.9));
+}
+
+.light-mode .hero::before {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(248,250,252,0.95));
+}
+
+.hero p {
+    color: var(--text-accent);
+}
+
+/* Update platform cards for dev.html */
+.platform-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-secondary);
+}
+
+.light-mode .platform-card {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.platform-card h3 {
+    color: var(--text-accent);
+}
+
+.platform-card p {
+    color: var(--text-secondary);
+}
+
+/* Update footer */
+footer {
+    background: var(--darker);
+    border-top: 1px solid var(--border-primary);
+}
+
+.light-mode footer {
+    background: #f1f5f9;
+    border-top: 1px solid #e2e8f0;
+}
+
+.footer-column ul li a {
+    color: var(--text-secondary);
+}
+
+.copyright {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.light-mode .copyright {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.social-links a {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.light-mode .social-links a {
+    background: rgba(0, 0, 0, 0.05);
+    color: #475569;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    background: var(--dark);
+    color: var(--light);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 16px var(--shadow-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--secondary);
+    transform: scale(1.08);
+}
+
+.light-mode .theme-toggle {
+    background: rgba(255, 255, 255, 0.9);
+    color: #374151;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .theme-toggle:hover {
+    background: #f6cf45;
+    color: white;
+}
+.light-mode .btn {
+    background:white ;
+    color: var(--secondary);
+    border-color: var(--primary);
+}
+
+.light-mode .btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.light-mode .submit-btn {
+    background: white;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.light-mode .submit-btn:hover {
+    background: var(--primary);
+    border: 2px solid var(--primary);
+    color: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .theme-toggle {
+        bottom: 15px;
+        left: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .theme-toggle {
+        bottom: 10px;
+        left: 10px;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+}
+    </style>
+    <link rel="stylesheet" href="flametech-light-mode.css">
+    <link rel="stylesheet" href="flametech-dark-mode.css">
+</head>
+<body>
+
+    <!-- Add this button near the bottom of your body -->
+<button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+</button>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fas fa-laptop-code"></i>
+                    FlameTech
+                </a>
+                <button class="mobile-toggle" id="mobileToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="hj.html">Home</a></li>
+                    <li><a href="hj.html#resources">Resources</a></li>
+                    <li><a href="#">Contribute</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+                <div class="search-box">
+                    <input type="text" placeholder="Search resources...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Contribute to DevResourcesHub</h1>
+                <p>Help us build the most comprehensive collection of developer resources. Share your favorite tools, documentation, and learning resources with the community.</p>
+                
+                <div class="cta-buttons">
+                    <a href="#contribute-form" class="btn btn-primary">Submit a Resource</a>
+                    <a href="#guidelines" class="btn btn-secondary">Contribution Guidelines</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contribution Section -->
+    <section class="contribution" id="guidelines">
+        <div class="container">
+            <h2 class="section-title">How to Contribute</h2>
+            
+            <div class="contribution-content">
+                <div class="contribution-info">
+                    <h3>Contribution Guidelines</h3>
+                    <p>We welcome contributions from developers of all skill levels. Before submitting a resource, please ensure it meets the following criteria:</p>
+                    
+                    <ul>
+                        <li><span class="highlight">Quality:</span> Resources should be well-maintained, up-to-date, and valuable to developers.</li>
+                        <li><span class="highlight">Relevance:</span> Resources should be directly related to software development, programming, or adjacent fields.</li>
+                        <li><span class="highlight">Free Access:</span> Preferred resources are free to use, though we do include some premium tools that offer significant value.</li>
+                        <li><span class="highlight">No Affiliate Links:</span> Please do not submit resources with affiliate links or promotional content.</li>
+                    </ul>
+                    
+                    <p>Your submission will be reviewed by our team. We may edit for clarity or categorization before publishing.</p>
+                </div>
+                
+                <div class="contribution-info">
+                    <h3>Contribution Process</h3>
+                    <p><span class="highlight">1. Check for Duplicates:</span> Before submitting, please check if the resource already exists in our collection.</p>
+                    <p><span class="highlight">2. Fill the Form:</span> Complete the contribution form with accurate information about the resource.</p>
+                    <p><span class="highlight">3. Review:</span> Our team will review your submission within 48 hours.</p>
+                    <p><span class="highlight">4. Publication:</span> Once approved, your resource will be added to the appropriate category.</p>
+                    <p><span class="highlight">5. Recognition:</span> Contributors are credited on our site (if you provide your username).</p>
+                </div>
+            </div>
+            
+            <div class="contribution-form" id="contribute-form">
+                <h3 class="section-title">Submit a Resource</h3>
+                
+                <form id="resourceForm">
+                    <div class="form-group">
+                        <label for="resourceName">Resource Name *</label>
+                        <input type="text" id="resourceName" required placeholder="e.g., MDN Web Docs">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resourceUrl">Resource URL *</label>
+                        <input type="url" id="resourceUrl" required placeholder="https://example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resourceCategory">Category *</label>
+                        <select id="resourceCategory" required>
+                            <option value="">Select a category</option>
+                            <option value="documentation">Documentation</option>
+                            <option value="dsa">DSA & Competitive Programming</option>
+                            <option value="learning">Learn Programming</option>
+                            <option value="cheatsheets">Cheat Sheets & Quick References</option>
+                            <option value="apis">Free Public APIs</option>
+                            <option value="ai">AI Tools</option>
+                            <option value="testing">Testing & API Tools</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="resourceDescription">Description *</label>
+                        <textarea id="resourceDescription" required placeholder="Brief description of the resource and its value to developers..."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="contributorName">Your Name (optional)</label>
+                        <input type="text" id="contributorName" placeholder="How would you like to be credited?">
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">Submit Resource</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How long does it take for my submission to be reviewed?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We typically review submissions within 48 hours. During busy periods, it might take up to a week. You will receive an email notification once your submission has been processed.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I submit my own project or website?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, you can submit your own project as long as it provides genuine value to developers and meets our quality guidelines. Self-promotion without substantial value is not accepted.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What if I suggested a resource but it's not added?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>We receive many submissions and need to maintain quality and relevance. If your resource wasn't added, it might be because it didn't meet our guidelines, was a duplicate, or we felt it wasn't the right fit for our audience.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I update a resource I previously submitted?
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, if you need to update a resource you submitted, please contact us at contribute@devresourceshub.com with the details of your original submission and the updates needed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>FlameTech</h3>
+                    <p>A curated collection of valuable developer resources. Enhance your digital skills and stay ahead in the tech world.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-github"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-discord"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="hj.html">Home</a></li>
+                        <li><a href="hj.html#resources">Resources</a></li>
+                        <li><a href="#">Contribute</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Contribute</h3>
+                    <ul>
+                        <li><a href="#contribute-form">Submit a Resource</a></li>
+                        <li><a href="#guidelines">Guidelines</a></li>
+                        <li><a href="#">Report an Issue</a></li>
+                        <li><a href="#">Become a Reviewer</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2025 FlameTech. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('nav') && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+            }
+        });
+        
+        // FAQ toggle
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                question.classList.toggle('active');
+                answer.classList.toggle('active');
+            });
+        });
+        
+        // Form submission
+        const resourceForm = document.getElementById('resourceForm');
+        
+        resourceForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Simple validation
+            const resourceName = document.getElementById('resourceName').value;
+            const resourceUrl = document.getElementById('resourceUrl').value;
+            
+            if (resourceName && resourceUrl) {
+                // In a real application, you would send this data to a server
+                alert('Thank you for your submission! Your resource will be reviewed shortly.');
+                resourceForm.reset();
+            }
+        });
+
+        // Add this JavaScript code
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to dark
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    });
+});
+    </script>
+</body>
+</html>

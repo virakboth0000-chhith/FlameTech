@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>C++ Cheat Sheet — FlameTech</title>
+  <meta name="description" content="C++ quick reference cheat sheet that provides basic syntax and methods.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#6d94c7}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(109,148,199,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>C++</span>
+  </div>
+  <div class="post-icon">C+</div>
+  <h1>C++ <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>C++ quick reference cheat sheet that provides basic syntax and methods.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span> <span class="meta-tag">runCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="hellocpp">hello.cpp</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Compiling and running</p>
+<p>```shell script
+$ g++ hello.cpp -o hello
+$ ./hello
+Hello CheatSheets</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">### Variables</span>
+
+<span class="err">```</span><span class="n">cpp</span>
+<span class="nb nb-Type">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">       </span><span class="o">//</span><span class="w"> </span><span class="n">Integer</span>
+<span class="nb nb-Type">float</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.95</span><span class="p">;</span><span class="w">       </span><span class="o">//</span><span class="w"> </span><span class="n">Floating</span><span class="w"> </span><span class="n">number</span>
+<span class="n">double</span><span class="w"> </span><span class="bp">PI</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.14159</span><span class="p">;</span><span class="w">  </span><span class="o">//</span><span class="w"> </span><span class="n">Floating</span><span class="w"> </span><span class="n">number</span>
+<span class="nb">char</span><span class="w"> </span><span class="n">yes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Y&#39;</span><span class="p">;</span><span class="w">       </span><span class="o">//</span><span class="w"> </span><span class="n">Character</span>
+<span class="n">std</span><span class="p">::</span><span class="n">string</span><span class="w"> </span><span class="n">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ME&quot;</span><span class="p">;</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="nb nb-Type">String</span><span class="w"> </span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="nb nb-Type">bool</span><span class="w"> </span><span class="n">isRight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">true</span><span class="p">;</span><span class="w">  </span><span class="o">//</span><span class="w"> </span><span class="n">Boolean</span>
+
+<span class="o">//</span><span class="w"> </span><span class="n">Constants</span>
+<span class="k">const</span><span class="w"> </span><span class="nb nb-Type">float</span><span class="w"> </span><span class="n">RATE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.8</span><span class="p">;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="w"> </span><span class="p">;</span><span class="w">         </span><span class="c1">// Since C++11</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">age</span><span class="p">;</span><span class="w">     </span><span class="c1">// Print 25</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="primitive-data-types">Primitive Data Types</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Data Type</th>
+<th>Size</th>
+<th>Range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code></td>
+<td>4 bytes</td>
+<td>-2^31^ ^to^ 2^31^-1</td>
+</tr>
+<tr>
+<td><code>float</code></td>
+<td>4 bytes</td>
+<td><em>N/A</em></td>
+</tr>
+<tr>
+<td><code>double</code></td>
+<td>8 bytes</td>
+<td><em>N/A</em></td>
+</tr>
+<tr>
+<td><code>char</code></td>
+<td>1 byte</td>
+<td>-128 ^to^ 127</td>
+</tr>
+<tr>
+<td><code>bool</code></td>
+<td>1 byte</td>
+<td>true / false</td>
+</tr>
+<tr>
+<td><code>void</code></td>
+<td><em>N/A</em></td>
+<td><em>N/A</em></td>
+</tr>
+<tr>
+<td><code>wchar_t</code></td>
+<td>2 ^or^ 4 bytes</td>
+<td>1 wide character</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-input">User Input</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Type a number: &quot;</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">num</span><span class="p">;</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;You entered &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">num</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="swap">Swap</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+
+<span class="c1">// Outputs: a=10, b=5</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;a=&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;, b=&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comments">Comments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// A single one line comment in C++</span>
+
+<span class="cm">/* This is a multiple line comment</span>
+<span class="cm">   in C++ */</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="if-statement">If statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#c-conditionals">Conditionals</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="loops">Loops</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#c-loops">Loops</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions">Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">hello</span><span class="p">();</span><span class="w"> </span><span class="c1">// Declaring</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span>
+
+<span class="kt">void</span><span class="w"> </span><span class="n">hello</span><span class="p">()</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#c-functions">Functions</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="references">References</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="kt">int</span><span class="o">&amp;</span><span class="w"> </span><span class="n">ri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span><span class="w"> </span><span class="c1">// ri is a reference to i</span>
+
+<span class="n">ri</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="c1">// i is now changed to 2</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;i=&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+
+<span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w">   </span><span class="c1">// i is now changed to 3</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;ri=&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">ri</span><span class="p">;</span>
+</code></pre></div>
+
+<p><code>ri</code> and <code>i</code> refer to the same memory location.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="namespaces">Namespaces</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">ns1</span><span class="w"> </span><span class="p">}</span>
+<span class="nn">int</span><span class="w"> </span><span class="nn">main</span><span class="p">()</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">ns1</span><span class="w"> </span><span class="p">}</span>
+<span class="nn">using</span><span class="w"> </span><span class="nn">namespace</span><span class="w"> </span><span class="nn">ns1</span><span class="p">;</span>
+<span class="k">using</span><span class="w"> </span><span class="k">namespace</span><span class="w"> </span><span class="nn">std</span><span class="p">;</span>
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Namespaces allow global identifiers under a name</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="c-arrays">
+<h2 id="c-arrays">C++ Arrays</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="declaration">Declaration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">marks</span><span class="p">;</span><span class="w"> </span><span class="c1">// Definition</span>
+<span class="n">marks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">92</span><span class="p">;</span>
+<span class="n">marks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">97</span><span class="p">;</span>
+<span class="n">marks</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">98</span><span class="p">;</span>
+
+<span class="c1">// Define and initialize</span>
+<span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+
+<span class="c1">// With empty members</span>
+<span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="o">&gt;</span><span class="w"> </span><span class="n">marks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">marks</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span><span class="w"> </span><span class="c1">// Outputs: 0</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="manipulation">Manipulation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="err">┌─────┬─────┬─────┬─────┬─────┬─────┐</span>
+<span class="o">|</span><span class="w"> </span><span class="mi">92</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">97</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">98</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">99</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">98</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">94</span><span class="w">  </span><span class="o">|</span>
+<span class="err">└─────┴─────┴─────┴─────┴─────┴─────┘</span>
+<span class="w">   </span><span class="mi">0</span><span class="w">     </span><span class="mi">1</span><span class="w">     </span><span class="mi">2</span><span class="w">     </span><span class="mi">3</span><span class="w">     </span><span class="mi">4</span><span class="w">     </span><span class="mi">5</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="o">&gt;</span><span class="w"> </span><span class="n">marks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+
+<span class="c1">// Print first element</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">marks</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+
+<span class="c1">// Change 2nd element to 99</span>
+<span class="n">marks</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">99</span><span class="p">;</span>
+
+<span class="c1">// Take input from the user</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">marks</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="displaying">Displaying</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">char</span><span class="w"> </span><span class="n">ref</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+
+<span class="c1">// Range based for loop</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">&amp;</span><span class="n">n</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">ref</span><span class="p">)</span><span class="w"> </span>
+
+<span class="c1">// Traditional for loop</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">ref</span><span class="p">);</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multidimensional">Multidimensional</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="w">     </span><span class="n">j0</span><span class="w">   </span><span class="n">j1</span><span class="w">   </span><span class="n">j2</span><span class="w">   </span><span class="n">j3</span><span class="w">   </span><span class="n">j4</span><span class="w">   </span><span class="n">j5</span>
+<span class="w">   </span><span class="err">┌────┬────┬────┬────┬────┬────┐</span>
+<span class="n">i0</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">6</span><span class="w">  </span><span class="o">|</span>
+<span class="w">   </span><span class="err">├────┼────┼────┼────┼────┼────┤</span>
+<span class="n">i1</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="mi">6</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">5</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">2</span><span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="mi">1</span><span class="w">  </span><span class="o">|</span>
+<span class="w">   </span><span class="err">└────┴────┴────┴────┴────┴────┘</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">6</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">,</span><span class="w"> </span>
+<span class="p">};</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span>
+<span class="p">}</span>
+<span class="c1">// Outputs: 1 2 3 4 5 6 6 5 4 3 2 1</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="c-conditionals">
+<h2 id="c-conditionals">C++ Conditionals</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="if-clause">If Clause</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="p">;</span>
+
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">number</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">else</span>
+
+
+<span class="c1">// Outputs: even</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="else-if-statement">Else if Statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">score</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">99</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">100</span><span class="p">)</span><span class="w"> </span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">90</span><span class="p">)</span><span class="w"> </span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">80</span><span class="p">)</span><span class="w"> </span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">70</span><span class="p">)</span><span class="w"> </span>
+<span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">score</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">60</span><span class="p">)</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;OK&quot;</span><span class="p">;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;What?&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="operators">Operators</h3>
+<div class="section">
+<h4 id="relational-operators">Relational Operators</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a == b</code></td>
+<td>a is equal to b</td>
+</tr>
+<tr>
+<td><code>a != b</code></td>
+<td>a is NOT equal to b</td>
+</tr>
+<tr>
+<td><code>a &lt; b</code></td>
+<td>a is less than b</td>
+</tr>
+<tr>
+<td><code>a &gt; b</code></td>
+<td>a is greater b</td>
+</tr>
+<tr>
+<td><code>a &lt;= b</code></td>
+<td>a is less than or equal to b</td>
+</tr>
+<tr>
+<td><code>a &gt;= b</code></td>
+<td>a is greater or equal to b</td>
+</tr>
+</tbody>
+</table>
+<h4 id="assignment-operators">Assignment Operators</h4>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Equivalent to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a += b</code></td>
+<td><em>Aka</em> a = a + b</td>
+</tr>
+<tr>
+<td><code>a -= b</code></td>
+<td><em>Aka</em> a = a - b</td>
+</tr>
+<tr>
+<td><code>a *= b</code></td>
+<td><em>Aka</em> a = a * b</td>
+</tr>
+<tr>
+<td><code>a /= b</code></td>
+<td><em>Aka</em> a = a / b</td>
+</tr>
+<tr>
+<td><code>a %= b</code></td>
+<td><em>Aka</em> a = a % b</td>
+</tr>
+</tbody>
+</table>
+<h4 id="logical-operators">Logical Operators</h4>
+<table>
+<thead>
+<tr>
+<th>Example</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exp1 &amp;&amp; exp2</code></td>
+<td>Both are true <em>(AND)</em></td>
+</tr>
+<tr>
+<td><code>exp1 || exp2</code></td>
+<td>Either is true <em>(OR)</em></td>
+</tr>
+<tr>
+<td><code>!exp</code></td>
+<td><code>exp</code> is false <em>(NOT)</em></td>
+</tr>
+</tbody>
+</table>
+<h4 id="bitwise-operators">Bitwise Operators</h4>
+<table>
+<thead>
+<tr>
+<th>Operator</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a &amp; b</code></td>
+<td>Binary AND</td>
+</tr>
+<tr>
+<td><code>a | b</code></td>
+<td>Binary OR</td>
+</tr>
+<tr>
+<td><code>a ^ b</code></td>
+<td>Binary XOR</td>
+</tr>
+<tr>
+<td><code>~ a</code></td>
+<td>Binary One's Complement</td>
+</tr>
+<tr>
+<td><code>a &lt;&lt; b</code></td>
+<td>Binary Shift Left</td>
+</tr>
+<tr>
+<td><code>a &gt;&gt; b</code></td>
+<td>Binary Shift Right</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ternary-operator">Ternary Operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>           ┌── True ──┐
+Result = Condition ? Exp1 : Exp2;
+           └───── False ─────┘
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+<span class="n">max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+
+<span class="c1">// Outputs: 5</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="p">;</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">y</span><span class="p">)</span><span class="w">  </span><span class="k">else</span><span class="w"> </span>
+<span class="c1">// Outputs: 5</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">max</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch-statement">Switch Statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span>
+<span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">num</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="c-loops">
+<h2 id="c-loops">C++ Loops</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="while">While</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span>
+
+<span class="c1">// Outputs: 012345</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="do-while">Do-while</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="k">do</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="p">);</span>
+
+<span class="c1">// Outputs: 12345</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue-statements">Continue statements</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span><span class="w"> </span><span class="c1">// Outputs: 13579</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="infinite-loop">Infinite loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(;;)</span><span class="w"> </span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="for_each-since-c11">for_each (Since C++11)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;array&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span>
+<span class="p">;</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="o">&gt;</span><span class="w"> </span><span class="n">arr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">for_each</span><span class="p">(</span><span class="n">arr</span><span class="p">.</span><span class="n">begin</span><span class="p">(),</span><span class="w"> </span><span class="n">arr</span><span class="p">.</span><span class="n">end</span><span class="p">(),</span><span class="w"> </span><span class="n">print</span><span class="p">);</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="range-based-since-c11">Range-based (Since C++11)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// Outputs: 1 2 3 4 5</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">hello</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;CheatSheets.zip&quot;</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">char</span><span class="w"> </span><span class="n">c</span><span class="o">:</span><span class="w"> </span><span class="n">hello</span><span class="p">)</span>
+
+<span class="c1">// Outputs: Q u i c k R e f . M E</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="break-statements">Break statements</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">password</span><span class="p">,</span><span class="w"> </span><span class="n">times</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">password</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1234</span><span class="p">)</span><span class="w"> </span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Password: &quot;</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">cin</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">password</span><span class="p">;</span><span class="w"> </span><span class="c1">// input</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="several-variations">Several variations</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="o">--</span><span class="p">)</span>
+<span class="c1">// Outputs: i=0,j=2;i=1,j=1;i=2,j=0;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="c-functions">
+<h2 id="c-functions">C++ Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="arguments-returns">Arguments &amp; Returns</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">add</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span>
+</code></pre></div>
+
+<p><code>add</code> is a function taking 2 ints and returning int</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="overloading">Overloading</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="n">fun</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">string</span><span class="w"> </span><span class="n">b</span><span class="p">)</span><span class="w"> </span>
+<span class="kt">void</span><span class="w"> </span><span class="n">fun</span><span class="p">(</span><span class="n">string</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span>
+<span class="kt">void</span><span class="w"> </span><span class="n">fun</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="built-in-functions">Built-in Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;cmath&gt;</span><span class="c1"> // import library</span>
+
+<span class="kt">int</span><span class="w"> </span><span class="n">main</span><span class="p">()</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="c-classes-objects">
+<h2 id="c-classes-objects">C++ Classes &amp; Objects</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="defining-a-class">Defining a Class</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="creating-an-object">Creating an Object</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">;</span><span class="w">  </span><span class="c1">// Create an object of MyClass</span>
+
+<span class="n">myObj</span><span class="p">.</span><span class="n">myNum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span><span class="w">          </span><span class="c1">// Set the value of myNum to 15</span>
+<span class="n">myObj</span><span class="p">.</span><span class="n">myString</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1">// Set the value of myString to &quot;Hello&quot;</span>
+
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myObj</span><span class="p">.</span><span class="n">myNum</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">         </span><span class="c1">// Output 15</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myObj</span><span class="p">.</span><span class="n">myString</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">      </span><span class="c1">// Output &quot;Hello&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="constructors">Constructors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span>
+<span class="p">};</span>
+
+<span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">;</span><span class="w">  </span><span class="c1">// Create an object of MyClass</span>
+
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myObj</span><span class="p">.</span><span class="n">myNum</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">         </span><span class="c1">// Output 0</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myObj</span><span class="p">.</span><span class="n">myString</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">      </span><span class="c1">// Output &quot;&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="destructors">Destructors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span>
+<span class="w">    </span><span class="o">~</span><span class="n">MyClass</span><span class="p">()</span><span class="w"> </span>
+<span class="p">};</span>
+
+<span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">;</span><span class="w">  </span><span class="c1">// Create an object of MyClass</span>
+
+<span class="c1">// Code here...</span>
+
+<span class="c1">// Object is destroyed automatically when the program exits the scope</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="class-methods">Class Methods</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span>
+<span class="p">};</span>
+
+<span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">;</span><span class="w">  </span><span class="c1">// Create an object of MyClass</span>
+<span class="n">myObj</span><span class="p">.</span><span class="n">myMethod</span><span class="p">();</span><span class="w">  </span><span class="c1">// Call the method</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="access-modifiers">Access Modifiers</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span><span class="p">;</span>
+
+<span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">;</span>
+<span class="n">myObj</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span><span class="w">  </span><span class="c1">// Allowed (public)</span>
+<span class="n">myObj</span><span class="p">.</span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="p">;</span><span class="w">  </span><span class="c1">// Not allowed (private)</span>
+<span class="n">myObj</span><span class="p">.</span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">75</span><span class="p">;</span><span class="w">  </span><span class="c1">// Not allowed (protected)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="getters-and-setters">Getters and Setters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="w"> </span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="nf">getMyNum</span><span class="p">()</span><span class="w"> </span>
+<span class="p">};</span>
+
+<span class="n">MyClass</span><span class="w"> </span><span class="n">myObj</span><span class="p">;</span>
+<span class="n">myObj</span><span class="p">.</span><span class="n">setMyNum</span><span class="p">(</span><span class="mi">15</span><span class="p">);</span><span class="w">  </span><span class="c1">// Set the value of myNum to 15</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myObj</span><span class="p">.</span><span class="n">getMyNum</span><span class="p">()</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// Output 15</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="inheritance">Inheritance</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Vehicle</span><span class="w"> </span>
+<span class="p">};</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Car</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">Vehicle</span><span class="w"> </span><span class="p">;</span>
+
+<span class="n">Car</span><span class="w"> </span><span class="n">myCar</span><span class="p">;</span>
+<span class="n">myCar</span><span class="p">.</span><span class="n">honk</span><span class="p">();</span><span class="w">  </span><span class="c1">// Output &quot;Tuut, tuut!&quot;</span>
+<span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">myCar</span><span class="p">.</span><span class="n">brand</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s">&quot; &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">myCar</span><span class="p">.</span><span class="n">model</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">endl</span><span class="p">;</span><span class="w">  </span><span class="c1">// Output &quot;Ford Mustang&quot;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="c-preprocessor">
+<h2 id="c-preprocessor">C++ Preprocessor</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="preprocessor">Preprocessor</h3>
+<div class="section">
+<ul>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">if</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">elif</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">else</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">endif</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">ifdef</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">ifndef</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/replace">define</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/replace">undef</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/include">include</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/line">line</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/error">error</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/impl">pragma</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">defined</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/feature_test">__has_include</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/feature_test">__has_cpp_attribute</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/export">export</a></li>
+<li><a href="https://en.cppreference.com/mwiki/index.php?title=cpp/keyword/import&amp;action=edit&amp;redlink=1">import</a></li>
+<li><a href="https://en.cppreference.com/mwiki/index.php?title=cpp/keyword/module&amp;action=edit&amp;redlink=1">module</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="includes">Includes</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;iostream&quot;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;iostream&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="defines">Defines</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#define FOO</span>
+<span class="cp">#define FOO &quot;hello&quot;</span>
+
+<span class="cp">#undef FOO</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="if">If</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#ifdef DEBUG</span>
+<span class="w">  </span><span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="err">&#39;</span><span class="n">hi</span><span class="err">&#39;</span><span class="p">);</span>
+<span class="cp">#elif defined VERBOSE</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="cp">#else</span>
+<span class="w">  </span><span class="p">...</span>
+<span class="cp">#endif</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="error">Error</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#if VERSION == 2.0</span>
+<span class="w">  </span><span class="cp">#error Unsupported</span>
+<span class="w">  </span><span class="cp">#warning Not really supported</span>
+<span class="cp">#endif</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="macro">Macro</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#define DEG(x) ((x) * 57.29)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="token-concat">Token concat</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#define DST(name) name##_s name##_t</span>
+<span class="n">DST</span><span class="p">(</span><span class="n">object</span><span class="p">);</span><span class="w">   </span><span class="err">#</span><span class="o">=&gt;</span><span class="w"> </span><span class="n">object_s</span><span class="w"> </span><span class="n">object_t</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="stringification">Stringification</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#define STR(name) #name</span>
+<span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">STR</span><span class="p">(</span><span class="n">object</span><span class="p">);</span><span class="w">   </span><span class="err">#</span><span class="o">=&gt;</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;object&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="file-and-line">file and line</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">#define LOG(msg) console.log(__FILE__, __LINE__, msg)</span>
+<span class="cp">#=&gt; console.log(&quot;file.txt&quot;, 3, &quot;hey&quot;)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="miscellaneous">
+<h2 id="miscellaneous">Miscellaneous</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="escape-sequences">Escape Sequences</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Escape Sequences</th>
+<th>Characters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\b</code></td>
+<td>Backspace</td>
+</tr>
+<tr>
+<td><code>\f</code></td>
+<td>Form feed</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td>Newline</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td>Return</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td>Horizontal tab</td>
+</tr>
+<tr>
+<td><code>\v</code></td>
+<td>Vertical tab</td>
+</tr>
+<tr>
+<td><code>\\</code></td>
+<td>Backslash</td>
+</tr>
+<tr>
+<td><code>\'</code></td>
+<td>Single quotation mark</td>
+</tr>
+<tr>
+<td><code>\"</code></td>
+<td>Double quotation mark</td>
+</tr>
+<tr>
+<td><code>\?</code></td>
+<td>Question mark</td>
+</tr>
+<tr>
+<td><code>\0</code></td>
+<td>Null Character</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="keywords">Keywords</h3>
+<div class="section">
+<ul>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/alignas">alignas</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/alignof">alignof</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/and">and</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/and_eq">and_eq</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/asm">asm</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/atomic_cancel">atomic_cancel</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/atomic_commit">atomic_commit</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/atomic_noexcept">atomic_noexcept</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/auto">auto</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/bitand">bitand</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/bitor">bitor</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/bool">bool</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/break">break</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/case">case</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/catch">catch</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/char">char</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/char8_t">char8_t</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/char16_t">char16_t</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/char32_t">char32_t</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/class">class</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/compl">compl</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/concept">concept</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/const">const</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/consteval">consteval</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/constexpr">constexpr</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/constinit">constinit</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/const_cast">const_cast</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/continue">continue</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/co_await">co_await</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/co_return">co_return</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/co_yield">co_yield</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/decltype">decltype</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/default">default</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/delete">delete</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/do">do</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/double">double</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/dynamic_cast">dynamic_cast</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/else">else</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/enum">enum</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/explicit">explicit</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/export">export</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/extern">extern</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/false">false</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/float">float</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/for">for</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/friend">friend</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/goto">goto</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/if">if</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/inline">inline</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/int">int</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/long">long</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/mutable">mutable</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/namespace">namespace</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/new">new</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/noexcept">noexcept</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/not">not</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/not_eq">not_eq</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/nullptr">nullptr</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/operator">operator</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/or">or</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/or_eq">or_eq</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/private">private</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/protected">protected</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/public">public</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/reflexpr">reflexpr</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/register">register</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/reinterpret_cast">reinterpret_cast</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/requires">requires</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/language/return">return</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/short">short</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/signed">signed</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/sizeof">sizeof</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/static">static</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/static_assert">static_assert</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/static_cast">static_cast</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/struct">struct</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/switch">switch</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/synchronized">synchronized</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/template">template</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/this">this</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/thread_local">thread_local</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/throw">throw</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/true">true</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/try">try</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/typedef">typedef</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/typeid">typeid</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/typename">typename</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/union">union</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/unsigned">unsigned</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/using">using</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/virtual">virtual</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/void">void</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/volatile">volatile</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/wchar_t">wchar_t</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/while">while</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/xor">xor</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/xor_eq">xor_eq</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/language/final">final</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/language/override">override</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/language/transactional_memory">transaction_safe</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/language/transactional_memory">transaction_safe_dynamic</a> </li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="preprocessor_1">Preprocessor</h3>
+<div class="section">
+<ul>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">if</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">elif</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">else</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">endif</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">ifdef</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">ifndef</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/replace">define</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/replace">undef</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/include">include</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/line">line</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/error">error</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/impl">pragma</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/preprocessor/conditional">defined</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/feature_test">__has_include</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/feature_test">__has_cpp_attribute</a></li>
+<li><a href="https://en.cppreference.com/w/cpp/keyword/export">export</a></li>
+<li><a href="https://en.cppreference.com/mwiki/index.php?title=cpp/keyword/import&amp;action=edit&amp;redlink=1">import</a></li>
+<li><a href="https://en.cppreference.com/mwiki/index.php?title=cpp/keyword/module&amp;action=edit&amp;redlink=1">module</a> </li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li>
+<p><a href="https://hackingcpp.com/cpp/cheat_sheets.html">C++ Infographics &amp; Cheat Sheets</a> <em>(hackingcpp.com)</em></p>
+</li>
+<li>
+<p><a href="https://en.cppreference.com/w/">C++ reference</a> <em>(cppreference.com)</em></p>
+</li>
+<li><a href="http://www.cplusplus.com/doc/tutorial/">C++ Language Tutorials</a> <em>(cplusplus.com)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

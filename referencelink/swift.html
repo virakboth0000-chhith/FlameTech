@@ -1,0 +1,1895 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Swift Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This cheat sheet provides examples of using Swift that cover basic Swift knowledge, control flow etc.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#eb4e38}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(235,78,56,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>Swift</span>
+  </div>
+  <div class="post-icon">SW</div>
+  <h1>Swift <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This cheat sheet provides examples of using Swift that cover basic Swift knowledge, control flow etc.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">Apple</span> <span class="meta-tag">iOS</span> <span class="meta-tag">iPadOS</span> <span class="meta-tag">Programming</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="variable">Variable</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">score</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span><span class="w">  </span><span class="c1">// Variable</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">pi</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.14</span><span class="w">  </span><span class="c1">// Constant</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">greeting</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">isMorning</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">numberOfToys</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">numberOfToys</span><span class="p">)</span>
+<span class="c1">// prints &quot;9&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="type-annotations">Type annotations</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">greeting</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">isMorning</span><span class="p">:</span><span class="w"> </span><span class="nb">Bool</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">price</span><span class="p">:</span><span class="w"> </span><span class="nb">Double</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">8.99</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="arithmetic-operators">Arithmetic operators</h3>
+<div class="section">
+<ul>
+<li><code>+</code> Add</li>
+<li><code>-</code> Subtraction</li>
+<li><code>*</code> Multiplication</li>
+<li><code>/</code> Division</li>
+<li><code>%</code> Remainder</li>
+</ul>
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">0</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c1">// x is now 6</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c1">// x is now 2</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c1">// x is now 8</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c1">// x is now 2</span>
+<span class="n">x</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="c1">// x is now 0</span>
+</code></pre></div>
+
+<hr />
+<ul>
+<li><code>+=</code> Adds and assigns sums</li>
+<li><code>-=</code> subtract and assign the difference</li>
+<li><code>*=</code> Multiplication and assignment</li>
+<li><code>/=</code> Divide and assign quotient</li>
+<li><code>%=</code> Divide and assign remainder</li>
+</ul>
+<h4 id="compound-assignment-operators">Compound Assignment Operators</h4>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">numberOfDogs</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span>
+<span class="n">numberOfDogs</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;There are </span><span class="si">\(</span><span class="n">numberOfDogs</span><span class="si">)</span><span class="s"> Dalmatians!&quot;</span><span class="p">)</span>
+
+<span class="c1">// print: There are 101 Dalmatians!</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-interpolation">String interpolation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">apples</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">6</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;I have </span><span class="si">\(</span><span class="n">apples</span><span class="si">)</span><span class="s"> apples!&quot;</span><span class="p">)</span>
+
+<span class="c1">// print: I have 6 apples!</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multi-line-string">Multi-line string</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">myLongString</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;</span>
+<span class="s">Swift?</span>
+<span class="s">This is my favorite language!</span>
+<span class="s">Yeah!</span>
+<span class="s">&quot;&quot;&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="code-comments">Code Comments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// This line represents a comment in Swift.</span>
+
+<span class="cm">/*</span>
+<span class="cm">This is all commented out.</span>
+<span class="cm">None will run!</span>
+<span class="cm">*/</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="form-a-tuple">Form a tuple</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">player</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;Maya&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">)</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">player</span><span class="p">)</span><span class="w"> </span><span class="c1">// (&quot;Maya&quot;, 5, 150)</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">\(</span><span class="n">player</span><span class="p">.</span><span class="mi">0</span><span class="si">)</span><span class="s">: level </span><span class="si">\(</span><span class="n">player</span><span class="p">.</span><span class="mi">1</span><span class="si">)</span><span class="s">, </span><span class="si">\(</span><span class="n">player</span><span class="p">.</span><span class="mi">2</span><span class="si">)</span><span class="s"> pts&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">// Maya: level 5, 150 pts</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="decompose-tuple">Decompose tuple</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">player</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Maya&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">level</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="kd">let</span><span class="w"> </span><span class="p">(</span><span class="n">currentName</span><span class="p">,</span><span class="w"> </span><span class="n">curLevel</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">player</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;</span><span class="si">\(</span><span class="n">currentName</span><span class="si">)</span><span class="s">: level </span><span class="si">\(</span><span class="n">curLevel</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="c1">// print: Maya: level 5</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="special-comment-syntax-mark">Special comment syntax (MARK)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// MARK: -view settings</span>
+</code></pre></div>
+
+<p><code>MARK</code> can be used to display comments in the column</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="special-comment-syntax-todo">Special comment syntax (TODO)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// TODO: update logic to accommodate data changes</span>
+</code></pre></div>
+
+<p><code>TODO</code> is used to display reminders of things that need to be done</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="special-comment-syntax-fixme">Special Comment Syntax (FIXME)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// FIXME: Fix buggy behavior when making changes to existing entries</span>
+</code></pre></div>
+
+<p><code>FIXME</code> is used to display reminders about things that need to be fixed</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="variable_1">
+<h2 id="variable_1">Variable</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="variable-declaration">Variable declaration</h3>
+<div class="section">
+<p>Variables are declared with <code>var</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">greeting</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">isMorning</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+
+<p>For clarity, variable declarations can contain type annotations:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">greeting</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">isMorning</span><span class="p">:</span><span class="w"> </span><span class="nb">Bool</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+
+<p>Variables are mutable. Their values be changed:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">numberOfToys</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">numberOfToys</span><span class="p">)</span>
+<span class="c1">// print &quot;9&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="constants">Constants</h3>
+<div class="section">
+<p>Constants are declared with <code>let</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">greeting</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">isMorning</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+
+<p>For clarity, constant declarations can contain type annotations:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">greeting</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">isMorning</span><span class="p">:</span><span class="w"> </span><span class="nb">Bool</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+</code></pre></div>
+
+<p>Constants are immutable. Their values can not be changed:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">numberOfToys</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">8</span>
+<span class="n">numberOfToys</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">1</span>
+<span class="c1">// Error: numberOfToys is immutable</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="computed-variables-get-and-set">Computed variables (get and set)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">import</span><span class="w"> </span><span class="nc">Foundation</span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">df</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">DateFormatter</span><span class="p">()</span>
+<span class="n">df</span><span class="p">.</span><span class="n">dateFormat</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;d MMMM yyyy&quot;</span>
+
+<span class="k">guard</span><span class="w"> </span><span class="kd">var</span><span class="w"> </span><span class="nv">birth</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">df</span><span class="p">.</span><span class="n">date</span><span class="p">(</span><span class="n">from</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5 June 1999&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">age</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="c1">// 23</span>
+<span class="k">guard</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">birth2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">df</span><span class="p">.</span><span class="n">date</span><span class="p">(</span><span class="n">from</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5 June 2002&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span>
+<span class="n">birth</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">birth2</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">age</span><span class="p">)</span><span class="w"> </span><span class="c1">// 20</span>
+</code></pre></div>
+
+<p>In the example below, distanceInFeet has a <code>getter</code> and a <code>setter</code>. Because of the <code>setter</code>, the <code>getter</code> requires the
+keyword <code>get</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">distanceInMeters</span><span class="p">:</span><span class="w"> </span><span class="nb">Float</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">100</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">distanceInFeet</span><span class="p">:</span><span class="w"> </span><span class="nb">Float</span><span class="w"> </span>
+<span class="w">  </span><span class="kr">set</span><span class="p">(</span><span class="n">newDistance</span><span class="p">)</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">distanceInMeters</span><span class="p">)</span><span class="w"> </span><span class="c1">// 100.0</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">distanceInFeet</span><span class="p">)</span><span class="w">   </span><span class="c1">// 328.0</span>
+
+<span class="n">distanceInFeet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">250</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">distanceInMeters</span><span class="p">)</span><span class="w"> </span><span class="c1">// 76.21951</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">distanceInFeet</span><span class="p">)</span><span class="w">   </span><span class="c1">// 250.0</span>
+
+<span class="n">distanceInMeters</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">800</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">distanceInMeters</span><span class="p">)</span><span class="w"> </span><span class="c1">// 800.0</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">distanceInFeet</span><span class="p">)</span><span class="w">   </span><span class="c1">// 2624.0</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="willset">willSet</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="bp">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="c1">// print: distance will be set</span>
+</code></pre></div>
+
+<p>The new value can be accessed in <code>willSet</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="bp">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="c1">// print: distance will be set to 10</span>
+</code></pre></div>
+
+<p><code>willSet</code> can be used to execute some code before setting the variable value</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="didset">didSet</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span>
+<span class="p">}</span>
+<span class="bp">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="c1">// print: distance will be set to 10</span>
+<span class="w">              </span><span class="c1">// print: its old value is: 5</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="willset-and-didset">willSet and didSet</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span>
+<span class="w">  </span><span class="kr">didSet</span><span class="w"> </span>
+<span class="p">}</span>
+<span class="bp">distance</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="conditions">
+<h2 id="conditions">Conditions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="if-statement">if statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">halloween</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+<span class="k">if</span><span class="w"> </span><span class="n">halloween</span><span class="w"> </span>
+<span class="c1">// print: Trick or treat!</span>
+<span class="k">if</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="w">  </span><span class="k">else</span><span class="w"> </span>
+<span class="c1">// output: &quot;5 is greater than 3&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="else-statement">else statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">turbulence</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">false</span>
+
+<span class="k">if</span><span class="w"> </span><span class="n">turbulence</span><span class="w">  </span><span class="k">else</span><span class="w"> </span>
+<span class="c1">// print: You are free to move around.</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="else-if-statement">else if statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">weather</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;rainy&quot;</span>
+<span class="k">if</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s">&quot;sunny&quot;</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s">&quot;rainy&quot;</span><span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">weather</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s">&quot;snowing&quot;</span><span class="w">  </span><span class="k">else</span><span class="w"> </span>
+<span class="c1">// print: take an umbrella</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comparison-operators">Comparison Operators</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="mi">5</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="w">      </span><span class="c1">// true</span>
+<span class="mi">6</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w">     </span><span class="c1">// true</span>
+<span class="mi">2</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">3</span><span class="w">     </span><span class="c1">// false</span>
+<span class="mi">3</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="w">     </span><span class="c1">// true</span>
+<span class="s">&quot;A&quot;</span><span class="w"> </span><span class="p">==</span><span class="w"> </span><span class="s">&quot;a&quot;</span><span class="w"> </span><span class="c1">// false</span>
+<span class="s">&quot;B&quot;</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&quot;b&quot;</span><span class="w"> </span><span class="c1">// true</span>
+</code></pre></div>
+
+<p>-<code>&lt;</code> less than <br> -<code>&gt;</code> greater than <br> -<code>&lt;=</code> less than or equal to <br> -<code>&gt;=</code> greater than or equal to <br> -<code>==</code> is
+equal to <br> -<code>!=</code> is not equal to</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="range-operators">Range Operators</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">a</span><span class="p">...</span><span class="n">b</span><span class="w">      </span><span class="c1">// numbers between a and b (including both a and b)</span>
+<span class="n">a</span><span class="p">..&lt;</span><span class="n">b</span><span class="w">      </span><span class="c1">// numbers between a and b (including a but excluding b)</span>
+<span class="p">...</span><span class="n">b</span><span class="w">      </span><span class="c1">// numbers till b (including b)</span>
+</code></pre></div>
+
+<p>-<code>a...b</code> Closed Range <br> -<code>a..&lt;b</code> Half-Open Range <br> -<code>...b</code> One-Sided Range</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ternary-conditional-operator">Ternary conditional operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">driverLicense</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">true</span>
+
+<span class="n">driverLicense</span>
+<span class="w">    </span><span class="p">?</span><span class="w"> </span><span class="bp">print</span><span class="p">(</span><span class="s">&quot;driver seat&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="bp">print</span><span class="p">(</span><span class="s">&quot;passenger seat&quot;</span><span class="p">)</span>
+<span class="c1">// print: driver&#39;s seat</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch-statement">switch statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">secondaryColor</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;green&quot;</span>
+
+<span class="k">switch</span><span class="w"> </span><span class="n">secondaryColor</span><span class="w"> </span>
+<span class="c1">// print: mix of blue and yellow</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch-statement-interval-matching">switch statement: interval matching</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">year</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1905</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">artPeriod</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span>
+
+<span class="k">switch</span><span class="w"> </span><span class="n">year</span><span class="w"> </span>
+<span class="c1">// print: post-impressionism</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch-statement-composite-case">switch statement: composite case</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">service</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Seamless&quot;</span>
+
+<span class="k">switch</span><span class="w"> </span><span class="n">service</span><span class="w"> </span>
+<span class="c1">// print: restaurant takeaway</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch-statement-where-clause">switch statement: where clause</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">num</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">7</span>
+
+<span class="k">switch</span><span class="w"> </span><span class="n">num</span><span class="w"> </span>
+
+<span class="c1">// print: 7 odd</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical-operators">Logical Operators</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">!</span><span class="kc">true</span><span class="w">  </span><span class="c1">// false</span>
+<span class="o">!</span><span class="kc">false</span><span class="w"> </span><span class="c1">//true</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical-operators_1">Logical Operators &amp;&amp;</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kc">true</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kc">true</span><span class="w">   </span><span class="c1">// true</span>
+<span class="kc">true</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kc">false</span><span class="w">  </span><span class="c1">// false</span>
+<span class="kc">false</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="c1">// false</span>
+<span class="kc">false</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c1">// false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical-operators_2">Logical operators ||</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kc">true</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">true</span><span class="w">   </span><span class="c1">// true</span>
+<span class="kc">true</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">false</span><span class="w">  </span><span class="c1">// true</span>
+<span class="kc">false</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">true</span><span class="w">  </span><span class="c1">// true</span>
+<span class="kc">false</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c1">// false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="combined-logical-operators">Combined Logical Operators</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">!</span><span class="kc">false</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c1">// true</span>
+</code></pre></div>
+
+<p><code>!false &amp;&amp; true</code> first evaluates and returns <code>true</code> Then, the expression, <code>true</code> || <code>false</code> evaluates and returns the
+final result <code>true</code></p>
+<div class="codehilite"><pre><span></span><code><span class="kc">false</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="c1">// false</span>
+</code></pre></div>
+
+<p><code>true &amp;&amp; false</code> first evaluates to return <code>false</code> Then, the expression, <code>false</code> || <code>false</code> evaluates and returns the
+final result <code>false</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="control-the-order-of-execution">Control the order of execution</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// without parentheses:</span>
+<span class="kc">true</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="kc">false</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">false</span>
+<span class="c1">//----&gt; true</span>
+
+<span class="c1">// with brackets:</span>
+<span class="p">(</span><span class="kc">true</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">true</span><span class="p">)</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="kc">false</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="kc">false</span><span class="p">)</span>
+<span class="c1">//----&gt; false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="simple-guards">Simple guards</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="p">?)</span><span class="w"> </span>
+<span class="w">  </span><span class="bp">print</span><span class="p">(</span><span class="s">&quot;Hello </span><span class="si">\(</span><span class="n">unwrapped</span><span class="si">)</span><span class="s">!&quot;</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="n">greet</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Asma&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">// output: Hello Asma!</span>
+<span class="n">greet</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="kc">nil</span><span class="p">)</span><span class="w">    </span><span class="c1">// output: Hello guest!</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="cycle">
+<h2 id="cycle">cycle</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="scope">scope</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">zeroToThree</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">0.</span><span class="p">..</span><span class="mi">3</span>
+<span class="c1">//zeroToThree: 0, 1, 2, 3</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="stride-function">stride() function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">oddNum</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="bp">stride</span><span class="p">(</span><span class="n">from</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">to</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">by</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span>
+<span class="c1">// print: 1</span>
+<span class="c1">// print: 3</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="for-in-loop">for-in loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s">&quot;hehe&quot;</span><span class="w"> </span>
+<span class="c1">// print: h</span>
+<span class="c1">// print: e</span>
+<span class="c1">// print: h</span>
+<span class="c1">// print: e</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue-keyword">continue keyword</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">num</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">0.</span><span class="p">..</span><span class="mi">5</span><span class="w"> </span>
+<span class="w">  </span><span class="bp">print</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">// print: 1</span>
+<span class="c1">// print: 3</span>
+<span class="c1">// print: 5</span>
+</code></pre></div>
+
+<p>The <code>continue</code> keyword will force the loop to continue for the next iteration</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="break-keyword">break keyword</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">char</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s">&quot;supercalifragilistic&quot;</span><span class="w"> </span>
+<span class="w">  </span><span class="bp">print</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="c1">// print: s</span>
+<span class="c1">// print: u</span>
+<span class="c1">// print: p</span>
+<span class="c1">// print: e</span>
+<span class="c1">// print: r</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-underscores">Use underscores</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="kc">_</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="mf">1.</span><span class="p">..</span><span class="mi">3</span><span class="w"> </span>
+<span class="c1">// print: Ole</span>
+<span class="c1">// print: Ole</span>
+<span class="c1">// print: Ole</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="while-loop">while loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">counter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">stopNum</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">Int</span><span class="p">.</span><span class="n">random</span><span class="p">(</span><span class="k">in</span><span class="p">:</span><span class="w"> </span><span class="mf">1.</span><span class="p">..</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">while</span><span class="w"> </span><span class="n">counter</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">stopNum</span><span class="w"> </span>
+<span class="c1">// loop to print until the stop condition is met</span>
+</code></pre></div>
+
+<p>A <code>while</code> loop accepts a condition and keeps executing its body code while the provided condition is <code>true</code>. If the
+condition is never false, the loop will keep running and the program will get stuck in an <code>infinite loop</code></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="arrays-and-collections">
+<h2 id="arrays-and-collections">Arrays and collections</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="array">Array</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">scores</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">Int</span><span class="p">]()</span>
+<span class="c1">// array is empty: []</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="count-property">.count property</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">grocery</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;🥓&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;🥞&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;🍪&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;🥛&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;🍊&quot;</span><span class="p">]</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">grocery</span><span class="p">.</span><span class="bp">count</span><span class="p">)</span>
+<span class="c1">// print: 5</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="index">index</h3>
+<div class="section">
+<p>The index refers to the item's position in the ordered list, and a single element is retrieved from the array using the
+subscript syntax <code>array[index]</code>.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">vowels</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;e&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;i&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;o&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;u&quot;</span><span class="p">]</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">vowels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="c1">// prints: a</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">vowels</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="c1">// prints: e</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">vowels</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="c1">// print: i</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">vowels</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="w"> </span><span class="c1">// prints: o</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">vowels</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="w"> </span><span class="c1">// prints: u</span>
+</code></pre></div>
+
+<p>Note: Swift arrays are zero-indexed, meaning the first element has index 0.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="initialize-with-array-literal">Initialize with array literal</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// use type inference:</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">snowfall</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">2.4</span><span class="p">,</span><span class="w"> </span><span class="mf">3.6</span><span class="p">,</span><span class="w"> </span><span class="mf">3.4</span><span class="p">,</span><span class="w"> </span><span class="mf">1.8</span><span class="p">,</span><span class="w"> </span><span class="mf">0.0</span><span class="p">]</span>
+<span class="c1">// explicit type:</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">temp</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="nb">Int</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">33</span><span class="p">,</span><span class="w"> </span><span class="mi">31</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">38</span><span class="p">,</span><span class="w"> </span><span class="mi">44</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="initialize-with-default-value">Initialize with default value</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">teams</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">Int</span><span class="p">](</span><span class="n">repeating</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="bp">count</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">teams</span><span class="p">)</span><span class="w"> </span><span class="c1">// prints: [0, 0, 0]</span>
+<span class="c1">// or with Array type</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">sizes</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">&gt;(</span><span class="n">repeating</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="bp">count</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span><span class="w"> </span><span class="c1">// prints: [0, 0, 0]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="append-method-and-operator">.append() method and += operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">gymBadges</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Boulder&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Cascade&quot;</span><span class="p">]</span>
+<span class="n">gymBadges</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="s">&quot;Thunder&quot;</span><span class="p">)</span>
+<span class="n">gymBadges</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Rainbow&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Soul&quot;</span><span class="p">]</span>
+<span class="c1">// [&quot;Boulder&quot;, &quot;Cascade&quot;, &quot;Thunder&quot;,</span>
+<span class="c1">// &quot;Rainbow&quot;, &quot;Soul&quot;]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="insert-and-remove-methods">.insert() and .remove() methods</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">moon</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;🌖&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;🌗&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;🌘&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;🌑&quot;</span><span class="p">]</span>
+<span class="n">moon</span><span class="p">.</span><span class="bp">insert</span><span class="p">(</span><span class="s">&quot;🌕&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">at</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="c1">// [&quot;🌕&quot;, &quot;🌖&quot;, &quot;🌗&quot;, &quot;🌘&quot;, &quot;🌑&quot;]</span>
+
+<span class="n">moon</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="n">at</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">)</span>
+<span class="c1">// [&quot;🌕&quot;, &quot;🌖&quot;, &quot;🌗&quot;, &quot;🌘&quot;]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="iterate-over-an-array">Iterate over an array</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">employees</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Peter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Denial&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jame&quot;</span><span class="p">]</span>
+<span class="k">for</span><span class="w"> </span><span class="n">person</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">employees</span><span class="w"> </span>
+<span class="c1">// print: Peter</span>
+<span class="c1">// print: Denial</span>
+<span class="c1">// print: Jam</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="collection-set">Collection (Set)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">paintingsInMOMA</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;The Dream&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;The Starry Night&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;The False Mirror&quot;</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<p>We can use a collection (<code>Set</code>) to store <code>unique</code> elements of the same data type</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="empty-collection-set">Empty collection (Set)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">team</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Set</span><span class="p">&lt;</span><span class="nb">String</span><span class="p">&gt;()</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">team</span><span class="p">)</span>
+<span class="c1">// print: []</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="populate-the-collection">Populate the collection</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">vowels</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;a&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;e&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;i&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;o&quot;</span><span class="p">,</span><span class="s">&quot;u&quot;</span><span class="p">]</span>
+</code></pre></div>
+
+<p>To create a set filled with values, use the <code>Set</code> keyword before the assignment operator.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="insert">.insert()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">cookieJar</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;Chocolate Chip&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Oatmeal Raisin&quot;</span>
+<span class="p">]</span>
+<span class="c1">// add a new element</span>
+<span class="n">cookieJar</span><span class="p">.</span><span class="bp">insert</span><span class="p">(</span><span class="s">&quot;Peanut Butter Chip&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="remove-and-removeall-methods">.remove() and .removeAll() methods</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">oddNumbers</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span>
+
+<span class="c1">// remove existing element</span>
+<span class="n">oddNumbers</span><span class="p">.</span><span class="n">remove</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">// remove all elements</span>
+<span class="n">oddNumbers</span><span class="p">.</span><span class="bp">removeAll</span><span class="p">()</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="contains">.contains()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">names</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Rosa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Doug&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Waldo&quot;</span><span class="p">]</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">names</span><span class="p">.</span><span class="bp">contains</span><span class="p">(</span><span class="s">&quot;Lola&quot;</span><span class="p">))</span><span class="w"> </span><span class="c1">// print: false</span>
+
+<span class="k">if</span><span class="w"> </span><span class="n">names</span><span class="p">.</span><span class="bp">contains</span><span class="p">(</span><span class="s">&quot;Waldo&quot;</span><span class="p">)</span><span class="w"> </span><span class="k">else</span><span class="w"> </span>
+<span class="c1">// print: There&#39;s Waldo!</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="isempty-property">.isEmpty property</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">emptyList</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">String</span><span class="p">]()</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">emptyList</span><span class="p">.</span><span class="bp">isEmpty</span><span class="p">)</span><span class="w">     </span><span class="c1">// print: true</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">populatedList</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="nb">Int</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">populatedList</span><span class="p">.</span><span class="bp">isEmpty</span><span class="p">)</span><span class="w"> </span><span class="c1">// print: false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="iterate-over-a-collection">Iterate over a collection</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">recipe</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Egg&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Flour&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Sugar&quot;</span><span class="p">]</span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">ingredient</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">recipe</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="isempty-property_1">.isEmpty property</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">emptySet</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Set</span><span class="p">&lt;</span><span class="nb">String</span><span class="p">&gt;()</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">emptySet</span><span class="p">.</span><span class="bp">isEmpty</span><span class="p">)</span><span class="w">     </span><span class="c1">// print: true</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">populatedSet</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">]</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">populatedSet</span><span class="p">.</span><span class="bp">isEmpty</span><span class="p">)</span><span class="w"> </span><span class="c1">// print: false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="count-property_1">.count property</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">band</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;Peter&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Denial&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Jame&quot;</span><span class="p">]</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;The band has </span><span class="si">\(</span><span class="n">band</span><span class="p">.</span><span class="bp">count</span><span class="si">)</span><span class="s"> players.&quot;</span><span class="p">)</span>
+<span class="c1">// print: Band has 4 players.</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="intersection-intersection">.intersection() Intersection</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">setA</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">]</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">setB</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;E&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;F&quot;</span><span class="p">]</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">setC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">setA</span><span class="p">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">setB</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">setC</span><span class="p">)</span><span class="w"> </span><span class="c1">// print: [&quot;D&quot;, &quot;C&quot;]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="union">.union()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">setA</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">]</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">setB</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;E&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;F&quot;</span><span class="p">]</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">setC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">setA</span><span class="p">.</span><span class="n">union</span><span class="p">(</span><span class="n">setB</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">setC</span><span class="p">)</span>
+<span class="c1">// print: [&quot;B&quot;, &quot;A&quot;, &quot;D&quot;, &quot;F&quot;, &quot;C&quot;, &quot;E&quot;]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="symmetricdifference-symmetric-difference">.symmetricDifference() Symmetric difference</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">setA</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">]</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">setB</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;E&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;F&quot;</span><span class="p">]</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">setC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">setA</span><span class="p">.</span><span class="n">symmetricDifference</span><span class="p">(</span><span class="n">setB</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">setC</span><span class="p">)</span>
+<span class="c1">// print: [&quot;B&quot;, &quot;E&quot;, &quot;F&quot;, &quot;A&quot;]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="subtracting-subtraction">.subtracting() Subtraction</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">setA</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">]</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">setB</span><span class="p">:</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;C&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;D&quot;</span><span class="p">]</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">setC</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">setA</span><span class="p">.</span><span class="n">subtracting</span><span class="p">(</span><span class="n">setB</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">setC</span><span class="p">)</span>
+<span class="c1">// print: [&quot;B&quot;, &quot;A&quot;]</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="dictionary">
+<h2 id="dictionary">dictionary</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="base-dictionary">Base Dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">dictionaryName</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;Key1&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Value1&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Key2&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Value2&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Key3&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Value3&quot;</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<p>An <code>unordered</code> collection of pairs of data or key-value pairs</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="keys">Keys</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">fruitStand</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;Coconuts&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Pineapples&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Papaya&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<p>Each <code>key</code> is <code>unique</code> even if they all contain the same <code>value</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="type-consistency">Type Consistency</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">numberOfSides</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;triangle&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;square&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;rectangle&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<p>Contains only <code>String</code> keys and <code>Int</code> values</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="initialize-and-populate-the-dictionary">Initialize and populate the dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">employeeID</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;Hamlet&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1367</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Horatio&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8261</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Ophelia&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9318</span>
+<span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="initialize-an-empty-dictionary">Initialize an empty dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// initializer syntax:</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">yearlyFishPopulation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">Int</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="p">]()</span>
+
+<span class="c1">// Empty dictionary literal syntax:</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">yearlyBirdPopulation</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="nb">Int</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[:]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="add-to-dictionary">add to dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">pronunciation</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;library&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lai·breh·ree&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;apple&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;a·pl&quot;</span>
+<span class="p">]</span>
+<span class="c1">// new key: &quot;programming&quot;, new value: &quot;prow gra&quot;</span>
+<span class="n">pronunciation</span><span class="p">[</span><span class="s">&quot;programming&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;prow·gra&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="delete-key-value-pair">Delete key-value pair</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">bookShelf</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;Goodnight&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Margaret Wise Brown&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;The BFG&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Roald Dahl&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Falling Up&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Shel Silverstein&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;No, David!&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;David Shannon&quot;</span>
+<span class="p">]</span>
+<span class="c1">// remove value by setting key to nil</span>
+<span class="n">bookShelf</span><span class="p">[</span><span class="s">&quot;The BFG&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">nil</span>
+
+<span class="c1">// remove value using .removeValue()</span>
+<span class="n">bookShelf</span><span class="p">.</span><span class="n">removeValue</span><span class="p">(</span><span class="n">forKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Goodnight&quot;</span><span class="p">)</span>
+
+<span class="c1">// remove all values</span>
+<span class="n">bookShelf</span><span class="p">.</span><span class="bp">removeAll</span><span class="p">()</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="modify-the-key-value-pair">Modify the key-value pair</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">change</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;Quarter&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.29</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Dime&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.15</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Nickel&quot;</span><span class="p">:</span><span class="w"> </span><span class="mf">0.05</span>
+<span class="p">]</span>
+
+<span class="c1">// Change the value using subscript syntax</span>
+<span class="n">change</span><span class="p">[</span><span class="s">&quot;Quarter&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="mi">25</span>
+
+<span class="c1">// Change the value using .updateValue()</span>
+<span class="n">change</span><span class="p">.</span><span class="n">updateValue</span><span class="p">(.</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">forKey</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dime&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>To change the value of a key-value pair, use the <code>.updateValue()</code> method or the subscript syntax by appending brackets
+<code>[ ]</code> with the existing keys within to the name of the dictionary, then adding the assignment operator <em>(<code>=</code>)</em> followed
+by the modified value</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="isempty-property_2">.isEmpty property</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">bakery</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">String</span><span class="p">:</span><span class="nb">Int</span><span class="p">]()</span>
+
+<span class="c1">// check if the dictionary is empty</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">bakery</span><span class="p">.</span><span class="bp">isEmpty</span><span class="p">)</span><span class="w"> </span><span class="c1">// prints true</span>
+<span class="n">bakery</span><span class="p">[</span><span class="s">&quot;Cupcakes&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">12</span>
+<span class="c1">// check if the dictionary is empty</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">bakery</span><span class="p">.</span><span class="bp">isEmpty</span><span class="p">)</span><span class="w"> </span><span class="c1">// print false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="count-property_2">.count property</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">fruitStand</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;Apples&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;Oranges&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">17</span>
+<span class="p">]</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">fruitStand</span><span class="p">.</span><span class="bp">count</span><span class="p">)</span><span class="w"> </span><span class="c1">// print: 2</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="assigning-values-to-variables">Assigning values to variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">hex</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;red&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#ff0000&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;yellow&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#ffff00&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;blue&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;#0000ff&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Blue hexadecimal code </span><span class="si">\(</span><span class="n">hex</span><span class="p">[</span><span class="s">&quot;blue&quot;</span><span class="p">]</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span>
+<span class="c1">// print: blue hex code Optional(&quot;#0000ff&quot;)</span>
+
+<span class="k">if</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">redHex</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">hex</span><span class="p">[</span><span class="s">&quot;red&quot;</span><span class="p">]</span><span class="w"> </span>
+<span class="c1">// print: red hex code #ff0000</span>
+</code></pre></div>
+
+<p>Assigning the value of a key-value pair to a variable will return an optional value. To extract values, use the optional
+expansion</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="traversing-the-dictionary">Traversing the dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">emojiMeaning</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span>
+<span class="w">  </span><span class="s">&quot;🤔&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Thinking Face&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;😪&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Sleepy Face&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="s">&quot;😵&quot;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Dizzy Face&quot;</span>
+<span class="p">]</span>
+<span class="c1">// loop through keys and values</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">emoji</span><span class="p">,</span><span class="w"> </span><span class="n">meaning</span><span class="p">)</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">emojiMeaning</span><span class="w"> </span>
+<span class="c1">// iterate through keys only</span>
+<span class="k">for</span><span class="w"> </span><span class="n">emoji</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">emojiMeaning</span><span class="p">.</span><span class="n">keys</span><span class="w"> </span>
+<span class="c1">// iterate through values only</span>
+<span class="k">for</span><span class="w"> </span><span class="n">meaning</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">emojiMeaning</span><span class="p">.</span><span class="n">values</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="function">
+<h2 id="function">function</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basic-functions">Basic functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">washCar</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Void</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="call-functions">Call functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">greetLearner</span><span class="p">()</span><span class="w"> </span>
+<span class="c1">// function call:</span>
+<span class="n">greetLearner</span><span class="p">()</span>
+<span class="c1">// print: Welcome to CheatSheets.zip!</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="return-value">return value</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">birthYear</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1994</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">currentYear</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">2020</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nf">findAge</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">findAge</span><span class="p">())</span><span class="w"> </span><span class="c1">// prints: 26</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multiple-parameters">Multiple parameters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">convertFracToDec</span><span class="p">(</span><span class="n">numerator</span><span class="p">:</span><span class="w"> </span><span class="nb">Double</span><span class="p">,</span><span class="w"> </span><span class="n">denominator</span><span class="p">:</span><span class="w"> </span><span class="nb">Double</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Double</span><span class="w"> </span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">decimal</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">convertFracToDec</span><span class="p">(</span><span class="n">numerator</span><span class="p">:</span><span class="w"> </span><span class="mf">1.0</span><span class="p">,</span><span class="w"> </span><span class="n">denominator</span><span class="p">:</span><span class="w"> </span><span class="mf">2.0</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">decimal</span><span class="p">)</span><span class="w"> </span><span class="c1">// prints: 0.5</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="omit-parameter-labels">Omit parameter labels</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">findDiff</span><span class="p">(</span><span class="kc">_</span><span class="w"> </span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">findDiff</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">))</span><span class="w"> </span><span class="c1">// prints: 2</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="return-multiple-values">return multiple values</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">smartphoneModel</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="p">,</span><span class="w"> </span><span class="n">version</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="p">,</span><span class="w"> </span><span class="n">yearReleased</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="p">)</span><span class="w"> </span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">phone</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">smartphoneModel</span><span class="p">()</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">phone</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w">         </span><span class="c1">// print: iPhone</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">phone</span><span class="p">.</span><span class="n">version</span><span class="p">)</span><span class="w">      </span><span class="c1">// print: 8 Plus</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">phone</span><span class="p">.</span><span class="n">yearReleased</span><span class="p">)</span><span class="w"> </span><span class="c1">// print: 2017</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="parameters-arguments">Parameters &amp; Arguments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">findSquarePerimet</span><span class="p">(</span><span class="n">side</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">perimeter</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">findSquarePerimet</span><span class="p">(</span><span class="n">side</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">perimeter</span><span class="p">)</span><span class="w"> </span><span class="c1">// print: 20</span>
+
+<span class="c1">// Parameter: side</span>
+<span class="c1">// Argument: 5</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="implicit-return">Implicit return</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">nextTotalSolarEclipse</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">nextTotalSolarEclipse</span><span class="p">())</span>
+<span class="c1">// print: April 8th, 2024 🌎</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="default-parameters">Default parameters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">person</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;guest&quot;</span><span class="p">)</span><span class="w"> </span>
+<span class="n">greet</span><span class="p">()</span><span class="w"> </span><span class="c1">// Hello guest</span>
+<span class="n">greet</span><span class="p">(</span><span class="n">person</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Aliya&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">// Hello Aliya</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="input-and-output-parameters">Input and output parameters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">currentSeason</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Winter&quot;</span>
+
+<span class="kd">func</span><span class="w"> </span><span class="nf">season</span><span class="p">(</span><span class="n">month</span><span class="p">:</span><span class="w"> </span><span class="nb">Int</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="kr">inout</span><span class="w"> </span><span class="nb">String</span><span class="p">)</span><span class="w"> </span>
+<span class="p">}</span>
+<span class="n">season</span><span class="p">(</span><span class="n">month</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="p">&amp;</span><span class="n">currentSeason</span><span class="p">)</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">currentSeason</span><span class="p">)</span><span class="w"> </span><span class="c1">// Spring 🌱</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="variable-parameter">variable parameter</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">totalStudent</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="p">...)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Int</span><span class="w"> </span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">totalStudent</span><span class="p">(</span><span class="n">data</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Denial&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Peter&quot;</span><span class="p">))</span>
+<span class="c1">// print: 2</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="optional-parameters">Optional parameters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">getFirstInitial</span><span class="p">(</span><span class="n">from</span><span class="w"> </span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="p">?)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">String</span><span class="p">?</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Functions can accept optional types and return optional types. When a function cannot return a reasonable instance of
+the requested type, it should return <code>nil</code></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="structure">
+<h2 id="structure">structure</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="structure-creation">Structure Creation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">Building</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Structs or structs are used to programmatically represent real-life objects in code. A structure is created using the
+<code>struct</code> keyword, followed by its name, followed by a body containing its properties and methods</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="default-property-values">Default property values</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">Car</span><span class="w"> </span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">reliantRobin</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Car</span><span class="p">(</span><span class="n">numOfWheels</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">reliantRobin</span><span class="p">.</span><span class="n">numOfWheels</span><span class="p">)</span><span class="w"> </span><span class="c1">// prints: 3</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">reliantRobin</span><span class="p">.</span><span class="n">topSpeed</span><span class="p">)</span><span class="w">    </span><span class="c1">// print: 80</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="structural-instance-creation">Structural instance creation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">Person</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="c1">// Person instance:</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">morty</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Peter&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="init-method">init() method</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">TV</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Using the <code>TV</code> class</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">newTV</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">TV</span><span class="p">(</span><span class="n">size</span><span class="p">:</span><span class="w"> </span><span class="mi">65</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;LED&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="check-type">Check type</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="bp">print</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">of</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;abc&quot;</span><span class="p">))</span><span class="w"> </span><span class="c1">// print: String</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">type</span><span class="p">(</span><span class="n">of</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">))</span><span class="w">   </span><span class="c1">// print: 123</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="mutation-method-mutating">Mutation method (mutating)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">Menu</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Using the <code>Menu</code> class</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">dinerMenu</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Menu</span><span class="p">()</span>
+<span class="n">dinerMenu</span><span class="p">.</span><span class="n">addToMenu</span><span class="p">(</span><span class="n">dish</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Toast&quot;</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">dinerMenu</span><span class="p">.</span><span class="n">menuItems</span><span class="p">)</span>
+<span class="c1">// prints: [&quot;Fries&quot;, &quot;Burgers&quot;, &quot;Toast&quot;]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="structural-methods">Structural methods</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">Dog</span><span class="w"> </span>
+<span class="p">}</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">fido</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Dog</span><span class="p">()</span>
+<span class="n">fido</span><span class="p">.</span><span class="n">bark</span><span class="p">()</span><span class="w"> </span><span class="c1">// prints: Woof</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="class">
+<h2 id="class">class</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="reference-type-class">reference type (class)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">Player</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">player1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Player</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Tomoko&quot;</span><span class="p">)</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">player2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">player1</span>
+<span class="n">player2</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Isabella&quot;</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">player1</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="c1">// Isabella</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">player2</span><span class="p">.</span><span class="n">name</span><span class="p">)</span><span class="w"> </span><span class="c1">// Isabella</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="instance-of-the-class">instance of the class</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">Person</span><span class="w"> </span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">sonny</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Person</span><span class="p">()</span>
+<span class="c1">// sonny is now an instance of Person</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="init-method_1">init() method</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">Fruit</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Using the Fruit class</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">apple</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Fruit</span><span class="p">(</span><span class="n">color</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>A class can be initialized using the <code>init()</code> method and the corresponding initialization properties. In the <code>init()</code>
+method, the <code>self</code> keyword is used to refer to the actual instance of the class assigning property values</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="class-attributes">Class Attributes</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">var</span><span class="w"> </span><span class="nv">ferris</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Student</span><span class="p">()</span>
+
+<span class="n">ferris</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Ferris Bueller&quot;</span>
+<span class="n">ferris</span><span class="p">.</span><span class="n">year</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">12</span>
+<span class="n">ferris</span><span class="p">.</span><span class="n">gpa</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">3.81</span>
+<span class="n">ferris</span><span class="p">.</span><span class="n">honors</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kc">false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="inherit">Inherit</h3>
+<div class="section">
+<p>Suppose we have a BankAccount class:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">BankAccount</span><span class="w"> </span>
+<span class="w">  </span><span class="kd">func</span><span class="w"> </span><span class="nf">withdraw</span><span class="p">(</span><span class="n">amount</span><span class="p">:</span><span class="w"> </span><span class="nb">Double</span><span class="p">)</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><code>SavingsAccount</code> extends <code>BankAccount</code> class</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">SavingsAccount</span><span class="p">:</span><span class="w"> </span><span class="n">BankAccount</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>The new <code>SavingsAccount</code> class (subclass) automatically gets all the characteristics of the <code>BankAccount</code> class
+(superclass). Additionally, the <code>SavingsAccount</code> class defines an <code>.interest</code> property and an <code>.addInterest()</code> method.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="example">Example</h3>
+<div class="section">
+<p>use data type</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">Student</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Use default property values</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">class</span><span class="w"> </span><span class="nc">Student</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="this-is-an-example-of-a-struct-definition-and-a-class-definition">This is an example of a struct definition and a class definition</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">Resolution</span><span class="w"> </span>
+<span class="kd">class</span><span class="w"> </span><span class="nc">VideoMode</span><span class="w"> </span>
+</code></pre></div>
+
+<p>The <code>Resolution</code> structure definition and the <code>VideoMode</code> class definition only describe the appearance of <code>Resolution</code>
+or <code>VideoMode</code>, create an instance of the structure or class:</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nv">resolution</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Resolution</span><span class="p">(</span><span class="n">width</span><span class="p">:</span><span class="w"> </span><span class="mi">1920</span><span class="p">)</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">someVideoMode</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">VideoMode</span><span class="p">()</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="enumerate">
+<h2 id="enumerate">Enumerate</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="define-the-enumeration">Define the enumeration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">Day</span><span class="w"> </span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">casualWorkday</span><span class="p">:</span><span class="w"> </span><span class="n">Day</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="n">friday</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch-statement_1">Switch statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">Dessert</span><span class="w"> </span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">customerOrder</span><span class="p">:</span><span class="w"> </span><span class="n">Dessert</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="n">cake</span><span class="p">(</span><span class="n">flavor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Red Velvet&quot;</span><span class="p">)</span>
+<span class="k">switch</span><span class="w"> </span><span class="n">customerOrder</span><span class="w"> </span>
+<span class="c1">// prints: &quot;You ordered a red velvet cake&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="caseiterable">CaseIterable</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">Season</span><span class="p">:</span><span class="w"> </span><span class="n">CaseIterable</span><span class="w"> </span>
+
+<span class="k">for</span><span class="w"> </span><span class="n">season</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">Season</span><span class="p">.</span><span class="n">allCases</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Add conformance to the <code>CaseIterable</code> protocol to access the <code>allCases</code> property, which returns an array of all cases of
+the enumeration</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="original-value">Original value</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">Beatle</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span>
+
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;The Beatles are </span><span class="si">\(</span><span class="n">Beatle</span><span class="p">.</span><span class="n">john</span><span class="p">.</span><span class="n">rawValue</span><span class="si">)</span><span class="s">.&quot;</span><span class="p">)</span>
+<span class="c1">// print: The Beatles are john.</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="related-values">Related values</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">Dessert</span><span class="w"> </span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">order</span><span class="p">:</span><span class="w"> </span><span class="n">Dessert</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="n">cake</span><span class="p">(</span><span class="n">flavor</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Red Velvet&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="instance-method">instance method</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">Traffic</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">currentTraffic</span><span class="p">:</span><span class="w"> </span><span class="n">Traffic</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">.</span><span class="n">light</span>
+
+<span class="n">currentTraffic</span><span class="p">.</span><span class="n">reportAccident</span><span class="p">()</span>
+<span class="c1">// currentTraffic is now .heavy</span>
+</code></pre></div>
+
+<p>Just like classes and structs, enumerations can have instance methods. If an instance method mutates the value of the
+enum, it needs to be marked <code>mutating</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="initialize-from-primitive-value">Initialize from primitive value</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">Hello</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">hello1</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Hello</span><span class="p">(</span><span class="n">rawValue</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="p">)</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">hello2</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Hello</span><span class="p">(</span><span class="n">rawValue</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Привет&quot;</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">hello1</span><span class="p">)</span><span class="w"> </span><span class="c1">// Optional(Hello.japanese)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">hello2</span><span class="p">)</span><span class="w"> </span><span class="c1">// nil</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="computed-properties">Computed properties</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">enum</span><span class="w"> </span><span class="nc">ShirtSize</span><span class="p">:</span><span class="w"> </span><span class="nb">String</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="extensions">
+<h2 id="extensions">Extensions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="what-are-extensions">What are extensions?</h3>
+<div class="section">
+<p>Extensions is a way to add new add new functionality to existing classes, structures, enumerations, or protocol types.
+This includes adding new methods, properties, initializers, and more.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="why-use-extensions">Why use extensions?</h3>
+<div class="section">
+<p>Extensions are particularly useful for organizing and modularizing our code without needing to modify the original type,
+especially when we don't have access to the original source code.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="extension-syntax">Extension syntax</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">SomeType</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="computed-properties_1">Computed properties</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">Int</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="mf">4.</span><span class="n">isEven</span><span class="p">)</span><span class="w"> </span><span class="c1">// Outputs: true</span>
+<span class="bp">print</span><span class="p">(</span><span class="mf">7.</span><span class="n">isEven</span><span class="p">)</span><span class="w"> </span><span class="c1">// Outputs: false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="methods">Methods</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">String</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;abc&quot;</span><span class="p">.</span><span class="bp">reverse</span><span class="p">())</span><span class="w"> </span><span class="c1">// Output: cba</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="mutating-methods">Mutating methods</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">Int</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">number</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">5</span>
+<span class="n">number</span><span class="p">.</span><span class="n">square</span><span class="p">()</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">number</span><span class="p">)</span><span class="w"> </span><span class="c1">// Output: 25</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="initializers">Initializers</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">Date</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">timestamp</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mf">1693982400.0</span><span class="w"> </span><span class="c1">// Unix timestamp for 2023-09-06 06:40:00</span>
+<span class="k">if</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nv">date</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Date</span><span class="p">(</span><span class="n">timestamp</span><span class="p">:</span><span class="w"> </span><span class="n">timestamp</span><span class="p">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="subscripts">Subscripts</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">String</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Swift&quot;</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="w"> </span><span class="c1">// Output: S</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Swift&quot;</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="c1">// Output: w</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Swift&quot;</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="w"> </span><span class="c1">// Output: i</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Swift&quot;</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="w"> </span><span class="c1">// Output: f</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Swift&quot;</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="w"> </span><span class="c1">// Output: t</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="protocol-extensions">Protocol extensions</h3>
+<div class="section">
+<p>It works pretty much like abstract classes when regarding a functionality we want to be available in all the classes
+that implements some protocol (without having to inherit from a base common class).</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// Define a protocol</span>
+<span class="kd">protocol</span><span class="w"> </span><span class="nc">Describable</span><span class="w"> </span>
+
+<span class="c1">// Provide a default implementation using a protocol extension</span>
+<span class="kd">extension</span><span class="w"> </span><span class="nc">Describable</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="c1">// Define a struct that conforms Describable protocol</span>
+<span class="kd">struct</span><span class="w"> </span><span class="nc">Person</span><span class="p">:</span><span class="w"> </span><span class="n">Describable</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="kd">struct</span><span class="w"> </span><span class="nc">Employee</span><span class="p">:</span><span class="w"> </span><span class="n">Describable</span><span class="w"> </span>
+
+<span class="c1">// By just implementing the protocol the describe() method is available</span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">person</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Person</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Ivan&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="p">:</span><span class="w"> </span><span class="mi">21</span><span class="p">)</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">employee</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Employee</span><span class="p">(</span><span class="n">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Saul&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">age</span><span class="p">:</span><span class="w"> </span><span class="mi">25</span><span class="p">)</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">person</span><span class="p">.</span><span class="n">describe</span><span class="p">())</span><span class="w"> </span><span class="c1">// Output: My name is Ivan and I am 21 years old.</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">employee</span><span class="p">.</span><span class="n">describe</span><span class="p">())</span><span class="w"> </span><span class="c1">// Output: This is a generic description</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="constraints-for-extensions">Constraints for extensions</h3>
+<div class="section">
+<p>This is especially useful when we want to add functionality to a type that conforms to a specific protocol or has
+certain conditions.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">extension</span><span class="w"> </span><span class="nc">Array</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">Element</span><span class="p">:</span><span class="w"> </span><span class="n">Numeric</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">numbers</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">]</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">numbers</span><span class="p">.</span><span class="n">sum</span><span class="p">())</span><span class="w"> </span><span class="c1">// Output: 15</span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">doubles</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mf">2.5</span><span class="p">,</span><span class="w"> </span><span class="mf">3.5</span><span class="p">]</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">doubles</span><span class="p">.</span><span class="n">sum</span><span class="p">())</span><span class="w"> </span><span class="c1">// Output: 7.5</span>
+
+<span class="c1">// This will not work because String is not Numeric</span>
+<span class="c1">// let strings = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</span>
+<span class="c1">// print(strings.sum()) // Error: Cannot invoke &#39;sum&#39; with an array of strings</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="organizing-code-with-extensions">Organizing code with extensions</h3>
+<div class="section">
+<p>Extensions are not limited to adding functionality; they are also handy for code organization. We can group related
+methods, properties or views in separate extensions.</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">import</span><span class="w"> </span><span class="nc">SwiftUI</span>
+
+<span class="kd">struct</span><span class="w"> </span><span class="nc">HomeView</span><span class="p">:</span><span class="w"> </span><span class="n">View</span><span class="w"> </span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span><span class="w"> </span><span class="nc">HomeView</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="p">#</span><span class="n">Preview</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="generics">
+<h2 id="generics">Generics</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="what-are-generics">What are generics?</h3>
+<div class="section">
+<p>Generics in Swift are a feature that allows us to create functions, classes, structures, and protocols that can work
+with any data type.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="why-use-generics">Why use generics?</h3>
+<div class="section">
+<p>Generics enable us to write clear and concise code that works with any data type. By using placeholders (like <code>T</code>), this
+reduces the risk of introducing bugs.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="type-parameters">Type parameters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">foo</span><span class="p">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">U</span><span class="p">&gt;(</span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="n">U</span><span class="p">)</span><span class="w"> </span>
+
+<span class="kd">struct</span><span class="w"> </span><span class="nc">Foo</span><span class="p">&lt;</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">U</span><span class="p">&gt;</span><span class="w"> </span>
+</code></pre></div>
+
+<p>The placeholders <code>T</code> is an example of a type parameter, are written inside angle brackets(such as <code>&lt;T&gt;</code>).</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generic-data-structures">Generic Data Structures</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">struct</span><span class="w"> </span><span class="nc">Box</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="w"> </span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">intBox</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Box</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span>
+<span class="kd">let</span><span class="w"> </span><span class="nv">stringBox</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">Box</span><span class="p">(</span><span class="n">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">)</span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">intBox</span><span class="p">.</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="c1">// Output: 10</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">stringBox</span><span class="p">.</span><span class="n">value</span><span class="p">)</span><span class="w"> </span><span class="c1">// Output: &quot;Hello&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="generic-functions">Generic Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">swapValues</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;(</span><span class="kc">_</span><span class="w"> </span><span class="n">a</span><span class="p">:</span><span class="w"> </span><span class="kr">inout</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="kc">_</span><span class="w"> </span><span class="n">b</span><span class="p">:</span><span class="w"> </span><span class="kr">inout</span><span class="w"> </span><span class="n">T</span><span class="p">)</span><span class="w"> </span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">10</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">20</span>
+<span class="n">swapValues</span><span class="p">(&amp;</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="n">b</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="w"> </span><span class="c1">// Output: 20</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="c1">// Output: 10</span>
+
+<span class="kd">var</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span>
+<span class="kd">var</span><span class="w"> </span><span class="nv">d</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;World&quot;</span>
+<span class="n">swapValues</span><span class="p">(&amp;</span><span class="n">c</span><span class="p">,</span><span class="w"> </span><span class="p">&amp;</span><span class="n">d</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="w"> </span><span class="c1">// Output: &quot;World&quot;</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="w"> </span><span class="c1">// Output: &quot;Hello&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="constraints-on-generics">Constraints on Generics</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">func</span><span class="w"> </span><span class="nf">sum</span><span class="p">&lt;</span><span class="n">T</span><span class="p">:</span><span class="w"> </span><span class="n">Numeric</span><span class="p">&gt;(</span><span class="kc">_</span><span class="w"> </span><span class="n">array</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="n">T</span><span class="p">])</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="n">T</span><span class="w"> </span>
+
+<span class="bp">print</span><span class="p">(</span><span class="n">sum</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mf">1.5</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]))</span><span class="w"> </span><span class="c1">// Output: 4.5</span>
+
+<span class="c1">// This will not work because String is not Numeric</span>
+<span class="c1">// print(sum([&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]))</span>
+<span class="c1">// Error: function &#39;sum&#39; requires that &#39;String&#39; conform to &#39;Numeric&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="associated-types">Associated Types</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">protocol</span><span class="w"> </span><span class="nc">Foo</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Associated types are used in protocols to define a placeholder for a type that will be specified later. They act as a
+generic placeholder. The exact type isn't defined in the protocol itself; instead, it's determined when a class, struct,
+or enum conforms to the protocol.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generic-protocols">Generic Protocols</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">protocol</span><span class="w"> </span><span class="nc">Storage</span><span class="w"> </span>
+
+<span class="kd">class</span><span class="w"> </span><span class="nc">SimpleStorage</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;:</span><span class="w"> </span><span class="n">Storage</span><span class="w"> </span>
+
+<span class="w">    </span><span class="kd">func</span><span class="w"> </span><span class="nf">retrieve</span><span class="p">()</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="n">T</span><span class="p">?</span><span class="w"> </span>
+<span class="p">}</span>
+
+<span class="kd">let</span><span class="w"> </span><span class="nv">intStorage</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">SimpleStorage</span><span class="p">&lt;</span><span class="nb">Int</span><span class="p">&gt;()</span>
+<span class="n">intStorage</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="n">item</span><span class="p">:</span><span class="w"> </span><span class="mi">42</span><span class="p">)</span>
+<span class="bp">print</span><span class="p">(</span><span class="n">intStorage</span><span class="p">.</span><span class="n">retrieve</span><span class="p">()</span><span class="w"> </span><span class="p">??</span><span class="w"> </span><span class="s">&quot;Empty&quot;</span><span class="p">)</span><span class="w">  </span><span class="c1">// Output: 42</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="generic-typealiases">Generic Typealiases</h3>
+<div class="section">
+<p>Generic typealiases allow us to create a new name for an existing type (i.e., they would not introduce a new type).</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">typealias</span><span class="w"> </span><span class="n">StringDictionary</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="nb">String</span><span class="p">:</span><span class="w"> </span><span class="n">T</span><span class="p">]</span>
+<span class="kd">typealias</span><span class="w"> </span><span class="n">IntFunction</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="nb">Int</span><span class="p">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w"> </span><span class="nb">Int</span>
+<span class="kd">typealias</span><span class="w"> </span><span class="n">Vector</span><span class="p">&lt;</span><span class="n">T</span><span class="p">&gt;</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">,</span><span class="w"> </span><span class="n">T</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also See</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://www.swift.org/documentation/">Swift Documentation (Official)</a> <em>(swift.or)</em></li>
+<li><a href="https://docs.swift.org/swift-book/">Swift Programming Language (Official)</a> <em>(swift.or)</em></li>
+<li><a href="https://swiftly.dev/">One-Stop Quick Reference for Swift Developers</a> <em>(swiftly.dev)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

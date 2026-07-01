@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>OpenClaw Cheat Sheet — FlameTech</title>
+  <meta name="description" content="[OpenClaw](https://openclaw.ai) is a self-hosted AI gateway that bridges WhatsApp, Telegram, Discord, iMessage, and more to AI coding agents.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#cc2200}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(204,34,0,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>AI</span>
+    <span>›</span>
+    <span>OpenClaw</span>
+  </div>
+  <div class="post-icon">OP</div>
+  <h1>OpenClaw <span>cheatsheet</span></h1>
+  <div class="post-intro"><p><a href="https://openclaw.ai">OpenClaw</a> is a self-hosted AI gateway that bridges WhatsApp, Telegram, Discord, iMessage, and more to AI coding agents.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> AI</span>
+    <span class="meta-tag">whatsapp</span> <span class="meta-tag">telegram</span> <span class="meta-tag">ai-gateway</span> <span class="meta-tag">automation</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="quick-setup">Quick Setup</h3>
+<div class="section">
+<h4 id="1-install">1. Install</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># macOS / Linux / WSL2</span>
+curl<span class="w"> </span>-fsSL<span class="w"> </span>https://openclaw.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+<span class="c1"># or via npm</span>
+npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>openclaw@latest
+</code></pre></div>
+
+<h4 id="2-onboard-install-service">2. Onboard &amp; install service</h4>
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>onboard<span class="w"> </span>--install-daemon
+</code></pre></div>
+
+<h4 id="3-verify-the-gateway">3. Verify the gateway</h4>
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>gateway<span class="w"> </span>status
+</code></pre></div>
+
+<h4 id="4-open-dashboard">4. Open dashboard</h4>
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>dashboard
+<span class="c1"># Local default: http://127.0.0.1:18789/</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<ul>
+<li><a href="https://docs.openclaw.ai">Docs</a> <em>(docs.openclaw.ai)</em></li>
+<li><a href="https://github.com/openclaw/openclaw">GitHub</a> <em>(github.com)</em></li>
+<li><a href="https://discord.gg/openclaw">Discord</a> <em>(discord.gg)</em></li>
+<li><a href="https://github.com/openclaw/openclaw/releases">Releases</a> <em>(github.com)</em></li>
+</ul>
+<p>Self-hosted, MIT licensed, multi-channel</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="alternative-install">Alternative Install</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># From source</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/openclaw/openclaw.git
+<span class="nb">cd</span><span class="w"> </span>openclaw<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>install<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>pnpm<span class="w"> </span>build
+pnpm<span class="w"> </span>link<span class="w"> </span>--global
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="verify-install">Verify Install</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>--version<span class="w">  </span><span class="c1"># confirm CLI available</span>
+openclaw<span class="w"> </span>doctor<span class="w">     </span><span class="c1"># health check + fixes</span>
+openclaw<span class="w"> </span>status<span class="w">     </span><span class="c1"># channels + gateway status</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="global-flags">Global Flags</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dev</code></td>
+<td>Dev profile, port 19001</td>
+</tr>
+<tr>
+<td><code>--profile &lt;name&gt;</code></td>
+<td>Named isolated profile</td>
+</tr>
+<tr>
+<td><code>--container &lt;name&gt;</code></td>
+<td>Run inside a container</td>
+</tr>
+<tr>
+<td><code>--log-level &lt;l&gt;</code></td>
+<td>Log level (silent…trace)</td>
+</tr>
+<tr>
+<td><code>--no-color</code></td>
+<td>Disable ANSI colors</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="gateway">
+<h2 id="gateway">Gateway</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="service-management">Service Management</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Install as system service</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>install
+<span class="c1"># Start / stop / restart</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>start
+openclaw<span class="w"> </span>gateway<span class="w"> </span>stop
+openclaw<span class="w"> </span>gateway<span class="w"> </span>restart
+<span class="c1"># Uninstall service</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>uninstall
+</code></pre></div>
+
+<h4 id="status-health">Status &amp; health</h4>
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>gateway<span class="w"> </span>status<span class="w">       </span><span class="c1"># service status + probe</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>status<span class="w"> </span>--deep
+openclaw<span class="w"> </span>gateway<span class="w"> </span>status<span class="w"> </span>--json
+openclaw<span class="w"> </span>health<span class="w">               </span><span class="c1"># fetch health from gateway</span>
+openclaw<span class="w"> </span>logs<span class="w"> </span>--follow<span class="w">        </span><span class="c1"># tail gateway logs</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="startup-options">Startup Options</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>gateway<span class="w"> </span>run<span class="w">             </span><span class="c1"># foreground</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>run<span class="w"> </span>--port<span class="w"> </span><span class="m">19001</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>run<span class="w"> </span>--force<span class="w">     </span><span class="c1"># kill existing listener</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>run<span class="w"> </span>--verbose<span class="w">   </span><span class="c1"># verbose to stdout</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>run<span class="w"> </span>--bind<span class="w"> </span>lan<span class="w">  </span><span class="c1"># bind to LAN</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>run<span class="w"> </span>--auth<span class="w"> </span>token<span class="w"> </span>--token<span class="w"> </span>&lt;t&gt;
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hot-reload-modes">Hot Reload Modes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th><code>gateway.reload.mode</code></th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hybrid</code> <em>(default)</em></td>
+<td>Hot-apply safe changes, restart when needed</td>
+</tr>
+<tr>
+<td><code>hot</code></td>
+<td>Apply only hot-safe changes</td>
+</tr>
+<tr>
+<td><code>restart</code></td>
+<td>Restart on any reload-required change</td>
+</tr>
+<tr>
+<td><code>off</code></td>
+<td>No config reload</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="remote-access">Remote Access</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># SSH tunnel (recommended fallback)</span>
+ssh<span class="w"> </span>-N<span class="w"> </span>-L<span class="w"> </span><span class="m">18789</span>:127.0.0.1:18789<span class="w"> </span>user@host
+<span class="c1"># then connect to ws://127.0.0.1:18789</span>
+
+<span class="c1"># Tailscale (preferred for always-on)</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>run<span class="w"> </span>--tailscale<span class="w"> </span>serve
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="openai-compatible-api">OpenAI-Compatible API</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Endpoint</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET /v1/models</code></td>
+<td>List agents as models</td>
+</tr>
+<tr>
+<td><code>POST /v1/chat/completions</code></td>
+<td>Chat with agent</td>
+</tr>
+<tr>
+<td><code>POST /v1/responses</code></td>
+<td>Agent-native response</td>
+</tr>
+<tr>
+<td><code>POST /v1/embeddings</code></td>
+<td>Embedding pipeline</td>
+</tr>
+</tbody>
+</table>
+<p>All endpoints run on the main gateway port.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="channels">
+<h2 id="channels">Channels</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="connect-channels">Connect Channels</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># List + status</span>
+openclaw<span class="w"> </span>channels<span class="w"> </span>list
+openclaw<span class="w"> </span>channels<span class="w"> </span>status
+openclaw<span class="w"> </span>channels<span class="w"> </span>status<span class="w"> </span>--probe
+
+<span class="c1"># Login (QR/OAuth flow)</span>
+openclaw<span class="w"> </span>channels<span class="w"> </span>login<span class="w"> </span>--channel<span class="w"> </span>whatsapp
+openclaw<span class="w"> </span>channels<span class="w"> </span>login<span class="w"> </span>--channel<span class="w"> </span>telegram
+
+<span class="c1"># Add with token (non-interactive)</span>
+openclaw<span class="w"> </span>channels<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--channel<span class="w"> </span>telegram<span class="w"> </span>--token<span class="w"> </span>&lt;BOT_TOKEN&gt;
+
+<span class="c1"># Logout / remove</span>
+openclaw<span class="w"> </span>channels<span class="w"> </span><span class="nb">logout</span><span class="w"> </span>--channel<span class="w"> </span>whatsapp
+openclaw<span class="w"> </span>channels<span class="w"> </span>remove<span class="w"> </span>--channel<span class="w"> </span>telegram
+
+<span class="c1"># Logs + capabilities</span>
+openclaw<span class="w"> </span>channels<span class="w"> </span>logs
+openclaw<span class="w"> </span>channels<span class="w"> </span>capabilities
+</code></pre></div>
+
+<h4 id="resolve-contact-ids">Resolve contact IDs</h4>
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>directory<span class="w"> </span>self<span class="w"> </span>--channel<span class="w"> </span>telegram
+openclaw<span class="w"> </span>directory<span class="w"> </span>peers<span class="w"> </span>list<span class="w"> </span>--channel<span class="w"> </span>slack
+openclaw<span class="w"> </span>directory<span class="w"> </span>groups<span class="w"> </span>list<span class="w"> </span>--channel<span class="w"> </span>discord
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="supported-channels">Supported Channels</h3>
+<div class="section">
+<h4 id="built-in">Built-in</h4>
+<table>
+<thead>
+<tr>
+<th>Channel</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WhatsApp</td>
+<td>QR pairing via Baileys</td>
+</tr>
+<tr>
+<td>Telegram</td>
+<td>Bot API — fastest to set up</td>
+</tr>
+<tr>
+<td>Discord</td>
+<td>Bot API + Gateway, DMs + servers</td>
+</tr>
+<tr>
+<td>BlueBubbles</td>
+<td>iMessage via macOS server</td>
+</tr>
+<tr>
+<td>Signal</td>
+<td>Via signal-cli</td>
+</tr>
+<tr>
+<td>Slack</td>
+<td>Bolt SDK workspace apps</td>
+</tr>
+<tr>
+<td>Google Chat</td>
+<td>HTTP webhook</td>
+</tr>
+<tr>
+<td>IRC</td>
+<td>Classic IRC, DMs + channels</td>
+</tr>
+<tr>
+<td>QQ Bot</td>
+<td>QQ Bot API</td>
+</tr>
+<tr>
+<td>WebChat</td>
+<td>Built-in browser chat UI</td>
+</tr>
+</tbody>
+</table>
+<h4 id="via-plugin-openclaw-plugins-install">Via plugin (<code>openclaw plugins install</code>)</h4>
+<ul>
+<li>Matrix</li>
+<li>Mattermost</li>
+<li>Microsoft Teams</li>
+<li>LINE</li>
+<li>Nextcloud Talk</li>
+<li>Feishu / Lark</li>
+<li>Nostr</li>
+<li>Synology Chat</li>
+<li>Twitch</li>
+<li>WeChat</li>
+<li>Zalo / Zalo Personal</li>
+<li>Voice Call (Plivo/Twilio)</li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="messaging">
+<h2 id="messaging">Messaging</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="send-messages">Send Messages</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Basic text</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>send<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--target<span class="w"> </span>+15555550123<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;Hello&quot;</span>
+
+<span class="c1"># Telegram by username</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>send<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--channel<span class="w"> </span>telegram<span class="w"> </span>--target<span class="w"> </span>@user<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Hello&quot;</span>
+
+<span class="c1"># Discord channel</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>send<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--channel<span class="w"> </span>discord<span class="w"> </span>--target<span class="w"> </span>channel:123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Hello&quot;</span>
+
+<span class="c1"># With media</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>send<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--target<span class="w"> </span>+15555550123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--media<span class="w"> </span>photo.jpg<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;Look&quot;</span>
+
+<span class="c1"># Silent (no notification)</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>send<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--target<span class="w"> </span>+15555550123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Quiet&quot;</span><span class="w"> </span>--silent
+
+<span class="c1"># Reply to a message</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>send<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--target<span class="w"> </span>+15555550123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Reply&quot;</span><span class="w"> </span>--reply-to<span class="w"> </span>&lt;msg-id&gt;
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="read-messages">Read Messages</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>message<span class="w"> </span><span class="nb">read</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--channel<span class="w"> </span>whatsapp<span class="w"> </span>--target<span class="w"> </span>+15555550123
+
+openclaw<span class="w"> </span>message<span class="w"> </span><span class="nb">read</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--channel<span class="w"> </span>discord<span class="w"> </span>--target<span class="w"> </span>channel:123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--limit<span class="w"> </span><span class="m">20</span><span class="w"> </span>--json
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="message-actions">Message Actions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Broadcast to multiple targets</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>broadcast<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Alert&quot;</span><span class="w"> </span>--targets<span class="w"> </span>@u1<span class="w"> </span>@u2
+
+<span class="c1"># React to a message</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>react<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--channel<span class="w"> </span>discord<span class="w"> </span>--target<span class="w"> </span><span class="m">123</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message-id<span class="w"> </span><span class="m">456</span><span class="w"> </span>--emoji<span class="w"> </span><span class="s2">&quot;✅&quot;</span>
+
+<span class="c1"># Pin / unpin</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>pin<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--channel<span class="w"> </span>discord<span class="w"> </span>--target<span class="w"> </span><span class="m">123</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message-id<span class="w"> </span><span class="m">456</span>
+
+<span class="c1"># Edit / delete</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>edit<span class="w"> </span>--message-id<span class="w"> </span><span class="m">456</span>
+openclaw<span class="w"> </span>message<span class="w"> </span>delete<span class="w"> </span>--message-id<span class="w"> </span><span class="m">456</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="agents-sessions">
+<h2 id="agents-sessions">Agents &amp; Sessions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="run-agent">Run Agent</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># New session</span>
+openclaw<span class="w"> </span>agent<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--to<span class="w"> </span>+15555550123<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;Hello&quot;</span>
+
+<span class="c1"># Named agent</span>
+openclaw<span class="w"> </span>agent<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--agent<span class="w"> </span>ops<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;Status&quot;</span>
+
+<span class="c1"># With thinking level</span>
+openclaw<span class="w"> </span>agent<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--to<span class="w"> </span>+15555550123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Analyze&quot;</span><span class="w"> </span>--thinking<span class="w"> </span>high
+
+<span class="c1"># Deliver reply back to channel</span>
+openclaw<span class="w"> </span>agent<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--to<span class="w"> </span>+15555550123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Summary&quot;</span><span class="w"> </span>--deliver
+
+<span class="c1"># Cross-channel delivery</span>
+openclaw<span class="w"> </span>agent<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--agent<span class="w"> </span>ops<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;Report&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--deliver<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reply-channel<span class="w"> </span>slack<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--reply-to<span class="w"> </span><span class="s2">&quot;#reports&quot;</span>
+
+<span class="c1"># JSON output + verbose</span>
+openclaw<span class="w"> </span>agent<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--to<span class="w"> </span>+15555550123<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Trace&quot;</span><span class="w"> </span>--verbose<span class="w"> </span>on<span class="w"> </span>--json
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="manage-agents">Manage Agents</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>agents<span class="w"> </span>list
+openclaw<span class="w"> </span>agents<span class="w"> </span>list<span class="w"> </span>--bindings
+openclaw<span class="w"> </span>agents<span class="w"> </span>add<span class="w"> </span>work
+openclaw<span class="w"> </span>agents<span class="w"> </span>delete<span class="w"> </span>work
+openclaw<span class="w"> </span>agents<span class="w"> </span><span class="nb">bind</span>
+openclaw<span class="w"> </span>agents<span class="w"> </span>unbind
+openclaw<span class="w"> </span>agents<span class="w"> </span>bindings
+openclaw<span class="w"> </span>agents<span class="w"> </span>set-identity<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--agent<span class="w"> </span>work<span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;Work Bot&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="sessions">Sessions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>sessions<span class="w">              </span><span class="c1"># all sessions</span>
+openclaw<span class="w"> </span>sessions<span class="w"> </span>--agent<span class="w"> </span>work
+openclaw<span class="w"> </span>sessions<span class="w"> </span>--all-agents
+openclaw<span class="w"> </span>sessions<span class="w"> </span>--active<span class="w"> </span><span class="m">120</span><span class="w"> </span><span class="c1"># last 2h</span>
+openclaw<span class="w"> </span>sessions<span class="w"> </span>--json
+openclaw<span class="w"> </span>sessions<span class="w"> </span>cleanup
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="routing-priority">Routing Priority</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Match type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1 (highest)</td>
+<td><code>peer</code> — exact DM/group/channel ID</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>parentPeer</code> — thread inheritance</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>guildId</code> + roles (Discord)</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>guildId</code> (Discord)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>teamId</code> (Slack)</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>accountId</code> match for channel</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>accountId: "*"</code> channel fallback</td>
+</tr>
+<tr>
+<td>8 (lowest)</td>
+<td>Default agent</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="models">
+<h2 id="models">Models</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="configure-models">Configure Models</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Set primary model</span>
+openclaw<span class="w"> </span>models<span class="w"> </span><span class="nb">set</span><span class="w"> </span>anthropic/claude-sonnet-4-6
+
+<span class="c1"># Set image model</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>set-image<span class="w"> </span>openai/dall-e-3
+
+<span class="c1"># List models</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>list<span class="w">            </span><span class="c1"># configured</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>list<span class="w"> </span>--all<span class="w">      </span><span class="c1"># full catalog</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>list<span class="w"> </span>--provider<span class="w"> </span>anthropic
+
+<span class="c1"># Status (auth + model overview)</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>status
+openclaw<span class="w"> </span>models<span class="w"> </span>status<span class="w"> </span>--check<span class="w">  </span><span class="c1"># exit 1 if missing</span>
+
+<span class="c1"># Aliases</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>aliases<span class="w"> </span>list
+openclaw<span class="w"> </span>models<span class="w"> </span>aliases<span class="w"> </span>add<span class="w"> </span>Sonnet<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>anthropic/claude-sonnet-4-6
+openclaw<span class="w"> </span>models<span class="w"> </span>aliases<span class="w"> </span>remove<span class="w"> </span>Sonnet
+
+<span class="c1"># Fallback chains</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>fallbacks<span class="w"> </span>list
+openclaw<span class="w"> </span>models<span class="w"> </span>fallbacks<span class="w"> </span>add<span class="w"> </span>anthropic/claude-haiku-4-5
+openclaw<span class="w"> </span>models<span class="w"> </span>fallbacks<span class="w"> </span>clear
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="in-chat-model">In-chat /model</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>/model<span class="w">             </span><span class="c1"># interactive picker</span>
+/model<span class="w"> </span>list<span class="w">        </span><span class="c1"># numbered model list</span>
+/model<span class="w"> </span><span class="m">3</span><span class="w">           </span><span class="c1"># select by number</span>
+/model<span class="w"> </span>openai/gpt-4o
+/model<span class="w"> </span>status<span class="w">      </span><span class="c1"># auth + provider details</span>
+</code></pre></div>
+
+<p>Switch takes effect on the next agent run.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="model-scan-openrouter">Model Scan (OpenRouter)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Scan free models (metadata only)</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>scan<span class="w"> </span>--no-probe
+
+<span class="c1"># Full scan with capability probe</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>scan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--min-params<span class="w"> </span><span class="m">7</span><span class="w"> </span>--max-age-days<span class="w"> </span><span class="m">30</span>
+
+<span class="c1"># Auto-set best free model</span>
+openclaw<span class="w"> </span>models<span class="w"> </span>scan<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--set-default<span class="w"> </span>--yes
+</code></pre></div>
+
+<p>Requires <code>OPENROUTER_API_KEY</code> for probing.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="config-environment">
+<h2 id="config-environment">Config &amp; Environment</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="config-commands">Config Commands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Show config file path</span>
+openclaw<span class="w"> </span>config<span class="w"> </span>file
+
+<span class="c1"># Get a value</span>
+openclaw<span class="w"> </span>config<span class="w"> </span>get<span class="w"> </span>gateway.port
+openclaw<span class="w"> </span>config<span class="w"> </span>get<span class="w"> </span>channels.telegram.botToken
+
+<span class="c1"># Set a value</span>
+openclaw<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span>gateway.port<span class="w"> </span><span class="m">19001</span>
+openclaw<span class="w"> </span>config<span class="w"> </span><span class="nb">set</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>agents.defaults.model.primary<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>anthropic/claude-sonnet-4-6
+
+<span class="c1"># Unset a value</span>
+openclaw<span class="w"> </span>config<span class="w"> </span><span class="nb">unset</span><span class="w"> </span>gateway.port
+
+<span class="c1"># Validate config</span>
+openclaw<span class="w"> </span>config<span class="w"> </span>validate
+
+<span class="c1"># Print JSON schema</span>
+openclaw<span class="w"> </span>config<span class="w"> </span>schema
+
+<span class="c1"># Interactive guided setup</span>
+openclaw<span class="w"> </span>configure
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environment-variables">Environment Variables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>OPENCLAW_GATEWAY_PORT</code></td>
+<td>Gateway port</td>
+</tr>
+<tr>
+<td><code>OPENCLAW_GATEWAY_TOKEN</code></td>
+<td>Auth token</td>
+</tr>
+<tr>
+<td><code>OPENCLAW_GATEWAY_PASSWORD</code></td>
+<td>Auth password</td>
+</tr>
+<tr>
+<td><code>OPENCLAW_CONFIG_PATH</code></td>
+<td>Config file path</td>
+</tr>
+<tr>
+<td><code>OPENCLAW_STATE_DIR</code></td>
+<td>State directory</td>
+</tr>
+<tr>
+<td><code>OPENCLAW_PROFILE</code></td>
+<td>Active profile name</td>
+</tr>
+<tr>
+<td><code>OPENCLAW_CONTAINER</code></td>
+<td>Default container name</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="default-paths">Default Paths</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>~/.openclaw/openclaw.json</code></td>
+<td>Main config</td>
+</tr>
+<tr>
+<td><code>~/.openclaw/</code></td>
+<td>State directory</td>
+</tr>
+<tr>
+<td><code>~/.openclaw/workspace</code></td>
+<td>Agent workspace</td>
+</tr>
+<tr>
+<td><code>~/.openclaw/agents/&lt;id&gt;/agent</code></td>
+<td>Agent auth + models</td>
+</tr>
+<tr>
+<td><code>~/.openclaw/agents/&lt;id&gt;/sessions</code></td>
+<td>Session store</td>
+</tr>
+<tr>
+<td><code>~/.openclaw/credentials/</code></td>
+<td>Channel credentials</td>
+</tr>
+<tr>
+<td><code>~/.openclaw/skills/</code></td>
+<td>Shared skills</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="memory-backup">
+<h2 id="memory-backup">Memory &amp; Backup</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="memory-search">Memory Search</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>memory<span class="w"> </span>status
+openclaw<span class="w"> </span>memory<span class="w"> </span>status<span class="w"> </span>--deep<span class="w">   </span><span class="c1"># probe embedding</span>
+openclaw<span class="w"> </span>memory<span class="w"> </span>index<span class="w"> </span>--force<span class="w">   </span><span class="c1"># full reindex</span>
+openclaw<span class="w"> </span>memory<span class="w"> </span>search<span class="w"> </span><span class="s2">&quot;notes&quot;</span>
+openclaw<span class="w"> </span>memory<span class="w"> </span>search<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--query<span class="w"> </span><span class="s2">&quot;deploy&quot;</span><span class="w"> </span>--max-results<span class="w"> </span><span class="m">20</span>
+openclaw<span class="w"> </span>memory<span class="w"> </span>status<span class="w"> </span>--json
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="backup-restore">Backup &amp; Restore</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Create backup archive</span>
+openclaw<span class="w"> </span>backup<span class="w"> </span>create
+
+<span class="c1"># Verify backup integrity</span>
+openclaw<span class="w"> </span>backup<span class="w"> </span>verify<span class="w"> </span>backup.tar.gz
+</code></pre></div>
+
+<p>Backs up: config, credentials, sessions, workspaces.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="reset-update">Reset &amp; Update</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Reset config + state (keeps CLI)</span>
+openclaw<span class="w"> </span>reset
+
+<span class="c1"># Update to latest</span>
+openclaw<span class="w"> </span>update
+openclaw<span class="w"> </span>update<span class="w"> </span>--channel<span class="w"> </span>beta
+openclaw<span class="w"> </span>update<span class="w"> </span>--channel<span class="w"> </span>dev
+openclaw<span class="w"> </span>update<span class="w"> </span>--dry-run
+
+<span class="c1"># Full uninstall</span>
+openclaw<span class="w"> </span>uninstall
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="plugins-skills">
+<h2 id="plugins-skills">Plugins &amp; Skills</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="plugin-commands">Plugin Commands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Discover + inspect</span>
+openclaw<span class="w"> </span>plugins<span class="w"> </span>list
+openclaw<span class="w"> </span>plugins<span class="w"> </span>inspect<span class="w"> </span>&lt;name&gt;
+openclaw<span class="w"> </span>plugins<span class="w"> </span>marketplace
+
+<span class="c1"># Install (path / npm / clawhub)</span>
+openclaw<span class="w"> </span>plugins<span class="w"> </span>install<span class="w"> </span>clawhub:mattermost
+openclaw<span class="w"> </span>plugins<span class="w"> </span>install<span class="w"> </span>./my-plugin
+openclaw<span class="w"> </span>plugins<span class="w"> </span>install<span class="w"> </span>@org/pkg@latest
+
+<span class="c1"># Enable / disable</span>
+openclaw<span class="w"> </span>plugins<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;name&gt;
+openclaw<span class="w"> </span>plugins<span class="w"> </span>disable<span class="w"> </span>&lt;name&gt;
+
+<span class="c1"># Update + uninstall</span>
+openclaw<span class="w"> </span>plugins<span class="w"> </span>update
+openclaw<span class="w"> </span>plugins<span class="w"> </span>uninstall<span class="w"> </span>&lt;name&gt;
+
+<span class="c1"># Diagnose load issues</span>
+openclaw<span class="w"> </span>plugins<span class="w"> </span>doctor
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="skill-commands">Skill Commands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>skills<span class="w"> </span>list
+openclaw<span class="w"> </span>skills<span class="w"> </span>check<span class="w">      </span><span class="c1"># readiness check</span>
+openclaw<span class="w"> </span>skills<span class="w"> </span>info<span class="w"> </span>&lt;name&gt;
+openclaw<span class="w"> </span>skills<span class="w"> </span>search<span class="w"> </span><span class="s2">&quot;browser&quot;</span>
+openclaw<span class="w"> </span>skills<span class="w"> </span>install<span class="w"> </span>clawhub:browser
+openclaw<span class="w"> </span>skills<span class="w"> </span>update
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hook-commands">Hook Commands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>hooks<span class="w"> </span>list
+openclaw<span class="w"> </span>hooks<span class="w"> </span>info<span class="w"> </span>&lt;name&gt;
+openclaw<span class="w"> </span>hooks<span class="w"> </span>check
+openclaw<span class="w"> </span>hooks<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;name&gt;
+openclaw<span class="w"> </span>hooks<span class="w"> </span>disable<span class="w"> </span>&lt;name&gt;
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="ops-maintenance">
+<h2 id="ops-maintenance">Ops &amp; Maintenance</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="health-diagnostics">Health &amp; Diagnostics</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Quick health checks</span>
+openclaw<span class="w"> </span>health<span class="w">               </span><span class="c1"># gateway health</span>
+openclaw<span class="w"> </span>doctor<span class="w">               </span><span class="c1"># check + suggest fixes</span>
+openclaw<span class="w"> </span>doctor<span class="w"> </span>--fix<span class="w">         </span><span class="c1"># apply safe fixes</span>
+openclaw<span class="w"> </span>status<span class="w">               </span><span class="c1"># channels + sessions</span>
+openclaw<span class="w"> </span>logs<span class="w"> </span>--follow<span class="w">        </span><span class="c1"># tail log file</span>
+
+<span class="c1"># Channel readiness</span>
+openclaw<span class="w"> </span>channels<span class="w"> </span>status<span class="w"> </span>--probe
+
+<span class="c1"># Gateway probe (full)</span>
+openclaw<span class="w"> </span>gateway<span class="w"> </span>probe
+openclaw<span class="w"> </span>gateway<span class="w"> </span>status<span class="w"> </span>--deep<span class="w"> </span>--json
+
+<span class="c1"># Security audit</span>
+openclaw<span class="w"> </span>security<span class="w"> </span>audit
+openclaw<span class="w"> </span>security<span class="w"> </span>audit<span class="w"> </span>--deep
+openclaw<span class="w"> </span>security<span class="w"> </span>audit<span class="w"> </span>--fix
+openclaw<span class="w"> </span>security<span class="w"> </span>audit<span class="w"> </span>--json
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="cron-jobs">Cron Jobs</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>openclaw<span class="w"> </span>cron<span class="w"> </span>list
+openclaw<span class="w"> </span>cron<span class="w"> </span>status
+
+<span class="c1"># Add job (every / cron / at)</span>
+openclaw<span class="w"> </span>cron<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--name<span class="w"> </span><span class="s2">&quot;daily&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--every<span class="w"> </span>24h<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Daily summary&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--agent<span class="w"> </span>main<span class="w"> </span>--announce
+
+openclaw<span class="w"> </span>cron<span class="w"> </span>add<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--cron<span class="w"> </span><span class="s2">&quot;0 9 * * *&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--message<span class="w"> </span><span class="s2">&quot;Morning brief&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--tz<span class="w"> </span>America/New_York
+
+openclaw<span class="w"> </span>cron<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>cron<span class="w"> </span>disable<span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>cron<span class="w"> </span>edit<span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>cron<span class="w"> </span>rm<span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>cron<span class="w"> </span>run<span class="w"> </span>&lt;id&gt;<span class="w">   </span><span class="c1"># debug: run now</span>
+openclaw<span class="w"> </span>cron<span class="w"> </span>runs<span class="w">       </span><span class="c1"># run history</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="nodes-iosandroid">Nodes (iOS/Android)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># List + status</span>
+openclaw<span class="w"> </span>nodes<span class="w"> </span>list
+openclaw<span class="w"> </span>nodes<span class="w"> </span>status
+
+<span class="c1"># Pairing</span>
+openclaw<span class="w"> </span>qr<span class="w">                        </span><span class="c1"># iOS QR code</span>
+openclaw<span class="w"> </span>nodes<span class="w"> </span>pending
+openclaw<span class="w"> </span>nodes<span class="w"> </span>approve<span class="w"> </span>--node<span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>nodes<span class="w"> </span>reject<span class="w">  </span>--node<span class="w"> </span>&lt;id&gt;
+
+<span class="c1"># Media capture</span>
+openclaw<span class="w"> </span>nodes<span class="w"> </span>camera<span class="w"> </span>snap<span class="w"> </span>--node<span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>nodes<span class="w"> </span>canvas<span class="w">  </span>--node<span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>nodes<span class="w"> </span>screen<span class="w">  </span>--node<span class="w"> </span>&lt;id&gt;
+openclaw<span class="w"> </span>nodes<span class="w"> </span>location<span class="w"> </span>--node<span class="w"> </span>&lt;id&gt;
+
+<span class="c1"># Invoke + notify</span>
+openclaw<span class="w"> </span>nodes<span class="w"> </span>invoke<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--node<span class="w"> </span>&lt;id&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--command<span class="w"> </span>system.which<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--params<span class="w"> </span><span class="s1">&#39;&#39;</span>
+openclaw<span class="w"> </span>nodes<span class="w"> </span>notify<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--node<span class="w"> </span>&lt;id&gt;<span class="w"> </span>--message<span class="w"> </span><span class="s2">&quot;Hello&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="security-controls">Security Controls</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># DM pairing</span>
+openclaw<span class="w"> </span>pairing<span class="w"> </span>list
+openclaw<span class="w"> </span>pairing<span class="w"> </span>approve<span class="w"> </span>&lt;code&gt;
+
+<span class="c1"># Exec approvals</span>
+openclaw<span class="w"> </span>approvals<span class="w"> </span>get
+openclaw<span class="w"> </span>approvals<span class="w"> </span>allowlist
+openclaw<span class="w"> </span>approvals<span class="w"> </span><span class="nb">set</span><span class="w"> </span>--file<span class="w"> </span>approvals.json
+
+<span class="c1"># Device tokens</span>
+openclaw<span class="w"> </span>devices<span class="w"> </span>list
+openclaw<span class="w"> </span>devices<span class="w"> </span>revoke<span class="w"> </span>--role<span class="w"> </span>admin
+openclaw<span class="w"> </span>devices<span class="w"> </span>rotate<span class="w"> </span>--role<span class="w"> </span>admin
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multi-agent-config">Multi-agent Config</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">,</span>
+
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;bindings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">     </span><span class="p">},</span>
+<span class="w">     </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;channels&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;telegram&quot;</span><span class="p">:</span><span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;gateway&quot;</span><span class="p">:</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Config lives at <code>~/.openclaw/openclaw.json</code> (JSON5 format)</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://docs.openclaw.ai">Official Documentation</a> <em>(docs.openclaw.ai)</em></li>
+<li><a href="https://github.com/openclaw/openclaw">GitHub Repository</a> <em>(github.com)</em></li>
+<li><a href="https://discord.gg/openclaw">Discord Community</a> <em>(discord.gg)</em></li>
+<li><a href="https://github.com/openclaw/openclaw/releases">Releases &amp; Changelog</a> <em>(github.com)</em></li>
+<li><a href="https://docs.openclaw.ai/cli">CLI Reference</a> <em>(docs.openclaw.ai)</em></li>
+<li><a href="https://docs.openclaw.ai/models">Model Providers</a> <em>(docs.openclaw.ai)</em></li>
+<li><a href="https://docs.openclaw.ai/channels">Channel Setup Guides</a> <em>(docs.openclaw.ai)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

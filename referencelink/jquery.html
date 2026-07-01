@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>jQuery Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This [jQuery](https://jquery.com/) cheat sheet is a great reference for both beginners and experienced developers.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#2c63a2}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(44,99,162,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>jQuery</span>
+  </div>
+  <div class="post-icon">JQ</div>
+  <h1>jQuery <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This <a href="https://jquery.com/">jQuery</a> cheat sheet is a great reference for both beginners and experienced developers.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">web</span> <span class="meta-tag">js</span> <span class="meta-tag">javascript</span> <span class="meta-tag">library</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="including-jquery">Including jQuery</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="official-cdn">Official CDN</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span>
+  <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://code.jquery.com/jquery-3.5.1.min.js&quot;</span>
+  <span class="na">crossorigin</span><span class="o">=</span><span class="s">&quot;anonymous&quot;</span>
+<span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="jquery-syntax">jQuery syntax</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="nx">selector</span><span class="p">).</span><span class="nx">methodOrFunction</span><span class="p">();</span>
+</code></pre></div>
+
+<h4 id="example">Example:</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#menu&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;body&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;background&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;red&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="jquery-document-ready">jQuery document ready</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="jquery-selectors">
+<h2 id="jquery-selectors">jQuery Selectors</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="examples">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="combining-selectors">Combining selectors</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;selector1, selector2 ...selectorn&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="basics">Basics</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/all-selector/">*</a></li>
+<li><a href="https://api.jquery.com/class-selector/">.class</a></li>
+<li><a href="https://api.jquery.com/element-selector/">element</a></li>
+<li><a href="https://api.jquery.com/id-selector/">#id</a></li>
+<li><a href="https://api.jquery.com/hidden-selector/">:hidden</a></li>
+<li><a href="https://api.jquery.com/visible-selector/">:visible</a></li>
+<li><a href="https://api.jquery.com/contains-selector/">:contains()</a></li>
+<li><a href="https://api.jquery.com/empty-selector/">:empty</a></li>
+<li><a href="https://api.jquery.com/has-selector/">:has()</a></li>
+<li><a href="https://api.jquery.com/parent-selector/">:parent</a></li>
+<li><a href="https://api.jquery.com/child-selector/">parent &gt; child</a></li>
+<li><a href="https://api.jquery.com/descendant-selector/">ancestor descendant</a></li>
+<li><a href="https://api.jquery.com/next-adjacent-selector/">prev + next</a></li>
+<li><a href="https://api.jquery.com/next-siblings-selector/">prev ~ siblings</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="basic-filters">Basic Filters</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/animated-selector/">:animated</a></li>
+<li><a href="https://api.jquery.com/eq-selector/">:eq()</a></li>
+<li><a href="https://api.jquery.com/even-selector/">:even</a></li>
+<li><a href="https://api.jquery.com/first-selector/">:first</a></li>
+<li><a href="https://api.jquery.com/gt-selector/">:gt()</a></li>
+<li><a href="https://api.jquery.com/header-selector/">:header</a></li>
+<li><a href="https://api.jquery.com/lang-selector/">:lang()</a></li>
+<li><a href="https://api.jquery.com/last-selector/">:last</a></li>
+<li><a href="https://api.jquery.com/lt-selector/">:lt()</a></li>
+<li><a href="https://api.jquery.com/not-selector/">:not()</a></li>
+<li><a href="https://api.jquery.com/odd-selector/">:odd</a></li>
+<li><a href="https://api.jquery.com/root-selector/">:root</a></li>
+<li><a href="https://api.jquery.com/target-selector/">:target</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="attribute">Attribute</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/attribute-contains-prefix-selector/">[name|="value"]</a></li>
+<li><a href="https://api.jquery.com/attribute-contains-selector/">[name*="value"]</a></li>
+<li><a href="https://api.jquery.com/attribute-contains-word-selector/">[name~="value"]</a></li>
+<li><a href="https://api.jquery.com/attribute-ends-with-selector/">[name$="value"]</a></li>
+<li><a href="https://api.jquery.com/attribute-equals-selector/">[name="value"]</a></li>
+<li><a href="https://api.jquery.com/attribute-not-equal-selector/">[name!="value"]</a></li>
+<li><a href="https://api.jquery.com/attribute-starts-with-selector/">[name^="value"]</a></li>
+<li><a href="https://api.jquery.com/has-attribute-selector/">[name]</a></li>
+<li><a href="https://api.jquery.com/multiple-attribute-selector/">[name="value"][name2="value2"]</a> </li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="child-filters">Child Filters</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/first-child-selector/">:first-child</a></li>
+<li><a href="https://api.jquery.com/first-of-type-selector/">:first-of-type</a></li>
+<li><a href="https://api.jquery.com/last-child-selector/">:last-child</a></li>
+<li><a href="https://api.jquery.com/last-of-type-selector/">:last-of-type</a></li>
+<li><a href="https://api.jquery.com/nth-child-selector/">:nth-child()</a></li>
+<li><a href="https://api.jquery.com/nth-last-child-selector/">:nth-last-child()</a></li>
+<li><a href="https://api.jquery.com/nth-last-of-type-selector/">:nth-last-of-type()</a></li>
+<li><a href="https://api.jquery.com/nth-of-type-selector/">:nth-of-type()</a></li>
+<li><a href="https://api.jquery.com/only-child-selector/">:only-child</a></li>
+<li><a href="https://api.jquery.com/only-of-type-selector/">:only-of-type()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="forms">Forms</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/button-selector/">:button</a></li>
+<li><a href="https://api.jquery.com/checkbox-selector/">:checkbox</a></li>
+<li><a href="https://api.jquery.com/checked-selector/">:checked</a></li>
+<li><a href="https://api.jquery.com/disabled-selector/">:disabled</a></li>
+<li><a href="https://api.jquery.com/enabled-selector/">:enabled</a></li>
+<li><a href="https://api.jquery.com/focus-selector/">:focus</a></li>
+<li><a href="https://api.jquery.com/file-selector/">:file</a></li>
+<li><a href="https://api.jquery.com/image-selector/">:image</a></li>
+<li><a href="https://api.jquery.com/input-selector/">:input</a></li>
+<li><a href="https://api.jquery.com/password-selector/">:password</a></li>
+<li><a href="https://api.jquery.com/radio-selector/">:radio</a></li>
+<li><a href="https://api.jquery.com/reset-selector/">:reset</a></li>
+<li><a href="https://api.jquery.com/selected-selector/">:selected</a></li>
+<li><a href="https://api.jquery.com/submit-selector/">:submit</a></li>
+<li><a href="https://api.jquery.com/text-selector/">:text</a></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="jquery-attributes">
+<h2 id="jquery-attributes">jQuery Attributes</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="examples_1">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;h2&#39;</span><span class="p">).</span><span class="nx">css</span><span class="p">();</span>
+</code></pre></div>
+
+<h4 id="jquery-addclass">jQuery addClass</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.button&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="jquery-removeclass">jQuery removeClass</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.button&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseleave&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">evt</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="jquery-toggleclass">jQuery .toggleClass</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.choice&#39;</span><span class="p">).</span><span class="nx">toggleClass</span><span class="p">(</span><span class="s1">&#39;highlighted&#39;</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="attributes">Attributes</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/attr/">.attr()</a></li>
+<li><a href="https://api.jquery.com/prop/">.prop()</a></li>
+<li><a href="https://api.jquery.com/removeAttr/">.removeAttr()</a></li>
+<li><a href="https://api.jquery.com/removeProp/">.removeProp()</a></li>
+<li><a href="https://api.jquery.com/val/">.val()</a></li>
+</ul>
+<h4 id="data">Data</h4>
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery.data/">jQuery.data()</a></li>
+<li><a href="https://api.jquery.com/data/">.data()</a></li>
+<li><a href="https://api.jquery.com/jQuery.hasData/">jQuery.hasData()</a></li>
+<li><a href="https://api.jquery.com/jQuery.removeData/">jQuery.removeData()</a></li>
+<li><a href="https://api.jquery.com/removeData/">.removeData()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="css">CSS</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/addClass/">.addClass()</a></li>
+<li><a href="https://api.jquery.com/hasClass/">.hasClass()</a></li>
+<li><a href="https://api.jquery.com/removeClass/">.removeClass()</a></li>
+<li><a href="https://api.jquery.com/toggleClass/">.toggleClass()</a></li>
+<li><a href="https://api.jquery.com/css/">.css()</a></li>
+<li><a href="https://api.jquery.com/jQuery.cssHooks/">jQuery.cssHooks</a></li>
+<li><a href="https://api.jquery.com/jQuery.cssNumber/">jQuery.cssNumber</a></li>
+<li><a href="https://api.jquery.com/jQuery.escapeSelector/">jQuery.escapeSelector()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dimensions">Dimensions</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/height/">.height()</a></li>
+<li><a href="https://api.jquery.com/innerHeight/">.innerHeight()</a></li>
+<li><a href="https://api.jquery.com/innerWidth/">.innerWidth()</a></li>
+<li><a href="https://api.jquery.com/outerHeight/">.outerHeight()</a></li>
+<li><a href="https://api.jquery.com/outerWidth/">.outerWidth()</a></li>
+<li><a href="https://api.jquery.com/width/">.width()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="offset">Offset</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/offset/">.offset()</a></li>
+<li><a href="https://api.jquery.com/offsetParent/">.offsetParent()</a></li>
+<li><a href="https://api.jquery.com/position/">.position()</a></li>
+<li><a href="https://api.jquery.com/scrollLeft/">.scrollLeft()</a></li>
+<li><a href="https://api.jquery.com/scrollTop/">.scrollTop()</a></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="jquery-manipulation">
+<h2 id="jquery-manipulation">jQuery Manipulation</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="examples_2">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cm">/*&lt;span&gt;Span.&lt;/span&gt;*/</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">).</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;Paragraph.&lt;/p&gt;&#39;</span><span class="p">);</span>
+<span class="cm">/*&lt;span&gt;Span.&lt;/span&gt;&lt;p&gt;Paragraph.&lt;/p&gt;*/</span>
+
+<span class="cm">/*&lt;span&gt;Span.&lt;/span&gt;*/</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;span&gt;Span.&lt;/span&gt;&#39;</span><span class="p">).</span><span class="nx">replaceAll</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">);</span>
+<span class="cm">/*&lt;p&gt;Span.&lt;/p&gt;*/</span>
+
+<span class="cm">/*&lt;span&gt;This is span.&lt;/span&gt;*/</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">).</span><span class="nx">wrap</span><span class="p">(</span><span class="s1">&#39;&lt;p&gt;&lt;/p&gt;&#39;</span><span class="p">);</span>
+<span class="cm">/*&lt;p&gt;&lt;span&gt;This is span.&lt;/span&gt;&lt;/p&gt;*/</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="copying">Copying</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/clone/">.clone()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dom-insertion-around">DOM Insertion, Around</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/wrap/">.wrap()</a></li>
+<li><a href="https://api.jquery.com/wrapAll/">.wrapAll()</a></li>
+<li><a href="https://api.jquery.com/wrapInner/">.wrapInner()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dom-insertion-inside">DOM Insertion, Inside</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/append/">.append()</a></li>
+<li><a href="https://api.jquery.com/appendTo/">.appendTo()</a></li>
+<li><a href="https://api.jquery.com/html/">.html()</a></li>
+<li><a href="https://api.jquery.com/prepend/">.prepend()</a></li>
+<li><a href="https://api.jquery.com/prependTo/">.prependTo()</a></li>
+<li><a href="https://api.jquery.com/text/">.text()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dom-insertion-outside">DOM Insertion, Outside</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/after/">.after()</a></li>
+<li><a href="https://api.jquery.com/before/">.before()</a></li>
+<li><a href="https://api.jquery.com/insertAfter/">.insertAfter()</a></li>
+<li><a href="https://api.jquery.com/insertBefore/">.insertBefore()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dom-removal">DOM Removal</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/detach/">.detach()</a></li>
+<li><a href="https://api.jquery.com/empty/">.empty()</a></li>
+<li><a href="https://api.jquery.com/remove/">.remove()</a></li>
+<li><a href="https://api.jquery.com/unwrap/">.unwrap()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dom-replacement">DOM Replacement</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/replaceAll/">.replaceAll()</a></li>
+<li><a href="https://api.jquery.com/replaceWith/">.replaceWith()</a></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="jquery-traversing">
+<h2 id="jquery-traversing">jQuery Traversing</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="filtering">Filtering</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/eq/">.eq()</a></li>
+<li><a href="https://api.jquery.com/filter/">.filter()</a></li>
+<li><a href="https://api.jquery.com/first/">.first()</a></li>
+<li><a href="https://api.jquery.com/has/">.has()</a></li>
+<li><a href="https://api.jquery.com/is/">.is()</a></li>
+<li><a href="https://api.jquery.com/last/">.last()</a></li>
+<li><a href="https://api.jquery.com/map/">.map()</a></li>
+<li><a href="https://api.jquery.com/not/">.not()</a></li>
+<li><a href="https://api.jquery.com/slice/">.slice()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="miscellaneous-traversing">Miscellaneous Traversing</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/add/">.add()</a></li>
+<li><a href="https://api.jquery.com/addBack/">.addBack()</a></li>
+<li><a href="https://api.jquery.com/andSelf/">.andSelf()</a></li>
+<li><a href="https://api.jquery.com/contents/">.contents()</a></li>
+<li><a href="https://api.jquery.com/each/">.each()</a></li>
+<li><a href="https://api.jquery.com/end/">.end()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tree-traversal">Tree Traversal</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/children/">.children()</a></li>
+<li><a href="https://api.jquery.com/closest/">.closest()</a></li>
+<li><a href="https://api.jquery.com/find/">.find()</a></li>
+<li><a href="https://api.jquery.com/next/">.next()</a></li>
+<li><a href="https://api.jquery.com/nextAll/">.nextAll()</a></li>
+<li><a href="https://api.jquery.com/nextUntil/">.nextUntil()</a></li>
+<li><a href="https://api.jquery.com/parent/">.parent()</a></li>
+<li><a href="https://api.jquery.com/parents/">.parents()</a></li>
+<li><a href="https://api.jquery.com/parentsUntil/">.parentsUntil()</a></li>
+<li><a href="https://api.jquery.com/prev/">.prev()</a></li>
+<li><a href="https://api.jquery.com/prevAll/">.prevAll()</a></li>
+<li><a href="https://api.jquery.com/prevUntil/">.prevUntil()</a></li>
+<li><a href="https://api.jquery.com/siblings/">.siblings()</a></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="jquery-events">
+<h2 id="jquery-events">jQuery Events</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="examples_3">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// A mouse event &#39;click&#39;</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#menu-button&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+
+<span class="c1">// A keyboard event &#39;keyup&#39;</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#textbox&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;keyup&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+
+<span class="c1">// A scroll event &#39;scroll&#39;</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#menu-button&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;scroll&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="event-object">Event object</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#menu&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="method-chaining">Method chaining</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#menu-btn&#39;</span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseenter&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;mouseleave&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="prevents-the-event">Prevents the event</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">event</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="browser-events">Browser Events</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/error/">.error()</a></li>
+<li><a href="https://api.jquery.com/resize/">.resize()</a></li>
+<li><a href="https://api.jquery.com/scroll/">.scroll()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="event-object_1">Event Object</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/event.currentTarget/">event.currentTarget</a></li>
+<li><a href="https://api.jquery.com/event.delegateTarget/">event.delegateTarget</a></li>
+<li><a href="https://api.jquery.com/event.data/">event.data</a></li>
+<li><a href="https://api.jquery.com/event.isDefaultPrevented/">event.isDefaultPrevented()</a></li>
+<li><a href="https://api.jquery.com/event.isImmediatePropagationStopped/">event.isImmediatePropagationStopped()</a></li>
+<li><a href="https://api.jquery.com/event.isPropagationStopped/">event.isPropagationStopped()</a></li>
+<li><a href="https://api.jquery.com/event.metaKey/">event.metaKey</a></li>
+<li><a href="https://api.jquery.com/event.namespace/">event.namespace</a></li>
+<li><a href="https://api.jquery.com/event.pageX/">event.pageX</a></li>
+<li><a href="https://api.jquery.com/event.pageY/">event.pageY</a></li>
+<li><a href="https://api.jquery.com/event.preventDefault/">event.preventDefault()</a></li>
+<li><a href="https://api.jquery.com/event.relatedTarget/">event.relatedTarget</a></li>
+<li><a href="https://api.jquery.com/event.result/">event.result</a></li>
+<li><a href="https://api.jquery.com/event.stopImmediatePropagation/">event.stopImmediatePropagation()</a></li>
+<li><a href="https://api.jquery.com/event.stopPropagation/">event.stopPropagation()</a></li>
+<li><a href="https://api.jquery.com/event.target/">event.target</a></li>
+<li><a href="https://api.jquery.com/event.timeStamp/">event.timeStamp</a></li>
+<li><a href="https://api.jquery.com/event.type/">event.type</a></li>
+<li><a href="https://api.jquery.com/event.which/">event.which</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="document-loading">Document Loading</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/load-event/">.load()</a></li>
+<li><a href="https://api.jquery.com/ready/">.ready()</a></li>
+<li><a href="https://api.jquery.com/unload/">.unload()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="event-handler-attachment">Event Handler Attachment</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/bind/">.bind()</a></li>
+<li><a href="https://api.jquery.com/delegate/">.delegate()</a></li>
+<li><a href="https://api.jquery.com/die/">.die()</a></li>
+<li><a href="https://api.jquery.com/live/">.live()</a></li>
+<li><a href="https://api.jquery.com/off/">.off()</a></li>
+<li><a href="https://api.jquery.com/on/">.on()</a></li>
+<li><a href="https://api.jquery.com/one/">.one()</a></li>
+<li><a href="https://api.jquery.com/trigger/">.trigger()</a></li>
+<li><a href="https://api.jquery.com/triggerHandler/">.triggerHandler()</a></li>
+<li><a href="https://api.jquery.com/unbind/">.unbind()</a></li>
+<li><a href="https://api.jquery.com/undelegate/">.undelegate()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="form-events">Form Events</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/blur/">.blur()</a></li>
+<li><a href="https://api.jquery.com/change/">.change()</a></li>
+<li><a href="https://api.jquery.com/focus/">.focus()</a></li>
+<li><a href="https://api.jquery.com/focusin/">.focusin()</a></li>
+<li><a href="https://api.jquery.com/focusout/">.focusout()</a></li>
+<li><a href="https://api.jquery.com/select/">.select()</a></li>
+<li><a href="https://api.jquery.com/submit/">.submit()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="keyboard-events">Keyboard Events</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/keydown/">.keydown()</a></li>
+<li><a href="https://api.jquery.com/keypress/">.keypress()</a></li>
+<li><a href="https://api.jquery.com/keyup/">.keyup()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="mouse-events">Mouse Events</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/click/">.click()</a></li>
+<li><a href="https://api.jquery.com/contextmenu/">.contextMenu()</a></li>
+<li><a href="https://api.jquery.com/dblclick/">.dblclick()</a></li>
+<li><a href="https://api.jquery.com/hover/">.hover()</a></li>
+<li><a href="https://api.jquery.com/mousedown/">.mousedown()</a></li>
+<li><a href="https://api.jquery.com/mouseenter/">.mouseenter()</a></li>
+<li><a href="https://api.jquery.com/mouseleave/">.mouseleave()</a></li>
+<li><a href="https://api.jquery.com/mousemove/">.mousemove()</a></li>
+<li><a href="https://api.jquery.com/mouseout/">.mouseout()</a></li>
+<li><a href="https://api.jquery.com/mouseover/">.mouseover()</a></li>
+<li><a href="https://api.jquery.com/mouseup/">.mouseup()</a></li>
+<li><a href="https://api.jquery.com/toggle-event/">.toggle()</a></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="jquery-effects">
+<h2 id="jquery-effects">jQuery Effects</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="examples_4">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#menu-button&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<h4 id="fadeout-effect">fadeOut effect</h4>
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#menu-button&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="basics_1">Basics</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/hide/">.hide()</a></li>
+<li><a href="https://api.jquery.com/show/">.show()</a></li>
+<li><a href="https://api.jquery.com/toggle/">.toggle()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sliding">Sliding</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/slideDown/">.slideDown()</a></li>
+<li><a href="https://api.jquery.com/slideToggle/">.slideToggle()</a></li>
+<li><a href="https://api.jquery.com/slideUp/">.slideUp()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="custom">Custom</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/animate/">.animate()</a></li>
+<li><a href="https://api.jquery.com/clearQueue/">.clearQueue()</a></li>
+<li><a href="https://api.jquery.com/delay/">.delay()</a></li>
+<li><a href="https://api.jquery.com/dequeue/">.dequeue()</a></li>
+<li><a href="https://api.jquery.com/jQuery.dequeue/">jQuery.dequeue()</a></li>
+<li><a href="https://api.jquery.com/finish/">.finish()</a></li>
+<li><a href="https://api.jquery.com/jQuery.fx.interval/">jQuery.fx.interval</a></li>
+<li><a href="https://api.jquery.com/jQuery.fx.off/">jQuery.fx.off</a></li>
+<li><a href="https://api.jquery.com/jQuery.speed/">jQuery.speed</a></li>
+<li><a href="https://api.jquery.com/queue/">.queue()</a></li>
+<li><a href="https://api.jquery.com/jQuery.queue/">jQuery.queue()</a></li>
+<li><a href="https://api.jquery.com/stop/">.stop()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fading">Fading</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/fadeIn/">.fadeIn()</a></li>
+<li><a href="https://api.jquery.com/fadeOut/">.fadeOut()</a></li>
+<li><a href="https://api.jquery.com/fadeTo/">.fadeTo()</a></li>
+<li><a href="https://api.jquery.com/fadeToggle/">.fadeToggle()</a></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="jquery-ajax">
+<h2 id="jquery-ajax">jQuery Ajax</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="examples_5">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">()</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">done</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">server_data</span><span class="p">)</span><span class="w"> </span><span class="p">)</span>
+<span class="w">  </span><span class="p">.</span><span class="nx">fail</span><span class="p">(</span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">jqXHR</span><span class="p">,</span><span class="w"> </span><span class="nx">status</span><span class="p">,</span><span class="w"> </span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="global-ajax-event-handlers">Global Ajax Event Handlers</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/ajaxComplete/">.ajaxComplete()</a></li>
+<li><a href="https://api.jquery.com/ajaxError/">.ajaxError()</a></li>
+<li><a href="https://api.jquery.com/ajaxSend/">.ajaxSend()</a></li>
+<li><a href="https://api.jquery.com/ajaxStart/">.ajaxStart()</a></li>
+<li><a href="https://api.jquery.com/ajaxStop/">.ajaxStop()</a></li>
+<li><a href="https://api.jquery.com/ajaxSuccess/">.ajaxSuccess()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="helper-functions">Helper Functions</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery.param/">jQuery.param()</a></li>
+<li><a href="https://api.jquery.com/serialize/">.serialize()</a></li>
+<li><a href="https://api.jquery.com/serializeArray/">.serializeArray()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="low-level-interface">Low-Level Interface</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery.ajax/">jQuery.ajax()</a></li>
+<li><a href="https://api.jquery.com/jQuery.ajaxPrefilter/">jQuery.prefilter()</a></li>
+<li><a href="https://api.jquery.com/jQuery.ajaxSetup/">jQuery.ajaxSetup()</a></li>
+<li><a href="https://api.jquery.com/jQuery.ajaxTransport/">jQuery.ajaxTransport()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="shorthand-methods">Shorthand Methods</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery.get/">jQuery.get()</a></li>
+<li><a href="https://api.jquery.com/jQuery.getJSON/">jQuery.getJSON()</a></li>
+<li><a href="https://api.jquery.com/jQuery.getScript/">jQuery.getScript()</a></li>
+<li><a href="https://api.jquery.com/jQuery.post/">jQuery.post()</a></li>
+<li><a href="https://api.jquery.com/load/">.load()</a></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="miscellaneous">
+<h2 id="miscellaneous">Miscellaneous</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="jquery-object">jQuery Object</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery/">jQuery()</a></li>
+<li><a href="https://api.jquery.com/jQuery.noConflict/">jQuery.noConflict()</a></li>
+<li><a href="https://api.jquery.com/jQuery.sub/">jQuery.sub()</a></li>
+<li><a href="https://api.jquery.com/jQuery.holdReady/">jQuery.holdReady()</a></li>
+<li><a href="https://api.jquery.com/jQuery.when/">jQuery.when()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="deferred-object">Deferred Object</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery.Deferred/">jQuery.Deferred()</a></li>
+<li><a href="https://api.jquery.com/deferred.always/">deferred.always()</a></li>
+<li><a href="https://api.jquery.com/deferred.done/">deferred.done()</a></li>
+<li><a href="https://api.jquery.com/deferred.fail/">deferred.fail()</a></li>
+<li><a href="https://api.jquery.com/deferred.isRejected/">deferred.isRejected()</a></li>
+<li><a href="https://api.jquery.com/deferred.isResolved/">deferred.isResolved()</a></li>
+<li><a href="https://api.jquery.com/deferred.notify/">deferred.notify()</a></li>
+<li><a href="https://api.jquery.com/deferred.notifyWith/">deferred.notifyWith()</a></li>
+<li><a href="https://api.jquery.com/deferred.pipe/">deferred.pipe()</a></li>
+<li><a href="https://api.jquery.com/deferred.progress/">deferred.progress()</a></li>
+<li><a href="https://api.jquery.com/deferred.promise/">deferred.promise()</a></li>
+<li><a href="https://api.jquery.com/deferred.reject/">deferred.reject()</a></li>
+<li><a href="https://api.jquery.com/deferred.rejectWith/">deferred.rejectWith()</a></li>
+<li><a href="https://api.jquery.com/deferred.resolve/">deferred.resolve()</a></li>
+<li><a href="https://api.jquery.com/deferred.resolveWith/">deferred.resolveWith()</a></li>
+<li><a href="https://api.jquery.com/deferred.state/">deferred.state()</a></li>
+<li><a href="https://api.jquery.com/deferred.then/">deferred.then()</a></li>
+<li><a href="https://api.jquery.com/promise/">.promise()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="utilities">Utilities</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery.boxModel/">jQuery.boxModel</a></li>
+<li><a href="https://api.jquery.com/jQuery.browser/">jQuery.browser</a></li>
+<li><a href="https://api.jquery.com/jQuery.contains/">jQuery.contains()</a></li>
+<li><a href="https://api.jquery.com/jQuery.each/">jQuery.each()</a></li>
+<li><a href="https://api.jquery.com/jQuery.extend/">jQuery.extend()</a></li>
+<li><a href="https://api.jquery.com/jQuery.globalEval/">jQuery.globalEval()</a></li>
+<li><a href="https://api.jquery.com/jQuery.grep/">jQuery.grep()</a></li>
+<li><a href="https://api.jquery.com/jQuery.inArray/">jQuery.inArray()</a></li>
+<li><a href="https://api.jquery.com/jQuery.isArray/">jQuery.isArray()</a></li>
+<li><a href="https://api.jquery.com/jQuery.isEmptyObject/">jQuery.isEmptyObject()</a></li>
+<li><a href="https://api.jquery.com/jQuery.isFunction/">jQuery.isFunction()</a></li>
+<li><a href="https://api.jquery.com/jQuery.isNumeric/">jQuery.isNumeric()</a></li>
+<li><a href="https://api.jquery.com/jQuery.isPlainObject/">jQuery.isPlainObject()</a></li>
+<li><a href="https://api.jquery.com/jQuery.isWindow/">jQuery.isWindow()</a></li>
+<li><a href="https://api.jquery.com/jQuery.isXMLDoc/">jQuery.isXMLDoc()</a></li>
+<li><a href="https://api.jquery.com/jQuery.makeArray/">jQuery.makeArray()</a></li>
+<li><a href="https://api.jquery.com/jQuery.map/">jQuery.map()</a></li>
+<li><a href="https://api.jquery.com/jQuery.merge/">jQuery.merge()</a></li>
+<li><a href="https://api.jquery.com/jQuery.noop/">jQuery.noop()</a></li>
+<li><a href="https://api.jquery.com/jQuery.now/">jQuery.now()</a></li>
+<li><a href="https://api.jquery.com/jQuery.parseHTML/">jQuery.parseHTML()</a></li>
+<li><a href="https://api.jquery.com/jQuery.parseJSON/">jQuery.parseJSON()</a></li>
+<li><a href="https://api.jquery.com/jQuery.parseXML/">jQuery.parseXML()</a></li>
+<li><a href="https://api.jquery.com/jQuery.proxy/">jQuery.proxy()</a></li>
+<li><a href="https://api.jquery.com/jQuery.support/">jQuery.support</a></li>
+<li><a href="https://api.jquery.com/jQuery.trim/">jQuery.trim()</a></li>
+<li><a href="https://api.jquery.com/jQuery.type/">jQuery.type()</a></li>
+<li><a href="https://api.jquery.com/jQuery.unique/">jQuery.unique()</a></li>
+<li><a href="https://api.jquery.com/jQuery.uniqueSort/">jQuery.uniqueSort()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dom-element-methods">DOM Element Methods</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/get/">.get()</a></li>
+<li><a href="https://api.jquery.com/index/">.index()</a></li>
+<li><a href="https://api.jquery.com/size/">.size()</a></li>
+<li><a href="https://api.jquery.com/toArray/">.toArray()</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="internals">Internals</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jquery-2/">.jquery</a></li>
+<li><a href="https://api.jquery.com/context/">.context</a></li>
+<li><a href="https://api.jquery.com/jQuery.error/">jQuery.error()</a></li>
+<li><a href="https://api.jquery.com/length/">.length</a></li>
+<li><a href="https://api.jquery.com/pushStack/">.pushStack()</a></li>
+<li><a href="https://api.jquery.com/selector/">.selector</a></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="callbacks-object">Callbacks Object</h3>
+<div class="section">
+<!-- prettier-ignore -->
+<ul>
+<li><a href="https://api.jquery.com/jQuery.Callbacks/">jQuery.Callbacks()</a></li>
+<li><a href="https://api.jquery.com/callbacks.add/">callbacks.add()</a></li>
+<li><a href="https://api.jquery.com/callbacks.disable/">callbacks.disable()</a></li>
+<li><a href="https://api.jquery.com/callbacks.disabled/">callbacks.disabled()</a></li>
+<li><a href="https://api.jquery.com/callbacks.empty/">callbacks.empty()</a></li>
+<li><a href="https://api.jquery.com/callbacks.fire/">callbacks.fire()</a></li>
+<li><a href="https://api.jquery.com/callbacks.fired/">callbacks.fired()</a></li>
+<li><a href="https://api.jquery.com/callbacks.fireWith/">callbacks.fireWith()</a></li>
+<li><a href="https://api.jquery.com/callbacks.has/">callbacks.has()</a></li>
+<li><a href="https://api.jquery.com/callbacks.lock/">callbacks.lock()</a></li>
+<li><a href="https://api.jquery.com/callbacks.locked/">callbacks.locked()</a></li>
+<li><a href="https://api.jquery.com/callbacks.remove/">callbacks.remove()</a></li>
+</ul>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

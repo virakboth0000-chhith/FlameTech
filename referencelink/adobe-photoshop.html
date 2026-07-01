@@ -1,0 +1,1739 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Adobe Photoshop Cheat Sheet — FlameTech</title>
+  <meta name="description" content="A visual cheat-sheet for the 283 keyboard shortcuts found in Adobe Photoshop">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#071c25}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(7,28,37,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Keyboard Shortcuts</span>
+    <span>›</span>
+    <span>Adobe Photoshop</span>
+  </div>
+  <div class="post-icon">AP</div>
+  <h1>Adobe Photoshop <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>A visual cheat-sheet for the 283 keyboard shortcuts found in Adobe Photoshop</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Keyboard Shortcuts</span>
+    <span class="meta-tag">-</span> <span class="meta-tag">Keyboard Shortcuts</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="keyboard-shortcuts">
+<h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="popular-shortcuts">Popular shortcuts</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>T</code></td>
+<td>Free transform</td>
+</tr>
+<tr>
+<td><code>[</code></td>
+<td>Decrease brush size</td>
+</tr>
+<tr>
+<td><code>]</code></td>
+<td>Increase brush size</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>[</code></td>
+<td>Decrease brush hardness</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>]</code></td>
+<td>Increase brush hardness</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>Default foreground/background colors</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>Switch foreground/background colors</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>J</code></td>
+<td>New layer via copy</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>J</code></td>
+<td>New layer via cut</td>
+</tr>
+<tr>
+<td><code>Esc</code></td>
+<td>Cancel any modal dialog window (including the Start Workspace)</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>Select the first edit field of the tool bar</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>Navigate between fields</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Tab</code></td>
+<td>Navigate between fields in the opposite direction</td>
+</tr>
+<tr>
+<td><code>Alt</code></td>
+<td>Change cancel to reset</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>F</code></td>
+<td>Invoke the search experience</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-function-keys">Use function keys</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>F1</code></td>
+<td>Start help</td>
+</tr>
+<tr>
+<td><code>F2</code></td>
+<td>Cut</td>
+</tr>
+<tr>
+<td><code>F3</code></td>
+<td>Copy</td>
+</tr>
+<tr>
+<td><code>F4</code></td>
+<td>Paste</td>
+</tr>
+<tr>
+<td><code>F5</code></td>
+<td>Show/hide brush panel</td>
+</tr>
+<tr>
+<td><code>F6</code></td>
+<td>Show/hide color panel</td>
+</tr>
+<tr>
+<td><code>F7</code></td>
+<td>Show/hide layers panel</td>
+</tr>
+<tr>
+<td><code>F8</code></td>
+<td>Show/hide info panel</td>
+</tr>
+<tr>
+<td><code>F9</code></td>
+<td>Show/hide actions panel</td>
+</tr>
+<tr>
+<td><code>F12</code></td>
+<td>Revert</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F5</code></td>
+<td>Fill</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F6</code></td>
+<td>Feather selection</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F7</code></td>
+<td>Inverse selection</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="select-tools">Select tools</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>V</code></td>
+<td>Move tool</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td>Rectangular marquee tool</td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td>Lasso tool</td>
+</tr>
+<tr>
+<td><code>W</code></td>
+<td>Magic wand tool &gt; quick selection tool</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>Crop tool &gt; slice tool &gt; slice select tool</td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td>Eyedropper tool &gt; ruler tool &gt; note tool</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td>Spot healing brush tool &gt; healing brush tool &gt; patch tool &gt; red eye tool</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td>Brush tool &gt; pencil tool &gt; color replacement tool &gt; mixer brush tool</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>Clone stamp tool &gt; pattern stamp tool</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>History brush tool &gt; Art history brush tool</td>
+</tr>
+<tr>
+<td><code>E</code></td>
+<td>Eraser tool &gt; background eraser tool &gt; magic eraser tool</td>
+</tr>
+<tr>
+<td><code>G</code></td>
+<td>Gradient tool &gt; paint bucket tool</td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td>Dodge tool &gt; burn tool &gt; sponge tool</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td>Pen tool &gt; freeform pen tool</td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td>Horizontal type tool &gt; vertical type tool &gt; horizontal type mask tool &gt; vertical type mask tool</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td>Path selection tool &gt; direct selection tool</td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td>Rectangle tool &gt; rounded rectangle tool &gt; ellipse tool &gt; polygon tool &gt; line tool</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>Hand tool</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td>Rotate view tool</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>Zoom tool</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>Default foreground/background colors</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>Switch foreground/background colors</td>
+</tr>
+<tr>
+<td><code>Q</code></td>
+<td>Toggle standard/quick mask modes</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td>Content-aware move tool</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>Perspective crop tool</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td>Artboard tool</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td>Rotate view tool</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Toggle preserve transparency</td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td>Previous brush</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>Next brush</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>,</code></td>
+<td>First brush</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>.</code></td>
+<td>Last brush</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="view-images">View images</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Tab</code></td>
+<td>Cycle through open documents</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Tab</code></td>
+<td>Switch to previous document</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>W</code></td>
+<td>Close a file in Photoshop and open Bridge</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>Toggle forward between Standard screen &gt; Full screen with menu bar &gt; Full screen modes</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F</code></td>
+<td>Toggle backwards between Standard screen &gt; Full screen with menu bar &gt; Full screen modes</td>
+</tr>
+<tr>
+<td><code>Space</code> <code>F</code></td>
+<td>Toggle forward canvas color</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Space</code> <code>F</code></td>
+<td>Toggle backwards canvas color</td>
+</tr>
+<tr>
+<td><code>Space</code></td>
+<td>Switch to hand tool (when not in text-edit mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Space</code></td>
+<td>Switch to zoom in tool</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Space</code></td>
+<td>Switch to zoom out tool</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Enter</code></td>
+<td>Apply zoom percentage, and keep zoom percentage box active</td>
+</tr>
+<tr>
+<td><code>PgUp/PgDn</code></td>
+<td>Scroll up or down 1 screen</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>PgUp/PgDn</code></td>
+<td>Scroll up or down 10 units</td>
+</tr>
+<tr>
+<td><code>Home</code></td>
+<td>Move view to upper-left corner</td>
+</tr>
+<tr>
+<td><code>End</code></td>
+<td>Move view to lower-right corner</td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td>Toggle layer mask on/off as rubylith (layer mask must be selected)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-puppet-warp">Use Puppet Warp</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Esc</code></td>
+<td>Cancel completely</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Z</code></td>
+<td>Undo last pin adjustment</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>A</code></td>
+<td>Select all pins</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>D</code></td>
+<td>Deselect all pins</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>Temporarily hide pins</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-refine-edge">Use Refine Edge</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>R</code></td>
+<td>Open the Refine Edge dialog box</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>Cycle forward through preview modes</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F</code></td>
+<td>Cycle backwards through preview modes</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>Toggle between original image and selection preview</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td>Toggle between original selection and refined version</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td>Toggle radius preview on and off</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>E</code></td>
+<td>Toggle between Refine Radius and Erase Refinement tools</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-the-filter-gallery">Use the Filter Gallery</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>F</code></td>
+<td>Reapply last-used filter</td>
+</tr>
+<tr>
+<td><code>Ctrl</code></td>
+<td>Change Cancel button to Default</td>
+</tr>
+<tr>
+<td><code>Alt</code></td>
+<td>Change Cancel button to Reset</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Z</code></td>
+<td>Undo/Redo</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Z</code></td>
+<td>Step forward</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>Z</code></td>
+<td>Step backward</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-the-liquify-filter">Use the Liquify filter</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>W</code></td>
+<td>Forward warp tool</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td>Reconstruct tool</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>Twirl clockwise tool</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>Pucker tool</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td>Bloat tool</td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td>Push left tool</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td>Mirror tool</td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td>Turbulence tool</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>Freeze mask tool</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>Thaw mask tool</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>(tool)</code></td>
+<td>Reverse direction for Bloat, Pucker, Push Left, and Mirror tools</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>Cycle through controls on right from top</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Tab</code></td>
+<td>Cycle through controls on right from bottom</td>
+</tr>
+<tr>
+<td><code>Alt</code></td>
+<td>Change cancel to reset</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-vanishing-point">Use Vanishing Point</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>X</code></td>
+<td>Zoom 2x (temporary)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>+</code></td>
+<td>Zoom in</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>-</code></td>
+<td>Zoom out</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>0</code></td>
+<td>Fit in view</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Z</code></td>
+<td>Undo last action</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Z</code></td>
+<td>Redo last action</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>D</code></td>
+<td>Deselect all</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>H</code></td>
+<td>Hide selection and panes</td>
+</tr>
+<tr>
+<td><code>Arrows</code></td>
+<td>Move selection 1 pixel</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Arrows</code></td>
+<td>Move selection 10 pixels</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>C</code></td>
+<td>Copy</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>V</code></td>
+<td>Paste</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>T</code></td>
+<td>Repeat last duplicate and move</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>T</code></td>
+<td>Create floating selection from the current selection</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code></td>
+<td>Constrain selection to a 15 degree rotation</td>
+</tr>
+<tr>
+<td><code>Backspace</code></td>
+<td>Delete last node while creating plane</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-the-camera-raw-dialog-box">Use the Camera Raw dialog box</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Z</code></td>
+<td>Zoom tool</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td>Hand tool</td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td>White balance tool</td>
+</tr>
+<tr>
+<td><code>S</code></td>
+<td>Color sampler tool</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>Crop tool</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td>Straighten tool</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td>Spot removal tool</td>
+</tr>
+<tr>
+<td><code>E</code></td>
+<td>Red eye removal tool</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>1</code></td>
+<td>Basic panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>2</code></td>
+<td>Tone curve panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>3</code></td>
+<td>Detail panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>4</code></td>
+<td>HSL/Greyscale panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>5</code></td>
+<td>Split toning panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>6</code></td>
+<td>Lens corrections panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>7</code></td>
+<td>Camera calibration panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>8</code></td>
+<td>Presets panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>9</code></td>
+<td>Open snapshots panel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>Shift</code> <code>T</code></td>
+<td>Parametric curve targeted adjustment tool</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>Shift</code> <code>H</code></td>
+<td>Hue targeted adjustment tool</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>Shift</code> <code>S</code></td>
+<td>Saturation targeted adjustment tool</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>Shift</code> <code>L</code></td>
+<td>Luminance targeted adjustment tool</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>Shift</code> <code>G</code></td>
+<td>Grayscale mix targeted adjustment tool</td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td>Last-used targeted adjustment tool</td>
+</tr>
+<tr>
+<td><code>K</code></td>
+<td>Adjustment brush tool</td>
+</tr>
+<tr>
+<td><code>G</code></td>
+<td>Graduated filter tool</td>
+</tr>
+<tr>
+<td><code>Alt</code></td>
+<td>Temporarily switch from Add to Erase mode for the Adjustment brush tool, or from Erase to Add mode</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>]/[</code></td>
+<td>Increase/decrease temporary adjustment brush tool size</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>]/[</code></td>
+<td>Increase/decrease temporary adjustment brush tool feather</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>=/-</code></td>
+<td>Increase/decrease temporary adjustment brush tool size flow in increments of 10</td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td>Switch to New mode from Add or Erase mode of the Adjustment Brush tool or Graduated filter</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td>Toggle Auto Mask for Adjustment Brush tool</td>
+</tr>
+<tr>
+<td><code>Y</code></td>
+<td>Toggle Show Mask for Adjustment Brush tool</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td>Toggle pins for Adjustment Brush tool</td>
+</tr>
+<tr>
+<td><code>L</code></td>
+<td>Rotate image left</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td>Rotate image right</td>
+</tr>
+<tr>
+<td><code>Ctrl</code></td>
+<td>Temporarily switch to zoom in tool</td>
+</tr>
+<tr>
+<td><code>Alt</code></td>
+<td>Temporarily switch to zoom out tool and change the image open button to open copy</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td>Toggle preview</td>
+</tr>
+<tr>
+<td><code>F</code></td>
+<td>Full screen mode</td>
+</tr>
+<tr>
+<td><code>Shift</code></td>
+<td>Temporarily activate the White Balance tool and change the open image button to open object</td>
+</tr>
+<tr>
+<td><code>Arrows</code></td>
+<td>Move selected point in curves panel 1 pixel</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Arrows</code></td>
+<td>Move selected point in curves panel 10 pixels</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>R</code></td>
+<td>Open selected images in Camera Raw dialog box from Bridge</td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td>Highlight clipping warning</td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td>Shadows clipping warning</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>1-5</code></td>
+<td>Add 1-5 star rating (filmstrip mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>./,</code></td>
+<td>Increase/decrease rating (filmstrip mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>6</code></td>
+<td>Add red label (filmstrip mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>7</code></td>
+<td>Add yellow label (filmstrip mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>8</code></td>
+<td>Add green label (filmstrip mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>9</code></td>
+<td>Add blue label (filmstrip mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>0</code></td>
+<td>Add purple label (filmstrip mode)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>K</code></td>
+<td>Camera Raw preferences</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code></td>
+<td>Delete Adobe Camera Raw preferences (on open)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-the-black-and-white-dialog-box">Use the Black-and-White dialog box</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Alt</code> <code>B</code></td>
+<td>Open the Black-and-White dialog box</td>
+</tr>
+<tr>
+<td><code>Up/Down</code></td>
+<td>Increase/decrease selected value by 1%</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Up/Down</code></td>
+<td>Increase/decrease selected value by 10%</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-curves">Use Curves</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>M</code></td>
+<td>Open the Curves dialog box</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>Select next point on the curve</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Select the previous point on the curve</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>D</code></td>
+<td>Deselect a point</td>
+</tr>
+<tr>
+<td><code>Del</code></td>
+<td>Delete a point on the curve</td>
+</tr>
+<tr>
+<td><code>Arrows</code></td>
+<td>Move the selected point 1 pixel</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Arrows</code></td>
+<td>Move the selected point 10 pixels</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="transform-selections-selection-borders-and-paths">Transform selections, selection borders, and paths</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alt</code></td>
+<td>Transform from center or reflect</td>
+</tr>
+<tr>
+<td><code>Shift</code></td>
+<td>Constrain</td>
+</tr>
+<tr>
+<td><code>Ctrl</code></td>
+<td>Distort</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>Apply</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>.</code></td>
+<td>Cancel</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>T</code></td>
+<td>Free transform with duplicate data</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Alt</code> <code>T</code></td>
+<td>Transform again with duplicate data</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="edit-paths">Edit paths</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code></td>
+<td>Switch from path selection, pen, add anchor point, delete anchor point, or convert point tools to direct selection tool</td>
+</tr>
+<tr>
+<td><code>Alt</code></td>
+<td>Switch from pen tool to freeform pen tool to convert point tool when pointer is over anchor or direction point</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-for-painting">Use for painting</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>0-9</code></td>
+<td>Mixer brush changes mix setting</td>
+</tr>
+<tr>
+<td><code>0-9</code></td>
+<td>Mixer brush changes wet setting</td>
+</tr>
+<tr>
+<td><code>00</code></td>
+<td>Mixer brush changes wet and mix to zero</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>+/-</code></td>
+<td>Cycle through blending modes</td>
+</tr>
+<tr>
+<td><code>Backspace</code></td>
+<td>Open fill dialog box on background or standard layer</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Backspace</code></td>
+<td>Fill with foreground color</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Backspace</code></td>
+<td>Fill with background color</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>Backspace</code></td>
+<td>Fill from history</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Backspace</code></td>
+<td>Displays fill dialog box</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Lock transparent pixels on/off</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-for-blending-modes">Use for blending modes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>-/+</code></td>
+<td>Cycle through blending modes</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>N</code></td>
+<td>Normal</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>I</code></td>
+<td>Dissolve</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>Q</code></td>
+<td>Behind (brush tool only)</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>R</code></td>
+<td>Clear (brush tool only)</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>K</code></td>
+<td>Darken</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>M</code></td>
+<td>Multiply</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>B</code></td>
+<td>Color burn</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>A</code></td>
+<td>Linear burn</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>G</code></td>
+<td>Lighten</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>S</code></td>
+<td>Screen</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>D</code></td>
+<td>Color dodge</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>W</code></td>
+<td>Linear dodge</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>O</code></td>
+<td>Overlay</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>F</code></td>
+<td>Soft light</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>H</code></td>
+<td>Hard light</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>V</code></td>
+<td>Vivid light</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>J</code></td>
+<td>Linear light</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>Z</code></td>
+<td>Pin light</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>L</code></td>
+<td>Hard mix</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>E</code></td>
+<td>Difference</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>X</code></td>
+<td>Exclusion</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>U</code></td>
+<td>Hue</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>T</code></td>
+<td>Saturation</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>C</code></td>
+<td>Color</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>Y</code></td>
+<td>Luminosity</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>N</code></td>
+<td>Set blending mode to Threshold for bitmap images, Normal for all other images</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="format-type">Format type</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>L/C/R</code></td>
+<td>Align left, center, or right</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>X</code></td>
+<td>Choose 100% horizontal scale</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Alt</code> <code>X</code></td>
+<td>Choose 100% vertical scale</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Alt</code> <code>A</code></td>
+<td>Choose auto leading</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Q</code></td>
+<td>Choose 0 for tracking</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>J</code></td>
+<td>Justify paragraph, left aligns last line</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>F</code></td>
+<td>Justify paragraph, justifies all</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Alt</code> <code>H</code></td>
+<td>Toggle paragraph hyphenation on/off</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Alt</code> <code>T</code></td>
+<td>Toggle single/every-line composer on/off</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>&lt;/&gt;</code></td>
+<td>Decrease or increase type size of selected text 2 points or pixels</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Up/Down</code></td>
+<td>Decrease or increase leading 2 points or pixels</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>Up/Down</code></td>
+<td>Decrease or increase baseline shift 2 points or pixels</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Left/Right</code></td>
+<td>Decrease or increase kerning/tracking 20/1000 ems</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-panels">Use panels</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Shift</code> <code>Enter</code></td>
+<td>Apply value and keep text box active</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>Show/Hide all panels</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Tab</code></td>
+<td>Show/Hide all panels except the toolbox and options bar</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>Highlight options bar (select tool first)</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Up/Down</code></td>
+<td>Increase/decrease selected values by 10</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-adjustment-layers">Use adjustment layers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alt</code> <code>3</code></td>
+<td>Choose red channel for adjustment</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>4</code></td>
+<td>Choose green channel for adjustment</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>5</code></td>
+<td>Choose blue channel for adjustment</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>2</code></td>
+<td>Choose composite channel for adjustment</td>
+</tr>
+<tr>
+<td><code>Backspace</code></td>
+<td>Delete adjustment layer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-the-brush-panel">Use the Brush panel</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>,/.</code></td>
+<td>Select previous/next brush size</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>,/.</code></td>
+<td>Select first/last brush</td>
+</tr>
+<tr>
+<td><code>Caps Lock</code></td>
+<td>Display precise cross hair for brushes</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>P</code></td>
+<td>Toggle airbrush option</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-the-clone-source-panel">Use the Clone Source panel</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Alt</code> <code>Shift</code></td>
+<td>Show Clone Source (overlays iamge)</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>(arrows)</code></td>
+<td>Nudge Clone Source</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>&lt;/&gt;</code></td>
+<td>Rotate Clone Source</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>[/]</code></td>
+<td>Scale (increase or reduce size) Clone Source</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-the-layers-panel">Use the Layers panel</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>N</code></td>
+<td>New layer</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>J</code></td>
+<td>New layer via copy</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>J</code></td>
+<td>New layer via cut</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>G</code></td>
+<td>Group layers</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>G</code></td>
+<td>Ungroup layers</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>G</code></td>
+<td>Create/release clipping mask</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>A</code></td>
+<td>Select all layers</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>E</code></td>
+<td>Merge visible layers</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>.</code></td>
+<td>Select top layer</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>.</code></td>
+<td>Select bottom layer</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Alt</code> <code>[/]</code></td>
+<td>Add to layer selection in Layers panel</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>[/]</code></td>
+<td>Select next layer down/up</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>[/]</code></td>
+<td>Move target layer down/up</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Alt</code> <code>E</code></td>
+<td>Merge a copy of all visible layers into target layer</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>E</code></td>
+<td>Merge layers (while layers are highlighted)</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>[/]</code></td>
+<td>Move layer to bottom or top</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Toggle lock transparency for target layer, or last applied lock</td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td>Toggle rubylith mode for layer mask on/off</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://helpx.adobe.com/photoshop/using/default-keyboard-shortcuts.html">Keyboard shortcuts for Adobe Photoshop</a>
+  <em>(helpx.adobe.com)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

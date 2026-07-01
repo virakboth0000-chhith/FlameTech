@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>HTML Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This HTML quick reference cheat sheet lists the common HTML and HTML5 tags in readable layout.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#cc5534}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(204,85,52,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>HTML</span>
+  </div>
+  <div class="post-icon">HT</div>
+  <h1>HTML <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This HTML quick reference cheat sheet lists the common HTML and HTML5 tags in readable layout.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">web</span> <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span> <span class="meta-tag">runCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="hellohtml">hello.html</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;!doctype html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;UTF-8&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;IE=edge&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width, initial-scale=1.0&quot;</span> <span class="p">/&gt;</span>
+    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>HTML5 Boilerplate<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>Hello world, hello CheatSheets.zip!<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>Or try it out in the <a href="https://jsfiddle.net/Fechin/1e4wz20b/">jsfiddle</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="comment">Comment</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- this is a comment --&gt;</span>
+
+<span class="cm">&lt;!--</span>
+<span class="cm">    Or you can comment out a</span>
+<span class="cm">    large number of lines.</span>
+<span class="cm">--&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="paragraph">Paragraph</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>I&#39;m from CheatSheets.zip<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>Share quick reference cheat sheet.<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/p">The Paragraph element</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="html-link">HTML link</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://cheatsheets.zip&quot;</span><span class="p">&gt;</span>CheatSheets<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;mailto:jack@abc.com&quot;</span><span class="p">&gt;</span>Email<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;tel:+12345678&quot;</span><span class="p">&gt;</span>Call<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;sms:+12345678&amp;body=ha%20ha&quot;</span><span class="p">&gt;</span>Msg<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><code>href</code></td>
+<td>The URL that the hyperlink points to</td>
+</tr>
+<tr>
+<td></td>
+<td><code>rel</code></td>
+<td>Relationship of the linked URL</td>
+</tr>
+<tr>
+<td></td>
+<td><code>target</code></td>
+<td>Link target location: <br/><code>_self</code>, <code>_blank</code>, <code>_top</code>, <code>_parent</code></td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a#attributes">The \<a> Attributes</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="image-tag">Image Tag</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">img</span>
+  <span class="na">loading</span><span class="o">=</span><span class="s">&quot;lazy&quot;</span>
+  <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://xxx.png&quot;</span>
+  <span class="na">alt</span><span class="o">=</span><span class="s">&quot;Describe image here&quot;</span>
+  <span class="na">width</span><span class="o">=</span><span class="s">&quot;400&quot;</span>
+  <span class="na">height</span><span class="o">=</span><span class="s">&quot;400&quot;</span>
+<span class="p">/&gt;</span>
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><code>src</code></td>
+<td>Required, Image location <em>(URL | Path)</em></td>
+</tr>
+<tr>
+<td></td>
+<td><code>alt</code></td>
+<td>Describe of the image</td>
+</tr>
+<tr>
+<td></td>
+<td><code>width</code></td>
+<td>Width of the image</td>
+</tr>
+<tr>
+<td></td>
+<td><code>height</code></td>
+<td>Height of the image</td>
+</tr>
+<tr>
+<td></td>
+<td><code>loading</code></td>
+<td>How the browser should load</td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/img">The Image Embed element</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-formatting-tags">Text Formatting Tags</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">b</span><span class="p">&gt;</span>Bold Text<span class="p">&lt;/</span><span class="nt">b</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">strong</span><span class="p">&gt;</span>This text is important<span class="p">&lt;/</span><span class="nt">strong</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">i</span><span class="p">&gt;</span>Italic Text<span class="p">&lt;/</span><span class="nt">i</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">em</span><span class="p">&gt;</span>This text is emphasized<span class="p">&lt;/</span><span class="nt">em</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">u</span><span class="p">&gt;</span>Underline Text<span class="p">&lt;/</span><span class="nt">u</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">pre</span><span class="p">&gt;</span>Pre-formatted Text<span class="p">&lt;/</span><span class="nt">pre</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">code</span><span class="p">&gt;</span>Source code<span class="p">&lt;/</span><span class="nt">code</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">del</span><span class="p">&gt;</span>Deleted text<span class="p">&lt;/</span><span class="nt">del</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">mark</span><span class="p">&gt;</span>Highlighted text (HTML5)<span class="p">&lt;/</span><span class="nt">mark</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">ins</span><span class="p">&gt;</span>Inserted text<span class="p">&lt;/</span><span class="nt">ins</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">sup</span><span class="p">&gt;</span>Makes text superscripted<span class="p">&lt;/</span><span class="nt">sup</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">sub</span><span class="p">&gt;</span>Makes text subscripted<span class="p">&lt;/</span><span class="nt">sub</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">small</span><span class="p">&gt;</span>Makes text smaller<span class="p">&lt;/</span><span class="nt">small</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">kbd</span><span class="p">&gt;</span>Ctrl<span class="p">&lt;/</span><span class="nt">kbd</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">blockquote</span><span class="p">&gt;</span>Text Block Quote<span class="p">&lt;/</span><span class="nt">blockquote</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="headings">Headings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>This is Heading 1<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h2</span><span class="p">&gt;</span>This is Heading 2<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>This is Heading 3<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h4</span><span class="p">&gt;</span>This is Heading 4<span class="p">&lt;/</span><span class="nt">h4</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h5</span><span class="p">&gt;</span>This is Heading 5<span class="p">&lt;/</span><span class="nt">h5</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">h6</span><span class="p">&gt;</span>This is Heading 6<span class="p">&lt;/</span><span class="nt">h6</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>You should only have one h1 on your page</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="section-divisions">Section Divisions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;div&gt;&lt;/div&gt;</code></td>
+<td>Division or Section of Page Content</td>
+</tr>
+<tr>
+<td><code>&lt;span&gt;&lt;/span&gt;</code></td>
+<td>Section of text within other content</td>
+</tr>
+<tr>
+<td><code>&lt;p&gt;&lt;/p&gt;</code></td>
+<td>Paragraph of Text</td>
+</tr>
+<tr>
+<td><code>&lt;br&gt;</code></td>
+<td>Line Break</td>
+</tr>
+<tr>
+<td><code>&lt;hr&gt;</code></td>
+<td>Basic Horizontal Line</td>
+</tr>
+</tbody>
+</table>
+<p>These are the tags used to divide your page up into sections</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="inline-frame">Inline Frame</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">iframe</span>
+  <span class="na">title</span><span class="o">=</span><span class="s">&quot;New York&quot;</span>
+  <span class="na">width</span><span class="o">=</span><span class="s">&quot;342&quot;</span>
+  <span class="na">height</span><span class="o">=</span><span class="s">&quot;306&quot;</span>
+  <span class="na">id</span><span class="o">=</span><span class="s">&quot;gmap_canvas&quot;</span>
+  <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://maps.google.com/maps?q=2880%20Broadway,%20New%20York&amp;t=&amp;z=13&amp;ie=UTF8&amp;iwloc=&amp;output=embed&quot;</span>
+  <span class="na">scrolling</span><span class="o">=</span><span class="s">&quot;no&quot;</span>
+<span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">iframe</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview">↓ Preview</h4>
+<iframe title="New York"
+    width="342"
+    height="306"
+    id="gmap_canvas"
+    src="https://maps.google.com/maps?q=2880%20Broadway,%20New%20York&t=&z=13&ie=UTF8&iwloc=&output=embed"
+    scrolling="no">
+</iframe>
+
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/iframe">The Inline Frame element</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="javascript-in-html">JavaScript in HTML</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">script</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/javascript&quot;</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Hello CheatSheets.zip&#39;</span><span class="p">;</span>
+<span class="w">  </span><span class="nx">alert</span><span class="p">(</span><span class="nx">text</span><span class="p">);</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="external-javascript">External JavaScript</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+  ...
+
+  <span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;app.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="css-in-html">CSS in HTML</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">style</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="nt">h1</span><span class="w"> </span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="external-stylesheet">External stylesheet</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+  ...
+  <span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;style.css&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="html5-tags">
+<h2 id="html5-tags">HTML5 Tags</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="document">Document</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">header</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">nav</span><span class="p">&gt;</span>...<span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">header</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">main</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>CheatSheets.zip<span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">main</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">footer</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>©2023 CheatSheets.zip<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">footer</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="header-navigation">Header Navigation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">header</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">nav</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>Edit Page<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>Twitter<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;#&quot;</span><span class="p">&gt;</span>Facebook<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">nav</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">header</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="html5-tags_1">HTML5 Tags</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/article">article</a></td>
+<td>Content that’s independent</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/aside">aside</a></td>
+<td>Secondary content</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio">audio</a></td>
+<td>Embeds a sound, or an audio stream</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/bdi">bdi</a></td>
+<td>The Bidirectional Isolate element</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas">canvas</a></td>
+<td>Draw graphics via JavaScript</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/data">data</a></td>
+<td>Machine readable content</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist">datalist</a></td>
+<td>A set of pre-defined options</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/details">details</a></td>
+<td>Additional information</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog">dialog</a></td>
+<td>A dialog box or sub-window</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/embed">embed</a></td>
+<td>Embeds external application</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figcaption">figcaption</a></td>
+<td>A caption or legend for a figure</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/figure">figure</a></td>
+<td>A figure illustrated</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/footer">footer</a></td>
+<td>Footer or least important</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/header">header</a></td>
+<td>Masthead or important information</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/main">main</a></td>
+<td>The main content of the document</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/mark">mark</a></td>
+<td>Text highlighted</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meter">meter</a></td>
+<td>A scalar value within a known range</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/nav">nav</a></td>
+<td>A section of navigation links</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/output">output</a></td>
+<td>The result of a calculation</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture">picture</a></td>
+<td>A container for multiple image sources</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/progress">progress</a></td>
+<td>The completion progress of a task</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/rp">rp</a></td>
+<td>Provides fall-back parenthesis</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/rt">rt</a></td>
+<td>Defines the pronunciation of character</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ruby">ruby</a></td>
+<td>Represents a ruby annotation</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/section">section</a></td>
+<td>A group in a series of related content</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/source">source</a></td>
+<td>Resources for the media elements</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/summary">summary</a></td>
+<td>A summary for the \<details> element</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template">template</a></td>
+<td>Defines the fragments of HTML</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/time">time</a></td>
+<td>A time or date</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/track">track</a></td>
+<td>Text tracks for the media elements</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/video">video</a></td>
+<td>Embeds video</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/wbr">wbr</a></td>
+<td>A line break opportunity</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="html5-video">HTML5 Video</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">video</span> <span class="na">controls</span><span class="o">=</span><span class="s">&quot;&quot;</span> <span class="na">width</span><span class="o">=</span><span class="s">&quot;100%&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">source</span>
+    <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4&quot;</span>
+    <span class="na">type</span><span class="o">=</span><span class="s">&quot;video/mp4&quot;</span>
+  <span class="p">/&gt;</span>
+  Sorry, your browser doesn&#39;t support embedded videos.
+<span class="p">&lt;/</span><span class="nt">video</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_1">↓ Preview</h4>
+<video controls="" width="100%">
+    <source src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" type="video/mp4">
+    Sorry, your browser doesn't support embedded videos.
+</video>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="html5-audio">HTML5 Audio</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">audio</span>
+  <span class="na">controls</span>
+  <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3&quot;</span>
+<span class="p">&gt;</span>
+  Your browser does not support the audio element.
+<span class="p">&lt;/</span><span class="nt">audio</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_2">↓ Preview</h4>
+<p><audio controls class="w-full"
+    src="https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3"> Your browser does not support the
+audio element. </audio></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="html5-ruby">HTML5 Ruby</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">ruby</span><span class="p">&gt;</span>
+  汉 <span class="p">&lt;</span><span class="nt">rp</span><span class="p">&gt;</span>(<span class="p">&lt;/</span><span class="nt">rp</span><span class="p">&gt;&lt;</span><span class="nt">rt</span><span class="p">&gt;</span>hàn<span class="p">&lt;/</span><span class="nt">rt</span><span class="p">&gt;&lt;</span><span class="nt">rp</span><span class="p">&gt;</span>)<span class="p">&lt;/</span><span class="nt">rp</span><span class="p">&gt;</span> 字 <span class="p">&lt;</span><span class="nt">rp</span><span class="p">&gt;</span>(<span class="p">&lt;/</span><span class="nt">rp</span><span class="p">&gt;&lt;</span><span class="nt">rt</span><span class="p">&gt;</span>zì<span class="p">&lt;/</span><span class="nt">rt</span><span class="p">&gt;&lt;</span><span class="nt">rp</span><span class="p">&gt;</span>)<span class="p">&lt;/</span><span class="nt">rp</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ruby</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_3">↓ Preview</h4>
+<p><ruby class="mt-4 text-center text-5xl">
+  汉 <rp>(</rp><rt>hàn</rt><rp>)</rp>
+  字 <rp>(</rp><rt>zì</rt><rp>)</rp>
+</ruby></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="html5-kdi">HTML5 kdi</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>User <span class="p">&lt;</span><span class="nt">bdi</span><span class="p">&gt;</span>hrefs<span class="p">&lt;/</span><span class="nt">bdi</span><span class="p">&gt;</span>: 60 points<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>User <span class="p">&lt;</span><span class="nt">bdi</span><span class="p">&gt;</span>jdoe<span class="p">&lt;/</span><span class="nt">bdi</span><span class="p">&gt;</span>: 80 points<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>User <span class="p">&lt;</span><span class="nt">bdi</span><span class="p">&gt;</span>إيان<span class="p">&lt;/</span><span class="nt">bdi</span><span class="p">&gt;</span>: 90 points<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_4">↓ Preview</h4>
+<ul>
+ <li>User <bdi>hrefs</bdi>: 60 points</li>
+ <li>User <bdi>jdoe</bdi>: 80 points</li>
+ <li>User <bdi>إيان</bdi>: 90 points</li>
+</ul>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="html5-progress">HTML5 progress</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">progress</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;50&quot;</span> <span class="na">max</span><span class="o">=</span><span class="s">&quot;100&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">progress</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<progress value="50" max="100" class="w-full"></progress>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="html5-mark">HTML5 mark</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">p</span><span class="p">&gt;</span>I Love <span class="p">&lt;</span><span class="nt">mark</span><span class="p">&gt;</span>CheatSheets.zip<span class="p">&lt;/</span><span class="nt">mark</span><span class="p">&gt;&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>I Love <mark>CheatSheets.zip</mark></p>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="html-tables">
+<h2 id="html-tables">HTML Tables</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="table-example">Table Example</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">table</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">thead</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>name<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>age<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">thead</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">tbody</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Roberta<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>39<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">tr</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>Oliver<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">td</span><span class="p">&gt;</span>25<span class="p">&lt;/</span><span class="nt">td</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">tr</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">tbody</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">table</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="html-table-tags">HTML Table Tags</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Tag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/table">\<table></a></td>
+<td>Defines a table</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th">\<th></a></td>
+<td>Defines a header cell in a table</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tr">\<tr></a></td>
+<td>Defines a row in a table</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/td">\<td></a></td>
+<td>Defines a cell in a table</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/caption">\<caption></a></td>
+<td>Defines a table caption</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/colgroup">\<colgroup></a></td>
+<td>Defines a group of columns</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/col">\<col></a></td>
+<td>Defines a column within a table</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/thead">\<thead></a></td>
+<td>Groups the header content</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tbody">\<tbody></a></td>
+<td>Groups the body content</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/tfoot">\<tfoot></a></td>
+<td>Groups the footer content</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="attributes">\<td> Attributes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>colspan</code></td>
+<td>Number of columns a cell should span</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>One or more header cells a cell is related to</td>
+</tr>
+<tr>
+<td><code>rowspan</code></td>
+<td>Number of rows a cell should span</td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/td#attributes">td#Attributes</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="attributes_1">\<th> Attributes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>colspan</code></td>
+<td>Number of columns a cell should span</td>
+</tr>
+<tr>
+<td><code>headers</code></td>
+<td>One or more header cells a cell is related to</td>
+</tr>
+<tr>
+<td><code>rowspan</code></td>
+<td>Number of rows a cell should span</td>
+</tr>
+<tr>
+<td><code>abbr</code></td>
+<td>Description of the cell's content</td>
+</tr>
+<tr>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th#attr-scope">scope</a></td>
+<td>The header element relates to</td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/th#attributes">th#Attributes</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="html-lists">
+<h2 id="html-lists">HTML Lists</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="unordered-list">Unordered list</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">ul</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>I&#39;m an item<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>I&#39;m another item<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>I&#39;m another item<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ul">The Unordered List element</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ordered-list">Ordered list</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">ol</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>I&#39;m the first item<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>I&#39;m the second item<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;</span>I&#39;m the third item<span class="p">&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ol</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ol">The Ordered List element</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="definition-list">Definition list</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">dl</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">dt</span><span class="p">&gt;</span>A Term<span class="p">&lt;/</span><span class="nt">dt</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">dd</span><span class="p">&gt;</span>Definition of a term<span class="p">&lt;/</span><span class="nt">dd</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">dt</span><span class="p">&gt;</span>Another Term<span class="p">&lt;/</span><span class="nt">dt</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">dd</span><span class="p">&gt;</span>Definition of another term<span class="p">&lt;/</span><span class="nt">dd</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">dl</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>See: <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dl">The Description List element</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="html-forms">
+<h2 id="html-forms">HTML Forms</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="form-tags">Form tags</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">form</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;POST&quot;</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;api/login&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;mail&quot;</span><span class="p">&gt;</span>Email: <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;email&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;mail&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;mail&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;pw&quot;</span><span class="p">&gt;</span>Password: <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;password&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;pw&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;pw&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Login&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;ck&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;ck&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;ck&quot;</span><span class="p">&gt;</span>Remember me<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_5">↓ Preview</h4>
+<form method="POST" action="api/login" style="padding: 20px;">
+    <label for="email">Email: </label> 
+    <input type="email" id="email" name="email" class="border border-slate-400 mt-2">
+    <br/>
+    <label for="pwd">Password: </label> 
+    <input type="password" id="pwd" name="pwd" class="border border-slate-400 mt-2">
+    <br/>
+    <input type="submit" value="Login" class="mt-2">
+    <br/>
+    <input type="checkbox" id="ck" name="ck" class="mt-2">
+    <label for="ck">Remember me</label> 
+</form>
+
+<p>The HTML <code>&lt;form&gt;</code> element is used to collect and send information to an external source.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="form-attribute">Form Attribute</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Name of form for scripting</td>
+</tr>
+<tr>
+<td><code>action</code></td>
+<td>URL of form script</td>
+</tr>
+<tr>
+<td><code>method</code></td>
+<td>HTTP method, <code>POST</code> / <code>GET</code> <em>(default)</em></td>
+</tr>
+<tr>
+<td><code>enctype</code></td>
+<td>Media type, See <a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLFormElement/enctype">enctype</a></td>
+</tr>
+<tr>
+<td><code>onsubmit</code></td>
+<td>Runs when the form was submit</td>
+</tr>
+<tr>
+<td><code>onreset</code></td>
+<td>Runs when the form was reset</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="label-tags">Label tags</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- Nested label --&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span>
+  <span class="p">&gt;</span>Click me
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;user&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- &#39;for&#39; attribute --&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;user&quot;</span><span class="p">&gt;</span>Click me<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;user&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<p><code>for</code> in a label references an input's <code>id</code> attribute</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="input-tags">Input tags</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;Name&quot;</span><span class="p">&gt;</span>Name:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Name&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_6">↓ Preview</h4>
+<form style="padding: 20px;">
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" class="border border-slate-400">
+</form>
+
+<p>See: <a href="html.html#html-input-tags">HTML input Tags</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="textarea-tags">Textarea tags</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">textarea</span> <span class="na">rows</span><span class="o">=</span><span class="s">&quot;2&quot;</span> <span class="na">cols</span><span class="o">=</span><span class="s">&quot;30&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;address&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;address&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">textarea</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_7">↓ Preview</h4>
+<form style="padding: 20px;">
+    <textarea rows="2" cols="30" name="address" id="address" class="border border-slate-400"style="width: 100%"></textarea>
+</form>
+
+<p>Textarea is a multiple-line text input control</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="radio-buttons">Radio Buttons</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;gender&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;m&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;m&quot;</span><span class="p">&gt;</span>Male<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;gender&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;f&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;f&quot;</span><span class="p">&gt;</span>Female<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_8">↓ Preview</h4>
+<form style="padding: 20px;">
+    <input type="radio" name="gender" id="m">
+    <label for="m">Male</label>
+    <input type="radio" name="gender" id="f">
+    <label for="f">Female</label>
+</form>
+
+<p>Radio buttons are used to let the user select exactly one</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="checkboxes">Checkboxes</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;s&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;soc&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;soc&quot;</span><span class="p">&gt;</span>Soccer<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;checkbox&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;s&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;bas&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;bas&quot;</span><span class="p">&gt;</span>Baseball<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_9">↓ Preview</h4>
+<form style="padding: 20px;">
+    <input type="checkbox" name="sports" id="soccer">
+    <label for="soccer">Soccer</label>
+    <input type="checkbox" name="sports" id="baseball">
+    <label for="baseball">Baseball</label>
+</form>
+
+<p>Checkboxes allows the user to select one or more</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="select-tags">Select tags</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;city&quot;</span><span class="p">&gt;</span>City:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">select</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;city&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;city&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;1&quot;</span><span class="p">&gt;</span>Sydney<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;2&quot;</span><span class="p">&gt;</span>Melbourne<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;3&quot;</span><span class="p">&gt;</span>Cromwell<span class="p">&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">select</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_10">↓ Preview</h4>
+<form style="padding: 20px">
+    <label for="city">City:</label>
+    <select name="city" id="city" class="border border-slate-400">
+        <option value="1">Sydney</option>
+        <option value="2">Melbourne</option>
+        <option value="3">Cromwell</option>
+    </select>
+</form>
+
+<p>A select box is a dropdown list of options</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fieldset-tags">Fieldset tags</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">fieldset</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">legend</span><span class="p">&gt;</span>Your favorite monster<span class="p">&lt;/</span><span class="nt">legend</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;kra&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;m&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;kraken&quot;</span><span class="p">&gt;</span>Kraken<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;&lt;</span><span class="nt">br</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;radio&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;sas&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;m&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;sas&quot;</span><span class="p">&gt;</span>Sasquatch<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">fieldset</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_11">↓ Preview</h4>
+<form style="padding: 20px">
+    <fieldset class="border border-slate-400" style="padding: 20px">
+        <legend>Your favorite monster</legend>
+        <input type="radio" id="kra" name="monster">
+        <label for="kra">Kraken</label><br/>
+        <input type="radio" id="sas" name="monster">
+        <label for="sas">Sasquatch</label>
+    </fieldset>
+</form>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="datalist-tagshtml5">Datalist tags(HTML5)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;b&quot;</span><span class="p">&gt;</span>Choose a browser: <span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">input</span> <span class="na">list</span><span class="o">=</span><span class="s">&quot;list&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;b&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;browser&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">datalist</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;list&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Chrome&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Firefox&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Internet Explorer&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Opera&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Safari&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">option</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Microsoft Edge&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">option</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">datalist</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_12">↓ Preview</h4>
+<form style="padding: 20px">
+    <label for="myBrowser">Choose a browser:</label>
+    <input list="browsers" id="myBrowser" name="myBrowser" class="border border-slate-400"/>
+    <datalist id="browsers">
+      <option value="Chrome">
+      <option value="Firefox">
+      <option value="Internet Explorer">
+      <option value="Opera">
+      <option value="Safari">
+      <option value="Microsoft Edge">
+    </datalist>
+</form>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="submit-and-reset-buttons">Submit and Reset Buttons</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">form</span> <span class="na">action</span><span class="o">=</span><span class="s">&quot;register.php&quot;</span> <span class="na">method</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">label</span> <span class="na">for</span><span class="o">=</span><span class="s">&quot;foo&quot;</span><span class="p">&gt;</span>Name:<span class="p">&lt;/</span><span class="nt">label</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;name&quot;</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;foo&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;submit&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Submit&quot;</span> <span class="p">/&gt;</span>
+  <span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;reset&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;Reset&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;/</span><span class="nt">form</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="preview_13">↓ Preview</h4>
+<form action="register.php" method="post" style="padding: 20px">
+    <label for="name">Name:</label>
+    <input type="text" name="name" id="name" class="border border-slate-400">
+    <input type="submit" value="Submit">
+    <input type="reset" value="Reset">
+</form>
+
+<p><code>Submit</code> the data to server; <code>Reset</code> to default values</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="html-input-tags">
+<h2 id="html-input-tags">HTML input Tags</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="input-attributes">Input Attributes</h3>
+<div class="section">
+<p>The input tag is an empty element, identifying the particular type of field information to obtain from a user.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">input</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;?&quot;</span> <span class="na">value</span><span class="o">=</span><span class="s">&quot;?&quot;</span> <span class="na">minlength</span><span class="o">=</span><span class="s">&quot;6&quot;</span> <span class="na">required</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td><code>type="…"</code></td>
+<td>The type of data that is being input</td>
+</tr>
+<tr>
+<td></td>
+<td><code>value="…"</code></td>
+<td>Default value</td>
+</tr>
+<tr>
+<td></td>
+<td><code>name="…"</code></td>
+<td>Used to describe this data in the HTTP request</td>
+</tr>
+<tr>
+<td></td>
+<td><code>id="…"</code></td>
+<td>Unique identifier that other HTML elements</td>
+</tr>
+<tr>
+<td></td>
+<td><code>readonly</code></td>
+<td>Stops the user from modifying</td>
+</tr>
+<tr>
+<td></td>
+<td><code>disabled</code></td>
+<td>Stops any interaction</td>
+</tr>
+<tr>
+<td></td>
+<td><code>checked</code></td>
+<td>The radio or checkbox select or not</td>
+</tr>
+<tr>
+<td></td>
+<td><code>required</code></td>
+<td>Being compulsory, See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required#example">required</a></td>
+</tr>
+<tr>
+<td></td>
+<td><code>placeholder="…"</code></td>
+<td>Adds a temporary, See <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder#examples">::placeholder</a></td>
+</tr>
+<tr>
+<td></td>
+<td><code>autocomplete="off"</code></td>
+<td>Disable auto completion</td>
+</tr>
+<tr>
+<td></td>
+<td><code>autocapitalize="none"</code></td>
+<td>Disable auto capitalization</td>
+</tr>
+<tr>
+<td></td>
+<td><code>inputmode="…"</code></td>
+<td>Display a specific keyboard, See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/inputmode">inputmode</a></td>
+</tr>
+<tr>
+<td></td>
+<td><code>list="…"</code></td>
+<td>The id of an associated <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/datalist">datalist</a></td>
+</tr>
+<tr>
+<td></td>
+<td><code>maxlength="…"</code></td>
+<td>Maximum number of characters</td>
+</tr>
+<tr>
+<td></td>
+<td><code>minlength="…"</code></td>
+<td>Minimum number of characters</td>
+</tr>
+<tr>
+<td></td>
+<td><code>min="…"</code></td>
+<td>Minimum numerical value on range &amp; number</td>
+</tr>
+<tr>
+<td></td>
+<td><code>max="…"</code></td>
+<td>Maximum numerical value on range &amp; number</td>
+</tr>
+<tr>
+<td></td>
+<td><code>step="…"</code></td>
+<td>How the number will increment in range &amp; number</td>
+</tr>
+<tr>
+<td></td>
+<td><code>pattern="…"</code></td>
+<td>Specifies a <a href="regex.html">Regular expression</a>, See <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/pattern">pattern</a></td>
+</tr>
+<tr>
+<td></td>
+<td><code>autofocus</code></td>
+<td>Be focused</td>
+</tr>
+<tr>
+<td></td>
+<td><code>spellcheck</code></td>
+<td>Perform spell checking</td>
+</tr>
+<tr>
+<td></td>
+<td><code>multiple</code></td>
+<td>Whether to allow <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/multiple">multiple</a> values</td>
+</tr>
+<tr>
+<td></td>
+<td><code>accept=""</code></td>
+<td>Expected file type in <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/file">file</a> upload controls</td>
+</tr>
+</tbody>
+</table>
+<p>Also see:
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#attributes">Attributes for the \<input> element</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="input-types">Input types</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type="checkbox"</code></td>
+<td><input type="checkbox" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="radio"</code></td>
+<td><input type="radio" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="file"</code></td>
+<td><input type="file" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="hidden"</code></td>
+<td><input type="hidden" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="text"</code></td>
+<td><input type="text" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="password"</code></td>
+<td><input type="password" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="image"</code></td>
+<td><input type="image" src="https://raw.githubusercontent.com/mdn/learning-area/master/html/forms/image-type-example/login.png" width="70"></td>
+</tr>
+<tr>
+<td><code>type="reset"</code></td>
+<td><input type="reset" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="button"</code></td>
+<td><input type="button" class="border border-slate-400" value="button"></td>
+</tr>
+<tr>
+<td><code>type="submit"</code></td>
+<td><input type="submit" class="border border-slate-400"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="new-input-types-in-html5">New Input Types in HTML5</h4>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type="color"</code></td>
+<td><input type="color" value="#0FB881" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="date"</code></td>
+<td><input type="date" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="time"</code></td>
+<td><input type="time" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="month"</code></td>
+<td><input type="month" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="datetime-local"</code></td>
+<td><input type="datetime-local" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="week"</code></td>
+<td><input type="week" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="email"</code></td>
+<td><input type="email" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="tel"</code></td>
+<td><input type="tel" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="url"</code></td>
+<td><input type="url" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="number"</code></td>
+<td><input type="number" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="search"</code></td>
+<td><input type="search" class="border border-slate-400"></td>
+</tr>
+<tr>
+<td><code>type="range"</code></td>
+<td><input type="range" class="border border-slate-400"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="input-css-selectors">Input CSS selectors</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input:focus</code></td>
+<td>When its keyboard focused</td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="/css#input-pseudo-classes">Input pseudo classes</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="html-meta-tags">
+<h2 id="html-meta-tags">HTML meta Tags</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="meta-tags">Meta tags</h3>
+<div class="section">
+<p>The meta tag describes meta data within an HTML document. It explains additional material about the HTML.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- title --&gt;</span>
+<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>···<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:title&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;···&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:title&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;···&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- url --&gt;</span>
+<span class="p">&lt;</span><span class="nt">link</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;canonical&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;https://···&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:url&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://···&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:url&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://···&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- description --&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;···&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;···&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;···&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- image --&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:image&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://···&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:image&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://···&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- ua --&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">http-equiv</span><span class="o">=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;IE=edge,chrome=1&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- viewport --&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=device-width&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;width=1024&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="open-graph">Open Graph</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:type&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;website&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:locale&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;en_CA&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:title&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;HTML cheatsheet&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:url&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://cheatsheets.zip/html&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:image&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://xxx.com/image.jpg&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:site_name&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Name of your website&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">property</span><span class="o">=</span><span class="s">&quot;og:description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Description of this page&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<p>Used by Facebook, Instagram, Pinterest, LinkedIn, etc.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="twitter-cards">Twitter Cards</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:card&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;summary&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:site&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;@FechinLi&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:title&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;HTML cheatsheet&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:url&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://cheatsheets.zip/html&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:description&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Description of this page&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;twitter:image&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;https://xxx.com/image.jpg&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<p>See: <a href="https://developer.twitter.com/en/docs/tweets/optimize-with-cards/overview/summary">Twitter Card Documentation</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="geotagging">Geotagging</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;ICBM&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;45.416667,-75.7&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;geo.position&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;45.416667;-75.7&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;geo.region&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;ca-on&quot;</span> <span class="p">/&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;geo.placename&quot;</span> <span class="na">content</span><span class="o">=</span><span class="s">&quot;Ottawa&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<p>See: <a href="https://en.wikipedia.org/wiki/Geotagging#HTML_pages">Geotagging</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://www.w3.org/TR/REC-html40/cover.html#minitoc">HTML 4.01 Specification</a> <em>(w3.org)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

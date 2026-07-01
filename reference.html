@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>FlameTech | Reference</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="flametech-light-mode.css">
+  <link rel="stylesheet" href="flametech-dark-mode.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff}
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+ 
+    /* HEADER */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:15px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:90%;max-width:1300px;margin:0 auto;padding:0 15px}
+    .logo{display:flex;align-items:center;gap:10px;font-size:26px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:22px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:500;font-size:16px;transition:color .3s;padding:5px 0}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:36px;height:36px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:22px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+ 
+    /* HERO */
+    .hero{position:relative;padding:70px 0 50px;overflow:hidden;text-align:center}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 50%,rgba(255,42,109,.12),transparent 60%),radial-gradient(ellipse at 70% 50%,rgba(5,217,232,.1),transparent 60%);pointer-events:none; }
+    .hero-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(255,42,109,.15);border:1px solid rgba(255,42,109,.3);border-radius:999px;padding:6px 16px;font-size:13px;color:var(--primary);margin-bottom:22px;font-weight:600;letter-spacing:.04em}
+    .hero h1{font-size:clamp(2.2rem,5vw,3.8rem);font-weight:900;line-height:1.1;letter-spacing:-.02em;margin-bottom:16px}
+    .hero h1 .highlight{background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .hero p{font-size:1.1rem;color:rgba(240,240,240,.7);max-width:560px;margin:0 auto 36px;line-height:1.7}
+    .light-mode .hero h1 {
+      background: linear-gradient(135deg,#5f8f3f,#0f766e) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      color: transparent !important;
+    }
+    .light-mode .hero h1 .highlight {
+      background: linear-gradient(135deg,#5f8f3f,#0f766e) !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+    }
+    .light-mode .hero p,
+    .light-mode .hero p * {
+      color: #526071 !important;
+      -webkit-text-fill-color: #526071 !important;
+      background: none !important;
+      -webkit-background-clip: unset !important;
+      background-clip: unset !important;
+    }
+    .light-mode .hero-badge,
+    .light-mode .hero-badge * {
+      color: #3f6f2a !important;
+      -webkit-text-fill-color: #3f6f2a !important;
+      background-clip: unset !important;
+      -webkit-background-clip: unset !important;
+    }
+
+    /* FIX: the shared CSS sets .light-mode .hero::before to the full grid
+       background, which covers all hero content. Reset it to a subtle glow. */
+    .light-mode .hero::before {
+      background: radial-gradient(ellipse at 30% 50%, rgba(95,143,63,.10), transparent 60%),
+                  radial-gradient(ellipse at 70% 50%, rgba(15,118,110,.08), transparent 60%) !important;
+      background-size: auto !important;
+    }
+ 
+    /* SEARCH */
+    .search-wrap{max-width:580px;margin:0 auto;position:relative}
+    .search-wrap i.si{position:absolute;left:18px;top:50%;transform:translateY(-50%);color:rgba(255,255,255,.4);font-size:16px;pointer-events:none}
+    .light-mode .search-wrap i.si{color:#aaa}
+    #searchInput{width:100%;padding:14px 20px 14px 48px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,42,109,.25);border-radius:50px;color:var(--light);font-size:15px;outline:none;transition:all .3s}
+    #searchInput::placeholder{color:rgba(240,240,240,.35)}
+    #searchInput:focus{border-color:var(--secondary);background:rgba(255,255,255,.1);box-shadow:0 0 0 3px rgba(5,217,232,.1)}
+    .light-mode #searchInput{background:rgba(255,255,255,.9);color:#101828;border-color:rgba(95,143,63,.3)}
+    .light-mode #searchInput::placeholder{color:#aaa}
+    .light-mode #searchInput:focus{border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.1)}
+    .search-stats{margin-top:10px;font-size:13px;color:rgba(240,240,240,.45);text-align:center}
+    .light-mode .search-stats{color:#888}
+ 
+    /* FILTER TABS */
+    .filter-section{width:105%;max-width:1400px;margin:0 auto 10px;padding:0 15px}
+    .filter-scroll{display:grid;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:none;grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));}
+    .filter-scroll::-webkit-scrollbar{display:none}
+    .filter-btn{padding:10px 18px;border-radius:999px;border:1.5px solid rgba(255,42,109,.25);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;cursor:pointer;transition:all .25s;white-space:nowrap}
+    .filter-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .filter-btn.active{background:var(--primary);border-color:var(--primary);color:#fff}
+    .light-mode .filter-btn{color:#526071;border-color:rgba(95,143,63,.25);background:rgba(255,255,255,.6)}
+    .light-mode .filter-btn:hover{border-color:#0f766e;color:#0f766e}
+    .light-mode .filter-btn.active{background:#5f8f3f;border-color:#5f8f3f;color:#fff}
+ 
+    /* MAIN */
+    .main-content{width:100%;max-width:1300px;margin:0 auto;padding:20px 15px 60px}
+ 
+    /* SECTION */
+    .section-header{display:flex;align-items:center;gap:14px;margin:36px 0 18px}
+    .section-header h2{font-size:1.05rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(240,240,240,.55)}
+    .light-mode .section-header h2{color:#888}
+    .section-line{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,42,109,.3),transparent)}
+    .light-mode .section-line{background:linear-gradient(90deg,rgba(95,143,63,.3),transparent)}
+    .section-count{font-size:12px;color:rgba(240,240,240,.3);font-weight:600}
+    .light-mode .section-count{color:#bbb}
+ 
+    /* CARD GRID */
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px}
+ 
+    /* CARD */
+    .ref-card{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;text-decoration:none;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.04);transition:all .22s;cursor:pointer;position:relative;overflow:hidden;color:rgba(255,255,255,.88)}
+    .ref-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.15);box-shadow:0 8px 24px rgba(0,0,0,.3);color:#fff}
+    .light-mode .ref-card{background:rgba(255,255,255,.85);border-color:rgba(95,143,63,.15);color:#101828;box-shadow:0 2px 8px rgba(16,24,40,.06)}
+    .light-mode .ref-card:hover{border-color:rgba(95,143,63,.35);box-shadow:0 8px 20px rgba(16,24,40,.12);color:#101828}
+    .card-icon{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0;color:#fff}
+    .card-title{font-size:13px;font-weight:600;line-height:1.3;flex:1;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+ 
+    /* NO RESULTS */
+    #noResults{display:none;text-align:center;padding:60px 20px;color:rgba(240,240,240,.4)}
+    .light-mode #noResults{color:#aaa}
+    #noResults i{font-size:48px;margin-bottom:16px;display:block}
+ 
+    /* FOOTER */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:30px 0 20px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:30px;flex-wrap:wrap;margin-bottom:14px}
+    .footer-links a{color:rgba(240,240,240,.45);text-decoration:none;font-size:14px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:12px;color:rgba(240,240,240,.25)}
+    .light-mode .footer-copy{color:#bbb}
+ 
+    /* MOBILE */
+    @media(max-width:768px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:20px;gap:10px;border-radius:0 0 20px 20px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      .cards-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+ 
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo">
+                    <i class="fas fa-laptop-code"></i>
+                    FlameTech
+                </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-moon" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+ 
+<section class="hero">
+  <div class="hero-badge"><i class="fas fa-book-open"></i> Developer Reference Hub</div>
+  <h1>Cheat Sheets <span class="highlight">for Developers</span></h1>
+  <p>Quick reference and cheat sheets for programming languages, tools, commands, and shortcuts — all in one place.</p>
+  <div class="search-wrap">
+    <i class="fas fa-search si"></i>
+    <input type="text" id="searchInput" placeholder="Search 209 cheat sheets… e.g. TypeScript, Git, Docker" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="search-stats" id="searchStats"></div>
+</section>
+ 
+<div class="filter-section">
+  <div class="filter-scroll" id="filterTabs">
+    <button class="filter-btn active" data-cat="all">All</button>
+  </div>
+</div>
+ 
+<main class="main-content" id="mainContent">
+  <div id="noResults">
+    <i class="fas fa-magnifying-glass"></i>
+    <p>No cheat sheets found. Try a different keyword.</p>
+  </div>
+</main>
+ 
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="codeL.html"><i class="fas fa-terminal"></i> Languages</a>
+    <a href="TT.html"><i class="fas fa-keyboard"></i> Typing</a>
+  </div>
+  <div class="footer-copy">© 2025 FlameTech · Reference data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+ 
+<script>
+const POSTS = [{"slug":"1password","title":"1Password","background":"bg-[#397fe4]","category":"Keyboard Shortcuts"},{"slug":"adobe-lightroom","title":"Adobe Lightroom CC","background":"bg-[#081c32]","category":"Keyboard Shortcuts"},{"slug":"adobe-photoshop","title":"Adobe Photoshop","background":"bg-[#071c25]","category":"Keyboard Shortcuts"},{"slug":"adobe-xd","title":"Adobe XD","background":"bg-[#400835]","category":"Keyboard Shortcuts"},{"slug":"affinity-designer","title":"Affinity Designer","background":"bg-[#79cdf1]","category":"Keyboard Shortcuts"},{"slug":"affinity-photo","title":"Affinity Photo","background":"bg-[#d578f0]","category":"Keyboard Shortcuts"},{"slug":"ai","title":"AI Directory","background":"bg-purple-600","category":"Other"},{"slug":"airtable","title":"Airtable","background":"bg-[#f1b73f]","category":"Keyboard Shortcuts"},{"slug":"alan-ai","title":"Alan AI","background":"bg-[#4aa181]","category":"Toolkit"},{"slug":"alpine-linux","title":"Alpine Linux","background":"bg-blue-600","category":"Operating System"},{"slug":"android-studio","title":"Android Studio","background":"bg-[#6bd488]","category":"Keyboard Shortcuts"},{"slug":"apex-legends","title":"Apex Legends","background":"bg-[#a74145]","category":"Keyboard Shortcuts"},{"slug":"apple-music","title":"Apple Music","background":"bg-[#e05564]","category":"Keyboard Shortcuts"},{"slug":"arduino-programming","title":"Arduino Programming","background":"bg-[#387f83]","category":"Programming"},{"slug":"arduino","title":"Arduino IDE","background":"bg-[#409096]","category":"Keyboard Shortcuts"},{"slug":"asana","title":"Asana","background":"bg-[#e0726e]","category":"Keyboard Shortcuts"},{"slug":"ascii-code","title":"ASCII Code","background":"bg-indigo-500","category":"Other"},{"slug":"aspect-ratio","title":"Aspect Ratio","background":"bg-indigo-600","category":"Other"},{"slug":"audacity","title":"Audacity","background":"bg-[#0000e1]","category":"Keyboard Shortcuts"},{"slug":"awk","title":"Awk","background":"bg-slate-600","category":"Linux Command"},{"slug":"bash","title":"Bash","background":"bg-[#3e4548]","category":"Programming"},{"slug":"bear-notes","title":"Bear","background":"bg-[#cd5654]","category":"Keyboard Shortcuts"},{"slug":"bitbucket","title":"Bitbucket","background":"bg-[#4382f7]","category":"Keyboard Shortcuts"},{"slug":"blender","title":"Blender","background":"bg-[#e48040]","category":"Keyboard Shortcuts"},{"slug":"brave","title":"Brave Browser","background":"bg-[#da6b37]","category":"Keyboard Shortcuts"},{"slug":"c","title":"C","background":"bg-[#2a338a]","category":"Programming"},{"slug":"canvas","title":"HTML Canvas","background":"bg-[#cc5534]","category":"Programming"},{"slug":"chatgpt","title":"ChatGPT","background":"bg-[#4aa181]","category":"AI"},{"slug":"chmod","title":"Chmod","background":"bg-indigo-600","category":"Linux Command"},{"slug":"chrome-devtools","title":"Chrome Dev Tools","background":"bg-[#c64d3e]","category":"Keyboard Shortcuts"},{"slug":"claude-code","title":"Claude Code","background":"bg-[#cc785c]","category":"AI"},{"slug":"code-editor-ios","title":"Code Editor iOS","background":"bg-[#4880c2]","category":"Keyboard Shortcuts"},{"slug":"codex-cli","title":"Codex CLI","background":"bg-[#10a37f]","category":"AI"},{"slug":"colorscreen","title":"ColorScreen","background":"bg-[#1e293b]","category":"Other"},{"slug":"conventional-commits","title":"Conventional Commits","background":"bg-[#e86d7a]","category":"Other"},{"slug":"cpp","title":"C++","background":"bg-[#6d94c7]","category":"Programming"},{"slug":"cron","title":"Cron","background":"bg-red-500","category":"Linux Command"},{"slug":"cs","title":"C#","background":"bg-[#8c4c8a]","category":"Programming"},{"slug":"css3","title":"CSS 3","background":"bg-[#3473b5]","category":"Programming"},{"slug":"curl","title":"Curl","background":"bg-slate-600","category":"Linux Command"},{"slug":"cursor-cli","title":"Cursor CLI","background":"bg-[#1a1a1a]","category":"AI"},{"slug":"dart","title":"Dart","background":"bg-[#58aee9]","category":"Programming"},{"slug":"django","title":"Django","background":"bg-[#214a35]","category":"Programming"},{"slug":"docker","title":"Docker","background":"bg-[#488fdf]","category":"Programming"},{"slug":"ejs","title":"EJS","background":"bg-[#b4ca65]","category":"Programming"},{"slug":"emacs","title":"Emacs","background":"bg-[#7752a9]","category":"Toolkit"},{"slug":"emmet","title":"Emmet","background":"bg-[#95c844]","category":"Toolkit"},{"slug":"emoji","title":"Emoji","background":"bg-[#ebbe46]","category":"Other"},{"slug":"es6","title":"ES6","background":"bg-[#edc545]","category":"Programming"},{"slug":"express","title":"Express.js","background":"bg-[#edc545]","category":"Programming"},{"slug":"fastapi","title":"FastAPI","background":"bg-[#3730a3]","category":"Programming"},{"slug":"feedly","title":"Feedly","background":"bg-[#55a955]","category":"Keyboard Shortcuts"},{"slug":"figma","title":"Figma","background":"bg-[#935aee]","category":"Keyboard Shortcuts"},{"slug":"filezilla","title":"FileZilla","background":"bg-[#a42115]","category":"Keyboard Shortcuts"},{"slug":"find","title":"Find","background":"bg-indigo-500","category":"Linux Command"},{"slug":"finder","title":"Finder","background":"bg-[#4b9be8]","category":"Keyboard Shortcuts"},{"slug":"firefox","title":"Firefox","background":"bg-[#e34e4b]","category":"Keyboard Shortcuts"},{"slug":"flask","title":"Flask","background":"bg-[#3598db]","category":"Programming"},{"slug":"fortnite","title":"Fortnite","background":"bg-[#8d2fc9]","category":"Keyboard Shortcuts"},{"slug":"framer-x","title":"Framer X","background":"bg-[#2151ed]","category":"Keyboard Shortcuts"},{"slug":"gemini-cli","title":"Gemini CLI","background":"bg-[#1a73e8]","category":"AI"},{"slug":"gemma4","title":"Gemma 4","background":"bg-[#4285f4]","category":"AI"},{"slug":"gimp","title":"GIMP","background":"bg-[#554f42]","category":"Keyboard Shortcuts"},{"slug":"git","title":"Git","background":"bg-[#d7593e]","category":"Linux Command"},{"slug":"github-actions","title":"GitHub Actions","background":"bg-[#808080]","category":"Toolkit"},{"slug":"github-cli","title":"GitHub CLI","background":"bg-[#808080]","category":"Toolkit"},{"slug":"github","title":"GitHub","background":"bg-[#17191e]","category":"Keyboard Shortcuts"},{"slug":"gitlab","title":"GitLab","background":"bg-[#e47030]","category":"Keyboard Shortcuts"},{"slug":"gmail","title":"Gmail","background":"bg-[#d8503f]","category":"Keyboard Shortcuts"},{"slug":"gnome-desktop","title":"Gnome Desktop","background":"bg-[#5885c9]","category":"Keyboard Shortcuts"},{"slug":"gnupg","title":"GnuPG","background":"bg-indigo-500","category":"Linux Command"},{"slug":"go","title":"Go (Golang)","background":"bg-[#4ba4cc]","category":"Programming"},{"slug":"google-chrome","title":"Google Chrome","background":"bg-[#ca4732]","category":"Keyboard Shortcuts"},{"slug":"google-drive","title":"Google Drive","background":"bg-[#479b61]","category":"Keyboard Shortcuts"},{"slug":"google-search","title":"Google Search","background":"bg-[#d3594a]","category":"Other"},{"slug":"gospinwheel","title":"GoSpinWheel","background":"bg-[#6366f1]","category":"Other"},{"slug":"graphql","title":"GraphQL","background":"bg-[#cc44a2]","category":"Programming"},{"slug":"grep","title":"Grep","background":"bg-indigo-400","category":"Linux Command"},{"slug":"grok-cli","title":"Grok CLI","background":"bg-[#7c3aed]","category":"AI"},{"slug":"guitar-pro","title":"Guitar Pro","background":"bg-[#659af0]","category":"Keyboard Shortcuts"},{"slug":"homebrew","title":"Homebrew","background":"bg-[#fbb041]","category":"Toolkit"},{"slug":"hook","title":"Hook","background":"bg-[#1131e2]","category":"Toolkit"},{"slug":"html-char","title":"HTML Entities","background":"bg-indigo-500","category":"Other"},{"slug":"html","title":"HTML","background":"bg-[#cc5534]","category":"Programming"},{"slug":"htmx","title":"HTMX","background":"bg-[#ff5f4d]","category":"Programming"},{"slug":"http-status-code","title":"HTTP Status Code","background":"bg-[#3b7dc0]","category":"Other"},{"slug":"idea","title":"IntelliJ IDEA","background":"bg-[#be4fe9]","category":"Keyboard Shortcuts"},{"slug":"ini","title":"INI","background":"bg-[#6d94c7]","category":"Programming"},{"slug":"iso-639-1","title":"ISO 639-1","background":"bg-indigo-500","category":"Other"},{"slug":"java","title":"Java","background":"bg-[#d33731]","category":"Programming"},{"slug":"javascript","title":"JavaScript","background":"bg-[#ebd94e]","category":"Programming"},{"slug":"jest","title":"Jest","background":"bg-blue-500","category":"Testing"},{"slug":"jira","title":"Jira","background":"bg-[#417eef]","category":"Keyboard Shortcuts"},{"slug":"jquery","title":"jQuery","background":"bg-[#2c63a2]","category":"Programming"},{"slug":"json","title":"JSON","background":"bg-[#646464]","category":"Programming"},{"slug":"kanbanmail","title":"KanbanMail","background":"bg-[#4d74e6]","category":"Keyboard Shortcuts"},{"slug":"kotlin","title":"Kotlin","background":"bg-[#7954f6]","category":"Programming"},{"slug":"kubernetes","title":"Kubernetes","background":"bg-[#416cde]","category":"Programming"},{"slug":"laravel","title":"Laravel","background":"bg-[#e44230]","category":"Programming"},{"slug":"latex","title":"LaTeX","background":"bg-[#2a338a]","category":"Programming"},{"slug":"lsof","title":"Lsof","background":"bg-blue-400","category":"Linux Command"},{"slug":"lua","title":"Lua","background":"bg-[#00007f]","category":"Programming"},{"slug":"markdown","title":"Markdown","background":"bg-[#6319bf]","category":"Programming"},{"slug":"matlab","title":"MATLAB","background":"bg-[#692316]","category":"Programming"},{"slug":"matplotlib","title":"Matplotlib","background":"bg-[#1a073e]","category":"Python"},{"slug":"microsoft-teams","title":"Microsoft Teams","background":"bg-[#4aa4ea]","category":"Keyboard Shortcuts"},{"slug":"mime","title":"MIME Types","background":"bg-indigo-500","category":"Other"},{"slug":"minecraft-bedrock","title":"Minecraft Bedrock","background":"bg-[#3C3C3C]","category":"Game"},{"slug":"minecraft-java","title":"Minecraft Java","background":"bg-[#5B8C5A]","category":"Game"},{"slug":"missive","title":"Missive","background":"bg-[#3665e5]","category":"Keyboard Shortcuts"},{"slug":"mitmproxy","title":"Mitmproxy","background":"bg-[#d86138]","category":"Toolkit"},{"slug":"monday","title":"Monday.com","background":"bg-[#f7ce46]","category":"Keyboard Shortcuts"},{"slug":"mongodb","title":"MongoDB","background":"bg-green-700","category":"Database"},{"slug":"mysql","title":"MySQL","background":"bg-[#2a6387]","category":"Database"},{"slug":"nc","title":"Netcat","background":"bg-blue-600","category":"Linux Command"},{"slug":"neo4j","title":"Neo4j","background":"bg-[#3b85ef]","category":"Database"},{"slug":"netstat","title":"Netstat","background":"bg-slate-700","category":"Linux Command"},{"slug":"nginx","title":"Nginx","background":"bg-slate-600","category":"Linux Command"},{"slug":"nim","title":"Nim","background":"bg-[#eed547]","category":"Programming"},{"slug":"nix","title":"Nix","background":"bg-[#304673]","category":"Programming"},{"slug":"notion","title":"Notion","background":"bg-[#474747]","category":"Productivity"},{"slug":"npm","title":"npm","background":"bg-[#ebd94e]","category":"Programming"},{"slug":"numpy","title":"NumPy","background":"bg-[#4f6fc3]","category":"Python"},{"slug":"obsidian","title":"Obsidian","background":"bg-[#463793]","category":"Keyboard Shortcuts"},{"slug":"ocaml","title":"OCaml","background":"bg-[#ec670f]","category":"Programming"},{"slug":"openclaw","title":"OpenClaw","background":"bg-[#cc2200]","category":"AI"},{"slug":"opencode","title":"OpenCode","background":"bg-[#7c3aed]","category":"AI"},{"slug":"openssl","title":"OpenSSL","background":"bg-indigo-600","category":"Linux Command"},{"slug":"origami","title":"Origami Studio","background":"bg-[#4a8eee]","category":"Keyboard Shortcuts"},{"slug":"outlook","title":"Outlook","background":"bg-[#3a7cd1]","category":"Keyboard Shortcuts"},{"slug":"pandas","title":"Pandas","background":"bg-[#110750]","category":"Python"},{"slug":"pandoc","title":"Pandoc","background":"bg-red-400","category":"Linux Command"},{"slug":"perl","title":"Perl","background":"bg-[#31719d]","category":"Programming"},{"slug":"php","title":"PHP","background":"bg-[#7477a9]","category":"Programming"},{"slug":"phpstorm","title":"PhpStorm","background":"bg-[#be4fe9]","category":"Keyboard Shortcuts"},{"slug":"pm2","title":"PM2","background":"bg-[#230769]","category":"Linux Command"},{"slug":"pocket","title":"Pocket","background":"bg-[#d54d57]","category":"Keyboard Shortcuts"},{"slug":"postgres","title":"PostgreSQL","background":"bg-[#3d6488]","category":"Database"},{"slug":"postman","title":"Postman","background":"bg-[#cf5e3c]","category":"Keyboard Shortcuts"},{"slug":"powershell","title":"PowerShell","background":"bg-[#397fe4]","category":"Programming"},{"slug":"principle","title":"Principle","background":"bg-[#b245c6]","category":"Keyboard Shortcuts"},{"slug":"proto-io","title":"Proto.io","background":"bg-[#5697a9]","category":"Keyboard Shortcuts"},{"slug":"putty","title":"PuTTy","background":"bg-[#0403ed]","category":"Keyboard Shortcuts"},{"slug":"python","title":"Python","background":"bg-[#436b97]","category":"Programming"},{"slug":"pytorch","title":"PyTorch","background":"bg-[#ee4c2c]","category":"Other"},{"slug":"quickref","title":"CheatSheets","background":"bg-[#4ade80]","category":"Other"},{"slug":"quip","title":"Quip","background":"bg-[#e4795b]","category":"Keyboard Shortcuts"},{"slug":"react","title":"React","background":"bg-[#1289D8]","category":"Programming"},{"slug":"react-test-library","title":"React Testing Lib","background":"bg-blue-500","category":"Testing"},{"slug":"reddit","title":"Reddit","background":"bg-[#eb5528]","category":"Keyboard Shortcuts"},{"slug":"redis","title":"Redis","background":"bg-[#c13b2c]","category":"Database"},{"slug":"regex","title":"RegEx","background":"bg-[#e56d2d]","category":"Toolkit"},{"slug":"resolutions","title":"Resolutions","background":"bg-indigo-500","category":"Other"},{"slug":"roam","title":"Roam Research","background":"bg-[#090a0a]","category":"Keyboard Shortcuts"},{"slug":"ruby","title":"Ruby","background":"bg-red-500","category":"Programming"},{"slug":"rust","title":"Rust","background":"bg-black","category":"Programming"},{"slug":"sass","title":"Sass","background":"bg-[#ba6993]","category":"Programming"},{"slug":"sbti","title":"SBTI","background":"bg-[#ff6b3d]","category":"Other"},{"slug":"screen","title":"Screen","background":"bg-indigo-500","category":"Linux Command"},{"slug":"sdkman","title":"SDKMAN!","background":"bg-[#cf5e3c]","category":"Linux Command"},{"slug":"sed","title":"Sed","background":"bg-red-400","category":"Linux Command"},{"slug":"selenium","title":"Selenium","background":"bg-[#62ae41]","category":"Programming"},{"slug":"sequel-pro","title":"Sequel Pro","background":"bg-[#ca9c3d]","category":"Keyboard Shortcuts"},{"slug":"shopify","title":"Shopify","background":"bg-[#8bbb55]","category":"Keyboard Shortcuts"},{"slug":"sketch","title":"Sketch","background":"bg-[#d36f2b]","category":"Keyboard Shortcuts"},{"slug":"sketchup","title":"SketchUp Pro","background":"bg-[#265a94]","category":"Keyboard Shortcuts"},{"slug":"skype","title":"Skype","background":"bg-[#52ace2]","category":"Keyboard Shortcuts"},{"slug":"slack","title":"Slack","background":"bg-[#4d1a51]","category":"Keyboard Shortcuts"},{"slug":"socket-io","title":"Socket.io","background":"bg-[#1289D8]","category":"Programming"},{"slug":"soundcloud","title":"SoundCloud","background":"bg-[#ec622b]","category":"Keyboard Shortcuts"},{"slug":"spotify","title":"Spotify","background":"bg-[#65d46e]","category":"Keyboard Shortcuts"},{"slug":"ssh","title":"SSH","background":"bg-blue-400","category":"Linux Command"},{"slug":"sublime-text","title":"Sublime Text","background":"bg-[#e8973e]","category":"Keyboard Shortcuts"},{"slug":"superhuman","title":"Superhuman","background":"bg-[#6bafe2]","category":"Keyboard Shortcuts"},{"slug":"svelte","title":"Svelte","background":"bg-[#FF3E00]","category":"Programming"},{"slug":"swift","title":"Swift","background":"bg-[#eb4e38]","category":"Programming"},{"slug":"systemd","title":"Systemd","background":"bg-[#00ADEF]","category":"Linux Command"},{"slug":"table-plus","title":"TablePlus","background":"bg-[#ecc550]","category":"Keyboard Shortcuts"},{"slug":"taskset","title":"Taskset","background":"bg-[#8bbb55]","category":"Linux Command"},{"slug":"telegram","title":"Telegram","background":"bg-[#50a1dc]","category":"Keyboard Shortcuts"},{"slug":"telnet","title":"Telnet","background":"bg-indigo-400","category":"Linux Command"},{"slug":"tensorflow","title":"TensorFlow","background":"bg-[#ffa800]","category":"Other"},{"slug":"terraform","title":"Terraform","background":"bg-[#7345b6]","category":"Programming"},{"slug":"ticktick","title":"TickTick","background":"bg-[#526ac9]","category":"Keyboard Shortcuts"},{"slug":"tmux","title":"Tmux","background":"bg-indigo-600","category":"Linux Command"},{"slug":"todoist","title":"Todoist","background":"bg-[#cc4d3b]","category":"Keyboard Shortcuts"},{"slug":"toml","title":"TOML","background":"bg-[#848484]","category":"Programming"},{"slug":"transmit","title":"Transmit","background":"bg-[#646fed]","category":"Keyboard Shortcuts"},{"slug":"trello","title":"Trello","background":"bg-[#417eef]","category":"Keyboard Shortcuts"},{"slug":"twitter","title":"Twitter/X","background":"bg-[#4894e2]","category":"Keyboard Shortcuts"},{"slug":"typescript","title":"TypeScript","background":"bg-[#4476c0]","category":"Programming"},{"slug":"unity-3d","title":"Unity 3D","background":"bg-[#7c7c7c]","category":"Keyboard Shortcuts"},{"slug":"unity-shader-graph","title":"Unity Shader Graph","background":"bg-[#7c7c7c]","category":"Programming"},{"slug":"unreal-engine","title":"Unreal Engine","background":"bg-indigo-500","category":"Keyboard Shortcuts"},{"slug":"vhdl","title":"VHDL","background":"bg-[#5c4a7a]","category":"Programming"},{"slug":"vim","title":"Vim","background":"bg-[#46933f]","category":"Toolkit"},{"slug":"vivaldi","title":"Vivaldi","background":"bg-[#d54840]","category":"Keyboard Shortcuts"},{"slug":"vlc","title":"VLC Player","background":"bg-[#e7792e]","category":"Keyboard Shortcuts"},{"slug":"vscode","title":"VSCode","background":"bg-[#5ba3e6]","category":"Toolkit"},{"slug":"vue","title":"Vue","background":"bg-[#43CF96]","category":"Programming"},{"slug":"webflow","title":"Webflow","background":"bg-[#4450ee]","category":"Keyboard Shortcuts"},{"slug":"webstorm","title":"WebStorm","background":"bg-[#3e5fa3]","category":"Keyboard Shortcuts"},{"slug":"windows-cmd","title":"Windows CMD","background":"bg-red-500","category":"Programming"},{"slug":"wordpress","title":"WordPress","background":"bg-[#434140]","category":"Keyboard Shortcuts"},{"slug":"xpath","title":"XPath","background":"bg-[#77aeeb]","category":"Toolkit"},{"slug":"yaml","title":"YAML","background":"bg-[#b42e28]","category":"Programming"},{"slug":"youtube","title":"YouTube","background":"bg-[#e6332e]","category":"Keyboard Shortcuts"},{"slug":"zed","title":"Zed","background":"bg-[#3e4548]","category":"Keyboard Shortcuts"},{"slug":"zoom","title":"Zoom","background":"bg-[#2858ee]","category":"Keyboard Shortcuts"}];
+ 
+const CAT_ORDER = ['AI','Programming','Python','Linux Command','Toolkit','Database','Keyboard Shortcuts','Operating System','Productivity','Game','Testing','Other'];
+ 
+function bgToColor(bg){
+  if(!bg) return '#555';
+  const m=bg.match(/bg-\[#?([0-9a-fA-F]{3,8})\]/);
+  if(m) return '#'+m[1];
+  const MAP={'bg-indigo-500':'#6366f1','bg-indigo-600':'#4f46e5','bg-indigo-400':'#818cf8','bg-blue-400':'#60a5fa','bg-blue-500':'#3b82f6','bg-blue-600':'#2563eb','bg-red-400':'#f87171','bg-red-500':'#ef4444','bg-green-700':'#15803d','bg-black':'#111','bg-slate-600':'#475569','bg-slate-700':'#334155','bg-slate-800':'#1e293b','bg-purple-600':'#9333ea'};
+  for(const k in MAP){if(bg.startsWith(k)) return MAP[k];}
+  const m2=bg.match(/#([0-9a-fA-F]{3,8})/);
+  if(m2) return '#'+m2[1];
+  return '#6366f1';
+}
+ 
+function initials(t){
+  const w=t.split(/\s+/);
+  return w.length===1?t.slice(0,2).toUpperCase():(w[0][0]+(w[1][0]||'')).toUpperCase();
+}
+ 
+let activeCategory='all', searchQuery='';
+ 
+function getCategories(){
+  const c={};
+  POSTS.forEach(p=>{c[p.category]=(c[p.category]||0)+1;});
+  return c;
+}
+ 
+function filterPosts(){
+  return POSTS.filter(p=>{
+    const mc=activeCategory==='all'||p.category===activeCategory;
+    const q=searchQuery.toLowerCase();
+    const mq=!q||p.title.toLowerCase().includes(q)||p.slug.includes(q)||p.category.toLowerCase().includes(q);
+    return mc&&mq;
+  });
+}
+ 
+function renderTabs(){
+  const cats=getCategories();
+  const tabs=document.getElementById('filterTabs');
+  tabs.querySelectorAll('.dyn-tab').forEach(e=>e.remove());
+  const allBtn=tabs.querySelector('[data-cat="all"]');
+  allBtn.innerHTML=`All <span style="opacity:.55;font-size:11px">${POSTS.length}</span>`;
+  allBtn.classList.toggle('active',activeCategory==='all');
+  CAT_ORDER.forEach(cat=>{
+    if(!cats[cat]) return;
+    const b=document.createElement('button');
+    b.className='filter-btn dyn-tab'+(activeCategory===cat?' active':'');
+    b.dataset.cat=cat;
+    b.innerHTML=`${cat} <span style="opacity:.55;font-size:11px">${cats[cat]}</span>`;
+    tabs.appendChild(b);
+  });
+}
+ 
+function makeCard(p){
+  const color=bgToColor(p.background);
+  const a=document.createElement('a');
+  a.className='ref-card';
+  a.href=`referencelink/${p.slug}.html`;
+  a.title=`${p.title} Cheat Sheet`;
+  a.innerHTML=`<div class="card-icon" style="background:${color}">${initials(p.title)}</div><span class="card-title">${p.title}</span>`;
+  return a;
+}
+ 
+function renderCards(){
+  const filtered=filterPosts();
+  const main=document.getElementById('mainContent');
+  const noRes=document.getElementById('noResults');
+  main.querySelectorAll('.section-block').forEach(e=>e.remove());
+ 
+  document.getElementById('searchStats').textContent=searchQuery?`${filtered.length} result${filtered.length!==1?'s':''} found`:'';
+ 
+  if(!filtered.length){noRes.style.display='block';return;}
+  noRes.style.display='none';
+ 
+  if(searchQuery){
+    const block=document.createElement('div');
+    block.className='section-block';block.style.marginTop='20px';
+    const grid=document.createElement('div');grid.className='cards-grid';
+    filtered.forEach(p=>grid.appendChild(makeCard(p)));
+    block.appendChild(grid);main.insertBefore(block,noRes);return;
+  }
+ 
+  const byCat={};
+  filtered.forEach(p=>{(byCat[p.category]=byCat[p.category]||[]).push(p);});
+  const ordered=CAT_ORDER.filter(c=>byCat[c]).concat(Object.keys(byCat).filter(c=>!CAT_ORDER.includes(c)&&byCat[c]));
+  ordered.forEach(cat=>{
+    const block=document.createElement('div');block.className='section-block';
+    const hdr=document.createElement('div');hdr.className='section-header';
+    hdr.innerHTML=`<h2>${cat}</h2><div class="section-line"></div><span class="section-count">${byCat[cat].length}</span>`;
+    block.appendChild(hdr);
+    const grid=document.createElement('div');grid.className='cards-grid';
+    byCat[cat].forEach(p=>grid.appendChild(makeCard(p)));
+    block.appendChild(grid);main.insertBefore(block,noRes);
+  });
+}
+ 
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+document.getElementById('filterTabs').addEventListener('click',e=>{
+  const b=e.target.closest('.filter-btn');if(!b)return;
+  activeCategory=b.dataset.cat;
+  document.querySelectorAll('.filter-btn').forEach(x=>x.classList.toggle('active',x===b));
+  renderCards();window.scrollTo({top:0,behavior:'smooth'});
+});
+document.getElementById('searchInput').addEventListener('input',e=>{
+  searchQuery=e.target.value.trim();activeCategory='all';
+  document.querySelectorAll('.filter-btn').forEach(x=>x.classList.toggle('active',x.dataset.cat==='all'));
+  renderCards();
+});
+
+
+ 
+renderTabs();
+renderCards();
+
+
+</script>
+</body>
+</html>

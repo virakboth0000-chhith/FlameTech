@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Audacity Cheat Sheet — FlameTech</title>
+  <meta name="description" content="A visual cheat-sheet for the 135 default keyboard shortcuts found in Audacity">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#0000e1}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,225,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Keyboard Shortcuts</span>
+    <span>›</span>
+    <span>Audacity</span>
+  </div>
+  <div class="post-icon">AU</div>
+  <h1>Audacity <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>A visual cheat-sheet for the 135 default keyboard shortcuts found in Audacity</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Keyboard Shortcuts</span>
+    <span class="meta-tag">-</span> <span class="meta-tag">Keyboard Shortcuts</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="keyboard-shortcuts">
+<h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="file-menu">File Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>N</code></td>
+<td>New</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>O</code></td>
+<td>Open</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>W</code></td>
+<td>Close</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Q</code></td>
+<td>Exit</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>S</code></td>
+<td>Save project</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>E</code></td>
+<td>Export audio</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>L</code></td>
+<td>Export multiple</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>I</code></td>
+<td>Import audio</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="edit-menu">Edit Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Z</code></td>
+<td>Undo</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Y</code></td>
+<td>Redo</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>X</code></td>
+<td>Cut</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>K</code></td>
+<td>Delete</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>C</code></td>
+<td>Copy</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>V</code></td>
+<td>Paste</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>D</code></td>
+<td>Duplicate</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>P</code></td>
+<td>Preferences</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>X</code></td>
+<td>Split cut</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>K</code></td>
+<td>Split delete</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>L</code></td>
+<td>Silence audio</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>T</code></td>
+<td>Trim audio</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>I</code></td>
+<td>Split new</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>J</code></td>
+<td>Join</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>J</code></td>
+<td>Detach at silences</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>B</code></td>
+<td>Add label at selection</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>M</code></td>
+<td>Add label at playback position</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>V</code></td>
+<td>Paste text to new label</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>X</code></td>
+<td>Cut labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>K</code></td>
+<td>Delete labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>X</code></td>
+<td>Split cut labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>K</code></td>
+<td>Split delete labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>L</code></td>
+<td>Silence labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>C</code></td>
+<td>Copy labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>I</code></td>
+<td>Split labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>J</code></td>
+<td>Join labeled audio</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>J</code></td>
+<td>Detach labeled audio at silences</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="extra-menu">Extra Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>F11</code></td>
+<td>Toggle full screen</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>Play one second</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td>Play to selection</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F5</code></td>
+<td>Play before selection start</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F6</code></td>
+<td>Play after selection start</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F7</code></td>
+<td>Play before selection end</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>F8</code></td>
+<td>Play after selection end</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>F5</code></td>
+<td>Play before and after selection start</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>F7</code></td>
+<td>Play before and after selection end</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td>Play cut preview</td>
+</tr>
+<tr>
+<td><code>F1</code></td>
+<td>Selection tool</td>
+</tr>
+<tr>
+<td><code>F2</code></td>
+<td>Envelope tool</td>
+</tr>
+<tr>
+<td><code>F3</code></td>
+<td>Draw tool</td>
+</tr>
+<tr>
+<td><code>F4</code></td>
+<td>Zoom tool</td>
+</tr>
+<tr>
+<td><code>F5</code></td>
+<td>Time shift tool</td>
+</tr>
+<tr>
+<td><code>F6</code></td>
+<td>Multi tool</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td>Previous tool</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td>Next tool</td>
+</tr>
+<tr>
+<td><code>Backspace</code></td>
+<td>Delete</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Left</code></td>
+<td>Move to previous label</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Right</code></td>
+<td>Move to next label</td>
+</tr>
+<tr>
+<td><code>Left</code></td>
+<td>Short seek left during playback</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td>Short seek right during playback</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Left</code></td>
+<td>Long seek left during playback</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Right</code></td>
+<td>Long seek right during playback</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>I</code></td>
+<td>Change recording device</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>O</code></td>
+<td>Change playback device</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>H</code></td>
+<td>Change audio host</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>N</code></td>
+<td>Change recording channels</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Home</code></td>
+<td>Selection to start</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>End</code></td>
+<td>Selection to end</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Left</code></td>
+<td>Selection extend left</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Right</code></td>
+<td>Selection extend right</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Right</code></td>
+<td>Selection contract left</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Left</code></td>
+<td>Selection contract right</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>F6</code></td>
+<td>Move backwards from toolbars to tracks</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>F6</code></td>
+<td>Move forward from toolbars to tracks</td>
+</tr>
+<tr>
+<td><code>Up</code></td>
+<td>Move focus to previous track</td>
+</tr>
+<tr>
+<td><code>Down</code></td>
+<td>Move focus to next track</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Home</code></td>
+<td>Move focus to first track</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>End</code></td>
+<td>Move focus to last track</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Up</code></td>
+<td>Move focus to previous and select</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Down</code></td>
+<td>Move focus to next and select</td>
+</tr>
+<tr>
+<td><code>Enter</code></td>
+<td>Toggle focused track</td>
+</tr>
+<tr>
+<td><code>Left</code></td>
+<td>Cursor left</td>
+</tr>
+<tr>
+<td><code>Right</code></td>
+<td>Cursor right</td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td>Cursor short jump left</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>Cursor short jump right</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>,</code></td>
+<td>Cursor long jump left</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>.</code></td>
+<td>Cursor long jump right</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>P</code></td>
+<td>Change pan on focused track</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>Left</code></td>
+<td>Pan left on focused track</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>Right</code></td>
+<td>Pan right on focused track</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>G</code></td>
+<td>Change gain on focused track</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>Up</code></td>
+<td>Increase gain on focused track</td>
+</tr>
+<tr>
+<td><code>Alt</code> <code>Shift</code> <code>Down</code></td>
+<td>Decrease gain on focused track</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>U</code></td>
+<td>Mute or unmute focused track</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>S</code></td>
+<td>Solo or unsolo focused track</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>C</code></td>
+<td>Close focused track</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="select-menu">Select Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>A</code></td>
+<td>Select all</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>A</code></td>
+<td>Select none</td>
+</tr>
+<tr>
+<td><code>Z</code></td>
+<td>Select at zero crossings</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>K</code></td>
+<td>Select in all tracks</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>Y</code></td>
+<td>Select in all sync-locked tracks</td>
+</tr>
+<tr>
+<td><code>[</code></td>
+<td>Left at playback position</td>
+</tr>
+<tr>
+<td><code>]</code></td>
+<td>Right at playback position</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>J</code></td>
+<td>Track start to cursor</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>K</code></td>
+<td>Cursor to track end</td>
+</tr>
+<tr>
+<td><code>Q</code></td>
+<td>Toggle spectral selection</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>P</code></td>
+<td>Previous clip</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Alt</code> <code>N</code></td>
+<td>Next clip</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="view-menu">View Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>1</code></td>
+<td>Zoom in</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>2</code></td>
+<td>Zoom normal</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>3</code></td>
+<td>Zoom out</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>E</code></td>
+<td>Zoom to selection</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Z</code></td>
+<td>Zoom toggle</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>F</code></td>
+<td>Fit to width</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>F</code></td>
+<td>Fit to height</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>C</code></td>
+<td>Collapse all tracks</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>X</code></td>
+<td>Expand collapsed tracks</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>[</code></td>
+<td>Skip to selection start</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>]</code></td>
+<td>Skip to selection end</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="transport-menu">Transport Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Space</code></td>
+<td>Play or stop</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td>Play or stop and set cursor</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>Space</code></td>
+<td>Loop play</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td>Pause</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td>Record</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>R</code></td>
+<td>Record new track</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>T</code></td>
+<td>Timer record...</td>
+</tr>
+<tr>
+<td><code>Shift</code> <code>D</code></td>
+<td>Punch and roll record</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td>Pause</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td>Cursor to track start</td>
+</tr>
+<tr>
+<td><code>K</code></td>
+<td>Cursor to track end</td>
+</tr>
+<tr>
+<td><code>Home</code></td>
+<td>Cursor to project start</td>
+</tr>
+<tr>
+<td><code>End</code></td>
+<td>Cursor to project end</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tracks-menu">Tracks Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>N</code></td>
+<td>Add new mono track</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>M</code></td>
+<td>Mix and render to new track</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>U</code></td>
+<td>Mute all tracks</td>
+</tr>
+<tr>
+<td><code>Ctrl</code> <code>Shift</code> <code>U</code></td>
+<td>Unmute all tracks</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="effect-menu">Effect Menu</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl</code> <code>R</code></td>
+<td>Repeat last effect</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://manual.audacityteam.org/man/keyboard_shortcut_reference.html">Keyboard shortcuts for Audacity</a>
+  <em>(manual.audacityteam.org)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

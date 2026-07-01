@@ -1,0 +1,2021 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="ft.png" type="image/x-icon">
+    <title>FlameTech | Interactive Learning Plan Creator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+        
+        .bg-card-blur {
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .task-card.completed {
+            background-color: rgba(255, 215, 0, 0.1);
+            border-color: #ffd700;
+        }
+        .task-card.completed .task-content {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        .progress-bar-fill {
+            transition: width 0.5s ease-in-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .path-card {
+            transition: all 0.3s ease;
+        }
+        .path-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .category-btn {
+            transition: all 0.2s ease;
+        }
+        .category-btn.active {
+            background-color: #f59e0b;
+            color: black;
+        }
+        .scroll-container {
+            scrollbar-width: thin;
+            scrollbar-color: #4b5563 #1f2937;
+        }
+        .scroll-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        .scroll-container::-webkit-scrollbar-track {
+            background: #1f2937;
+            border-radius: 3px;
+        }
+        .scroll-container::-webkit-scrollbar-thumb {
+            background-color: #4b5563;
+            border-radius: 3px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #0f172a;
+            color: white ;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+        .theme-toggle:hover {
+            background-color: #05d9e8;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        /* Celebration animation styles */
+        .celebration-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f59e0b;
+            opacity: 0.7;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        .success-message {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #f59e0b;
+            text-align: center;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .completion-message {
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        /* Add these variables to your :root (at the top of your CSS) */
+:root {
+    /* Dark mode variables (default) */
+    --primary: #ff2a6d;
+    --secondary: #05d9e8;
+    --dark: #01012b;
+    --darker: #000015;
+    --light: #f0f0f0;
+    --accent: #d1f7ff;
+    --primary-dark: #d1004a;
+    
+    /* Background colors */
+    --bg-primary: linear-gradient(135deg, var(--darker), var(--dark));
+    --bg-secondary: rgba(0, 0, 20, 0.8);
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-card-hover: rgba(255, 255, 255, 0.1);
+    
+    /* Text colors */
+    --text-primary: var(--light);
+    --text-secondary: #aaa;
+    --text-accent: var(--accent);
+    
+    /* Border colors */
+    --border-primary: rgba(255, 42, 109, 0.3);
+    --border-secondary: rgba(255, 42, 109, 0.2);
+    
+    /* Shadow colors */
+    --shadow-primary: rgba(0, 0, 0, 0.3);
+    --shadow-secondary: rgba(255, 42, 109, 0.5);
+}
+
+/* Professional White Theme */
+/* Professional White Theme with Your Logo Colors */
+.light-mode {
+    /* Main brand colors from your logo */
+    --primary: #ff2a6d; /* Keep the same pink from your logo */
+    --secondary: #05d9e8; /* Keep the same cyan from your logo */
+    
+    /* Light mode backgrounds */
+    --dark: #ffffff;
+    --darker: #f8fafc;
+    --light: #1a1a2e; /* Dark blue-gray for text */
+    --accent: #334155; /* Medium gray for secondary text */
+    
+    /* Background colors */
+    --bg-primary: linear-gradient(135deg, #ffffff, #f0f2f5);
+    --bg-secondary: rgba(255, 255, 255, 0.95);
+    --bg-card: rgba(255, 255, 255, 0.98);
+    --bg-card-hover: rgba(5, 217, 232, 0.05); /* Light cyan tint on hover */
+    
+    /* Text colors */
+    --text-primary: #1a1a2e;
+    --text-secondary: #4a5568;
+    --text-accent: #ff2a6d; /* Use logo pink for accent text */
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    
+    /* Border colors */
+    --border-primary: rgba(255, 42, 109, 0.25);
+    --border-secondary: rgba(5, 217, 232, 0.25);
+    --border-light: rgba(255, 42, 109, 0.1);
+    --border-medium: rgba(5, 217, 232, 0.2);
+    
+    /* Shadow colors */
+    --shadow-primary: rgba(0, 0, 0, 0.08);
+    --shadow-secondary: rgba(255, 42, 109, 0.2);
+    --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-elevated: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Base white theme styling */
+.light-mode body {
+    color: var(--text-primary);
+    background: var(--bg-primary);
+    font-weight: 400;
+    line-height: 1.6;
+}
+
+/* Typography improvements */
+.light-mode h1,
+.light-mode h2,
+.light-mode h3,
+.light-mode h4,
+.light-mode h5,
+.light-mode h6 {
+    color: var(--text-accent);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+}
+
+.light-mode h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.light-mode h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.light-mode h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.light-mode p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+}
+
+/* Header styling */
+.light-mode header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.light-mode header h1 {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.light-mode header p {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+/* Card containers - Clean white cards */
+.light-mode .bg-card-blur {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(8px);
+}
+
+/* Learning path cards */
+.light-mode .path-card,
+.light-mode .task-card,
+.light-mode .platform-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light-mode .path-card:hover,
+.light-mode .platform-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elevated);
+    border-color: var(--primary);
+    background: white;
+}
+
+/* Task cards specifically */
+.light-mode .task-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-card);
+}
+
+.light-mode .task-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    border-color: var(--border-medium);
+}
+
+/* Completed tasks */
+.light-mode .task-card.completed {
+    background: linear-gradient(135deg, rgba(255, 42, 109, 0.03), rgba(5, 217, 232, 0.01));
+    border-color: var(--primary);
+    box-shadow: 0 1px 3px rgba(255, 42, 109, 0.08);
+}
+
+.light-mode .task-card.completed .task-content {
+    color: var(--text-muted);
+}
+
+/* Text color overrides */
+.light-mode .text-slate-300,
+.light-mode p.text-slate-300 {
+    color: var(--text-secondary) !important;
+    opacity: 0.95;
+}
+
+.light-mode .text-slate-400 {
+    color: var(--text-muted) !important;
+}
+
+/* Primary color accents - Keep your logo colors */
+.light-mode .text-amber-300,
+.light-mode h1.text-amber-300,
+.light-mode h2.text-amber-300,
+.light-mode h3.text-amber-300 {
+    color: var(--primary) !important;
+    background: none !important;
+    -webkit-background-clip: initial !important;
+    -webkit-text-fill-color: initial !important;
+}
+
+/* Buttons */
+.light-mode .bg-amber-500 {
+    background: linear-gradient(135deg, var(--primary), var(--secondary)) !important;
+    color: white !important;
+    border: none;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(255, 42, 109, 0.2);
+}
+
+.light-mode .bg-amber-500:hover {
+    background: linear-gradient(135deg, #ff0a5e, #05c7d4) !important;
+    box-shadow: 0 4px 8px rgba(255, 42, 109, 0.25);
+    transform: translateY(-1px);
+}
+
+/* Secondary buttons */
+.light-mode .bg-purple-600 {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    color: white !important;
+}
+
+.light-mode .bg-slate-700 {
+    background: var(--text-secondary) !important;
+    color: white !important;
+    border: none;
+}
+
+.light-mode .bg-slate-700:hover {
+    background: var(--text-accent) !important;
+}
+
+/* Category filter buttons */
+.light-mode .category-btn {
+    background: white;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.light-mode .category-btn.active {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 2px 4px rgba(255, 42, 109, 0.15);
+}
+
+.light-mode .category-btn:hover:not(.active) {
+    background: var(--darker);
+    border-color: var(--border-medium);
+    color: var(--primary);
+}
+
+/* Progress bars */
+.light-mode .bg-amber-300 {
+    background: linear-gradient(90deg, var(--primary), var(--secondary)) !important;
+}
+
+.light-mode .bg-slate-700 {
+    background: #f1f5f9 !important;
+}
+
+/* Form elements */
+.light-mode input,
+.light-mode textarea,
+.light-mode select {
+    background: white;
+    border: 1px solid var(--border-light);
+    color: var(--text-primary);
+    font-weight: 400;
+    transition: all 0.2s ease;
+}
+
+.light-mode input:focus,
+.light-mode textarea:focus,
+.light-mode select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(255, 42, 109, 0.1);
+    outline: none;
+}
+
+.light-mode input::placeholder,
+.light-mode textarea::placeholder {
+    color: var(--text-light);
+    font-weight: 400;
+}
+
+/* Search box */
+.light-mode .search-box {
+    background: white;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* Footer */
+.light-mode footer {
+    background: var(--darker);
+    border-top: 1px solid var(--border-light);
+}
+
+.light-mode .footer-column h4 {
+    color: var(--text-accent);
+    font-weight: 600;
+}
+
+.light-mode .footer-column ul li a {
+    color: var(--text-secondary);
+    font-weight: 400;
+}
+
+.light-mode .footer-column ul li a:hover {
+    color: var(--primary);
+}
+
+.light-mode .copyright {
+    border-top: 1px solid var(--border-light);
+    color: var(--text-muted);
+}
+
+.light-mode .social-links a {
+    background: white;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+.light-mode .social-links a:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(255, 42, 109, 0.15);
+}
+
+/* Theme toggle button */
+.light-mode .theme-toggle {
+    background: white;
+    color: black;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.light-mode .theme-toggle:hover {
+    background: #ffd700;
+    color: white;
+    border-color: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 42, 109, 0.15);
+}
+
+/* Celebration animation */
+.light-mode .celebration-container {
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(20px);
+}
+
+.light-mode .success-message {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.light-mode .completion-message {
+    color: var(--text-secondary);
+}
+
+/* Scrollbars */
+.light-mode .scroll-container::-webkit-scrollbar-track {
+    background: #f8fafc;
+}
+
+.light-mode .scroll-container::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+.light-mode .scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Status badges */
+.light-mode .bg-slate-700.text-xs {
+    background: #f1f5f9 !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid #e2e8f0;
+    font-weight: 500;
+}
+
+/* Back to home link */
+.light-mode .text-amber-400 {
+    color: var(--primary) !important;
+    font-weight: 500;
+}
+
+.light-mode .text-amber-400:hover {
+    color: var(--secondary) !important;
+}
+
+/* Borders */
+.light-mode .border-slate-700 {
+    border-color: var(--border-light) !important;
+}
+
+.light-mode .border-slate-800 {
+    border-color: rgba(5, 217, 232, 0.2) !important;
+}
+
+/* Focus states */
+.light-mode .focus\:border-amber-300:focus {
+    border-color: var(--primary) !important;
+}
+
+.light-mode .focus\:ring-amber-300:focus {
+    --tw-ring-color: rgba(255, 42, 109, 0.15) !important;
+}
+
+/* Checkboxes */
+.light-mode input[type="checkbox"] {
+    background: white;
+    border: 1px solid var(--border-medium);
+    border-radius: 4px;
+}
+
+.light-mode input[type="checkbox"]:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+/* Project idea boxes */
+.light-mode .bg-slate-900 {
+    background: rgba(5, 217, 232, 0.05) !important;
+    border: 1px solid rgba(5, 217, 232, 0.15);
+    border-radius: 8px;
+}
+
+.light-mode .bg-slate-900 p {
+    color: var(--text-secondary) !important;
+}
+
+/* Reset button */
+.light-mode .bg-red-700 {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: white !important;
+}
+
+.light-mode .bg-red-700:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
+}
+
+/* Add subtle hover animations */
+.light-mode .task-card,
+.light-mode .path-card,
+.light-mode button:not(.theme-toggle) {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Improve spacing and readability */
+.light-mode .p-6 {
+    padding: 1.75rem;
+}
+
+.light-mode .rounded-xl {
+    border-radius: 12px;
+}
+
+/* Add subtle background patterns for depth */
+.light-mode .bg-card-blur::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 80%, rgba(255, 42, 109, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(5, 217, 232, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+.light-mode .bg-card-blur > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Subtle text selection color */
+.light-mode ::selection {
+    background: rgba(255, 42, 109, 0.1);
+    color: var(--text-primary);
+}
+
+.light-mode ::-moz-selection {
+    background: rgba(255, 42, 109, 0.1);
+    color: var(--text-primary);
+}
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="flametech-light-mode.css">
+    <link rel="stylesheet" href="flametech-dark-mode.css">
+</head>
+
+<body class="text-white">
+
+    <!-- Add this button near the bottom of your body -->
+<button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+</button>
+
+    <!-- Back to Home Button -->
+    <a href="h.html" class="inline-flex items-center text-amber-400 font-semibold hover:text-amber-300 transition mb-6 ml-2">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Back to Home
+    </a>
+
+    <div class="max-w-6xl mx-auto p-4 sm:p-6 lg:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-amber-300">Interactive Learning Path Creator</h1>
+            <p class="mt-2 text-slate-300">Create your personalized coding journey or choose from recommended paths</p>
+        </header>
+
+        <!-- Setup Wizard -->
+        <div id="setup-wizard" class="bg-card-blur rounded-xl shadow-lg p-6 mb-10 border border-slate-700 fade-in">
+            <h2 class="text-xl font-semibold mb-4 text-amber-300">Get Started</h2>
+            
+            <div class="mb-6">
+                <p class="text-slate-300 mb-3">Choose how you'd like to create your learning plan:</p>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <button id="custom-plan-btn" class="bg-amber-500 hover:bg-amber-600 text-black font-medium py-2 px-4 rounded-md transition-colors flex-1">
+                        Create Custom Plan
+                    </button>
+                    <button id="recommended-plan-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-4 rounded-md transition-colors flex-1">
+                        Get Recommended Plan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Custom Plan Form -->
+            <div id="custom-plan-form" class="hidden mt-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-white mb-1">Plan Title</label>
+                    <input type="text" id="plan-title" placeholder="e.g., 3-Month Java Mastery" class="w-full p-2 rounded-md bg-slate-800 text-white border border-slate-700 focus:border-amber-300 focus:ring-amber-300">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-white mb-1">Number of Months</label>
+                    <input type="number" id="months-count" min="1" max="12" value="3" class="w-full p-2 rounded-md bg-slate-800 text-white border border-slate-700 focus:border-amber-300 focus:ring-amber-300">
+                </div>
+                
+                <div id="months-container" class="space-y-4">
+                    <!-- Months will be dynamically added here -->
+                </div>
+                
+                <button id="generate-custom-plan" class="w-full bg-amber-500 hover:bg-amber-600 text-black font-medium py-2 px-4 rounded-md transition-colors">
+                    Generate Learning Plan
+                </button>
+            </div>
+
+            <!-- Recommended Plans -->
+            <div id="recommended-plans" class="hidden mt-6">
+                <div class="flex gap-2 mb-4 overflow-x-auto pb-2 scroll-container">
+                    <button class="category-btn active px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 whitespace-nowrap" data-category="all">All Languages</button>
+                    <button class="category-btn px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 whitespace-nowrap" data-category="web">Web Development</button>
+                    <button class="category-btn px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 whitespace-nowrap" data-category="mobile">Mobile</button>
+                    <button class="category-btn px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 whitespace-nowrap" data-category="data">Data Science</button>
+                    <button class="category-btn px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 whitespace-nowrap" data-category="systems">Systems</button>
+                    <button class="category-btn px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 whitespace-nowrap" data-category="scripting">Scripting</button>
+                    <button class="category-btn px-4 py-2 rounded-md bg-slate-700 hover:bg-slate-600 whitespace-nowrap" data-category="functional">Functional</button>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 recommended-plans-container">
+                    <!-- Plans will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Tracking -->
+        <div id="progress-section" class="hidden bg-card-blur rounded-xl shadow-lg p-6 mb-10 border border-slate-700">
+            <h2 class="text-lg font-semibold mb-2 text-white">Overall Progress</h2>
+            <div class="w-full bg-slate-700 rounded-full h-4">
+                <div id="overall-progress-bar" class="bg-amber-300 h-4 rounded-full progress-bar-fill" style="width: 0%;"></div>
+            </div>
+            <p id="overall-progress-text" class="text-right text-sm mt-1 font-medium text-amber-300">0% Complete</p>
+        </div>
+
+        <!-- Learning Plan Display -->
+        <main id="learning-plan-container" class="space-y-12 hidden">
+        </main>
+
+        <!-- Action Buttons -->
+        <div id="action-buttons" class="hidden mt-8 flex justify-center gap-4">
+            <button id="edit-plan-btn" class="bg-slate-700 hover:bg-slate-600 text-white font-medium py-2 px-6 rounded-md transition-colors">
+                Edit Plan
+            </button>
+            <button id="export-plan-btn" class="bg-amber-500 hover:bg-amber-600 text-black font-medium py-2 px-6 rounded-md transition-colors">
+                Export Plan
+            </button>
+            <button id="reset-plan-btn" class="bg-red-700 hover:bg-red-800 text-white font-medium py-2 px-6 rounded-md transition-colors">
+                Reset All
+            </button>
+        </div>
+
+    </div>
+
+    <!-- Celebration Container (initially hidden) -->
+    <div id="celebration-container" class="celebration-container hidden">
+        <div class="text-center">
+            <div class="success-message">Complete!</div>
+            <div id="completion-message" class="completion-message">Great job completing your learning plan!</div>
+            <button id="close-celebration" class="mt-8 bg-amber-500 hover:bg-amber-600 text-black font-medium py-2 px-6 rounded-md transition-colors">
+                Continue
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Comprehensive learning plans data with 21 programming languages
+        const recommendedPlans = {
+            // Web Development Languages
+            javascript: {
+                title: "3-Month JavaScript Mastery Path",
+                description: "From JavaScript basics to full-stack development.",
+                category: "web",
+                difficulty: "Beginner",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: JavaScript Fundamentals",
+                        description: "Learn the core concepts of JavaScript programming language.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ“œ **JavaScript Basics:** Variables, data types, operators, and basic syntax.", project: "A simple interactive webpage with basic DOM manipulation." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures:** Conditional statements, loops, and functions.", project: "A number guessing game with feedback based on user input." },
+                            { week: 3, topics: "ðŸŽ¯ **DOM Manipulation:** Selecting elements, changing content, and handling events.", project: "A interactive to-do list with add/remove functionality." },
+                            { week: 4, topics: "ðŸ› ï¸ **Debugging & Tools:** Browser developer tools, console methods, and debugging techniques.", project: "Debug and enhance your previous projects." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced JavaScript",
+                        description: "Dive deeper into JavaScript's advanced features.",
+                        weeks: [
+                            { week: 5, topics: "âš¡ **ES6+ Features:** Arrow functions, destructuring, spread/rest operators, and template literals.", project: "Refactor previous projects using modern JavaScript features." },
+                            { week: 6, topics: "ðŸ”„ **Asynchronous JavaScript:** Callbacks, promises, and async/await.", project: "A weather app that fetches data from a public API." },
+                            { week: 7, topics: "ðŸ§© **Modules & Bundlers:** ES6 modules, Webpack, and code organization.", project: "Reorganize your code into modules and bundle it." },
+                            { week: 8, topics: "ðŸ§ª **Testing:** Introduction to Jest and writing unit tests.", project: "Write tests for your previous projects." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: JavaScript in Practice",
+                        description: "Apply your JavaScript knowledge to real-world scenarios.",
+                        weeks: [
+                            { week: 9, topics: "ðŸš€ **Frontend Framework (React):** Components, props, state, and hooks.", project: "Build a React version of your to-do list." },
+                            { week: 10, topics: "ðŸ—ƒï¸ **State Management:** Context API or Redux for managing application state.", project: "Add state management to your React application." },
+                            { week: 11, topics: "ðŸ”— **Backend with Node.js:** Setting up a server, routing, and handling requests.", project: "Create a simple REST API for your to-do items." },
+                            { week: 12, topics: "ðŸ“¦ **Database Integration:** Connecting to a database and performing CRUD operations.", project: "Add database persistence to your REST API." }
+                        ]
+                    }
+                ]
+            },
+            typescript: {
+                title: "2-Month TypeScript Path",
+                description: "Add static typing to your JavaScript projects.",
+                category: "web",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: TypeScript Fundamentals",
+                        description: "Learn the core concepts of TypeScript.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ“ **TypeScript Basics:** Setting up TypeScript, basic types, and type annotations.", project: "Convert a simple JavaScript file to TypeScript." },
+                            { week: 2, topics: "ðŸ”„ **Advanced Types:** Interfaces, enums, unions, and type aliases.", project: "Create a type-safe implementation of a data structure." },
+                            { week: 3, topics: "ðŸ§© **Classes & OOP:** Classes, inheritance, and access modifiers in TypeScript.", project: "Build a type-safe class hierarchy for a business domain." },
+                            { week: 4, topics: "ðŸ”Œ **Working with DOM:** TypeScript with DOM manipulation and event handling.", project: "Create a type-safe interactive web component." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: TypeScript in Practice",
+                        description: "Apply TypeScript to real-world scenarios.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ“¦ **Configuring TypeScript:** tsconfig.json, compiler options, and project setup.", project: "Set up a full TypeScript project with proper configuration." },
+                            { week: 6, topics: "ðŸ§ª **Testing with TypeScript:** Writing tests for TypeScript code and type testing.", project: "Add comprehensive tests to your TypeScript project." },
+                            { week: 7, topics: "ðŸš€ **TypeScript with Frameworks:** Using TypeScript with React, Angular, or Vue.", project: "Build a simple app with TypeScript and your chosen framework." },
+                            { week: 8, topics: "ðŸ”§ **Advanced Patterns:** Generics, decorators, and advanced type techniques.", project: "Implement a generic utility library with advanced TypeScript features." }
+                        ]
+                    }
+                ]
+            },
+            htmlcss: {
+                title: "2-Month HTML & CSS Path",
+                description: "Master the building blocks of the web.",
+                category: "web",
+                difficulty: "Beginner",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: HTML & CSS Fundamentals",
+                        description: "Learn the core concepts of web markup and styling.",
+                        weeks: [
+                            { week: 1, topics: "ðŸŒ **HTML Basics:** Elements, attributes, semantic HTML, and document structure.", project: "Create a semantic HTML page for a recipe." },
+                            { week: 2, topics: "ðŸŽ¨ **CSS Fundamentals:** Selectors, box model, colors, and text styling.", project: "Style your recipe page with basic CSS." },
+                            { week: 3, topics: "ðŸ“ **Layout Techniques:** Floats, positioning, Flexbox, and CSS Grid.", project: "Create a responsive photo gallery using CSS Grid." },
+                            { week: 4, topics: "ðŸ“± **Responsive Design:** Media queries, responsive units, and mobile-first approach.", project: "Make your recipe page responsive for all screen sizes." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced CSS & Preprocessors",
+                        description: "Dive deeper into modern CSS techniques.",
+                        weeks: [
+                            { week: 5, topics: "âš¡ **CSS Variables & Functions:** Custom properties, calc(), and other CSS functions.", project: "Create a themeable UI component using CSS variables." },
+                            { week: 6, topics: "ðŸŽ­ **Transitions & Animations:** CSS transitions, keyframes, and animation properties.", project: "Build an animated navigation menu." },
+                            { week: 7, topics: "ðŸ› ï¸ **CSS Preprocessors:** SASS/SCSS, variables, mixins, and nesting.", project: "Convert your CSS to SCSS and use advanced features." },
+                            { week: 8, topics: "ðŸš€ **CSS Frameworks:** Introduction to Bootstrap, Tailwind, or other frameworks.", project: "Build a complete website using a CSS framework." }
+                        ]
+                    }
+                ]
+            },
+            
+            // Backend Languages
+            java: {
+                title: "3-Month Java & Spring Learning Path",
+                description: "Track your journey from Java fundamentals to Spring Boot mastery.",
+                category: "web",
+                difficulty: "Intermediate",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: Java Fundamentals",
+                        description: "This month is all about mastering the core concepts of the Java language.",
+                        weeks: [
+                            { week: 1, topics: "ðŸš€ **Java Basics & OOP:** Variables, data types, operators, and control flow. Understand the basics of **Object-Oriented Programming (OOP)**.", project: "A simple command-line calculator that takes two numbers and an operator from the user." },
+                            { week: 2, topics: "ðŸ“– **Advanced OOP:** Deepen your knowledge of **OOP principles**: **Encapsulation**, **Inheritance**, **Polymorphism**, and **Abstraction**.", project: "An 'Animal Kingdom' simulation where different animal classes inherit from a base `Animal` class." },
+                            { week: 3, topics: "ðŸ—ƒï¸ **Collections Framework:** Explore the Java Collections Framework. Learn about `List`, `Set`, and `Map` interfaces and their common implementations.", project: "A simple contact manager that stores contact information in a `HashMap`." },
+                            { week: 4, topics: "ðŸ“‚ **Exception Handling & File I/O:** Learn how to handle runtime errors using `try-catch-finally` blocks. Practice basic file operations.", project: "A program that reads a list of names from a text file, sorts them, and writes to a new file." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Java Spring Core",
+                        description: "Now that you have a solid Java base, you'll move on to the Spring Core framework.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ› ï¸ **Introduction to Spring & IoC:** Understand the **Inversion of Control (IoC)** principle and the **Spring IoC Container**.", project: "A simple Spring application that uses XML configuration to manage dependencies." },
+                            { week: 6, topics: "ðŸ–Šï¸ **Annotation-based DI:** Shift from XML to using Java annotations for dependency injection.", project: "Refactor your previous project to use **Java-based configuration** and **annotations**." },
+                            { week: 7, topics: "ðŸ”Œ **Spring JDBC & AOP:** Learn how to connect to a database using **Spring JDBC**. Get an introduction to **Aspect-Oriented Programming (AOP)**.", project: "A 'To-Do List' application that uses Spring JDBC to interact with a database." },
+                            { week: 8, topics: "ðŸ›¡ï¸ **Transaction Management:** Understand the importance of **transaction management** in database operations.", project: "Enhance the To-Do List application to include proper transaction management." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: Spring Boot & Advanced Topics",
+                        description: "This final month is dedicated to Spring Boot and other crucial advanced topics.",
+                        weeks: [
+                            { week: 9, topics: "ðŸš€ **Intro to Spring Boot:** Understand **auto-configuration** and **starter dependencies**.", project: "A 'Hello World' web service with a single endpoint." },
+                            { week: 10, topics: "ðŸ–¥ï¸ **RESTful APIs with Spring Boot:** Build a more complex **RESTful API**.", project: "A simple **Blog API** that allows users to create, view, update, and delete blog posts." },
+                            { week: 11, topics: "ðŸ’¾ **Spring Data JPA:** Simplify your data access layer using **Spring Data JPA**.", project: "Integrate Spring Data JPA into your Blog API." },
+                            { week: 12, topics: "ðŸ”’ **Security & Deployment:** Learn the basics of securing your application with **Spring Security**.", project: "Secure your Blog API with basic authentication." }
+                        ]
+                    }
+                ]
+            },
+            python: {
+                title: "3-Month Python Mastery Path",
+                description: "From Python basics to data analysis and web development.",
+                category: "web",
+                difficulty: "Beginner",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: Python Fundamentals",
+                        description: "Learn the core concepts of Python programming language.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ **Python Basics:** Variables, data types, operators, and basic input/output operations.", project: "A simple number guessing game or a basic calculator." },
+                            { week: 2, topics: "ðŸ”„ **Control Flow:** Conditional statements, loops, and basic program logic.", project: "A text-based adventure game with multiple decision paths." },
+                            { week: 3, topics: "ðŸ“¦ **Functions & Modules:** Creating functions, using built-in modules, and organizing code.", project: "A temperature conversion tool with functions for different conversion types." },
+                            { week: 4, topics: "ðŸ“ **File Handling:** Reading from and writing to files, handling different file formats.", project: "A simple log file analyzer that extracts specific information from text files." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Intermediate Python",
+                        description: "Dive deeper into Python's capabilities and libraries.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ§® **Data Structures:** Lists, tuples, dictionaries, and sets. When to use each.", project: "A contact management system using appropriate data structures." },
+                            { week: 6, topics: "âš¡ **Object-Oriented Programming:** Classes, objects, inheritance, and polymorphism in Python.", project: "A library management system using OOP principles." },
+                            { week: 7, topics: "ðŸ› ï¸ **Error Handling:** Try-except blocks, custom exceptions, and debugging techniques.", project: "Enhance previous projects with proper error handling." },
+                            { week: 8, topics: "ðŸ“Š **Basic Data Analysis:** Introduction to NumPy and Pandas for data manipulation.", project: "Analyze a dataset of your choice and extract insights." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: Specialization",
+                        description: "Choose a path: Web Development or Data Science.",
+                        weeks: [
+                            { week: 9, topics: "ðŸŒ **Web Development Path:** Flask/Django basics, routing, and templates.", project: "A simple blog application with user authentication." },
+                            { week: 10, topics: "ðŸ—ƒï¸ **Database Integration:** SQL basics, ORM usage with SQLAlchemy or Django ORM.", project: "Add database functionality to your blog application." },
+                            { week: 11, topics: "ðŸ“ˆ **Data Science Path:** Data visualization with Matplotlib and Seaborn.", project: "Create insightful visualizations for your dataset." },
+                            { week: 12, topics: "ðŸ¤– **Introduction to Machine Learning:** Scikit-learn basics and simple predictive models.", project: "Build a simple prediction model for your dataset." }
+                        ]
+                    }
+                ]
+            },
+            php: {
+                title: "2-Month PHP & Laravel Path",
+                description: "Learn server-side scripting with PHP and the Laravel framework.",
+                category: "web",
+                difficulty: "Beginner",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: PHP Fundamentals",
+                        description: "Learn the core concepts of PHP programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ˜ **PHP Basics:** Syntax, variables, data types, and operators.", project: "A simple PHP page that displays dynamic content." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and custom functions.", project: "A BMI calculator that processes form input." },
+                            { week: 3, topics: "ðŸ“ **Working with Forms & Data:** Handling form submissions, GET vs POST, and form validation.", project: "A contact form that validates input and sends emails." },
+                            { week: 4, topics: "ðŸ—ƒï¸ **Working with Databases:** MySQL basics, connecting to databases, and performing CRUD operations.", project: "A simple user registration and login system." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Laravel Framework",
+                        description: "Build web applications with the Laravel PHP framework.",
+                        weeks: [
+                            { week: 5, topics: "ðŸš€ **Laravel Basics:** Installation, routing, controllers, and Blade templating.", project: "Build a simple blog with basic CRUD functionality." },
+                            { week: 6, topics: "ðŸ—ƒï¸ **Eloquent ORM:** Working with databases using Laravel's ORM, migrations, and seeders.", project: "Add database functionality to your blog with categories and tags." },
+                            { week: 7, topics: "ðŸ” **Authentication & Authorization:** Implementing user registration, login, and access control.", project: "Add user authentication and authorization to your blog." },
+                            { week: 8, topics: "ðŸ› ï¸ **APIs & Deployment:** Building RESTful APIs with Laravel and deploying your application.", project: "Create an API for your blog and deploy it to a cloud platform." }
+                        ]
+                    }
+                ]
+            },
+            ruby: {
+                title: "2-Month Ruby & Rails Path",
+                description: "Learn Ruby programming and the Rails web framework.",
+                category: "web",
+                difficulty: "Beginner",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Ruby Fundamentals",
+                        description: "Learn the core concepts of Ruby programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ’Ž **Ruby Basics:** Syntax, variables, data types, and operators.", project: "A simple command-line program that interacts with the user." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and custom methods.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Objects & Classes:** Object-oriented programming in Ruby, classes, and modules.", project: "A library management system using OOP principles." },
+                            { week: 4, topics: "ðŸ“ **File I/O & Gems:** Reading from and writing to files, using Ruby gems.", project: "A program that processes a text file and generates a report." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Ruby on Rails",
+                        description: "Build web applications with the Ruby on Rails framework.",
+                        weeks: [
+                            { week: 5, topics: "ðŸš‚ **Rails Basics:** MVC architecture, generators, and scaffolding.", project: "Build a simple blog with basic CRUD functionality." },
+                            { week: 6, topics: "ðŸ—ƒï¸ **Active Record:** Working with databases using Rails' ORM, migrations, and associations.", project: "Add database functionality to your blog with comments." },
+                            { week: 7, topics: "ðŸ” **Authentication & Authorization:** Implementing user registration, login, and access control.", project: "Add user authentication and authorization to your blog." },
+                            { week: 8, topics: "ðŸŽ¨ **Frontend Integration:** Working with JavaScript and CSS in Rails, deploying your application.", project: "Enhance your blog's UI and deploy it to a cloud platform." }
+                        ]
+                    }
+                ]
+            },
+            go: {
+                title: "2-Month Go Language Path",
+                description: "Learn Go programming for efficient backend development.",
+                category: "web",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Go Fundamentals",
+                        description: "Learn the core concepts of Go programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ¹ **Go Basics:** Syntax, variables, data types, and operators.", project: "A simple command-line program that interacts with the user." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Go.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Packages & Modules:** Creating and using packages, dependency management.", project: "A modular application that uses custom packages." },
+                            { week: 4, topics: "ðŸ”„ **Concurrency Basics:** Goroutines and channels for concurrent programming.", project: "A program that uses goroutines to process data concurrently." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Go Web Development",
+                        description: "Build web applications and services with Go.",
+                        weeks: [
+                            { week: 5, topics: "ðŸŒ **Web Basics:** HTTP handlers, routing, and serving static files.", project: "A simple web server that serves static content." },
+                            { week: 6, topics: "ðŸ—ƒï¸ **Working with Databases:** Connecting to databases, performing CRUD operations.", project: "A REST API that interacts with a database." },
+                            { week: 7, topics: "ðŸ” **Authentication & Middleware:** Implementing authentication and custom middleware.", project: "Add authentication to your REST API." },
+                            { week: 8, topics: "ðŸ§ª **Testing & Deployment:** Writing tests for Go code and deploying applications.", project: "Add tests to your application and deploy it to a cloud platform." }
+                        ]
+                    }
+                ]
+            },
+            
+            // Mobile Development Languages
+            swift: {
+                title: "3-Month iOS Development with Swift",
+                description: "Learn Swift programming and iOS app development.",
+                category: "mobile",
+                difficulty: "Intermediate",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: Swift Fundamentals",
+                        description: "Learn the core concepts of Swift programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ¦ **Swift Basics:** Syntax, variables, data types, and operators.", project: "A simple command-line program that interacts with the user." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Swift.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Objects & Classes:** Object-oriented programming in Swift, classes, and structs.", project: "A contact management system using OOP principles." },
+                            { week: 4, topics: "ðŸ› ï¸ **Error Handling & Optionals:** Dealing with errors and optional values in Swift.", project: "Enhance your previous projects with proper error handling." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: iOS Development Basics",
+                        description: "Learn the fundamentals of iOS app development.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ“± **iOS Basics:** Xcode interface, Interface Builder, and UI components.", project: "A simple iOS app with multiple screens and basic navigation." },
+                            { week: 6, topics: "ðŸŽ¨ **Auto Layout & Responsive UI:** Creating adaptive interfaces that work on different device sizes.", project: "Build a responsive iOS app that works on both iPhone and iPad." },
+                            { week: 7, topics: "ðŸ”„ **View Controllers & Navigation:** Different types of view controllers and navigation patterns.", project: "Create an app with tab navigation and modal presentation." },
+                            { week: 8, topics: "ðŸ“Š **Working with Data:** User defaults, files, and simple data persistence.", project: "Build a note-taking app that saves data locally." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: Advanced iOS Development",
+                        description: "Dive into advanced iOS development topics.",
+                        weeks: [
+                            { week: 9, topics: "ðŸ—ƒï¸ **Core Data & Databases:** Using Core Data for complex data models and relationships.", project: "Enhance your note-taking app with Core Data persistence." },
+                            { week: 10, topics: "ðŸ“¡ **Networking & APIs:** Making HTTP requests, parsing JSON, and working with REST APIs.", project: "Build a weather app that fetches data from a public API." },
+                            { week: 11, topics: "ðŸ” **Authentication & Security:** Implementing authentication, keychain access, and security best practices.", project: "Add user authentication to your app." },
+                            { week: 12, topics: "ðŸš€ **App Store & Deployment:** Preparing your app for submission to the App Store.", project: "Polish one of your apps and prepare it for distribution." }
+                        ]
+                    }
+                ]
+            },
+            kotlin: {
+                title: "3-Month Android Development with Kotlin",
+                description: "Learn Kotlin programming and Android app development.",
+                category: "mobile",
+                difficulty: "Intermediate",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: Kotlin Fundamentals",
+                        description: "Learn the core concepts of Kotlin programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ…°ï¸ **Kotlin Basics:** Syntax, variables, data types, and operators.", project: "A simple command-line program that interacts with the user." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Kotlin.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Objects & Classes:** Object-oriented programming in Kotlin, classes, and data classes.", project: "A contact management system using OOP principles." },
+                            { week: 4, topics: "ðŸ› ï¸ **Null Safety & Exception Handling:** Dealing with null values and exceptions in Kotlin.", project: "Enhance your previous projects with proper error handling." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Android Development Basics",
+                        description: "Learn the fundamentals of Android app development.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ¤– **Android Basics:** Android Studio, activities, layouts, and UI components.", project: "A simple Android app with multiple activities and basic navigation." },
+                            { week: 6, topics: "ðŸŽ¨ **Responsive UI Design:** Creating adaptive interfaces for different screen sizes and orientations.", project: "Build a responsive Android app that works on phones and tablets." },
+                            { week: 7, topics: "ðŸ”„ **Fragments & Navigation:** Using fragments and the Navigation component for complex apps.", project: "Create an app with multiple fragments and a navigation drawer." },
+                            { week: 8, topics: "ðŸ“Š **Working with Data:** Shared preferences, files, and Room database for data persistence.", project: "Build a note-taking app that saves data locally." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: Advanced Android Development",
+                        description: "Dive into advanced Android development topics.",
+                        weeks: [
+                            { week: 9, topics: "ðŸ“¡ **Networking & APIs:** Making HTTP requests, parsing JSON, and working with REST APIs.", project: "Build a weather app that fetches data from a public API." },
+                            { week: 10, topics: "ðŸ” **Authentication & Security:** Implementing authentication, encryption, and security best practices.", project: "Add user authentication to your app." },
+                            { week: 11, topics: "ðŸ“± **Background Tasks & Notifications:** Using WorkManager for background tasks and showing notifications.", project: "Add background synchronization to your app with notifications." },
+                            { week: 12, topics: "ðŸš€ **Play Store & Deployment:** Preparing your app for submission to the Play Store.", project: "Polish one of your apps and prepare it for distribution." }
+                        ]
+                    }
+                ]
+            },
+            dart: {
+                title: "2-Month Flutter Development with Dart",
+                description: "Learn Dart programming and cross-platform app development with Flutter.",
+                category: "mobile",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Dart & Flutter Fundamentals",
+                        description: "Learn the core concepts of Dart programming and Flutter framework.",
+                        weeks: [
+                            { week: 1, topics: "ðŸŽ¯ **Dart Basics:** Syntax, variables, data types, and operators.", project: "A simple command-line program that interacts with the user." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Dart.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Objects & Classes:** Object-oriented programming in Dart, classes, and inheritance.", project: "A contact management system using OOP principles." },
+                            { week: 4, topics: "ðŸ“± **Flutter Basics:** Widgets, state management, and building simple UIs.", project: "A simple Flutter app with multiple screens and basic navigation." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Flutter App Development",
+                        description: "Build cross-platform apps with Flutter.",
+                        weeks: [
+                            { week: 5, topics: "ðŸŽ¨ **Advanced UI Design:** Custom widgets, animations, and responsive design.", project: "Build a responsive Flutter app that works on both phones and tablets." },
+                            { week: 6, topics: "ðŸ“Š **State Management:** Using Provider, Bloc, or other state management solutions.", project: "Add complex state management to your app." },
+                            { week: 7, topics: "ðŸ“¡ **Networking & APIs:** Making HTTP requests, parsing JSON, and working with REST APIs.", project: "Build a weather app that fetches data from a public API." },
+                            { week: 8, topics: "ðŸš€ **App Deployment:** Preparing your app for deployment to iOS and Android platforms.", project: "Polish one of your apps and prepare it for distribution on both platforms." }
+                        ]
+                    }
+                ]
+            },
+            
+            // Data Science Languages
+            r: {
+                title: "2-Month R for Data Science",
+                description: "Learn R programming for statistical analysis and data visualization.",
+                category: "data",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: R Fundamentals",
+                        description: "Learn the core concepts of R programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ“Š **R Basics:** Syntax, variables, data types, and operators.", project: "A simple script that performs basic calculations and displays results." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in R.", project: "A script that processes data and generates summary statistics." },
+                            { week: 3, topics: "ðŸ“¦ **Data Structures:** Vectors, matrices, lists, and data frames in R.", project: "A script that manipulates different data structures." },
+                            { week: 4, topics: "ðŸ“ **Data Import & Export:** Reading from and writing to various file formats.", project: "A script that imports data from a CSV file, processes it, and exports results." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Data Analysis with R",
+                        description: "Learn data analysis and visualization with R.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ“ˆ **Data Manipulation:** Using dplyr for data transformation and manipulation.", project: "A script that performs complex data manipulation tasks." },
+                            { week: 6, topics: "ðŸ“Š **Data Visualization:** Using ggplot2 for creating informative visualizations.", project: "Create a series of visualizations for a dataset." },
+                            { week: 7, topics: "ðŸ“‰ **Statistical Analysis:** Performing statistical tests and modeling with R.", project: "Conduct a statistical analysis on a dataset and interpret the results." },
+                            { week: 8, topics: "ðŸ“ **Report Generation:** Using R Markdown to create reproducible reports.", project: "Create a comprehensive report with code, visualizations, and analysis." }
+                        ]
+                    }
+                ]
+            },
+            julia: {
+                title: "2-Month Julia for Scientific Computing",
+                description: "Learn Julia programming for high-performance scientific computing.",
+                category: "data",
+                difficulty: "Advanced",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Julia Fundamentals",
+                        description: "Learn the core concepts of Julia programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ”¬ **Julia Basics:** Syntax, variables, data types, and operators.", project: "A simple script that performs scientific calculations." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Julia.", project: "A script that implements mathematical algorithms." },
+                            { week: 3, topics: "ðŸ“¦ **Data Structures:** Arrays, tuples, dictionaries, and sets in Julia.", project: "A script that manipulates different data structures for scientific computing." },
+                            { week: 4, topics: "ðŸ“Š **Basic Plotting & Visualization:** Using Plots.jl for creating visualizations.", project: "Create visualizations for scientific data." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced Scientific Computing",
+                        description: "Learn advanced scientific computing with Julia.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ§® **Numerical Computing:** Using Julia for linear algebra, optimization, and numerical methods.", project: "Implement numerical algorithms for solving equations." },
+                            { week: 6, topics: "ðŸ“ˆ **DataFrames & Data Manipulation:** Using DataFrames.jl for data analysis.", project: "Perform data analysis on a scientific dataset." },
+                            { week: 7, topics: "âš¡ **Performance Optimization:** Writing high-performance Julia code.", project: "Optimize a numerical algorithm for better performance." },
+                            { week: 8, topics: "ðŸ¤– **Machine Learning with Julia:** Using Flux.jl for machine learning tasks.", project: "Build a simple machine learning model in Julia." }
+                        ]
+                    }
+                ]
+            },
+            scala: {
+                title: "2-Month Scala for Big Data",
+                description: "Learn Scala programming for big data processing and functional programming.",
+                category: "data",
+                difficulty: "Advanced",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Scala Fundamentals",
+                        description: "Learn the core concepts of Scala programming.",
+                        weeks: [
+                            { week: 1, topics: "âš¡ **Scala Basics:** Syntax, variables, data types, and operators.", project: "A simple script that demonstrates basic Scala features." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Scala.", project: "A script that processes data using functional programming concepts." },
+                            { week: 3, topics: "ðŸ“¦ **Object-Oriented Programming:** Classes, objects, and traits in Scala.", project: "Implement a domain model using Scala's OOP features." },
+                            { week: 4, topics: "ðŸ”„ **Functional Programming:** Immutability, higher-order functions, and pattern matching.", project: "Rewrite previous projects using functional programming principles." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Big Data with Scala",
+                        description: "Learn big data processing with Scala and Spark.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ“Š **Introduction to Spark:** RDDs, transformations, and actions.", project: "Process a large dataset using Spark RDDs." },
+                            { week: 6, topics: "ðŸ—ƒï¸ **Spark SQL & DataFrames:** Working with structured data in Spark.", project: "Perform SQL-like operations on a dataset using Spark." },
+                            { week: 7, topics: "ðŸ“ˆ **Spark MLlib:** Machine learning with Spark.", project: "Build a machine learning pipeline using Spark MLlib." },
+                            { week: 8, topics: "ðŸš€ **Deployment & Optimization:** Deploying Spark applications and performance tuning.", project: "Optimize a Spark application for better performance." }
+                        ]
+                    }
+                ]
+            },
+            
+            // Systems Programming Languages
+            rust: {
+                title: "3-Month Rust for Systems Programming",
+                description: "Learn Rust programming for safe and efficient systems development.",
+                category: "systems",
+                difficulty: "Advanced",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: Rust Fundamentals",
+                        description: "Learn the core concepts of Rust programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ¦€ **Rust Basics:** Syntax, variables, data types, and ownership system.", project: "A simple command-line program that demonstrates ownership concepts." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Rust.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Data Structures:** Structs, enums, and pattern matching in Rust.", project: "Implement a data structure like a linked list or binary tree." },
+                            { week: 4, topics: "ðŸ›¡ï¸ **Error Handling:** Result and Option types, and error propagation.", project: "Enhance previous projects with proper error handling." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced Rust Concepts",
+                        description: "Dive deeper into Rust's advanced features.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ§¬ **Traits & Generics:** Using traits for polymorphism and generics for code reuse.", project: "Create a generic library for common data structures." },
+                            { week: 6, topics: "ðŸ“š **Lifetimes & References:** Understanding lifetime annotations and reference safety.", project: "Implement a complex data structure that uses references." },
+                            { week: 7, topics: "ðŸ”„ **Concurrency:** Threads, channels, and async programming in Rust.", project: "Build a concurrent application that processes data in parallel." },
+                            { week: 8, topics: "ðŸ”§ **Unsafe Rust:** When and how to use unsafe code responsibly.", project: "Implement a low-level functionality that requires unsafe code." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: Rust in Practice",
+                        description: "Apply Rust to real-world systems programming tasks.",
+                        weeks: [
+                            { week: 9, topics: "ðŸŒ **Network Programming:** Building TCP/UDP servers and clients.", project: "Build a simple network server that handles multiple connections." },
+                            { week: 10, topics: "ðŸ”Œ **Web Assembly with Rust:** Compiling Rust to WebAssembly for web applications.", project: "Create a WebAssembly module that performs complex calculations." },
+                            { week: 11, topics: "ðŸ–¥ï¸ **Command-line Tools:** Building efficient CLI applications in Rust.", project: "Build a command-line tool that processes files or data." },
+                            { week: 12, topics: "ðŸš€ **Performance Optimization:** Profiling and optimizing Rust code for maximum performance.", project: "Optimize a Rust application for better performance." }
+                        ]
+                    }
+                ]
+            },
+            cpp: {
+                title: "3-Month C++ for Systems Development",
+                description: "Learn C++ programming for high-performance systems and applications.",
+                category: "systems",
+                difficulty: "Advanced",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: C++ Fundamentals",
+                        description: "Learn the core concepts of C++ programming.",
+                        weeks: [
+                            { week: 1, topics: "âš¡ **C++ Basics:** Syntax, variables, data types, and operators.", project: "A simple command-line program that demonstrates basic C++ features." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in C++.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Object-Oriented Programming:** Classes, objects, inheritance, and polymorphism.", project: "Implement a domain model using C++ OOP features." },
+                            { week: 4, topics: "ðŸ§  **Memory Management:** Pointers, references, and dynamic memory allocation.", project: "Implement a data structure that uses dynamic memory allocation." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced C++ Concepts",
+                        description: "Dive deeper into C++'s advanced features.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ“š **Templates & STL:** Generic programming with templates and using the Standard Template Library.", project: "Create a generic library for common algorithms." },
+                            { week: 6, topics: "ðŸ”„ **Exception Handling:** Try-catch blocks and exception safety.", project: "Enhance previous projects with proper exception handling." },
+                            { week: 7, topics: "âš¡ **Move Semantics & Smart Pointers:** Rvalue references, move constructors, and smart pointers.", project: "Implement a class that uses move semantics and smart pointers." },
+                            { week: 8, topics: "ðŸ§µ **Concurrency:** Threads, mutexes, and asynchronous programming in C++.", project: "Build a concurrent application that processes data in parallel." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: C++ in Practice",
+                        description: "Apply C++ to real-world systems programming tasks.",
+                        weeks: [
+                            { week: 9, topics: "ðŸŽ® **Game Development with C++:** Introduction to game programming concepts.", project: "Build a simple text-based game or game engine component." },
+                            { week: 10, topics: "ðŸ“ˆ **Performance Optimization:** Profiling and optimizing C++ code for maximum performance.", project: "Optimize a C++ application for better performance." },
+                            { week: 11, topics: "ðŸ”Œ **Libraries & APIs:** Creating and using libraries in C++.", project: "Create a library and use it in an application." },
+                            { week: 12, topics: "ðŸ–¥ï¸ **GUI Development:** Introduction to GUI programming with Qt or other frameworks.", project: "Build a simple GUI application." }
+                        ]
+                    }
+                ]
+            },
+            c: {
+                title: "2-Month C Programming Path",
+                description: "Learn C programming for low-level systems development.",
+                category: "systems",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: C Fundamentals",
+                        description: "Learn the core concepts of C programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ”§ **C Basics:** Syntax, variables, data types, and operators.", project: "A simple command-line program that demonstrates basic C features." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in C.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ§  **Pointers & Memory Management:** Understanding pointers, arrays, and dynamic memory allocation.", project: "Implement a data structure that uses pointers and dynamic memory." },
+                            { week: 4, topics: "ðŸ“ **File I/O:** Reading from and writing to files in C.", project: "A program that processes a text file and generates a report." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced C Programming",
+                        description: "Dive deeper into C's advanced features and applications.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ“¦ **Data Structures:** Implementing linked lists, stacks, queues, and trees in C.", project: "Implement a collection of data structures in C." },
+                            { week: 6, topics: "ðŸ”Œ **Libraries & Headers:** Creating and using libraries in C.", project: "Create a library and use it in an application." },
+                            { week: 7, topics: "ðŸ–¥ï¸ **System Programming:** Introduction to system calls and low-level programming.", project: "Build a program that interacts with the operating system." },
+                            { week: 8, topics: "ðŸ§ª **Testing & Debugging:** Debugging techniques and testing C code.", project: "Add comprehensive tests to your C projects." }
+                        ]
+                    }
+                ]
+            },
+            
+            // Scripting Languages
+            perl: {
+                title: "2-Month Perl for Scripting",
+                description: "Learn Perl programming for text processing and system administration.",
+                category: "scripting",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Perl Fundamentals",
+                        description: "Learn the core concepts of Perl programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸª **Perl Basics:** Syntax, variables, data types, and operators.", project: "A simple script that processes text input." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Perl.", project: "A script that processes a log file and extracts information." },
+                            { week: 3, topics: "ðŸ“ **File I/O & Regular Expressions:** Reading from and writing to files, pattern matching with regex.", project: "A script that searches and replaces text in files." },
+                            { week: 4, topics: "ðŸ“¦ **Modules & Packages:** Using and creating Perl modules.", project: "Create a Perl module for common utilities." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Perl for System Administration",
+                        description: "Learn to use Perl for system administration tasks.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ–¥ï¸ **System Interaction:** Running system commands and interacting with the OS.", project: "A script that automates system administration tasks." },
+                            { week: 6, topics: "ðŸ“Š **Report Generation:** Creating reports and processing log files.", project: "A script that processes system logs and generates a report." },
+                            { week: 7, topics: "ðŸŒ **Network Programming:** Socket programming and network utilities in Perl.", project: "Build a simple network client or server in Perl." },
+                            { week: 8, topics: "ðŸ› ï¸ **CGI Programming:** Creating web applications with Perl CGI.", project: "Build a simple web application using Perl CGI." }
+                        ]
+                    }
+                ]
+            },
+            lua: {
+                title: "2-Month Lua for Scripting",
+                description: "Learn Lua programming for game scripting and embedded systems.",
+                category: "scripting",
+                difficulty: "Beginner",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Lua Fundamentals",
+                        description: "Learn the core concepts of Lua programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸŒ™ **Lua Basics:** Syntax, variables, data types, and operators.", project: "A simple script that demonstrates basic Lua features." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Lua.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Tables & Data Structures:** Using tables for arrays, dictionaries, and objects.", project: "Implement a data structure using Lua tables." },
+                            { week: 4, topics: "ðŸ“ **File I/O & Modules:** Reading from and writing to files, using and creating modules.", project: "Create a Lua module for common utilities." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Lua in Practice",
+                        description: "Apply Lua to real-world scripting tasks.",
+                        weeks: [
+                            { week: 5, topics: "ðŸŽ® **Game Scripting:** Using Lua for game logic and modding.", project: "Create a simple game or game mod using Lua." },
+                            { week: 6, topics: "ðŸ”Œ **Embedded Scripting:** Using Lua as an embedded scripting language.", project: "Embed Lua in a C or C++ application." },
+                            { week: 7, topics: "ðŸŒ **Web Development:** Using Lua for web applications with frameworks like Lapis.", project: "Build a simple web application using Lua." },
+                            { week: 8, topics: "ðŸ› ï¸ **Debugging & Optimization:** Debugging techniques and optimizing Lua code.", project: "Optimize a Lua application for better performance." }
+                        ]
+                    }
+                ]
+            },
+            
+            // Functional Programming Languages
+            haskell: {
+                title: "3-Month Haskell for Functional Programming",
+                description: "Learn Haskell programming for pure functional programming.",
+                category: "functional",
+                difficulty: "Advanced",
+                duration: "3 months",
+                months: [
+                    {
+                        month: "Month 1: Haskell Fundamentals",
+                        description: "Learn the core concepts of Haskell programming.",
+                        weeks: [
+                            { week: 1, topics: "Î» **Haskell Basics:** Syntax, variables, data types, and functions.", project: "A simple script that demonstrates basic Haskell features." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Recursion:** Conditionals, pattern matching, and recursion.", project: "Implement mathematical functions using recursion." },
+                            { week: 3, topics: "ðŸ“¦ **Data Structures:** Lists, tuples, and custom data types in Haskell.", project: "Implement common data structures in Haskell." },
+                            { week: 4, topics: "ðŸ“ **File I/O:** Reading from and writing to files in Haskell.", project: "A program that processes a text file and generates a report." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced Haskell Concepts",
+                        description: "Dive deeper into Haskell's advanced features.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ§® **Type System:** Type classes, kind system, and advanced type features.", project: "Create a library with sophisticated type definitions." },
+                            { week: 6, topics: "ðŸ“š **Monads & Functors:** Understanding monads, functors, and applicatives.", project: "Implement monadic computations for a specific domain." },
+                            { week: 7, topics: "âš¡ **Laziness & Optimization:** Leveraging Haskell's lazy evaluation and optimizing code.", project: "Optimize a Haskell application for better performance." },
+                            { week: 8, topics: "ðŸ§ª **Testing & Property-based Testing:** Writing tests and using QuickCheck.", project: "Add comprehensive tests to your Haskell projects." }
+                        ]
+                    },
+                    {
+                        month: "Month 3: Haskell in Practice",
+                        description: "Apply Haskell to real-world programming tasks.",
+                        weeks: [
+                            { week: 9, topics: "ðŸŒ **Web Development:** Using Haskell for web applications with frameworks like Yesod.", project: "Build a simple web application using Haskell." },
+                            { week: 10, topics: "ðŸ“Š **Data Processing:** Using Haskell for data analysis and processing.", project: "Process a dataset using Haskell libraries." },
+                            { week: 11, topics: "ðŸ”Œ **Concurrency:** Concurrent and parallel programming in Haskell.", project: "Build a concurrent application in Haskell." },
+                            { week: 12, topics: "ðŸš€ **Deployment & Distribution:** Packaging and deploying Haskell applications.", project: "Package a Haskell application for distribution." }
+                        ]
+                    }
+                ]
+            },
+            elixir: {
+                title: "2-Month Elixir for Functional Programming",
+                description: "Learn Elixir programming for scalable and maintainable applications.",
+                category: "functional",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Elixir Fundamentals",
+                        description: "Learn the core concepts of Elixir programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ§ª **Elixir Basics:** Syntax, variables, data types, and operators.", project: "A simple script that demonstrates basic Elixir features." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Elixir.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Pattern Matching & Data Structures:** Using pattern matching with tuples, lists, and maps.", project: "Process data using pattern matching techniques." },
+                            { week: 4, topics: "ðŸ“ **File I/O & Modules:** Reading from and writing to files, using and creating modules.", project: "Create an Elixir module for common utilities." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Elixir in Practice",
+                        description: "Apply Elixir to real-world programming tasks.",
+                        weeks: [
+                            { week: 5, topics: "âš¡ **Concurrency with Processes:** Using processes for concurrency in Elixir.", project: "Build a concurrent application using Elixir processes." },
+                            { week: 6, topics: "ðŸŒ **Web Development with Phoenix:** Building web applications with the Phoenix framework.", project: "Build a simple web application using Phoenix." },
+                            { week: 7, topics: "ðŸ—ƒï¸ **Database Integration:** Using Ecto for database interactions.", project: "Add database functionality to your Phoenix application." },
+                            { week: 8, topics: "ðŸš€ **Deployment & Distribution:** Packaging and deploying Elixir applications.", project: "Deploy an Elixir application to a cloud platform." }
+                        ]
+                    }
+                ]
+            },
+            clojure: {
+                title: "2-Month Clojure for Functional Programming",
+                description: "Learn Clojure programming for the JVM with a functional approach.",
+                category: "functional",
+                difficulty: "Advanced",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: Clojure Fundamentals",
+                        description: "Learn the core concepts of Clojure programming.",
+                        weeks: [
+                            { week: 1, topics: "âš¡ **Clojure Basics:** Syntax, variables, data types, and operators.", project: "A simple script that demonstrates basic Clojure features." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in Clojure.", project: "A number guessing game or a simple calculator." },
+                            { week: 3, topics: "ðŸ“¦ **Data Structures:** Lists, vectors, maps, and sets in Clojure.", project: "Process data using Clojure's persistent data structures." },
+                            { week: 4, topics: "ðŸ“ **File I/O & Namespaces:** Reading from and writing to files, using namespaces.", project: "Create a Clojure library organized into namespaces." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Clojure in Practice",
+                        description: "Apply Clojure to real-world programming tasks.",
+                        weeks: [
+                            { week: 5, topics: "âš¡ **Concurrency with Atoms & Refs:** Using Clojure's concurrency primitives.", project: "Build a concurrent application using Clojure's concurrency features." },
+                            { week: 6, topics: "ðŸŒ **Web Development with Ring/Compojure:** Building web applications with Clojure.", project: "Build a simple web application using Ring and Compojure." },
+                            { week: 7, topics: "ðŸ—ƒï¸ **Database Integration:** Using Clojure libraries for database interactions.", project: "Add database functionality to your web application." },
+                            { week: 8, topics: "ðŸš€ **Java Interop & Deployment:** Using Java libraries from Clojure and deploying applications.", project: "Use a Java library in your Clojure application and deploy it." }
+                        ]
+                    }
+                ]
+            },
+            
+            // Additional Languages
+            sql: {
+                title: "1-Month SQL for Database Management",
+                description: "Learn SQL for database querying and management.",
+                category: "data",
+                difficulty: "Beginner",
+                duration: "1 month",
+                months: [
+                    {
+                        month: "Month 1: SQL Fundamentals",
+                        description: "Learn the core concepts of SQL and database management.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ—ƒï¸ **Database Basics:** Understanding databases, tables, and relationships.", project: "Design a simple database schema for a specific domain." },
+                            { week: 2, topics: "ðŸ“ **SQL Queries:** SELECT statements, filtering, sorting, and limiting results.", project: "Write queries to retrieve specific data from a database." },
+                            { week: 3, topics: "ðŸ”„ **Data Modification:** INSERT, UPDATE, DELETE operations.", project: "Create scripts to modify data in a database." },
+                            { week: 4, topics: "ðŸ“Š **Advanced Queries:** JOINs, subqueries, aggregate functions, and grouping.", project: "Write complex queries to analyze data across multiple tables." }
+                        ]
+                    }
+                ]
+            },
+            matlab: {
+                title: "2-Month MATLAB for Numerical Computing",
+                description: "Learn MATLAB for numerical analysis and scientific computing.",
+                category: "data",
+                difficulty: "Intermediate",
+                duration: "2 months",
+                months: [
+                    {
+                        month: "Month 1: MATLAB Fundamentals",
+                        description: "Learn the core concepts of MATLAB programming.",
+                        weeks: [
+                            { week: 1, topics: "ðŸ“Š **MATLAB Basics:** Syntax, variables, data types, and operators.", project: "A simple script that performs basic calculations and displays results." },
+                            { week: 2, topics: "ðŸ”„ **Control Structures & Functions:** Conditionals, loops, and functions in MATLAB.", project: "A script that processes data and generates summary statistics." },
+                            { week: 3, topics: "ðŸ“¦ **Data Structures:** Arrays, matrices, cell arrays, and structures in MATLAB.", project: "A script that manipulates different data structures." },
+                            { week: 4, topics: "ðŸ“ˆ **Basic Plotting & Visualization:** Creating 2D and 3D plots in MATLAB.", project: "Create visualizations for scientific data." }
+                        ]
+                    },
+                    {
+                        month: "Month 2: Advanced MATLAB",
+                        description: "Learn advanced MATLAB features for scientific computing.",
+                        weeks: [
+                            { week: 5, topics: "ðŸ§® **Numerical Methods:** Solving equations, optimization, and numerical integration.", project: "Implement numerical algorithms for solving scientific problems." },
+                            { week: 6, topics: "ðŸ“Š **Data Analysis:** Statistical analysis, curve fitting, and signal processing.", project: "Analyze a dataset using MATLAB's data analysis tools." },
+                            { week: 7, topics: "ðŸ¤– **Machine Learning:** Using MATLAB for machine learning tasks.", project: "Build a simple machine learning model in MATLAB." },
+                            { week: 8, topics: "ðŸ”„ **GUI Development:** Creating graphical user interfaces with MATLAB.", project: "Build a GUI application for data analysis." }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const setupWizard = document.getElementById('setup-wizard');
+            const customPlanBtn = document.getElementById('custom-plan-btn');
+            const recommendedPlanBtn = document.getElementById('recommended-plan-btn');
+            const customPlanForm = document.getElementById('custom-plan-form');
+            const recommendedPlansContainer = document.getElementById('recommended-plans');
+            const recommendedPlansGrid = document.querySelector('.recommended-plans-container');
+            const monthsCountInput = document.getElementById('months-count');
+            const monthsContainer = document.getElementById('months-container');
+            const generateCustomPlanBtn = document.getElementById('generate-custom-plan');
+            const progressSection = document.getElementById('progress-section');
+            const learningPlanContainer = document.getElementById('learning-plan-container');
+            const actionButtons = document.getElementById('action-buttons');
+            const editPlanBtn = document.getElementById('edit-plan-btn');
+            const exportPlanBtn = document.getElementById('export-plan-btn');
+            const resetPlanBtn = document.getElementById('reset-plan-btn');
+            const planTitleInput = document.getElementById('plan-title');
+            const categoryButtons = document.querySelectorAll('.category-btn');
+            const celebrationContainer = document.getElementById('celebration-container');
+            const completionMessage = document.getElementById('completion-message');
+            const closeCelebrationBtn = document.getElementById('close-celebration');
+            
+            let currentPlan = null;
+            let completionMessages = [
+                "Great job completing your learning plan!",
+                "Amazing work! You've mastered a new skill!",
+                "Congratulations on finishing your learning journey!",
+                "Well done! Your dedication has paid off!",
+                "Fantastic! You've completed your learning path!",
+                "Excellent work! You've reached your goal!"
+            ];
+            
+            // Render all recommended plans initially
+            renderRecommendedPlans('all');
+            
+            // Event listeners for initial choices
+            customPlanBtn.addEventListener('click', () => {
+                customPlanForm.classList.remove('hidden');
+                recommendedPlansContainer.classList.add('hidden');
+                setupWizard.querySelector('h2').textContent = "Create Your Custom Plan";
+            });
+            
+            recommendedPlanBtn.addEventListener('click', () => {
+                customPlanForm.classList.add('hidden');
+                recommendedPlansContainer.classList.remove('hidden');
+                setupWizard.querySelector('h2').textContent = "Choose a Recommended Plan";
+            });
+            
+            // Category filtering
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderRecommendedPlans(btn.dataset.category);
+                });
+            });
+            
+            // Generate month inputs based on count
+            monthsCountInput.addEventListener('change', generateMonthInputs);
+            
+            // Generate custom plan
+            generateCustomPlanBtn.addEventListener('click', generateCustomPlan);
+            
+            // Action buttons
+            editPlanBtn.addEventListener('click', () => {
+                progressSection.classList.add('hidden');
+                learningPlanContainer.classList.add('hidden');
+                actionButtons.classList.add('hidden');
+                setupWizard.classList.remove('hidden');
+            });
+            
+            exportPlanBtn.addEventListener('click', exportPlan);
+            resetPlanBtn.addEventListener('click', resetPlan);
+            
+            // Close celebration modal
+            closeCelebrationBtn.addEventListener('click', () => {
+                celebrationContainer.classList.add('hidden');
+            });
+            
+            function renderRecommendedPlans(category) {
+                recommendedPlansGrid.innerHTML = '';
+                
+                for (const [key, plan] of Object.entries(recommendedPlans)) {
+                    if (category !== 'all' && plan.category !== category) continue;
+                    
+                    const planCard = document.createElement('div');
+                    planCard.classList.add('path-card', 'bg-slate-800', 'p-4', 'rounded-lg', 'cursor-pointer', 'hover:bg-slate-700', 'transition-colors');
+                    planCard.dataset.plan = key;
+                    planCard.innerHTML = `
+                        <h3 class="font-semibold text-amber-300">${plan.title}</h3>
+                        <p class="text-sm text-slate-300 mt-1">${plan.description}</p>
+                        <div class="flex justify-between items-center mt-3">
+                            <span class="text-xs px-2 py-1 bg-slate-700 rounded-full">${plan.difficulty}</span>
+                            <span class="text-xs text-slate-400">${plan.duration}</span>
+                        </div>
+                    `;
+                    
+                    planCard.addEventListener('click', () => {
+                        loadRecommendedPlan(key);
+                    });
+                    
+                    recommendedPlansGrid.appendChild(planCard);
+                }
+            }
+            
+            function generateMonthInputs() {
+                const monthsCount = parseInt(monthsCountInput.value);
+                monthsContainer.innerHTML = '';
+                
+                for (let i = 1; i <= monthsCount; i++) {
+                    const monthDiv = document.createElement('div');
+                    monthDiv.classList.add('month-input', 'p-4', 'bg-slate-800', 'rounded-md');
+                    monthDiv.innerHTML = `
+                        <label class="block text-sm font-medium text-white mb-1">Month ${i} Title</label>
+                        <input type="text" id="month-${i}-title" placeholder="e.g., JavaScript Fundamentals" class="w-full p-2 rounded-md bg-slate-700 text-white border border-slate-600 mb-2">
+                        
+                        <label class="block text-sm font-medium text-white mb-1">Description</label>
+                        <textarea id="month-${i}-desc" placeholder="What will you learn this month?" class="w-full p-2 rounded-md bg-slate-700 text-white border border-slate-600 mb-2 h-16"></textarea>
+                        
+                        <label class="block text-sm font-medium text-white mb-1">Number of Weeks</label>
+                        <input type="number" id="month-${i}-weeks" min="1" max="6" value="4" class="w-full p-2 rounded-md bg-slate-700 text-white border border-slate-600">
+                    `;
+                    monthsContainer.appendChild(monthDiv);
+                }
+            }
+            
+            function generateCustomPlan() {
+                const title = planTitleInput.value || "My Learning Plan";
+                const monthsCount = parseInt(monthsCountInput.value);
+                
+                const plan = {
+                    title: title,
+                    description: "Your custom learning journey",
+                    months: []
+                };
+                
+                for (let i = 1; i <= monthsCount; i++) {
+                    const monthTitle = document.getElementById(`month-${i}-title`).value || `Month ${i}`;
+                    const monthDesc = document.getElementById(`month-${i}-desc`).value || `Learning objectives for month ${i}`;
+                    const weeksCount = parseInt(document.getElementById(`month-${i}-weeks`).value);
+                    
+                    const month = {
+                        month: monthTitle,
+                        description: monthDesc,
+                        weeks: []
+                    };
+                    
+                    for (let w = 1; w <= weeksCount; w++) {
+                        month.weeks.push({
+                            week: w,
+                            topics: `Week ${w} learning topics - customize this content`,
+                            project: `Week ${w} project idea - customize this content`
+                        });
+                    }
+                    
+                    plan.months.push(month);
+                }
+                
+                currentPlan = plan;
+                renderPlan();
+                setupWizard.classList.add('hidden');
+                progressSection.classList.remove('hidden');
+                learningPlanContainer.classList.remove('hidden');
+                actionButtons.classList.remove('hidden');
+            }
+            
+            function loadRecommendedPlan(planType) {
+                currentPlan = recommendedPlans[planType];
+                renderPlan();
+                setupWizard.classList.add('hidden');
+                progressSection.classList.remove('hidden');
+                learningPlanContainer.classList.remove('hidden');
+                actionButtons.classList.remove('hidden');
+            }
+            
+            function renderPlan() {
+                if (!currentPlan) return;
+                
+                document.querySelector('header h1').textContent = currentPlan.title;
+                document.querySelector('header p').textContent = currentPlan.description;
+                
+                learningPlanContainer.innerHTML = '';
+                
+                currentPlan.months.forEach((monthData, monthIndex) => {
+                    const monthSection = document.createElement('section');
+                    monthSection.id = `month-${monthIndex}`;
+                    monthSection.classList.add('fade-in');
+                    monthSection.innerHTML = `
+                        <div class="mb-6">
+                            <h2 class="text-2xl font-bold text-amber-300">${monthData.month}</h2>
+                            <p class="text-slate-300 mt-1">${monthData.description}</p>
+                        </div>
+                        <div class="mb-4">
+                            <div class="w-full bg-slate-700 rounded-full h-2.5">
+                                <div class="monthly-progress-bar bg-amber-300 h-2.5 rounded-full progress-bar-fill" style="width: 0%;"></div>
+                            </div>
+                            <p class="monthly-progress-text text-right text-xs mt-1 font-medium text-amber-300">0 / ${monthData.weeks.length} weeks completed</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            ${monthData.weeks.map((weekData, weekIndex) => `
+                                <div id="task-${monthIndex}-${weekIndex}" class="task-card bg-card-blur p-6 rounded-lg border-2 border-transparent shadow-md transition-all duration-300">
+                                    <div class="task-content">
+                                        <h3 class="font-bold text-lg text-amber-300">Week ${weekData.week}</h3>
+                                        <p class="mt-2 text-sm text-slate-300">${weekData.topics.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>')}</p>
+                                        <div class="mt-4 p-3 bg-slate-900 rounded-md">
+                                            <p class="text-xs font-semibold text-white">PROJECT IDEA</p>
+                                            <p class="mt-1 text-sm text-slate-300">${weekData.project}</p>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" id="check-${monthIndex}-${weekIndex}" data-month-index="${monthIndex}" data-week-index="${weekIndex}" class="task-checkbox h-5 w-5 rounded border-slate-300 text-amber-300 focus:ring-amber-300 cursor-pointer">
+                                            <label for="check-${monthIndex}-${weekIndex}" class="ml-2 text-sm font-medium text-white cursor-pointer">Mark as Complete</label>
+                                        </div>
+                                        <input type="text" id="date-${monthIndex}-${weekIndex}" placeholder="--/--/----" class="completion-date text-sm border-slate-300 rounded-md shadow-sm w-28 text-center bg-transparent text-white focus:border-amber-300 focus:ring-amber-300" readonly>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                    learningPlanContainer.appendChild(monthSection);
+                });
+                
+                // Set up event listeners for checkboxes
+                document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        const monthIndex = e.target.dataset.monthIndex;
+                        const weekIndex = e.target.dataset.weekIndex;
+                        const taskCard = document.getElementById(`task-${monthIndex}-${weekIndex}`);
+                        const dateInput = document.getElementById(`date-${monthIndex}-${weekIndex}`);
+
+                        if (e.target.checked) {
+                            taskCard.classList.add('completed');
+                            const today = new Date();
+                            dateInput.value = today.toLocaleDateString();
+                        } else {
+                            taskCard.classList.remove('completed');
+                            dateInput.value = '';
+                        }
+                        
+                        saveProgress();
+                        updateMonthlyProgress(monthIndex);
+                        updateOverallProgress();
+                        
+                        // Check if all tasks are completed
+                        checkForCompletion();
+                    });
+                });
+                
+                // Load saved progress
+                loadProgress();
+                updateOverallProgress();
+                currentPlan.months.forEach((_, monthIndex) => updateMonthlyProgress(monthIndex));
+                
+                // Check if all tasks are completed on load
+                checkForCompletion();
+            }
+            
+            function updateOverallProgress() {
+                if (!currentPlan) return;
+                
+                const totalWeeks = currentPlan.months.reduce((acc, month) => acc + month.weeks.length, 0);
+                const completedWeeks = document.querySelectorAll('.task-checkbox:checked').length;
+                const percentage = totalWeeks > 0 ? Math.round((completedWeeks / totalWeeks) * 100) : 0;
+                const progressBar = document.getElementById('overall-progress-bar');
+                const progressText = document.getElementById('overall-progress-text');
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${percentage}% Complete`;
+            }
+
+            function updateMonthlyProgress(monthIndex) {
+                const monthSection = document.getElementById(`month-${monthIndex}`);
+                if (!monthSection) return;
+                
+                const checkboxes = monthSection.querySelectorAll('.task-checkbox');
+                const completed = monthSection.querySelectorAll('.task-checkbox:checked').length;
+                const total = checkboxes.length;
+                const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+                const progressBar = monthSection.querySelector('.monthly-progress-bar');
+                const progressText = monthSection.querySelector('.monthly-progress-text');
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${completed} / ${total} weeks completed`;
+            }
+            
+            function checkForCompletion() {
+                if (!currentPlan) return;
+                
+                const totalWeeks = currentPlan.months.reduce((acc, month) => acc + month.weeks.length, 0);
+                const completedWeeks = document.querySelectorAll('.task-checkbox:checked').length;
+                
+                if (totalWeeks > 0 && completedWeeks === totalWeeks) {
+                    // Show celebration
+                    showCelebration();
+                }
+            }
+            
+            function showCelebration() {
+                // Randomly select a completion message
+                const randomMessage = completionMessages[Math.floor(Math.random() * completionMessages.length)];
+                completionMessage.textContent = randomMessage;
+                
+                // Show the celebration container
+                celebrationContainer.classList.remove('hidden');
+                
+                // Create confetti effect
+                createConfetti();
+            }
+            
+            function createConfetti() {
+                const confettiCount = 150;
+                const container = document.getElementById('celebration-container');
+                
+                // Clear any existing confetti
+                const existingConfetti = document.querySelectorAll('.confetti');
+                existingConfetti.forEach(el => el.remove());
+                
+                // Create new confetti
+                for (let i = 0; i < confettiCount; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.classList.add('confetti');
+                    
+                    // Random colors
+                    const colors = ['#f59e0b', '#ef4444', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.backgroundColor = color;
+                    
+                    // Random position
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    
+                    // Random size
+                    const size = Math.random() * 10 + 5;
+                    confetti.style.width = size + 'px';
+                    confetti.style.height = size + 'px';
+                    
+                    // Random animation
+                    const animationDuration = Math.random() * 3 + 2;
+                    confetti.style.animation = `fall ${animationDuration}s linear forwards`;
+                    
+                    container.appendChild(confetti);
+                }
+            }
+            
+            function saveProgress() {
+                if (!currentPlan) return;
+                
+                const progress = {};
+                document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                    const monthIndex = checkbox.dataset.monthIndex;
+                    const weekIndex = checkbox.dataset.weekIndex;
+                    const dateInput = document.getElementById(`date-${monthIndex}-${weekIndex}`);
+                    progress[`task-${monthIndex}-${weekIndex}`] = {
+                        completed: checkbox.checked,
+                        date: dateInput.value
+                    };
+                });
+                localStorage.setItem('learning-progress', JSON.stringify(progress));
+                localStorage.setItem('current-plan', JSON.stringify(currentPlan));
+            }
+
+            function loadProgress() {
+                const savedProgress = localStorage.getItem('learning-progress');
+                if (savedProgress) {
+                    const progress = JSON.parse(savedProgress);
+                    document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                        const monthIndex = checkbox.dataset.monthIndex;
+                        const weekIndex = checkbox.dataset.weekIndex;
+                        const taskKey = `task-${monthIndex}-${weekIndex}`;
+                        if (progress[taskKey] && progress[taskKey].completed) {
+                            checkbox.checked = true;
+                            const taskCard = document.getElementById(taskKey);
+                            const dateInput = document.getElementById(`date-${monthIndex}-${weekIndex}`);
+                            taskCard.classList.add('completed');
+                            dateInput.value = progress[taskKey].date;
+                        }
+                    });
+                }
+                
+                // Try to load the current plan from localStorage
+                const savedPlan = localStorage.getItem('current-plan');
+                if (savedPlan && !currentPlan) {
+                    currentPlan = JSON.parse(savedPlan);
+                    renderPlan();
+                    setupWizard.classList.add('hidden');
+                    progressSection.classList.remove('hidden');
+                    learningPlanContainer.classList.remove('hidden');
+                    actionButtons.classList.remove('hidden');
+                }
+            }
+            
+            function exportPlan() {
+                if (!currentPlan) return;
+                
+                const planData = {
+                    plan: currentPlan,
+                    progress: {}
+                };
+                
+                document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                    const monthIndex = checkbox.dataset.monthIndex;
+                    const weekIndex = checkbox.dataset.weekIndex;
+                    const dateInput = document.getElementById(`date-${monthIndex}-${weekIndex}`);
+                    planData.progress[`task-${monthIndex}-${weekIndex}`] = {
+                        completed: checkbox.checked,
+                        date: dateInput.value
+                    };
+                });
+                
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(planData, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", "learning_plan.json");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+            }
+            
+            function resetPlan() {
+                if (confirm("Are you sure you want to reset all progress and start over?")) {
+                    localStorage.removeItem('learning-progress');
+                    localStorage.removeItem('current-plan');
+                    currentPlan = null;
+                    
+                    progressSection.classList.add('hidden');
+                    learningPlanContainer.classList.add('hidden');
+                    actionButtons.classList.add('hidden');
+                    setupWizard.classList.remove('hidden');
+                    
+                    customPlanForm.classList.add('hidden');
+                    recommendedPlansContainer.classList.add('hidden');
+                    setupWizard.querySelector('h2').textContent = "Get Started";
+                    
+                    document.querySelector('header h1').textContent = "Interactive Learning Path Creator";
+                    document.querySelector('header p').textContent = "Create your personalized coding journey or choose from recommended paths";
+                }
+            }
+            
+            // Initialize month inputs
+            generateMonthInputs();
+            
+            // Try to load saved plan on page load
+            loadProgress();
+        });
+
+        // Add this JavaScript code
+document.addEventListener('DOMContentLoaded', function() {
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    
+    // Check for saved theme preference or default to dark
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+    });
+});
+    </script>
+</body>
+</html>

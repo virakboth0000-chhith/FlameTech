@@ -1,0 +1,738 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>FlameTech | Login & Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background: url(ii.jpg);
+      background-size: cover;
+      background-position: center;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .anime-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      overflow: hidden;
+    }
+    
+    .anime-bg::before {
+      content: "";
+      position: absolute;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: 
+        radial-gradient(circle at 30% 30%, rgba(255, 42, 109, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 70% 70%, rgba(5, 217, 232, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 50% 20%, rgba(255, 209, 102, 0.1) 0%, transparent 20%);
+      animation: rotate 30s linear infinite;
+    }
+    
+    .floating-element {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 20px rgba(255, 42, 109, 0.3);
+      animation: float 15s infinite ease-in-out;
+    }
+    
+    .floating-element:nth-child(1) {
+      width: 150px;
+      height: 150px;
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+    
+    .floating-element:nth-child(2) {
+      width: 100px;
+      height: 100px;
+      top: 70%;
+      left: 80%;
+      animation-delay: -5s;
+    }
+    
+    .floating-element:nth-child(3) {
+      width: 80px;
+      height: 80px;
+      top: 40%;
+      left: 85%;
+      animation-delay: -10s;
+    }
+    
+    .floating-element:nth-child(4) {
+      width: 120px;
+      height: 120px;
+      top: 80%;
+      left: 15%;
+      animation-delay: -7s;
+    }
+    
+    .auth-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 20px;
+      z-index: 10;
+    }
+    
+    .auth-box {
+      background: rgba(255, 255, 255, .1);
+      backdrop-filter: blur(20px);
+      width: 100%;
+      max-width: 450px;
+      padding: 40px 35px;
+      border-radius: 20px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .auth-box::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(45deg, transparent, rgba(255, 42, 109, 0.1), transparent);
+      transform: rotate(45deg);
+      z-index: -1;
+    }
+    
+    .logo {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    
+    .logo h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(to right, #ff2a6d, #05d9e8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 5px;
+    }
+    
+    .logo p {
+      color: #d1f7ff;
+      font-size: 1rem;
+    }
+    
+    .auth-box h2 {
+      text-align: center;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #fff;
+      font-size: 1.8rem;
+    }
+    
+    .auth-box .desc {
+      text-align: center;
+      font-size: 14px;
+      color: #d1f7ff;
+      margin-bottom: 25px;
+    }
+    
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 5px;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      background: transparent;
+      color: #aaa;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 10px;
+      margin: 0 4px;
+      transition: 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .tab.active {
+      color: white;
+      background: rgba(255, 42, 109, 0.2);
+      box-shadow: 0 0 15px rgba(255, 42, 109, 0.3);
+    }
+    
+    .tab:not(.active):hover {
+      color: #05d9e8;
+    }
+    
+    .form {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+    
+    .form.active {
+      display: block;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+    
+    .form-group label {
+      font-size: 14px;
+      display: block;
+      margin-bottom: 8px;
+      color: #d1f7ff;
+      font-weight: 500;
+    }
+    
+    .form-group input {
+      width: 100%;
+      padding: 14px 15px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.2);
+      font-size: 15px;
+      color: white;
+      transition: all 0.3s;
+    }
+    
+    .form-group input:focus {
+      border-color: #05d9e8;
+      outline: none;
+      box-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+    }
+    
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.4);
+    }
+    
+    .error-message {
+      color: #ff2a6d;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    
+    .form-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-bottom: 25px;
+    }
+    
+    .form-options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #d1f7ff;
+      cursor: pointer;
+    }
+    
+    .form-options input[type="checkbox"] {
+      accent-color: #ff2a6d;
+    }
+    
+    .form-options a {
+      color: #05d9e8;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .form-options a:hover {
+      text-decoration: underline;
+    }
+    
+    .submit-btn {
+      width: 100%;
+      background: linear-gradient(45deg, #ff2a6d, #d20062);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 5px 15px rgba(255, 42, 109, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .submit-btn::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: 0.5s;
+    }
+    
+    .submit-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255, 42, 109, 0.6);
+    }
+    
+    .submit-btn:hover::before {
+      left: 100%;
+    }
+    
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+    
+    .anime-char {
+      text-align: center;
+      margin-top: 25px;
+      color: rgba(250, 245, 245, 0.6);
+      font-size: 0.9rem;
+    }
+    
+    .anime-char i {
+      color: #ff2a6d;
+      margin: 0 5px;
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+      25% {
+        transform: translate(20px, 20px) rotate(5deg);
+      }
+      50% {
+        transform: translate(0, 40px) rotate(0deg);
+      }
+      75% {
+        transform: translate(-20px, 20px) rotate(-5deg);
+      }
+      100% {
+        transform: translate(0, 0) rotate(0deg);
+      }
+    }
+    
+    @keyframes rotate {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .auth-box {
+        padding: 30px 20px;
+      }
+      
+      .tab {
+        padding: 12px;
+        font-size: 14px;
+      }
+      
+      .logo h2 {
+        font-size: 2rem;
+      }
+    }
+
+     .back-button {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 30px;
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+    transition: all 0.3s ease;
+}
+  </style>
+  <link rel="stylesheet" href="flametech-light-mode.css">
+  <link rel="stylesheet" href="flametech-dark-mode.css">
+</head>
+
+<a href="h.html" class="back-button" id="backButton">
+                <i class="fas fa-arrow-left "></i> Back to Home
+            </a>
+<body>
+
+  <!-- Anime-themed background elements -->
+  <div class="anime-bg">
+    
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+    <div class="floating-element"></div>
+  </div>
+  
+  <div class="auth-wrapper">
+    <div class="auth-box">
+      <div class="logo">
+        <h2>Welcome To FlameTech</h2>
+      </div>
+      
+      <p class="desc">Please login or register to continue</p>
+
+      <div class="tabs">
+        <button id="btn-login" class="tab active" onclick="toggleForm('login')">Login</button>
+        <button id="btn-register" class="tab" onclick="toggleForm('register')">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login" class="form active">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="Enter your email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="Enter your password" required />
+        </div>
+
+        <div class="form-options">
+          <label><input type="checkbox" id="remember-me" /> Remember me</label>
+          <a href="#">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="submit-btn">Login</button>
+        
+        <div class="anime-char">
+          <i class="fas fa-laptop-code"></i> Join our FlameTech community today!
+        </div>
+      </form>
+
+      <!-- Register Form -->
+      <form id="register" class="form">
+        <div class="form-group">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" placeholder="Enter your name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-email">Email</label>
+          <input type="email" id="reg-email" placeholder="Enter your email" required />
+        </div>
+
+        <div class="form-group">
+          <label for="reg-password">Password</label>
+          <input type="password" id="reg-password" placeholder="Create a password" required />
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" placeholder="Confirm your password" required />
+        </div>
+
+        <button type="submit" class="submit-btn">Register</button>
+        
+        <div class="anime-char">
+          <i class="fas fa-star"></i> Become part of our FlameTech family!
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+   
+    // Password requirements configuration
+    const passwordRequirements = {
+      minLength: 8,
+      requireUppercase: true,
+      requireNumber: true,
+      requireSpecialChar: true
+    };
+
+    // Check if user is already registered
+    function checkRegisteredUser() {
+      const userData = localStorage.getItem('flameTechUser');
+      if (userData) {
+        const user = JSON.parse(userData);
+        document.getElementById('email').value = user.email;
+        document.getElementById('password').focus();
+        return user;
+      }
+      return null;
+    }
+
+    // Store registered user data
+    let registeredUser = checkRegisteredUser();
+
+    function toggleForm(type) {
+      document.querySelectorAll('.form').forEach(form => form.classList.remove('active'));
+      document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+
+      document.getElementById(type).classList.add('active');
+      document.getElementById('btn-' + type).classList.add('active');
+    }
+
+    function validatePassword(password) {
+      const errors = [];
+      
+      if (password.length < passwordRequirements.minLength) {
+        errors.push(`Password must be at least ${passwordRequirements.minLength} characters`);
+      }
+      
+      if (passwordRequirements.requireUppercase && !/[A-Z]/.test(password)) {
+        errors.push('Must contain at least one uppercase letter');
+      }
+      
+      if (passwordRequirements.requireNumber && !/[0-9]/.test(password)) {
+        errors.push('Must contain at least one number');
+      }
+      
+      if (passwordRequirements.requireSpecialChar && !/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        errors.push('Must contain at least one special character');
+      }
+      
+      return errors;
+    }
+
+    function showError(inputElement, message) {
+      const formGroup = inputElement.closest('.form-group');
+      let errorElement = formGroup.querySelector('.error-message');
+      
+      if (!errorElement) {
+        errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        formGroup.appendChild(errorElement);
+      }
+      
+      errorElement.textContent = message;
+      inputElement.style.borderColor = '#ff2a6d';
+    }
+
+    function clearError(inputElement) {
+      const formGroup = inputElement.closest('.form-group');
+      const errorElement = formGroup.querySelector('.error-message');
+      
+      if (errorElement) {
+        errorElement.remove();
+      }
+      
+      inputElement.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+    }
+
+    // ADD THIS FUNCTION FOR SIDEBAR USER INFO
+    function updateSidebarUserInfo(user) {
+        const userNameElement = document.getElementById('userNameDisplay');
+        const userEmailElement = document.getElementById('userEmailDisplay');
+        
+        if (user && userNameElement && userEmailElement) {
+            userNameElement.textContent = user.name || user.fullname || 'User';
+            userEmailElement.textContent = user.email || 'Premium Member';
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Get form elements
+      const loginForm = document.getElementById('login');
+      const registerForm = document.getElementById('register');
+      
+      // If user is already registered, show login form by default
+      if (registeredUser) {
+        toggleForm('login');
+      }
+
+      // Login form handler
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('remember-me').checked;
+        
+        // Clear previous errors
+        clearError(document.getElementById('email'));
+        clearError(document.getElementById('password'));
+        
+        let isValid = true;
+        
+        // Check if user exists
+        if (!registeredUser) {
+          showError(document.getElementById('email'), 'No account found. Please register first.');
+          isValid = false;
+        }
+        // Check if email matches registered email
+        else if (email !== registeredUser.email) {
+          showError(document.getElementById('email'), 'Email does not match registered account');
+          isValid = false;
+        }
+        // Check if password matches registered password
+        else if (password !== registeredUser.password) {
+          showError(document.getElementById('password'), 'Incorrect password');
+          isValid = false;
+        }
+        
+        // Only redirect if credentials match
+        if (isValid) {
+          // Update last login time
+          registeredUser.lastLogin = new Date().toISOString();
+          
+          // UPDATE THE SIDEBAR WITH USER INFO
+          updateSidebarUserInfo(registeredUser);
+          
+          // Save remember me preference
+          if (rememberMe) {
+            localStorage.setItem('flameTechRememberMe', 'true');
+          } else {
+            localStorage.removeItem('flameTechRememberMe');
+          }
+          
+          localStorage.setItem('flameTechUser', JSON.stringify(registeredUser));
+          
+          // Debug log
+          console.log('Login successful, redirecting to h.html');
+          
+          setTimeout(() => {
+            window.location.href = 'h.html';
+          }, 500);
+        }
+      });
+      
+      // Register form handler
+      registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const fullname = document.getElementById('fullname').value;
+        const email = document.getElementById('reg-email').value;
+        const password = document.getElementById('reg-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        
+        // Clear previous errors
+        clearError(document.getElementById('fullname'));
+        clearError(document.getElementById('reg-email'));
+        clearError(document.getElementById('reg-password'));
+        clearError(document.getElementById('confirm-password'));
+        
+        let isValid = true;
+        
+        // Validate full name
+        if (!fullname || fullname.length < 3) {
+          showError(document.getElementById('fullname'), 'Please enter a valid name (min 3 characters)');
+          isValid = false;
+        }
+        
+        // Validate email
+        if (!email || !email.includes('@') || !email.includes('.')) {
+          showError(document.getElementById('reg-email'), 'Please enter a valid email address');
+          isValid = false;
+        }
+        
+        // Validate password
+        const passwordErrors = validatePassword(password);
+        if (passwordErrors.length > 0) {
+          showError(document.getElementById('reg-password'), passwordErrors.join('\n'));
+          isValid = false;
+        }
+        
+        // Validate password match
+        if (password !== confirmPassword) {
+          showError(document.getElementById('confirm-password'), 'Passwords do not match');
+          isValid = false;
+        }
+        
+        if (isValid) {
+          // Store the registered user data
+          registeredUser = {
+            name: fullname,
+            email: email,
+            password: password,
+            registeredAt: new Date().toISOString(),
+            lastLogin: new Date().toISOString()
+          };
+          
+          // UPDATE THE SIDEBAR WITH USER INFO
+          updateSidebarUserInfo(registeredUser);
+          
+          // Save to localStorage
+          localStorage.setItem('flameTechUser', JSON.stringify(registeredUser));
+          
+          // Switch to login form after successful registration
+          toggleForm('login');
+          
+          // Pre-fill the email in login form
+          document.getElementById('email').value = email;
+          document.getElementById('password').focus();
+          
+          // Show success message
+          alert(`Welcome ${fullname}! Registration successful. You can now login.`);
+        }
+      });
+      
+      // Clear errors when typing
+      document.getElementById('fullname').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      document.getElementById('reg-email').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      document.getElementById('reg-password').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      document.getElementById('confirm-password').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      document.getElementById('email').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      document.getElementById('password').addEventListener('input', function() {
+        clearError(this);
+      });
+      
+      // Check for remember me preference
+      if (localStorage.getItem('flameTechRememberMe') === 'true') {
+        document.getElementById('remember-me').checked = true;
+      }
+    });
+
+    // Add this to the end of your avatar upload function in settings.html:
+localStorage.setItem('flameTechProfileUpdated', Date.now().toString());
+
+   </script>
+</body>
+</html>

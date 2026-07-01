@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="ft.png" type="image/x-icon">
+    <title>FlameTech | Playlist</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="flametech-light-mode.css">
+    <link rel="stylesheet" href="flametech-dark-mode.css">
+    <style>
+        @keyframes bar1 { 0%,100%{height:6px;y:12px} 50%{height:16px;y:2px} }
+        @keyframes bar2 { 0%,100%{height:10px;y:8px} 50%{height:18px;y:0px} }
+        @keyframes bar3 { 0%,100%{height:14px;y:4px} 50%{height:6px;y:12px} }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        :root {
+            --primary: #ff2a6d;
+            --secondary: #05d9e8;
+            --dark: #01012b;
+            --darker: #000015;
+            --light: #f0f0f0;
+            --accent: #d1f7ff;
+            --bg-primary: linear-gradient(135deg, var(--darker), var(--dark));
+            --bg-secondary: rgba(0, 0, 20, 0.8);
+            --bg-sidebar: rgba(1,1,43,0.98);
+            --text-primary: var(--light);
+            --text-secondary: #aaa;
+            --border-primary: rgba(255, 42, 109, 0.3);
+            --border-secondary: rgba(255, 42, 109, 0.2);
+            --shadow-primary: rgba(0, 0, 0, 0.3);
+        }
+
+        .light-mode {
+            --primary: #ff2a6d;
+            --secondary: #05d9e8;
+            --dark: #ffffff;
+            --darker: #f8fafc;
+            --light: #1a1a2e;
+            --accent: #334155;
+            --bg-primary: linear-gradient(135deg, #ffffff, #f0f2f5);
+            --bg-secondary: rgba(255, 255, 255, 0.95);
+            --bg-sidebar: rgba(255,255,255,0.97);
+            --text-primary: #1a1a2e;
+            --text-secondary: #4a5568;
+            --border-primary: rgba(255, 42, 109, 0.25);
+        }
+
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* ── Header ── */
+        header {
+            background: var(--bg-secondary);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 2px solid var(--border-primary);
+            border-radius: 30px;
+        }
+        .container { width: 120%; max-width: 1500px; margin: 0 auto; padding: 0 15px; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { display: flex; align-items: center; gap: 10px; font-size: 28px; font-weight: 700; color: #ff2a6d; text-decoration: none; z-index: 1001; }
+        .logo i { color: #05dbea; animation: pulse 2s infinite; }
+        .nav-links { display: flex; list-style: none; }
+        .nav-links li { margin-left: 25px; }
+        .nav-links a { text-decoration: none; color: var(--text-primary); font-weight: 500; font-size: 16px; transition: all 0.3s ease; position: relative; padding: 5px 0; }
+        .nav-links a:hover { color: var(--secondary); }
+        .search-box { display: flex; align-items: center; background: rgba(255,255,255,0.1); border-radius: 30px; padding: 8px 15px; }
+        .search-box input { background: transparent; border: none; color: var(--text-primary); padding: 5px 10px; outline: none; width: 200px; }
+        .search-box button { background: transparent; border: none; color: var(--secondary); cursor: pointer; }
+        .light-mode header { background: rgba(255,255,255,0.95); border-bottom: 2px solid rgba(214,215,219,0.8); }
+        .light-mode .search-box { background: rgba(255,255,255,0.9); border: 1px solid rgba(209,213,219,0.8); }
+
+        /* ── Theme Toggle ── */
+        .theme-toggle {
+            position: fixed; bottom: 12px; right: 50px; z-index: 1000;
+            background: var(--dark); color: var(--light); border: none; border-radius: 50%;
+            width: 50px; height: 50px; font-size: 1.3rem; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: all 0.3s ease;
+        }
+        .theme-toggle:hover { background: var(--secondary); transform: scale(1.08); }
+        .light-mode .theme-toggle { background: rgba(255,255,255,0.9); color: #374151; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            position: fixed; top: 0; left: -270px; width: 270px; height: 100vh;
+            background: var(--bg-sidebar); color: var(--text-primary);
+            box-shadow: 2px 0 20px var(--shadow-primary); z-index: 2001;
+            transition: left 0.3s cubic-bezier(.77,0,.18,1); display: flex; flex-direction: column;
+        }
+        .sidebar.active { left: 0; }
+        .sidebar-header { display: flex; align-items: center; padding: 25px 20px 15px 20px; border-bottom: 1px solid var(--border-secondary); position: relative; }
+        .profile-pic img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--secondary); margin-right: 10px; }
+        .profile-info h4 { margin: 0 0 5px 6px; font-size: 1.1rem; color: var(--text-primary); font-weight: 600; }
+        .profile-info p { margin: 0 6px; font-size: 0.75rem; color: var(--text-secondary); }
+        .close-btn { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: var(--secondary); font-size: 1.3rem; cursor: pointer; transition: color 0.2s; }
+        .close-btn:hover { color: var(--primary); }
+        .sidebar-menu { list-style: none; padding: 25px 0 0 0; margin: 0; flex: 1; }
+        .sidebar-menu li { margin-bottom: 10px; }
+        .sidebar-menu a { display: flex; align-items: center; padding: 12px 30px; color: var(--text-primary); text-decoration: none; font-size: 1.05rem; transition: background 0.2s, color 0.2s; border-radius: 8px 0 0 8px; font-weight: 500; }
+        .sidebar-menu a i { margin-right: 15px; font-size: 1.1rem; color: var(--secondary); }
+        .sidebar-menu a:hover, .sidebar-menu a.active { background: var(--primary); color: #fff; }
+        .sidebar-menu a:hover i, .sidebar-menu a.active i { color: #fff; }
+        .sidebar-toggle-btn { position: fixed; top: 15px; left: 25px; z-index: 2002; background: transparent; color: white; border: none; border-radius: 50%; width: 48px; height: 48px; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
+        .sidebar-toggle-btn:hover { background: var(--secondary); transform: scale(1.08); }
+        .sidebar-toggle-btn.hidden { opacity: 0; pointer-events: none; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        .overlay.active { opacity: 1; visibility: visible; }
+        .light-mode .sidebar { background: rgba(255,255,255,0.97); }
+        .light-mode .sidebar-header { background: rgba(240,240,240,0.84); border-bottom: 1px solid rgba(238,238,238,0.88); }
+        .light-mode .sidebar-menu { background: rgba(240,240,240,0.84); }
+        .light-mode .sidebar-toggle-btn { background: var(--dark); color: #000; box-shadow: 0 4px 16px rgba(255,42,109,0.5); }
+
+        /* ── Page content ── */
+        .page-content { padding: 100px 0 60px; }
+        .page-title {
+            text-align: center; margin-bottom: 40px;
+            font-size: 2.5rem; font-weight: 700;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .player-wrapper {
+            max-width: 1200px; margin: 0 auto;
+            border-radius: 16px; overflow: hidden;
+            
+        }
+
+        /* ── YT Player Styles ── */
+        #yt-player-app {
+            display: flex; height: 640px;
+            background: #121212; border-radius: 14px; overflow: hidden;
+        }
+        /* Sidebar */
+        #yt-sidebar {
+            width: 252px; background: #000;
+            display: flex; flex-direction: column; flex-shrink: 0;
+        }
+        #yt-sidebar-header {
+            padding: 18px 16px 14px;
+            border-bottom: 1px solid #1a1a1a;
+        }
+        #yt-sidebar-header .lib-label {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 13px; font-weight: 700;
+            letter-spacing: 1px; text-transform: uppercase; color: #fff;
+        }
+        #yt-add-section { padding: 12px 12px 14px; border-bottom: 1px solid #1a1a1a; }
+        #yt-url-input {
+            width: 100%; background: #1a1a1a; border: 1px solid #333;
+            border-radius: 7px; padding: 8px 11px; color: #fff;
+            font-size: 13px; outline: none; margin-bottom: 8px;
+        }
+        #yt-add-btn {
+            width: 100%; background: #1DB954; border: none;
+            border-radius: 20px; padding: 8px 0; color: #000;
+            font-size: 13px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            transition: background 0.15s;
+        }
+        #yt-add-btn:hover { background: #1ed760; }
+        #yt-track-list { flex: 1; overflow-y: auto; padding: 6px 4px; }
+        #yt-track-count { padding: 10px 16px; border-top: 1px solid #1a1a1a; font-size: 11px; color: #535353; }
+        .yt-track-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 16px; cursor: pointer; border-radius: 6px;
+            transition: background 0.12s;
+        }
+        .yt-track-item:hover { background: rgba(255,255,255,0.04); }
+        .yt-track-item.active { background: rgba(255,255,255,0.07); }
+        .yt-track-thumb { width: 36px; height: 36px; border-radius: 5px; object-fit: cover; flex-shrink: 0; background: #2a2a2a; }
+        .yt-track-info { flex: 1; min-width: 0; }
+        .yt-track-title { font-size: 13px; font-weight: 500; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .yt-track-title.active { color: #1DB954; }
+        .yt-track-channel { font-size: 11px; color: #b3b3b3; margin-top: 2px; }
+        .yt-track-remove { background: none; border: none; cursor: pointer; color: #b3b3b3; font-size: 14px; opacity: 0; transition: opacity 0.15s; padding: 2px 5px; border-radius: 4px; }
+        .yt-track-item:hover .yt-track-remove { opacity: 1; }
+        /* Main area */
+        #yt-main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        #yt-player-area {
+            flex: 1; background: #181818; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        #yt-player-div { width: 100%; height: 100%; display: none; }
+        #yt-empty-state { display: flex; flex-direction: column; align-items: center; gap: 14px; color: #3a3a3a; }
+        #yt-empty-state p { font-size: 14px; color: #535353; }
+        #yt-toast {
+            position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
+            background: #282828; color: #fff; border-radius: 6px; padding: 8px 18px;
+            font-size: 13px; z-index: 99; white-space: nowrap; pointer-events: none;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5); display: none;
+        }
+        #yt-controls {
+            background: #181818; border-top: 1px solid #282828;
+            padding: 14px 20px 16px; position: relative;
+        }
+        #yt-now-playing { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        #yt-now-thumb { width: 44px; height: 44px; border-radius: 6px; object-fit: cover; flex-shrink: 0; background: #282828; }
+        #yt-now-title { font-size: 14px; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        #yt-now-channel { font-size: 12px; color: #b3b3b3; margin-top: 2px; }
+        #yt-no-track { font-size: 14px; color: #535353; }
+        #yt-progress-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .yt-time { font-size: 11px; color: #b3b3b3; min-width: 32px; font-variant-numeric: tabular-nums; }
+        #yt-seek { flex: 1; cursor: pointer; }
+        #yt-btn-row { display: flex; align-items: center; justify-content: center; gap: 4px; }
+        .yt-ctrl-btn {
+            background: none; border: none; cursor: pointer; color: #b3b3b3;
+            font-size: 20px; display: flex; align-items: center; justify-content: center;
+            padding: 7px; border-radius: 50%; transition: color 0.15s, background 0.15s;
+        }
+        .yt-ctrl-btn:hover { background: rgba(255,255,255,0.08); color: #fff; }
+        .yt-ctrl-btn.large { font-size: 30px; padding: 10px; }
+        .yt-ctrl-btn.active { color: #1DB954; }
+        #yt-volume-row { position: absolute; right: 20px; bottom: 20px; display: flex; align-items: center; gap: 8px; }
+
+        /* Playing bars animation */
+        .playing-bars { display: block; }
+        @keyframes bar1anim { 0%,100%{height:6px} 50%{height:16px} }
+        @keyframes bar2anim { 0%,100%{height:10px} 50%{height:18px} }
+        @keyframes bar3anim { 0%,100%{height:14px} 50%{height:6px} }
+        .yt-bar1 { animation: bar1anim 0.9s ease-in-out infinite; }
+        .yt-bar2 { animation: bar2anim 0.9s ease-in-out infinite 0.2s; }
+        .yt-bar3 { animation: bar3anim 0.9s ease-in-out infinite 0.3s; }
+
+        @keyframes pulse { 0%{transform:scaleY(1)} 50%{transform:scaleY(1.1)} 100%{transform:scaleY(1)} }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .search-box { display: none; }
+            .sidebar { width: 80vw; left: -80vw; }
+            #yt-player-app { flex-direction: column; height: auto; }
+            #yt-sidebar { width: 100%; height: 280px; }
+            .page-title { font-size: 1.8rem; }
+        }
+
+        .back-button {
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 30px;
+    text-decoration: none;
+    font-weight: var(--font-weight-semibold);
+    transition: all 0.3s ease;
+}
+
+
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="Flametech.html" class="logo">
+                    <i class="fas fa-laptop-code"></i> FlameTech
+                </a>
+
+                <div id="sidebar" class="sidebar">
+                    <div class="sidebar-header">
+                        <div class="profile-pic">
+                            <span id="profilePicIcon" style="display:flex;align-items:center;justify-content:center;cursor:pointer;">
+                                <i class="fa-regular fa-circle-user" style="font-size:3rem;"></i>
+                            </span>
+                            <img id="profilePicImg" alt="User Profile" style="display:none;cursor:pointer;">
+                            <input type="file" id="profilePicInput" accept="image/*" style="display:none;">
+                        </div>
+                        <div class="profile-info">
+                            <h4 id="userNameDisplay">Guest</h4>
+                            <p id="userEmailDisplay">Click to login</p>
+                        </div>
+                        <button id="closeSidebar" class="close-btn"><i class="fas fa-times"></i></button>
+                    </div>
+                    <ul class="sidebar-menu">
+                        <li><a href="g.html"><i class="fas fa-flag"></i> Set Goal</a></li>
+                        <li><a href="#" id="timerLink"><i class="fas fa-clock"></i> Set Timer</a></li>
+                        <li><a href="goal.html"><i class="fas fa-layer-group"></i> Short-Cut</a></li>
+                        <li><a href="codeL.html"><i class="fas fa-code"></i> Code Cheatsheet</a></li>
+                        <li><a href="playlist.html" class="active"><i class="fas fa-music"></i> Playlist</a></li>
+                        <li><a href="hj.html"><i class="fas fa-book-open"></i> Recommend For Dev</a></li>
+                        <li><a href="l-r.html"><i class="fas fa-user"></i> Login | Register</a></li>
+                        <li><a href="setting.html"><i class="fas fa-cog"></i> Settings</a></li>
+                        <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+
+                <div class="overlay" id="overlay"></div>
+                <button id="sidebarToggle" class="sidebar-toggle-btn"><i class="fas fa-bars"></i></button>
+
+                <ul class="nav-links">
+                    <li><a href="h.html">Home</a></li>
+                    <li><a href="AI.html">AI</a></li>
+                    <li><a href="dev.html">Development</a></li>
+                    <li><a href="codeL.html">Code-Language</a></li>
+                    <li><a href="TT.html">Train-Typing</a></li>
+                    <li><a href="reference.html">Reference</a></li>
+                    <li><a href="l-r.html">Login | Register</a></li>
+                </ul>
+                <div class="search-box">
+                    <input type="text" placeholder="Search...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <section class="page-content">
+        <div class="container">
+            <a href="h.html" class="back-button" id="backButton">
+                <i class="fas fa-arrow-left "></i> Back to Home
+            </a>
+            <h1 class="page-title"><i class="fas fa-headphones" style="font-size:2rem;-webkit-text-fill-color:unset;color:#ff2a6d;margin-right:10px;"></i>Playlist</h1>
+            <div class="player-wrapper">
+                <div id="yt-player-app">
+                    <!-- Sidebar -->
+                    <div id="yt-sidebar">
+                        <div id="yt-sidebar-header">
+                            <div class="lib-label">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#1DB954"><path d="M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z"/></svg>
+                                Your Library
+                            </div>
+                        </div>
+                        <div id="yt-add-section">
+                            <input id="yt-url-input" placeholder="Paste YouTube URL…" />
+                            <button id="yt-add-btn">
+                                <span style="font-size:17px;line-height:1;">+</span> Add song
+                            </button>
+                        </div>
+                        <div id="yt-track-list"></div>
+                        <div id="yt-track-count" style="display:none;"></div>
+                    </div>
+
+                    <!-- Main -->
+                    <div id="yt-main">
+                        <div id="yt-player-area">
+                            <div id="yt-toast"></div>
+                            <div id="yt-empty-state">
+                                <svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="#3a3a3a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+                                    <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="#3a3a3a" stroke="none"/>
+                                </svg>
+                                <p>Add a song and press play</p>
+                            </div>
+                            <div id="yt-player-div"></div>
+                        </div>
+
+                        <div id="yt-controls">
+                            <div id="yt-now-playing">
+                                <div id="yt-no-track">No track selected</div>
+                            </div>
+                            <div id="yt-progress-row">
+                                <span class="yt-time" id="yt-current-time">0:00</span>
+                                <input type="range" id="yt-seek" min="0" max="100" step="0.1" value="0">
+                                <span class="yt-time" id="yt-duration" style="text-align:right;">0:00</span>
+                            </div>
+                            <div id="yt-btn-row">
+                                <button class="yt-ctrl-btn" id="yt-shuffle-btn" title="Shuffle">
+                                    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/>
+                                        <polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/>
+                                        <line x1="4" y1="4" x2="9" y2="9"/>
+                                    </svg>
+                                </button>
+                                <button class="yt-ctrl-btn" id="yt-prev-btn" title="Previous">
+                                    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+                                </button>
+                                <button class="yt-ctrl-btn large" id="yt-play-btn" title="Play">
+                                    <svg id="yt-play-icon" width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                </button>
+                                <button class="yt-ctrl-btn" id="yt-next-btn" title="Next">
+                                    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8l-5.5 4zM16 6h2v12h-2z"/></svg>
+                                </button>
+                                <button class="yt-ctrl-btn" id="yt-loop-btn" title="Loop">
+                                    <svg width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                                        <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="yt-volume-row">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="#b3b3b3"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>
+                                <input type="range" id="yt-volume" min="0" max="100" value="80" style="width:80px;cursor:pointer;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background:var(--darker);padding:40px 0 20px;border-top:1px solid var(--border-primary);">
+        <div class="container" style="text-align:center;color:var(--text-secondary);font-size:0.9rem;">
+            <p>&copy; 2025 FlameTech. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+    // ══════════════════════════════════════════════════════
+    //  Player UI — delegates actual playback to the persistent
+    //  musicEngine living in the parent React app (window.parent).
+    //  That engine is never torn down when you navigate to another
+    //  page, so the music keeps playing in the background.
+    // ══════════════════════════════════════════════════════
+    const engine = (window.parent && window.parent !== window && window.parent.musicEngine)
+        ? window.parent.musicEngine
+        : null;
+
+    // ── Library (saved song list) — plain localStorage data, same as before ──
+    const STORAGE_KEY = 'yt_music_library';
+    let playlist = [];
+    try { playlist = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; } catch(_) {}
+
+    // ── Mirrored playback state, kept in sync with the engine ──
+    let currentIdx  = -1;
+    let isPlaying   = false;
+    let isLoop      = false;
+    let isShuffle   = false;
+    let toastTimer  = null;
+
+    // ── Helpers ──
+    function extractVideoId(url) {
+        const pats = [
+            /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/,
+            /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/,
+        ];
+        for (const p of pats) { const m = url.match(p); if (m) return m[1]; }
+        return null;
+    }
+    function fmtTime(s) {
+        s = Math.floor(s || 0);
+        return Math.floor(s/60) + ':' + String(s%60).padStart(2,'0');
+    }
+    function savePlaylst() { localStorage.setItem(STORAGE_KEY, JSON.stringify(playlist)); }
+    function showToast(msg) {
+        const el = document.getElementById('yt-toast');
+        el.textContent = msg; el.style.display = 'block';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => el.style.display = 'none', 2500);
+    }
+    function escHtml(s) {
+        return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Render ──
+    function renderTrackList() {
+        const list  = document.getElementById('yt-track-list');
+        const count = document.getElementById('yt-track-count');
+        if (playlist.length === 0) {
+            list.innerHTML = '<div style="padding:28px 16px;text-align:center;color:#535353;font-size:13px;line-height:1.7;">Your library is empty.<br>Paste a YouTube link above.</div>';
+            count.style.display = 'none'; return;
+        }
+        list.innerHTML = playlist.map((t, i) => `
+            <div class="yt-track-item ${i === currentIdx ? 'active' : ''}" data-idx="${i}">
+                ${(i === currentIdx && isPlaying) ? `
+                    <span style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <svg width="18" height="18" viewBox="0 0 18 18">
+                            <rect x="1" y="6" width="3" height="6" rx="1.5" fill="#1DB954" class="yt-bar1"/>
+                            <rect x="7" y="4" width="3" height="10" rx="1.5" fill="#1DB954" class="yt-bar2"/>
+                            <rect x="13" y="2" width="3" height="14" rx="1.5" fill="#1DB954" class="yt-bar3"/>
+                        </svg>
+                    </span>` : `<img class="yt-track-thumb" src="${t.thumb}" alt="">`}
+                <div class="yt-track-info">
+                    <div class="yt-track-title ${i === currentIdx ? 'active' : ''}">${escHtml(t.title)}</div>
+                    <div class="yt-track-channel">${escHtml(t.channel || 'YouTube')}</div>
+                </div>
+                <button class="yt-track-remove" data-remove="${i}" title="Remove">✕</button>
+            </div>`).join('');
+        count.textContent = playlist.length + ' song' + (playlist.length !== 1 ? 's' : '');
+        count.style.display = 'block';
+
+        list.querySelectorAll('.yt-track-item').forEach(el => {
+            el.addEventListener('click', e => {
+                if (e.target.closest('.yt-track-remove')) return;
+                requestPlay(parseInt(el.dataset.idx));
+            });
+        });
+        list.querySelectorAll('.yt-track-remove').forEach(btn => {
+            btn.addEventListener('click', e => { e.stopPropagation(); handleRemove(parseInt(btn.dataset.remove)); });
+        });
+    }
+
+    function renderNowPlaying() {
+        const area = document.getElementById('yt-now-playing');
+        const t = currentIdx >= 0 ? playlist[currentIdx] : null;
+        document.getElementById('yt-empty-state').style.display = t ? 'none' : 'flex';
+        if (t) {
+            area.innerHTML = `
+                <img id="yt-now-thumb" src="${t.thumb}" alt="" style="width:44px;height:44px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#282828;">
+                <div style="flex:1;min-width:0;">
+                    <div id="yt-now-title" style="font-size:14px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escHtml(t.title)}</div>
+                    <div id="yt-now-channel" style="font-size:12px;color:#b3b3b3;margin-top:2px;">${escHtml(t.channel || 'YouTube')}</div>
+                </div>`;
+        } else {
+            area.innerHTML = '<div style="font-size:14px;color:#535353;">No track selected</div>';
+        }
+    }
+
+    function renderPlayBtn() {
+        const icon = document.getElementById('yt-play-icon');
+        icon.innerHTML = isPlaying
+            ? '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>'
+            : '<path d="M8 5v14l11-7z"/>';
+    }
+
+    // ── Pull current state from the engine and re-render everything ──
+    function syncFromEngine(state) {
+        currentIdx = state.currentIdx;
+        isPlaying  = state.isPlaying;
+        isShuffle  = state.isShuffle;
+        isLoop     = state.isLoop;
+
+        document.getElementById('yt-shuffle-btn').classList.toggle('active', isShuffle);
+        document.getElementById('yt-loop-btn').classList.toggle('active', isLoop);
+        document.getElementById('yt-volume').value = state.volume;
+        document.getElementById('yt-current-time').textContent = fmtTime(state.currentTime);
+        document.getElementById('yt-duration').textContent     = fmtTime(state.duration);
+        document.getElementById('yt-seek').value = state.duration > 0 ? (state.currentTime/state.duration)*100 : 0;
+
+        renderTrackList();
+        renderNowPlaying();
+        renderPlayBtn();
+    }
+
+    // ── Commands → engine (no-op with a hint if opened outside the FlameTech app) ──
+    function requestPlay(idx) {
+        if (!engine) { showToast('Open this page from the FlameTech app to play music'); return; }
+        engine.playTrack(idx);
+    }
+    function handleRemove(idx) {
+        playlist.splice(idx, 1);
+        savePlaylst();
+        if (engine) engine.removeTrack(idx); // re-renders via the subscription below
+        else renderTrackList();
+    }
+
+    // ── Add song ──
+    async function handleAdd() {
+        const url = document.getElementById('yt-url-input').value.trim();
+        if (!url) return;
+        const videoId = extractVideoId(url);
+        if (!videoId) { showToast('Invalid YouTube URL'); return; }
+        if (playlist.find(t => t.videoId === videoId)) { showToast('Already in library'); return; }
+        const stub = { videoId, title: 'Loading…', channel: '', thumb: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg` };
+        playlist.push(stub);
+        document.getElementById('yt-url-input').value = '';
+        savePlaylst(); renderTrackList(); showToast('Added to library!');
+        engine?.syncLibrary();
+        try {
+            const res  = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`);
+            const data = await res.json();
+            const t = playlist.find(t => t.videoId === videoId);
+            if (t) { t.title = data.title || 'YouTube Video'; t.channel = data.author_name || ''; }
+        } catch(_) {
+            const t = playlist.find(t => t.videoId === videoId);
+            if (t) t.title = 'YouTube Video';
+        }
+        savePlaylst(); renderTrackList();
+        if (currentIdx >= 0 && playlist[currentIdx]?.videoId === videoId) renderNowPlaying();
+    }
+
+    // ── Event Listeners ──
+    document.getElementById('yt-add-btn').addEventListener('click', handleAdd);
+    document.getElementById('yt-url-input').addEventListener('keydown', e => { if (e.key === 'Enter') handleAdd(); });
+
+    document.getElementById('yt-play-btn').addEventListener('click', () => {
+        if (!engine) { showToast('Open this page from the FlameTech app to play music'); return; }
+        engine.togglePlay();
+    });
+    document.getElementById('yt-prev-btn').addEventListener('click', () => engine?.prev());
+    document.getElementById('yt-next-btn').addEventListener('click', () => engine?.next());
+    document.getElementById('yt-shuffle-btn').addEventListener('click', () => engine?.toggleShuffle());
+    document.getElementById('yt-loop-btn').addEventListener('click', () => engine?.toggleLoop());
+    document.getElementById('yt-seek').addEventListener('input', e => engine?.seekToPercent(parseFloat(e.target.value)));
+    document.getElementById('yt-volume').addEventListener('input', e => engine?.setVolume(parseInt(e.target.value, 10)));
+
+    // ── Sidebar logic ──
+    const sidebar       = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const closeSidebar  = document.getElementById('closeSidebar');
+    const overlay       = document.getElementById('overlay');
+    function openSidebar()  { sidebar.classList.add('active'); overlay.classList.add('active'); sidebarToggle.classList.add('hidden'); document.body.style.overflow='hidden'; }
+    function closeSidebarFn(){ sidebar.classList.remove('active'); overlay.classList.remove('active'); sidebarToggle.classList.remove('hidden'); document.body.style.overflow=''; }
+    sidebarToggle.addEventListener('click', openSidebar);
+    closeSidebar.addEventListener('click', closeSidebarFn);
+    overlay.addEventListener('click', closeSidebarFn);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && sidebar.classList.contains('active')) closeSidebarFn(); });
+
+    // ── Theme ──
+    const themeToggle = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('flametech-theme') || 'light';
+    if (savedTheme === 'light') { document.body.classList.add('light-mode'); themeToggle.innerHTML = '<i class="fas fa-sun"></i>'; }
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
+        localStorage.setItem('flametech-theme', isLight ? 'light' : 'dark');
+        themeToggle.innerHTML = isLight ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    });
+
+    // Profile pic
+    const profilePicInput = document.getElementById('profilePicInput');
+    const profilePicImg   = document.getElementById('profilePicImg');
+    const profilePicIcon  = document.getElementById('profilePicIcon');
+    profilePicIcon.addEventListener('click', () => { profilePicInput.value=''; profilePicInput.click(); });
+    profilePicInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            profilePicImg.src = URL.createObjectURL(this.files[0]);
+            profilePicImg.style.display='block'; profilePicIcon.style.display='none';
+        }
+    });
+    profilePicImg.addEventListener('click', () => { profilePicInput.value=''; profilePicInput.click(); });
+
+    // ── Init ──
+    if (engine) {
+        engine.syncLibrary();              // tell the engine about whatever's in the library
+        syncFromEngine(engine.getState());  // reflect whatever's already playing right now
+        engine.subscribe(syncFromEngine);   // stay in sync from here on
+    } else {
+        renderTrackList();
+        renderNowPlaying();
+        renderPlayBtn();
+        showToast('Open this page from the FlameTech app to play music');
+    }
+    </script>
+</body>
+</html>

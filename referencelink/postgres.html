@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>PostgreSQL Cheat Sheet — FlameTech</title>
+  <meta name="description" content="The [PostgreSQL](https://www.postgresql.org/docs/current/) cheat sheet provides you with the common PostgreSQL commands and statements.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#3d6488}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(61,100,136,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Database</span>
+    <span>›</span>
+    <span>PostgreSQL</span>
+  </div>
+  <div class="post-icon">PO</div>
+  <h1>PostgreSQL <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>The <a href="https://www.postgresql.org/docs/current/">PostgreSQL</a> cheat sheet provides you with the common PostgreSQL commands and statements.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Database</span>
+    <span class="meta-tag">DB</span> <span class="meta-tag">RDBMS</span> <span class="meta-tag">Database</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="getting-started_1">Getting started</h3>
+<div class="section">
+<p>Switch and connect</p>
+<p>```shell script
+$ sudo -u postgres psql</p>
+<div class="codehilite"><pre><span></span><code>List all databases
+
+```shell script
+postgres=# \l
+</code></pre></div>
+
+<p>Connect to the database named postgres</p>
+<p>```shell script
+postgres=# \c postgres</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Disconnect</span>
+
+```<span class="nv">shell</span><span class="w"> </span><span class="nv">script</span>
+<span class="nv">postgres</span><span class="o">=</span>#<span class="w"> </span>\<span class="nv">q</span>
+<span class="nv">postgres</span><span class="o">=</span>#<span class="w"> </span>\<span class="o">!</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="psql-commands">psql commands</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Example</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[-d] &lt;database&gt;</code></td>
+<td>psql -d mydb</td>
+<td style="text-align: left;">Connecting to database</td>
+</tr>
+<tr>
+<td><code>-U</code></td>
+<td>psql -U john mydb</td>
+<td style="text-align: left;">Connecting as a specific user</td>
+</tr>
+<tr>
+<td><code>-h</code> <code>-p</code></td>
+<td>psql -h localhost -p 5432 mydb</td>
+<td style="text-align: left;">Connecting to a host/port</td>
+</tr>
+<tr>
+<td><code>-U</code> <code>-h</code> <code>-p</code> <code>-d</code></td>
+<td>psql -U admin -h 192.168.1.5 -p 2506 -d mydb</td>
+<td style="text-align: left;">Connect remote PostgreSQL</td>
+</tr>
+<tr>
+<td><code>-W</code></td>
+<td>psql -W mydb</td>
+<td style="text-align: left;">Force password</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td>psql -c '\c postgres' -c '\dt'</td>
+<td style="text-align: left;">Execute a SQL query or command</td>
+</tr>
+<tr>
+<td><code>-H</code></td>
+<td>psql -c "\l+" -H postgres &gt; database.html</td>
+<td style="text-align: left;">Generate HTML report</td>
+</tr>
+<tr>
+<td><code>-l</code></td>
+<td>psql -l</td>
+<td style="text-align: left;">List all databases</td>
+</tr>
+<tr>
+<td><code>-f</code></td>
+<td>psql mydb -f file.sql</td>
+<td style="text-align: left;">Execute commands from a file</td>
+</tr>
+<tr>
+<td><code>-V</code></td>
+<td>psql -V</td>
+<td style="text-align: left;">Print the psql version</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="getting-help">Getting help</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\h</code></td>
+<td style="text-align: left;">Help on syntax of SQL commands</td>
+</tr>
+<tr>
+<td><code>\h</code> DELETE</td>
+<td style="text-align: left;">DELETE SQL statement syntax</td>
+</tr>
+<tr>
+<td><code>\?</code></td>
+<td style="text-align: left;">List of PostgreSQL command</td>
+</tr>
+</tbody>
+</table>
+<p>Run in PostgreSQL console</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="postgresql-working">
+<h2 id="postgresql-working">PostgreSQL Working</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="recon">Recon</h3>
+<div class="section">
+<p>Show version</p>
+<div class="codehilite"><pre><span></span><code>SHOW SERVER_VERSION;
+</code></pre></div>
+
+<p>Show system status</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">conninfo</span>
+</code></pre></div>
+
+<p>Show environmental variables</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="k">ALL</span><span class="p">;</span>
+</code></pre></div>
+
+<p>List users</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">rolname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_roles</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Show current user</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">current_user</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Show current user's permissions</p>
+<div class="codehilite"><pre><span></span><code>\du
+</code></pre></div>
+
+<p>Show current database</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">current_database</span><span class="p">();</span>
+</code></pre></div>
+
+<p>Show all tables in database</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">dt</span>
+</code></pre></div>
+
+<p>List functions</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">df</span><span class="w"> </span><span class="o">&lt;</span><span class="k">schema</span><span class="o">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="databases">Databases</h3>
+<div class="section">
+<p>List databases</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">l</span>
+</code></pre></div>
+
+<p>Connect to database</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="k">c</span><span class="w"> </span><span class="o">&lt;</span><span class="n">database_name</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p>Show current database</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">current_database</span><span class="p">();</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-createdatabase.html">Create database</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">database_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="k">OWNER</span><span class="w"> </span><span class="o">&lt;</span><span class="n">username</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-dropdatabase.html">Drop database</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">&lt;</span><span class="n">database_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-alterdatabase.html">Rename database</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">old_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">RENAME</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">new_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="tables">Tables</h3>
+<div class="section">
+<p>List tables, in current db</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">dt</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="k">table_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">tables</span><span class="w"> </span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">table_schema</span><span class="p">,</span><span class="k">table_name</span><span class="p">;</span>
+</code></pre></div>
+
+<p>List tables, globally</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">dt</span><span class="w"> </span><span class="o">*</span><span class="p">.</span><span class="o">*</span><span class="p">.</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_tables</span>
+</code></pre></div>
+
+<p>List table schema</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">d</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span>
+<span class="err">\</span><span class="n">d</span><span class="o">+</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="k">column_name</span><span class="p">,</span><span class="w"> </span><span class="n">data_type</span><span class="p">,</span><span class="w"> </span><span class="n">character_maximum_length</span>
+<span class="k">FROM</span><span class="w"> </span><span class="n">INFORMATION_SCHEMA</span><span class="p">.</span><span class="n">COLUMNS</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="k">table_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;&lt;table_name&gt;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-createtable.html">Create table</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">column_type</span><span class="o">&gt;</span><span class="p">,</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">column_type</span><span class="o">&gt;</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<p>Create table, with an auto-incrementing primary key</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span>
+<span class="w">  </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span>
+<span class="p">);</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-droptable.html">Delete table</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="permissions">Permissions</h3>
+<div class="section">
+<p>Become the postgres user, if you have permission errors</p>
+<div class="codehilite"><pre><span></span><code>sudo<span class="w"> </span>su<span class="w"> </span>-<span class="w"> </span>postgres
+psql
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-grant.html">Grant</a> all permissions on database</p>
+<div class="codehilite"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="k">PRIVILEGES</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">db_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Grant connection permissions on database</p>
+<div class="codehilite"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">CONNECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">DATABASE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">db_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Grant permissions on schema</p>
+<div class="codehilite"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">USAGE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Grant permissions to functions</p>
+<div class="codehilite"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">FUNCTIONS</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Grant permissions to select, update, insert, delete, on a all tables</p>
+<div class="codehilite"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Grant permissions, on a table</p>
+<div class="codehilite"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="p">,</span><span class="w"> </span><span class="k">UPDATE</span><span class="p">,</span><span class="w"> </span><span class="k">INSERT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Grant permissions, to select, on a table</p>
+<div class="codehilite"><pre><span></span><code><span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="n">TABLES</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="columns">Columns</h3>
+<div class="section">
+<p><a href="http://www.postgresql.org/docs/current/static/sql-altertable.html">Add column</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span>
+<span class="k">ADD</span><span class="w"> </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data_type</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="o">&lt;</span><span class="k">constraints</span><span class="o">&gt;</span><span class="p">];</span>
+</code></pre></div>
+
+<p>Update column</p>
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span>
+<span class="k">ALTER</span><span class="w"> </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">data_type</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="o">&lt;</span><span class="k">constraints</span><span class="o">&gt;</span><span class="p">];</span>
+</code></pre></div>
+
+<p>Delete column</p>
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span>
+<span class="k">DROP</span><span class="w"> </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Update column to be an auto-incrementing primary key</p>
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">TABLE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span>
+<span class="k">ADD</span><span class="w"> </span><span class="k">COLUMN</span><span class="w"> </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="nb">SERIAL</span><span class="w"> </span><span class="k">PRIMARY</span><span class="w"> </span><span class="k">KEY</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Insert into a table, with an auto-incrementing primary key</p>
+<div class="codehilite"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="k">DEFAULT</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span><span class="p">);</span>
+
+
+<span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="p">(</span><span class="o">&lt;</span><span class="n">column1_name</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">column2_name</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="k">VALUES</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value1</span><span class="o">&gt;</span><span class="p">,</span><span class="o">&lt;</span><span class="n">value2</span><span class="o">&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="data">Data</h3>
+<div class="section">
+<p><a href="http://www.postgresql.org/docs/current/static/sql-select.html">Select</a> all data</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Read one row of data</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">LIMIT</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Search for data</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-insert.html">Insert</a> data</p>
+<div class="codehilite"><pre><span></span><code><span class="k">INSERT</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">VALUES</span><span class="p">(</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value_1</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value_2</span><span class="o">&gt;</span><span class="w"> </span><span class="p">);</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-update.html">Update</a> data</p>
+<div class="codehilite"><pre><span></span><code><span class="k">UPDATE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span>
+<span class="k">SET</span><span class="w"> </span><span class="o">&lt;</span><span class="n">column_1</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value_1</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="o">&lt;</span><span class="n">column_2</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value_2</span><span class="o">&gt;</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">column_1</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-delete.html">Delete</a> all data</p>
+<div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Delete specific data</p>
+<div class="codehilite"><pre><span></span><code><span class="k">DELETE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">&lt;</span><span class="k">table_name</span><span class="o">&gt;</span>
+<span class="k">WHERE</span><span class="w"> </span><span class="o">&lt;</span><span class="k">column_name</span><span class="o">&gt;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;</span><span class="n">value</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="users">Users</h3>
+<div class="section">
+<p>List roles</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">rolname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_roles</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-createuser.html">Create user</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;&lt;password&gt;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-dropuser.html">Drop user</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-alterrole.html">Alter</a> user password</p>
+<div class="codehilite"><pre><span></span><code><span class="k">ALTER</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="o">&lt;</span><span class="n">user_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">WITH</span><span class="w"> </span><span class="n">PASSWORD</span><span class="w"> </span><span class="s1">&#39;&lt;password&gt;&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="schema">Schema</h3>
+<div class="section">
+<p>List schemas</p>
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="n">dn</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="k">schema_name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">information_schema</span><span class="p">.</span><span class="n">schemata</span><span class="p">;</span>
+
+<span class="k">SELECT</span><span class="w"> </span><span class="n">nspname</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">pg_catalog</span><span class="p">.</span><span class="n">pg_namespace</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-createschema.html">Create schema</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">&lt;</span><span class="k">schema_name</span><span class="o">&gt;</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="http://www.postgresql.org/docs/current/static/sql-dropschema.html">Drop schema</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">DROP</span><span class="w"> </span><span class="k">SCHEMA</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="o">&lt;</span><span class="k">schema_name</span><span class="o">&gt;</span><span class="w"> </span><span class="k">CASCADE</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="dates">Dates</h3>
+<div class="section">
+<p>Show <a href="https://www.postgresql.org/docs/15/functions-datetime.html#FUNCTIONS-DATETIME-CURRENT">current date</a> YYYY-MM-DD</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">current_date</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Calculate
+<a href="https://www.postgresql.org/docs/15/functions-datetime.html#:~:text=age%20(%20timestamp%2C%20timestamp%20)%20%E2%86%92%20interval">age</a>
+between two dates</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">age</span><span class="p">(</span><span class="k">timestamp</span><span class="p">,</span><span class="w"> </span><span class="k">timestamp</span><span class="p">);</span>
+</code></pre></div>
+
+<p>Show <a href="https://www.postgresql.org/docs/15/functions-datetime.html#FUNCTIONS-DATETIME-CURRENT">current time</a> with time
+zone</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="k">current_time</span><span class="p">;</span>
+</code></pre></div>
+
+<p><a href="https://www.postgresql.org/docs/15/functions-datetime.html#:~:text=make_date%20(%20year%20int%2C%20month%20int%2C%20day%20int%20)%20%E2%86%92%20date">Make</a>
+dates using integers</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SELECT</span><span class="w"> </span><span class="n">make_date</span><span class="p">(</span><span class="mi">2021</span><span class="p">,</span><span class="mi">03</span><span class="p">,</span><span class="mi">25</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="postgresql-commands">
+<h2 id="postgresql-commands">PostgreSQL Commands</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="tables_1">Tables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\d &lt;table&gt;</code></td>
+<td style="text-align: left;">Describe table</td>
+</tr>
+<tr>
+<td><code>\d+ &lt;table&gt;</code></td>
+<td style="text-align: left;">Describe table with details</td>
+</tr>
+<tr>
+<td><code>\dt</code></td>
+<td style="text-align: left;">List tables from current schema</td>
+</tr>
+<tr>
+<td><code>\dt *.*</code></td>
+<td style="text-align: left;">List tables from all schemas</td>
+</tr>
+<tr>
+<td><code>\dt &lt;schema&gt;.*</code></td>
+<td style="text-align: left;">List tables for a schema</td>
+</tr>
+<tr>
+<td><code>\dp</code></td>
+<td style="text-align: left;">List table access privileges</td>
+</tr>
+<tr>
+<td><code>\det[+]</code></td>
+<td style="text-align: left;">List foreign tables</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="query-buffer">Query buffer</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\e [FILE]</code></td>
+<td style="text-align: left;">Edit the query buffer (or file)</td>
+</tr>
+<tr>
+<td><code>\ef [FUNC]</code></td>
+<td style="text-align: left;">Edit function definition</td>
+</tr>
+<tr>
+<td><code>\p</code></td>
+<td style="text-align: left;">Show the contents</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td style="text-align: left;">Reset (clear) the query buffer</td>
+</tr>
+<tr>
+<td><code>\s [FILE]</code></td>
+<td style="text-align: left;">Display history or save it to file</td>
+</tr>
+<tr>
+<td><code>\w FILE</code></td>
+<td style="text-align: left;">Write query buffer to file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="informational">Informational</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\l[+]</code></td>
+<td style="text-align: left;">List all databases</td>
+</tr>
+<tr>
+<td><code>\dn[S+]</code></td>
+<td style="text-align: left;">List schemas</td>
+</tr>
+<tr>
+<td><code>\di[S+]</code></td>
+<td style="text-align: left;">List indexes</td>
+</tr>
+<tr>
+<td><code>\du[+]</code></td>
+<td style="text-align: left;">List roles</td>
+</tr>
+<tr>
+<td><code>\ds[S+]</code></td>
+<td style="text-align: left;">List sequences</td>
+</tr>
+<tr>
+<td><code>\df[antw][S+]</code></td>
+<td style="text-align: left;">List functions</td>
+</tr>
+<tr>
+<td><code>\deu[+]</code></td>
+<td style="text-align: left;">List user mappings</td>
+</tr>
+<tr>
+<td><code>\dv[S+]</code></td>
+<td style="text-align: left;">List views</td>
+</tr>
+<tr>
+<td><code>\dl</code></td>
+<td style="text-align: left;">List large objects</td>
+</tr>
+<tr>
+<td><code>\dT[S+]</code></td>
+<td style="text-align: left;">List data types</td>
+</tr>
+<tr>
+<td><code>\da[S]</code></td>
+<td style="text-align: left;">List aggregates</td>
+</tr>
+<tr>
+<td><code>\db[+]</code></td>
+<td style="text-align: left;">List tablespaces</td>
+</tr>
+<tr>
+<td><code>\dc[S+]</code></td>
+<td style="text-align: left;">List conversions</td>
+</tr>
+<tr>
+<td><code>\dC[+]</code></td>
+<td style="text-align: left;">List casts</td>
+</tr>
+<tr>
+<td><code>\ddp</code></td>
+<td style="text-align: left;">List default privileges</td>
+</tr>
+<tr>
+<td><code>\dd[S]</code></td>
+<td style="text-align: left;">Show object descriptions</td>
+</tr>
+<tr>
+<td><code>\dD[S+]</code></td>
+<td style="text-align: left;">List domains</td>
+</tr>
+<tr>
+<td><code>\des[+]</code></td>
+<td style="text-align: left;">List foreign servers</td>
+</tr>
+<tr>
+<td><code>\dew[+]</code></td>
+<td style="text-align: left;">List foreign-data wrappers</td>
+</tr>
+<tr>
+<td><code>\dF[+]</code></td>
+<td style="text-align: left;">List text search configurations</td>
+</tr>
+<tr>
+<td><code>\dFd[+]</code></td>
+<td style="text-align: left;">List text search dictionaries</td>
+</tr>
+<tr>
+<td><code>\dFp[+]</code></td>
+<td style="text-align: left;">List text search parsers</td>
+</tr>
+<tr>
+<td><code>\dFt[+]</code></td>
+<td style="text-align: left;">List text search templates</td>
+</tr>
+<tr>
+<td><code>\dL[S+]</code></td>
+<td style="text-align: left;">List procedural languages</td>
+</tr>
+<tr>
+<td><code>\do[S]</code></td>
+<td style="text-align: left;">List operators</td>
+</tr>
+<tr>
+<td><code>\dO[S+]</code></td>
+<td style="text-align: left;">List collations</td>
+</tr>
+<tr>
+<td><code>\drds</code></td>
+<td style="text-align: left;">List per-database role settings</td>
+</tr>
+<tr>
+<td><code>\dx[+]</code></td>
+<td style="text-align: left;">List extensions</td>
+</tr>
+</tbody>
+</table>
+<p><code>S</code>: show system objects, <code>+</code>: additional detail</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="connection">Connection</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\c [DBNAME]</code></td>
+<td style="text-align: left;">Connect to new database</td>
+</tr>
+<tr>
+<td><code>\encoding [ENCODING]</code></td>
+<td style="text-align: left;">Show or set client encoding</td>
+</tr>
+<tr>
+<td><code>\password [USER]</code></td>
+<td style="text-align: left;">Change the password</td>
+</tr>
+<tr>
+<td><code>\conninfo</code></td>
+<td style="text-align: left;">Display information</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="formatting">Formatting</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\a</code></td>
+<td style="text-align: left;">Toggle between unaligned and aligned</td>
+</tr>
+<tr>
+<td><code>\C [STRING]</code></td>
+<td style="text-align: left;">Set table title, or unset if none</td>
+</tr>
+<tr>
+<td><code>\f [STRING]</code></td>
+<td style="text-align: left;">Show or set field separator for unaligned</td>
+</tr>
+<tr>
+<td><code>\H</code></td>
+<td style="text-align: left;">Toggle HTML output mode</td>
+</tr>
+<tr>
+<td><code>\t [on|off]</code></td>
+<td style="text-align: left;">Show only rows</td>
+</tr>
+<tr>
+<td><code>\T [STRING]</code></td>
+<td style="text-align: left;">Set or unset HTML \&lt;table&gt; tag attributes</td>
+</tr>
+<tr>
+<td><code>\x [on|off]</code></td>
+<td style="text-align: left;">Toggle expanded output</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="inputoutput">Input/Output</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\copy ...</code></td>
+<td style="text-align: left;">Import/export table<br> <em>See also:</em> <a href="#import-export-csv">copy</a></td>
+</tr>
+<tr>
+<td><code>\echo [STRING]</code></td>
+<td style="text-align: left;">Print string</td>
+</tr>
+<tr>
+<td><code>\i FILE</code></td>
+<td style="text-align: left;">Execute file</td>
+</tr>
+<tr>
+<td><code>\o [FILE]</code></td>
+<td style="text-align: left;">Export all results to file</td>
+</tr>
+<tr>
+<td><code>\qecho [STRING]</code></td>
+<td style="text-align: left;">String to output stream</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="variables">Variables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\prompt [TEXT] NAME</code></td>
+<td style="text-align: left;">Set variable</td>
+</tr>
+<tr>
+<td><code>\set [NAME [VALUE]]</code></td>
+<td style="text-align: left;">Set variable <em>(or list all if no parameters)</em></td>
+</tr>
+<tr>
+<td><code>\unset NAME</code></td>
+<td style="text-align: left;">Delete variable</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="misc">Misc</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\cd [DIR]</code></td>
+<td style="text-align: left;">Change the directory</td>
+</tr>
+<tr>
+<td><code>\timing [on|off]</code></td>
+<td style="text-align: left;">Toggle timing</td>
+</tr>
+<tr>
+<td><code>\! [COMMAND]</code></td>
+<td style="text-align: left;">Execute in shell</td>
+</tr>
+<tr>
+<td><code>\! ls -l</code></td>
+<td style="text-align: left;">List all in shell</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="large-objects">Large Objects</h3>
+<div class="section">
+<ul>
+<li><code>\lo_export LOBOID FILE</code></li>
+<li><code>\lo_import FILE [COMMENT]</code></li>
+<li><code>\lo_list</code></li>
+<li><code>\lo_unlink LOBOID</code></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="miscellaneous">
+<h2 id="miscellaneous">Miscellaneous</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="backup">Backup</h3>
+<div class="section">
+<p>Use pg_dumpall to backup all databases</p>
+<p>```shell script
+$ pg_dumpall -U postgres &gt; all.sql</p>
+<div class="codehilite"><pre><span></span><code>Use pg_dump to backup a database
+
+```shell script
+$ pg_dump -d mydb -f mydb_backup.sql
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-a</code></td>
+<td style="text-align: left;">Dump only the data, not the schema</td>
+</tr>
+<tr>
+<td><code>-s</code></td>
+<td style="text-align: left;">Dump only the schema, no data</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td style="text-align: left;">Drop database before recreating</td>
+</tr>
+<tr>
+<td><code>-C</code></td>
+<td style="text-align: left;">Create database before restoring</td>
+</tr>
+<tr>
+<td><code>-t</code></td>
+<td style="text-align: left;">Dump the named table(s) only</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td style="text-align: left;">Format (<code>c</code>: custom, <code>d</code>: directory, <code>t</code>: tar)</td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>pg_dump -?</code> to get the full list of options</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="restore">Restore</h3>
+<div class="section">
+<p>Restore a database with psql</p>
+<p>```shell script
+$ psql -U user mydb &lt; mydb_backup.sql</p>
+<div class="codehilite"><pre><span></span><code>Restore a database with pg_restore
+
+```shell script
+$ pg_restore -d mydb mydb_backup.sql -c
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-U</code></td>
+<td style="text-align: left;">Specify a database user</td>
+</tr>
+<tr>
+<td><code>-c</code></td>
+<td style="text-align: left;">Drop database before recreating</td>
+</tr>
+<tr>
+<td><code>-C</code></td>
+<td style="text-align: left;">Create database before restoring</td>
+</tr>
+<tr>
+<td><code>-e</code></td>
+<td style="text-align: left;">Exit if an error has encountered</td>
+</tr>
+<tr>
+<td><code>-F</code></td>
+<td style="text-align: left;">Format (<code>c</code>: custom, <code>d</code>: directory, <code>t</code>: tar, <code>p</code>: plain text sql(default))</td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>pg_restore -?</code> to get the full list of options</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="remote-access">Remote access</h3>
+<div class="section">
+<p>Get location of postgresql.conf</p>
+<p>```shell script
+$ psql -U postgres -c 'SHOW config_file'</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">Append</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="nx">postgresql</span><span class="p">.</span><span class="nx">conf</span>
+
+<span class="err">```</span><span class="nx">shell</span><span class="w"> </span><span class="nx">script</span>
+<span class="nx">listen_addresses</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="sc">&#39;*&#39;</span>
+</code></pre></div>
+
+<p>Append to pg_hba.conf (Same location as postgresql.conf)</p>
+<p>```shell script
+host  all  all  0.0.0.0/0  md5
+host  all  all  ::/0       md5</p>
+<div class="codehilite"><pre><span></span><code>Restart PostgreSQL server
+
+```shell script
+$ sudo systemctl restart postgresql
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="importexport-csv">Import/Export CSV</h3>
+<div class="section">
+<p>Export table into CSV file</p>
+<p>```shell script
+\copy table TO '<path>' CSV
+\copy table(col1,col1) TO '<path>' CSV
+\copy (SELECT...) TO '<path>' CSV</p>
+<div class="codehilite"><pre><span></span><code>Import CSV file into table
+
+```shell script
+\copy table FROM &#39;&lt;path&gt;&#39; CSV
+\copy table(col1,col1) FROM &#39;&lt;path&gt;&#39; CSV
+</code></pre></div>
+
+<p>See also: <a href="https://www.postgresql.org/docs/current/sql-copy.html">Copy</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://gist.github.com/apolloclark/ea5466d5929e63043dcf#posgres-cheatsheet">Posgres-cheatsheet</a> <em>(gist.github.com)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

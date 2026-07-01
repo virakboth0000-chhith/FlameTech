@@ -1,0 +1,1727 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Gemini CLI Cheat Sheet — FlameTech</title>
+  <meta name="description" content="[Gemini CLI](https://geminicli.com/docs/) brings Google Gemini models directly into your terminal for code understanding, task automation, and workflow building">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#1a73e8}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(26,115,232,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>AI</span>
+    <span>›</span>
+    <span>Gemini CLI</span>
+  </div>
+  <div class="post-icon">GC</div>
+  <h1>Gemini CLI <span>cheatsheet</span></h1>
+  <div class="post-intro"><p><a href="https://geminicli.com/docs/">Gemini CLI</a> brings Google Gemini models directly into your terminal for code understanding, task automation, and workflow building.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> AI</span>
+    <span class="meta-tag">gemini</span> <span class="meta-tag">ai</span> <span class="meta-tag">cli</span> <span class="meta-tag">google</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="quick-start">Quick Start</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Install globally</span>
+$<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>@google/gemini-cli
+
+<span class="c1"># Or via Homebrew</span>
+$<span class="w"> </span>brew<span class="w"> </span>install<span class="w"> </span>gemini-cli
+
+<span class="c1"># Or run without installing</span>
+$<span class="w"> </span>npx<span class="w"> </span>@google/gemini-cli
+
+<span class="c1"># Launch interactive session</span>
+$<span class="w"> </span>gemini
+
+<span class="c1"># Non-interactive (headless)</span>
+$<span class="w"> </span>gemini<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;summarize README.md&quot;</span>
+
+<span class="c1"># Pipe content to Gemini</span>
+$<span class="w"> </span>cat<span class="w"> </span>logs.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>gemini<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;find errors&quot;</span>
+
+<span class="c1"># Run prompt and continue interactively</span>
+$<span class="w"> </span>gemini<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;explain this project&quot;</span>
+
+<span class="c1"># Resume most recent session</span>
+$<span class="w"> </span>gemini<span class="w"> </span>-r<span class="w"> </span>latest
+
+<span class="c1"># Resume with new prompt</span>
+$<span class="w"> </span>gemini<span class="w"> </span>-r<span class="w"> </span>latest<span class="w"> </span><span class="s2">&quot;check for type errors&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="authentication">Authentication</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Google Account</td>
+<td>Run <code>gemini</code>, select "Sign in with Google"</td>
+</tr>
+<tr>
+<td>API Key</td>
+<td>Set <code>GEMINI_API_KEY</code> env var</td>
+</tr>
+<tr>
+<td>Vertex AI (ADC)</td>
+<td><code>gcloud auth application-default login</code></td>
+</tr>
+<tr>
+<td>Vertex AI (SA)</td>
+<td>Set <code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
+</tr>
+</tbody>
+</table>
+<p>Vertex AI also requires <code>GOOGLE_CLOUD_PROJECT</code> and <code>GOOGLE_CLOUD_LOCATION</code>.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="installation-methods">Installation Methods</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>npm</td>
+<td><code>npm install -g @google/gemini-cli</code></td>
+</tr>
+<tr>
+<td>Homebrew</td>
+<td><code>brew install gemini-cli</code></td>
+</tr>
+<tr>
+<td>MacPorts</td>
+<td><code>sudo port install gemini-cli</code></td>
+</tr>
+<tr>
+<td>npx (no install)</td>
+<td><code>npx @google/gemini-cli</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>System requirements:</strong> Node.js 20+, macOS 15+, Windows 11 24H2+, or Ubuntu 20.04+</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="model-aliases">Model Aliases</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Alias</th>
+<th>Model</th>
+<th>Use For</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>auto</code></td>
+<td>gemini-2.5-pro / gemini-3-pro</td>
+<td>Default, balanced</td>
+</tr>
+<tr>
+<td><code>pro</code></td>
+<td>gemini-2.5-pro / gemini-3-pro</td>
+<td>Complex reasoning</td>
+</tr>
+<tr>
+<td><code>flash</code></td>
+<td>gemini-2.5-flash</td>
+<td>Fast, balanced</td>
+</tr>
+<tr>
+<td><code>flash-lite</code></td>
+<td>gemini-2.5-flash-lite</td>
+<td>Simple, fastest</td>
+</tr>
+</tbody>
+</table>
+<p>Set with <code>-m flash</code> or <code>GEMINI_MODEL</code> env var.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="key-concepts">Key Concepts</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GEMINI.md</code></td>
+<td>Project context file loaded automatically</td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>On-demand expertise loaded via <code>activate_skill</code></td>
+</tr>
+<tr>
+<td>Extensions</td>
+<td>Bundles of prompts, MCP servers, tools</td>
+</tr>
+<tr>
+<td>MCP Servers</td>
+<td>External tools via Model Context Protocol</td>
+</tr>
+<tr>
+<td>Plan Mode</td>
+<td>Read-only mode for planning before coding</td>
+</tr>
+<tr>
+<td>Hooks</td>
+<td>Scripts that run at key agent lifecycle points</td>
+</tr>
+<tr>
+<td>Headless</td>
+<td>Non-interactive mode via <code>-p</code> flag</td>
+</tr>
+<tr>
+<td>Sessions</td>
+<td>Saved conversation history, resumable</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="cli-options">
+<h2 id="cli-options">CLI Options</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="core-options">Core Options</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--prompt &lt;text&gt;</code></td>
+<td><code>-p</code></td>
+<td>Non-interactive prompt</td>
+</tr>
+<tr>
+<td><code>--prompt-interactive</code></td>
+<td><code>-i</code></td>
+<td>Prompt then continue</td>
+</tr>
+<tr>
+<td><code>--model &lt;name&gt;</code></td>
+<td><code>-m</code></td>
+<td>Model to use</td>
+</tr>
+<tr>
+<td><code>--worktree [name]</code></td>
+<td><code>-w</code></td>
+<td>Start in new git worktree</td>
+</tr>
+<tr>
+<td><code>--sandbox</code></td>
+<td><code>-s</code></td>
+<td>Enable sandboxed execution</td>
+</tr>
+<tr>
+<td><code>--approval-mode &lt;mode&gt;</code></td>
+<td></td>
+<td>default / auto_edit / yolo / plan</td>
+</tr>
+<tr>
+<td><code>--yolo</code></td>
+<td><code>-y</code></td>
+<td>Auto-approve all (deprecated, use <code>--approval-mode=yolo</code>)</td>
+</tr>
+<tr>
+<td><code>--resume &lt;id&gt;</code></td>
+<td><code>-r</code></td>
+<td>Resume session by ID or <code>latest</code></td>
+</tr>
+<tr>
+<td><code>--list-sessions</code></td>
+<td></td>
+<td>List sessions and exit</td>
+</tr>
+<tr>
+<td><code>--delete-session &lt;n&gt;</code></td>
+<td></td>
+<td>Delete session by index</td>
+</tr>
+<tr>
+<td><code>--output-format &lt;fmt&gt;</code></td>
+<td><code>-o</code></td>
+<td>text / json / stream-json</td>
+</tr>
+<tr>
+<td><code>--extensions &lt;list&gt;</code></td>
+<td><code>-e</code></td>
+<td>Extensions to load</td>
+</tr>
+<tr>
+<td><code>--list-extensions</code></td>
+<td><code>-l</code></td>
+<td>List extensions and exit</td>
+</tr>
+<tr>
+<td><code>--include-directories</code></td>
+<td></td>
+<td>Additional workspace dirs</td>
+</tr>
+<tr>
+<td><code>--allowed-mcp-server-names</code></td>
+<td></td>
+<td>Restrict MCP server names</td>
+</tr>
+<tr>
+<td><code>--screen-reader</code></td>
+<td></td>
+<td>Enable accessibility mode</td>
+</tr>
+<tr>
+<td><code>--acp</code></td>
+<td></td>
+<td>Start in ACP (Agent Code Pilot) mode</td>
+</tr>
+<tr>
+<td><code>--debug</code></td>
+<td><code>-d</code></td>
+<td>Verbose debug logging</td>
+</tr>
+<tr>
+<td><code>--version</code></td>
+<td><code>-v</code></td>
+<td>Show version</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td><code>-h</code></td>
+<td>Show help</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="subcommands">Subcommands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># MCP server management</span>
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>&lt;name&gt;<span class="w"> </span>&lt;cmd-or-url&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>remove<span class="w"> </span>&lt;name&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>list
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>&lt;name&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>disable<span class="w"> </span>&lt;name&gt;
+
+<span class="c1"># Extension management</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>install<span class="w"> </span>&lt;source&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>uninstall<span class="w"> </span>&lt;name&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>list
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>update<span class="w"> </span><span class="o">[</span>name<span class="o">]</span><span class="w"> </span><span class="o">[</span>--all<span class="o">]</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>enable/disable<span class="w"> </span>&lt;name&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>link<span class="w"> </span>&lt;path&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>new<span class="w"> </span>&lt;path&gt;
+
+<span class="c1"># Skills management</span>
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>list<span class="w"> </span><span class="o">[</span>--all<span class="o">]</span>
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>install<span class="w"> </span>&lt;source&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>link<span class="w"> </span>&lt;path&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>uninstall<span class="w"> </span>&lt;name&gt;
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>enable/disable<span class="w"> </span>&lt;name&gt;
+
+<span class="c1"># Hooks</span>
+$<span class="w"> </span>gemini<span class="w"> </span>hooks<span class="w"> </span>migrate
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="headless-output-formats">Headless Output Formats</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>Plain text (default)</td>
+</tr>
+<tr>
+<td><code>json</code></td>
+<td>Single JSON object with <code>response</code> and <code>stats</code></td>
+</tr>
+<tr>
+<td><code>stream-json</code></td>
+<td>JSONL: <code>init</code> · <code>message</code> · <code>tool_use</code> · <code>tool_result</code> · <code>error</code> · <code>result</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exit codes:</strong> <code>0</code> Success · <code>1</code> Error · <code>42</code> Bad input · <code>53</code> Turn limit exceeded</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="interactive-commands">
+<h2 id="interactive-commands">Interactive Commands</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="slash-commands">Slash Commands <code>/</code></h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/help</code></td>
+<td>Show all commands</td>
+</tr>
+<tr>
+<td><code>/quit</code> <code>/exit</code></td>
+<td>Exit Gemini CLI</td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>Clear terminal screen</td>
+</tr>
+<tr>
+<td><code>/about</code></td>
+<td>Show version info</td>
+</tr>
+<tr>
+<td><code>/auth</code></td>
+<td>Change authentication</td>
+</tr>
+<tr>
+<td><code>/model</code></td>
+<td>Set / manage model</td>
+</tr>
+<tr>
+<td><code>/settings</code></td>
+<td>Open settings editor</td>
+</tr>
+<tr>
+<td><code>/theme</code></td>
+<td>Change visual theme</td>
+</tr>
+<tr>
+<td><code>/vim</code></td>
+<td>Toggle vim mode</td>
+</tr>
+<tr>
+<td><code>/plan [goal]</code></td>
+<td>Enter Plan Mode</td>
+</tr>
+<tr>
+<td><code>/compress</code></td>
+<td>Compress chat context</td>
+</tr>
+<tr>
+<td><code>/copy</code></td>
+<td>Copy last output to clipboard</td>
+</tr>
+<tr>
+<td><code>/init</code></td>
+<td>Generate GEMINI.md for project</td>
+</tr>
+<tr>
+<td><code>/docs</code></td>
+<td>Open documentation</td>
+</tr>
+<tr>
+<td><code>/bug</code></td>
+<td>File a GitHub issue</td>
+</tr>
+<tr>
+<td><code>/stats</code></td>
+<td>Session / model / tools stats</td>
+</tr>
+<tr>
+<td><code>/tools</code></td>
+<td>List available tools</td>
+</tr>
+<tr>
+<td><code>/memory show</code></td>
+<td>Show all context files</td>
+</tr>
+<tr>
+<td><code>/memory add &lt;text&gt;</code></td>
+<td>Add to global GEMINI.md</td>
+</tr>
+<tr>
+<td><code>/memory reload</code></td>
+<td>Reload context files</td>
+</tr>
+<tr>
+<td><code>/resume</code></td>
+<td>Browse &amp; resume sessions</td>
+</tr>
+<tr>
+<td><code>/rewind</code></td>
+<td>Rewind conversation history</td>
+</tr>
+<tr>
+<td><code>/restore</code></td>
+<td>Restore pre-tool file state</td>
+</tr>
+<tr>
+<td><code>/hooks list</code></td>
+<td>List configured hooks</td>
+</tr>
+<tr>
+<td><code>/mcp list</code></td>
+<td>List MCP servers</td>
+</tr>
+<tr>
+<td><code>/mcp reload</code></td>
+<td>Restart MCP servers</td>
+</tr>
+<tr>
+<td><code>/skills list</code></td>
+<td>List available skills</td>
+</tr>
+<tr>
+<td><code>/extensions list</code></td>
+<td>List extensions</td>
+</tr>
+<tr>
+<td><code>/permissions trust</code></td>
+<td>Trust current folder</td>
+</tr>
+<tr>
+<td><code>/policies list</code></td>
+<td>List active policies</td>
+</tr>
+<tr>
+<td><code>/directory add</code></td>
+<td>Add workspace directory</td>
+</tr>
+<tr>
+<td><code>/ide status</code></td>
+<td>IDE integration status</td>
+</tr>
+<tr>
+<td><code>/shells</code></td>
+<td>Toggle background shells</td>
+</tr>
+<tr>
+<td><code>/terminal-setup</code></td>
+<td>Configure multiline keybindings</td>
+</tr>
+<tr>
+<td><code>/setup-github</code></td>
+<td>Setup GitHub Actions</td>
+</tr>
+</tbody>
+</table>
+<p>Reload commands: <code>/skills reload</code>, <code>/agents reload</code>, <code>/commands reload</code>, <code>/memory reload</code>, <code>/mcp reload</code>, <code>/extensions reload</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="at-commands">At Commands <code>@</code></h3>
+<div class="section">
+<p>Include file or directory content in your prompt:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Include a file</span>
+@src/main.ts<span class="w"> </span>fix<span class="w"> </span>the<span class="w"> </span>bug<span class="w"> </span>on<span class="w"> </span>line<span class="w"> </span><span class="m">42</span>
+
+<span class="c1"># Include a directory</span>
+@src/<span class="w"> </span>what<span class="w"> </span>does<span class="w"> </span>this<span class="w"> </span>module<span class="w"> </span><span class="k">do</span>?
+
+<span class="c1"># Include multiple paths</span>
+@package.json<span class="w"> </span>@src/<span class="w"> </span>audit<span class="w"> </span>dependencies
+</code></pre></div>
+
+<p>Git-aware: respects <code>.gitignore</code> for directory inclusion.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="shell-mode">Shell Mode <code>!</code></h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Run a single shell command</span>
+!ls<span class="w"> </span>-la
+
+<span class="c1"># Toggle persistent shell mode</span>
+!
+
+<span class="c1"># Shell output injected into context</span>
+!git<span class="w"> </span>diff<span class="w"> </span>HEAD~1
+</code></pre></div>
+
+<p><code>GEMINI_CLI=1</code> is set in all shell subprocesses.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="keyboard-shortcuts">
+<h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="cursor-editing">Cursor &amp; Editing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+A</code> / <code>Home</code></td>
+<td>Move to line start</td>
+</tr>
+<tr>
+<td><code>Ctrl+E</code> / <code>End</code></td>
+<td>Move to line end</td>
+</tr>
+<tr>
+<td><code>Ctrl+←</code> / <code>Alt+B</code></td>
+<td>Move word left</td>
+</tr>
+<tr>
+<td><code>Ctrl+→</code> / <code>Alt+F</code></td>
+<td>Move word right</td>
+</tr>
+<tr>
+<td><code>Ctrl+K</code></td>
+<td>Delete to end of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+U</code></td>
+<td>Delete to start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+W</code> / <code>Alt+Bksp</code></td>
+<td>Delete word left</td>
+</tr>
+<tr>
+<td><code>Alt+D</code></td>
+<td>Delete word right</td>
+</tr>
+<tr>
+<td><code>Backspace</code></td>
+<td>Delete left</td>
+</tr>
+<tr>
+<td><code>Delete</code> / <code>Ctrl+D</code></td>
+<td>Delete right</td>
+</tr>
+<tr>
+<td><code>Cmd+Z</code></td>
+<td>Undo</td>
+</tr>
+<tr>
+<td><code>Ctrl+Shift+Z</code></td>
+<td>Redo</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-input">Text Input</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Enter</code></td>
+<td>Submit message</td>
+</tr>
+<tr>
+<td><code>Ctrl/Cmd+Enter</code></td>
+<td>Insert newline</td>
+</tr>
+<tr>
+<td><code>Tab</code></td>
+<td>Queue message</td>
+</tr>
+<tr>
+<td><code>Ctrl+X</code></td>
+<td>Open external editor</td>
+</tr>
+<tr>
+<td><code>Ctrl+V</code></td>
+<td>Paste</td>
+</tr>
+<tr>
+<td><code>Ctrl+R</code></td>
+<td>Reverse history search</td>
+</tr>
+<tr>
+<td><code>Ctrl+P</code></td>
+<td>Previous history entry</td>
+</tr>
+<tr>
+<td><code>Ctrl+N</code></td>
+<td>Next history entry</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="app-controls">App Controls</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Shift+Tab</code></td>
+<td>Cycle approval modes</td>
+</tr>
+<tr>
+<td><code>Ctrl+T</code></td>
+<td>Toggle todos panel</td>
+</tr>
+<tr>
+<td><code>Alt+M</code></td>
+<td>Toggle markdown rendering</td>
+</tr>
+<tr>
+<td><code>Ctrl+Y</code></td>
+<td>Toggle YOLO mode</td>
+</tr>
+<tr>
+<td><code>Ctrl+L</code></td>
+<td>Clear screen</td>
+</tr>
+<tr>
+<td><code>Ctrl+Z</code></td>
+<td>Suspend process</td>
+</tr>
+<tr>
+<td><code>F12</code></td>
+<td>Show error details</td>
+</tr>
+<tr>
+<td><code>Esc</code> twice</td>
+<td>Open rewind dialog</td>
+</tr>
+<tr>
+<td><code>Ctrl+C</code></td>
+<td>Cancel / quit</td>
+</tr>
+<tr>
+<td><code>Ctrl+D</code></td>
+<td>Exit</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="sessions-history">
+<h2 id="sessions-history">Sessions &amp; History</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="session-management">Session Management</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># List all sessions</span>
+$<span class="w"> </span>gemini<span class="w"> </span>--list-sessions
+
+<span class="c1"># Resume most recent</span>
+$<span class="w"> </span>gemini<span class="w"> </span>-r<span class="w"> </span>latest
+
+<span class="c1"># Resume specific session</span>
+$<span class="w"> </span>gemini<span class="w"> </span>-r<span class="w"> </span>&lt;session-id&gt;
+
+<span class="c1"># Delete by index</span>
+$<span class="w"> </span>gemini<span class="w"> </span>--delete-session<span class="w"> </span><span class="m">3</span>
+</code></pre></div>
+
+<p><strong>Inside the <code>/resume</code> browser:</strong></p>
+<ul>
+<li><code>↑↓</code> to navigate sessions</li>
+<li><code>Enter</code> to resume selected session</li>
+<li><code>x</code> to delete a session</li>
+<li>Search by typing</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="rewind-workflow">Rewind Workflow</h3>
+<div class="section">
+<p><code>/rewind</code> or press <code>Esc</code> twice to open the rewind dialog:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Rewind + Revert</td>
+<td>Reset chat history AND file changes</td>
+</tr>
+<tr>
+<td>Rewind only</td>
+<td>Reset chat history, keep files</td>
+</tr>
+<tr>
+<td>Revert only</td>
+<td>Restore files, keep chat history</td>
+</tr>
+<tr>
+<td>Do nothing</td>
+<td>Cancel (Esc)</td>
+</tr>
+</tbody>
+</table>
+<p>Applies only to AI-made file changes, not manual edits or <code>!</code> shell commands.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fork-a-conversation">Fork a Conversation</h3>
+<div class="section">
+<p>Save and restore named checkpoints to explore multiple approaches:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 1. Save current state</span>
+/resume<span class="w"> </span>save<span class="w"> </span>my-decision-point
+
+<span class="c1"># 2. Try approach A...</span>
+
+<span class="c1"># 3. Restore to saved state</span>
+/resume<span class="w"> </span>resume<span class="w"> </span>my-decision-point
+
+<span class="c1"># 4. Try approach B...</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="context-memory">
+<h2 id="context-memory">Context &amp; Memory</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="geminimd-hierarchy">GEMINI.md Hierarchy</h3>
+<div class="section">
+<p>Context files are loaded in this order (all merged):</p>
+<table>
+<thead>
+<tr>
+<th>Priority</th>
+<th>Location</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Global</td>
+<td><code>~/.gemini/GEMINI.md</code></td>
+</tr>
+<tr>
+<td>2. Parent dirs</td>
+<td>Scanned up from workspace</td>
+</tr>
+<tr>
+<td>3. Workspace</td>
+<td><code>.gemini/GEMINI.md</code></td>
+</tr>
+<tr>
+<td>4. JIT (on-demand)</td>
+<td>Scanned when tools access dirs</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="gh"># Importing other files inside GEMINI.md</span>
+
+@./docs/architecture.md
+@./docs/conventions.md
+</code></pre></div>
+
+<p>Customize the filename via <code>context.fileName</code> in <code>settings.json</code> (can be an array: <code>["AGENTS.md", "GEMINI.md"]</code>).</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="memory-commands">Memory Commands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Show all loaded context</span>
+/memory<span class="w"> </span>show
+
+<span class="c1"># Force reload all context files</span>
+/memory<span class="w"> </span>reload
+
+<span class="c1"># Append text to global GEMINI.md</span>
+/memory<span class="w"> </span>add<span class="w"> </span><span class="s2">&quot;Always use TypeScript strict mode&quot;</span>
+
+<span class="c1"># Generate project GEMINI.md</span>
+/init
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="ignoring-files">Ignoring Files</h3>
+<div class="section">
+<p>Create <code>.geminiignore</code> in project root (follows <code>.gitignore</code> syntax):</p>
+<div class="codehilite"><pre><span></span><code>#<span class="w"> </span><span class="n">Exclude</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">directory</span>
+<span class="o">/</span><span class="n">packages</span><span class="o">/</span>
+
+#<span class="w"> </span><span class="n">Exclude</span><span class="w"> </span><span class="n">specific</span><span class="w"> </span><span class="n">files</span>
+<span class="n">apikeys</span><span class="p">.</span><span class="n">txt</span>
+<span class="o">*</span><span class="p">.</span><span class="n">log</span>
+
+#<span class="w"> </span><span class="n">Exclude</span><span class="w"> </span><span class="nb">all</span><span class="w"> </span><span class="p">.</span><span class="n">md</span><span class="w"> </span><span class="n">except</span><span class="w"> </span><span class="n">README</span>
+<span class="o">*</span><span class="p">.</span><span class="n">md</span>
+<span class="sx">!README.md</span>
+</code></pre></div>
+
+<p>Files are hidden from CLI tools but remain visible to Git and other services.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="mcp-servers">
+<h2 id="mcp-servers">MCP Servers</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="mcp-config">MCP Config</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;timeout&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">30000</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;trust&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;includeTools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;tool1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;tool2&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;excludeTools&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;dangerous-tool&quot;</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;remote-server&quot;</span><span class="p">:</span><span class="w"> </span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Env vars support <code>$VAR</code>, <code>$</code>, and <code>%VAR%</code> (Windows) expansion.</p>
+<p>Tool FQN pattern: <code>mcp__</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="managing-servers">Managing Servers</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Add stdio server</span>
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>myserver<span class="w"> </span>npx<span class="w"> </span>-y<span class="w"> </span>my-mcp-package
+
+<span class="c1"># Add HTTP server</span>
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>myserver<span class="w"> </span>https://api.example.com/mcp
+
+<span class="c1"># Add with options</span>
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>myserver<span class="w"> </span>cmd<span class="w"> </span>--transport<span class="w"> </span>http<span class="w"> </span>--trust<span class="w"> </span>--timeout<span class="w"> </span><span class="m">30000</span>
+
+<span class="c1"># List all servers</span>
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>list
+
+<span class="c1"># Remove a server</span>
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>remove<span class="w"> </span>myserver
+
+<span class="c1"># Enable / disable</span>
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>myserver
+$<span class="w"> </span>gemini<span class="w"> </span>mcp<span class="w"> </span>disable<span class="w"> </span>myserver<span class="w"> </span>--session
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="mcp-server-config-fields">MCP Server Config Fields</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command</code></td>
+<td>Executable for stdio transport</td>
+</tr>
+<tr>
+<td><code>args</code></td>
+<td>Arguments array</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>URL for SSE transport</td>
+</tr>
+<tr>
+<td><code>httpUrl</code></td>
+<td>URL for Streamable HTTP</td>
+</tr>
+<tr>
+<td><code>env</code></td>
+<td>Environment variables</td>
+</tr>
+<tr>
+<td><code>cwd</code></td>
+<td>Working directory</td>
+</tr>
+<tr>
+<td><code>timeout</code></td>
+<td>Connection timeout (ms, default 600000)</td>
+</tr>
+<tr>
+<td><code>trust</code></td>
+<td>Skip confirmation for all tools</td>
+</tr>
+<tr>
+<td><code>includeTools</code></td>
+<td>Whitelist specific tools</td>
+</tr>
+<tr>
+<td><code>excludeTools</code></td>
+<td>Blacklist specific tools</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="mcp-resources">MCP Resources</h3>
+<div class="section">
+<p>Reference MCP resources in prompts:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Reference a resource</span>
+@server://resource/path<span class="w"> </span>summarize<span class="w"> </span>this
+
+<span class="c1"># Slash commands from MCP prompts</span>
+/prompt-name<span class="w"> </span>--arg<span class="o">=</span>value
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="extensions-skills">
+<h2 id="extensions-skills">Extensions &amp; Skills</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="managing-extensions">Managing Extensions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Install from GitHub</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>install<span class="w"> </span>https://github.com/org/ext
+
+<span class="c1"># Install from local path</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>install<span class="w"> </span>./my-extension
+
+<span class="c1"># List installed</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>list
+
+<span class="c1"># Update all</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>update<span class="w"> </span>--all
+
+<span class="c1"># Update specific</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>update<span class="w"> </span>my-ext
+
+<span class="c1"># Enable / disable</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>my-ext
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>disable<span class="w"> </span>my-ext<span class="w"> </span>--scope<span class="w"> </span>user
+
+<span class="c1"># Link for development</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>link<span class="w"> </span>./dev-extension
+
+<span class="c1"># Create new extension</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>new<span class="w"> </span>./my-new-ext
+
+<span class="c1"># Validate structure</span>
+$<span class="w"> </span>gemini<span class="w"> </span>extensions<span class="w"> </span>validate<span class="w"> </span>./my-ext
+</code></pre></div>
+
+<p>Extensions bundle: prompts, MCP servers, custom commands, themes, hooks, subagents, and skills.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="agent-skills">Agent Skills</h3>
+<div class="section">
+<p>Skills provide on-demand expertise — loaded only when <code>activate_skill</code> is called.</p>
+<p><strong>Discovery locations (precedence):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tier</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Workspace</td>
+<td><code>.gemini/skills/</code> or <code>.agents/skills/</code></td>
+</tr>
+<tr>
+<td>User</td>
+<td><code>~/.gemini/skills/</code> or <code>~/.agents/skills/</code></td>
+</tr>
+<tr>
+<td>Extension</td>
+<td>Bundled within extension</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="c1"># List all skills</span>
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>list<span class="w"> </span>--all
+
+<span class="c1"># Install from Git or local</span>
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>install<span class="w"> </span>https://github.com/org/skill
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>install<span class="w"> </span>./local-skill
+
+<span class="c1"># Link for development</span>
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>link<span class="w"> </span>./my-skill
+
+<span class="c1"># Enable / disable</span>
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>my-skill
+$<span class="w"> </span>gemini<span class="w"> </span>skills<span class="w"> </span>disable<span class="w"> </span>my-skill
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="custom-commands">Custom Commands</h3>
+<div class="section">
+<p>Save reusable prompts as slash commands.</p>
+<p><strong>File locations:</strong></p>
+<ul>
+<li>User: <code>~/.gemini/commands/</code></li>
+<li>Project: <code>.gemini/commands/</code></li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1"># .gemini/commands/git/commit.toml</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Generate commit message&quot;</span>
+<span class="n">prompt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Generate a conventional commit message for:</span>
+
+<span class="s2">!</span>
+
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
+</code></pre></div>
+
+<p>Command becomes <code>/git:commit</code>. Subdirectory <code>/</code> → <code>:</code> namespace.</p>
+<p><strong>Placeholders:</strong>
+| Placeholder | Meaning |
+|---|---|
+| <code>}</code> | Inject user arguments |
+| <code>!</code> | Execute shell, inject output |
+| <code>@</code> | Embed file content |</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="plan-mode">
+<h2 id="plan-mode">Plan Mode</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="enabling-plan-mode">Enabling Plan Mode</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># One-time via flag</span>
+$<span class="w"> </span>gemini<span class="w"> </span>--approval-mode<span class="o">=</span>plan
+
+<span class="c1"># Natural language trigger</span>
+&gt;<span class="w"> </span>let<span class="err">&#39;</span>s<span class="w"> </span>plan<span class="w"> </span>the<span class="w"> </span>refactor<span class="w"> </span>first
+
+<span class="c1"># Slash command</span>
+/plan<span class="w"> </span>redesign<span class="w"> </span>the<span class="w"> </span>auth<span class="w"> </span>module
+
+<span class="c1"># Cycle modes with Shift+Tab during session</span>
+</code></pre></div>
+
+<p>Set as default in <code>settings.json</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="plan-mode-tools">Plan Mode Tools</h3>
+<div class="section">
+<p><strong>Read-only (always available):</strong></p>
+<ul>
+<li><code>read_file</code>, <code>list_directory</code>, <code>glob</code></li>
+<li><code>grep_search</code>, <code>google_web_search</code></li>
+<li><code>web_fetch</code> (with confirmation)</li>
+<li><code>codebase_investigator</code>, <code>cli_help</code></li>
+<li><code>ask_user</code></li>
+</ul>
+<p><strong>Write (restricted):</strong></p>
+<ul>
+<li><code>write_file</code>, <code>replace</code> — only for <code>.md</code> files inside plans directory</li>
+</ul>
+<p><strong>Memory:</strong></p>
+<ul>
+<li><code>save_memory</code>, <code>activate_skill</code></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="plan-mode-workflow">Plan Mode Workflow</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">Set</span><span class="w"> </span><span class="kr">go</span><span class="n">al</span>
+<span class="w">   </span><span class="err">└─</span><span class="w"> </span><span class="n">natural</span><span class="w"> </span><span class="n">language</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="o">/</span><span class="n">plan</span><span class="w"> </span><span class="o">&lt;</span><span class="kr">go</span><span class="n">al</span><span class="o">&gt;</span>
+
+<span class="mf">2.</span><span class="w"> </span><span class="n">Discuss</span><span class="w"> </span><span class="n">strategy</span>
+<span class="w">   </span><span class="err">└─</span><span class="w"> </span><span class="n">Gemini</span><span class="w"> </span><span class="n">may</span><span class="w"> </span><span class="n">ask</span><span class="w"> </span><span class="n">clarifying</span><span class="w"> </span><span class="n">questions</span>
+
+<span class="mf">3.</span><span class="w"> </span><span class="n">Review</span><span class="w"> </span><span class="n">plan</span>
+<span class="w">   </span><span class="err">└─</span><span class="w"> </span><span class="n">Markdown</span><span class="w"> </span><span class="n">file</span><span class="w"> </span><span class="n">written</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">plans</span><span class="w"> </span><span class="n">dir</span>
+<span class="w">   </span><span class="err">└─</span><span class="w"> </span><span class="n">Ctrl</span><span class="o">+</span><span class="n">X</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">edit</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">external</span><span class="w"> </span><span class="n">editor</span>
+
+<span class="mf">4.</span><span class="w"> </span><span class="n">Approve</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="n">iterate</span>
+
+<span class="mf">5.</span><span class="w"> </span><span class="n">Switch</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">YOLO</span><span class="o">/</span><span class="n">auto_edit</span><span class="w"> </span><span class="kr">to</span><span class="w"> </span><span class="n">implement</span>
+</code></pre></div>
+
+<p>Auto model routing: Pro during planning → Flash during implementation.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="configuration">
+<h2 id="configuration">Configuration</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="settings-file-locations">Settings File Locations</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Path</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>User</td>
+<td><code>~/.gemini/settings.json</code></td>
+</tr>
+<tr>
+<td>Project</td>
+<td><code>.gemini/settings.json</code></td>
+</tr>
+<tr>
+<td>System (Linux)</td>
+<td><code>/etc/gemini-cli/settings.json</code></td>
+</tr>
+<tr>
+<td>System (macOS)</td>
+<td><code>/Library/Application Support/GeminiCli/</code></td>
+</tr>
+<tr>
+<td>System (Windows)</td>
+<td><code>C:\ProgramData\gemini-cli\settings.json</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Precedence (highest wins):</strong>
+CLI args → env vars → system settings → project settings → user settings → system defaults</p>
+<p><strong>Common settings:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;ui&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;model&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;tools&quot;</span><span class="p">:</span><span class="w"> </span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Open the visual editor with <code>/settings</code>.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="key-environment-variables">Key Environment Variables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GEMINI_API_KEY</code></td>
+<td>Gemini API authentication</td>
+</tr>
+<tr>
+<td><code>GEMINI_MODEL</code></td>
+<td>Default model override</td>
+</tr>
+<tr>
+<td><code>GEMINI_CLI_HOME</code></td>
+<td>Override config directory</td>
+</tr>
+<tr>
+<td><code>GOOGLE_CLOUD_PROJECT</code></td>
+<td>Vertex AI project</td>
+</tr>
+<tr>
+<td><code>GOOGLE_CLOUD_LOCATION</code></td>
+<td>Vertex AI region</td>
+</tr>
+<tr>
+<td><code>GOOGLE_APPLICATION_CREDENTIALS</code></td>
+<td>Service account JSON path</td>
+</tr>
+<tr>
+<td><code>GOOGLE_API_KEY</code></td>
+<td>Google Cloud API key</td>
+</tr>
+<tr>
+<td><code>GEMINI_SANDBOX</code></td>
+<td>Sandbox type: <code>true</code>, <code>docker</code>, <code>podman</code>, <code>runsc</code></td>
+</tr>
+<tr>
+<td><code>GEMINI_SYSTEM_MD</code></td>
+<td>Path to system prompt file</td>
+</tr>
+<tr>
+<td><code>NO_COLOR</code></td>
+<td>Disable colored output</td>
+</tr>
+<tr>
+<td><code>CLI_TITLE</code></td>
+<td>Override terminal window title</td>
+</tr>
+</tbody>
+</table>
+<p>Persist in <code>~/.bashrc</code>, <code>~/.zshrc</code>, or <code>.gemini/.env</code>.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sandboxing-options">Sandboxing Options</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Platform</th>
+<th>How to Enable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macOS Seatbelt</td>
+<td>macOS only</td>
+<td><code>GEMINI_SANDBOX=sandbox-exec</code></td>
+</tr>
+<tr>
+<td>Docker/Podman</td>
+<td>Cross-platform</td>
+<td><code>--sandbox</code> or <code>GEMINI_SANDBOX=docker</code></td>
+</tr>
+<tr>
+<td>gVisor (runsc)</td>
+<td>Linux only</td>
+<td><code>GEMINI_SANDBOX=runsc</code></td>
+</tr>
+<tr>
+<td>LXC/LXD</td>
+<td>Linux experimental</td>
+<td><code>GEMINI_SANDBOX=lxc</code></td>
+</tr>
+<tr>
+<td>Windows Sandbox</td>
+<td>Windows only</td>
+<td><code>GEMINI_SANDBOX=true</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="hooks">
+<h2 id="hooks">Hooks</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="hook-events">Hook Events</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>When</th>
+<th>Can Block?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SessionStart</code></td>
+<td>Session begins</td>
+<td>No (advisory)</td>
+</tr>
+<tr>
+<td><code>SessionEnd</code></td>
+<td>Session ends</td>
+<td>No (best effort)</td>
+</tr>
+<tr>
+<td><code>BeforeAgent</code></td>
+<td>Before planning starts</td>
+<td>Yes (exit 2)</td>
+</tr>
+<tr>
+<td><code>AfterAgent</code></td>
+<td>Agent loop ends</td>
+<td>Yes (force retry)</td>
+</tr>
+<tr>
+<td><code>BeforeModel</code></td>
+<td>Before LLM call</td>
+<td>Yes (exit 2)</td>
+</tr>
+<tr>
+<td><code>AfterModel</code></td>
+<td>After each LLM chunk</td>
+<td>Yes (exit 2)</td>
+</tr>
+<tr>
+<td><code>BeforeToolSelection</code></td>
+<td>Before tool choice</td>
+<td>Filter tools</td>
+</tr>
+<tr>
+<td><code>BeforeTool</code></td>
+<td>Before tool runs</td>
+<td>Yes (exit 2)</td>
+</tr>
+<tr>
+<td><code>AfterTool</code></td>
+<td>After tool runs</td>
+<td>Yes (hide result)</td>
+</tr>
+<tr>
+<td><code>PreCompress</code></td>
+<td>Before compression</td>
+<td>No (advisory)</td>
+</tr>
+<tr>
+<td><code>Notification</code></td>
+<td>System notifications</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exit codes:</strong> <code>0</code> = success · <code>2</code> = block/critical · other = warning</p>
+<p><strong>Hook config in <code>settings.json</code>:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;SessionStart&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="err">&#39;&quot;</span>
+<span class="err">      }</span>
+<span class="err">    ]</span>
+<span class="err">  }</span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hook-io-protocol">Hook I/O Protocol</h3>
+<div class="section">
+<p>All hooks receive JSON via <strong>stdin</strong>:</p>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+<p>Respond with JSON on <strong>stdout</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>decision</code></td>
+<td><code>"allow"</code> or <code>"deny"</code></td>
+</tr>
+<tr>
+<td><code>reason</code></td>
+<td>Shown to user on denial</td>
+</tr>
+<tr>
+<td><code>systemMessage</code></td>
+<td>Injected into context</td>
+</tr>
+<tr>
+<td><code>suppressOutput</code></td>
+<td>Hide hook output</td>
+</tr>
+<tr>
+<td><code>continue</code></td>
+<td><code>false</code> to halt agent</td>
+</tr>
+</tbody>
+</table>
+<p><strong>BeforeTool</strong> extra: <code>hookSpecificOutput.tool_input</code> overrides args.</p>
+<p><strong>AfterTool</strong> extra: <code>hookSpecificOutput.additionalContext</code> appended to result.</p>
+<p><strong>BeforeAgent</strong> extra: <code>hookSpecificOutput.additionalContext</code> appended to prompt.</p>
+<p><strong>Environment vars available:</strong>
+<code>GEMINI_PROJECT_DIR</code>, <code>GEMINI_SESSION_ID</code>, <code>GEMINI_CWD</code></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://geminicli.com/docs/">Official Documentation</a> <em>(geminicli.com)</em></li>
+<li><a href="https://geminicli.com/docs/cli/cli-reference">CLI Cheatsheet</a> <em>(geminicli.com)</em></li>
+<li><a href="https://geminicli.com/docs/reference/keyboard-shortcuts">Keyboard Shortcuts Reference</a> <em>(geminicli.com)</em></li>
+<li><a href="https://geminicli.com/docs/reference/configuration">Configuration Reference</a> <em>(geminicli.com)</em></li>
+<li><a href="https://geminicli.com/docs/hooks/reference">Hooks Reference</a> <em>(geminicli.com)</em></li>
+<li><a href="https://github.com/google-gemini/gemini-cli">GitHub Repository</a> <em>(github.com)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

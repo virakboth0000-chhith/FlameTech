@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Emacs Cheat Sheet — FlameTech</title>
+  <meta name="description" content="[Emacs](https://www.gnu.org/software/emacs) is the extensible, customizable, self-documenting real time display text editor.
+  This reference was made for Emacs">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#7752a9}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(119,82,169,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Toolkit</span>
+    <span>›</span>
+    <span>Emacs</span>
+  </div>
+  <div class="post-icon">EM</div>
+  <h1>Emacs <span>cheatsheet</span></h1>
+  <div class="post-intro"><p><a href="https://www.gnu.org/software/emacs">Emacs</a> is the extensible, customizable, self-documenting real time display text editor.
+  This reference was made for Emacs 27.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Toolkit</span>
+    <span class="meta-tag">editor</span> <span class="meta-tag">text</span> <span class="meta-tag">shortcut</span> <span class="meta-tag">Toolkit</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="starting-emacs">Starting Emacs</h3>
+<div class="section">
+<p>To enter Emacs, just type its name:</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>emacs
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-z</code></td>
+<td style="text-align: left;">Suspend Emacs</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-c</code></td>
+<td style="text-align: left;">Exit Emacs permanently</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="global-description">Global Description</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-&lt;key&gt;</code></td>
+<td style="text-align: left;">Means hold the control, and press <code>&lt;key&gt;</code></td>
+</tr>
+<tr>
+<td><code>M-&lt;key&gt;</code></td>
+<td style="text-align: left;">Means press the Esc once, and press <code>&lt;key&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<p>NOTICE: This cheatsheet follows the above rules.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="motion">Motion</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Backward</th>
+<th>Forward</th>
+<th style="text-align: left;">Entity to move over</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-b</code></td>
+<td><code>C-f</code></td>
+<td style="text-align: left;">Haracter</td>
+</tr>
+<tr>
+<td><code>M-b</code></td>
+<td><code>M-f</code></td>
+<td style="text-align: left;">Word</td>
+</tr>
+<tr>
+<td><code>C-p</code></td>
+<td><code>C-n</code></td>
+<td style="text-align: left;">Line</td>
+</tr>
+<tr>
+<td><code>C-a</code></td>
+<td><code>C-e</code></td>
+<td style="text-align: left;">Line beginning<br/><em>(or end)</em></td>
+</tr>
+<tr>
+<td><code>M-a</code></td>
+<td><code>M-e</code></td>
+<td style="text-align: left;">Sentence</td>
+</tr>
+<tr>
+<td><code>M-</code></td>
+<td>Paragraph</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>[</code></td>
+<td><code>C-x</code> <code>]</code></td>
+<td style="text-align: left;">Page</td>
+</tr>
+<tr>
+<td><code>C-M-b</code></td>
+<td><code>C-M-f</code></td>
+<td style="text-align: left;">Sexp</td>
+</tr>
+<tr>
+<td><code>C-M-a</code></td>
+<td><code>C-M-e</code></td>
+<td style="text-align: left;">Function</td>
+</tr>
+<tr>
+<td><code>M-&lt;</code></td>
+<td><code>M-&gt;</code></td>
+<td style="text-align: left;">Buffer beginning<br><em>(or end)</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="case-change">Case Change</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-u</code></td>
+<td style="text-align: left;">Uppercase word</td>
+</tr>
+<tr>
+<td><code>M-l</code></td>
+<td style="text-align: left;">Lowercase word</td>
+</tr>
+<tr>
+<td><code>M-c</code></td>
+<td style="text-align: left;">Capitalize word</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-u</code></td>
+<td style="text-align: left;">Uppercase region</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-l</code></td>
+<td style="text-align: left;">Lowercase region</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="files">Files</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>C-f</code></td>
+<td style="text-align: left;">Read a file into Emacs</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-s</code></td>
+<td style="text-align: left;">Save a file back to disk</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>s</code></td>
+<td style="text-align: left;">Save all files</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>i</code></td>
+<td style="text-align: left;">Insert contents of another file into this buffer</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-v</code></td>
+<td style="text-align: left;">Replace this file with your file</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-w</code></td>
+<td style="text-align: left;">Write buffer to a specified file</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-q</code></td>
+<td style="text-align: left;">Toggle read-only status of buffer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="error-recovery">Error Recovery</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-g</code></td>
+<td style="text-align: left;">Abort partially typed or executing command</td>
+</tr>
+<tr>
+<td><code>M-x</code> recover-session</td>
+<td style="text-align: left;">Recover files lost by a system crash</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>u</code><br><code>C-_</code><br><code>C-/</code></td>
+<td style="text-align: left;">Undo an unwanted change</td>
+</tr>
+<tr>
+<td><code>M-x</code> revert-buffer</td>
+<td style="text-align: left;">Restore a buffer to its original contents</td>
+</tr>
+<tr>
+<td><code>C-l</code></td>
+<td style="text-align: left;">Redraw garbaged screen</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="transposing">Transposing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-t</code></td>
+<td style="text-align: left;">Transpose characters</td>
+</tr>
+<tr>
+<td><code>M-t</code></td>
+<td style="text-align: left;">Transpose words</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-t</code></td>
+<td style="text-align: left;">Transpose lines</td>
+</tr>
+<tr>
+<td><code>C-M-t</code></td>
+<td style="text-align: left;">Transpose sexps</td>
+</tr>
+</tbody>
+</table>
+<h4 id="scroll">Scroll</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-v</code></td>
+<td style="text-align: left;">Scroll to next screen</td>
+</tr>
+<tr>
+<td><code>M-v</code></td>
+<td style="text-align: left;">Scroll to previous screen</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>&lt;</code></td>
+<td style="text-align: left;">Scroll left</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>&gt;</code></td>
+<td style="text-align: left;">Scroll right</td>
+</tr>
+<tr>
+<td><code>C-l</code></td>
+<td style="text-align: left;">Scroll current line to <br>center, top, bottom</td>
+</tr>
+</tbody>
+</table>
+<h4 id="goto">Goto</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-g</code> <code>g</code></td>
+<td style="text-align: left;">Goto line</td>
+</tr>
+<tr>
+<td><code>M-g</code> <code>c</code></td>
+<td style="text-align: left;">Goto char</td>
+</tr>
+<tr>
+<td><code>M-m</code></td>
+<td style="text-align: left;">Back to indentation</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="marking">Marking</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-@</code><br/><code>C-SPC</code></td>
+<td style="text-align: left;">Uet mark here</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-x</code></td>
+<td style="text-align: left;">Exchange point and mark</td>
+</tr>
+<tr>
+<td><code>M-@</code></td>
+<td style="text-align: left;">Set mark arg words away</td>
+</tr>
+<tr>
+<td><code>M-h</code></td>
+<td style="text-align: left;">Mark paragraph</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-p</code></td>
+<td style="text-align: left;">Mark page</td>
+</tr>
+<tr>
+<td><code>C-M-@</code></td>
+<td style="text-align: left;">Mark sexp</td>
+</tr>
+<tr>
+<td><code>C-M-h</code></td>
+<td style="text-align: left;">Mark function</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>h</code></td>
+<td style="text-align: left;">Mark entire buffer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="killing-and-deleting">Killing and Deleting</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Backward</th>
+<th>Forward</th>
+<th style="text-align: left;">Entity to kill</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>DEL</code></td>
+<td><code>C-d</code></td>
+<td style="text-align: left;">Character <br><em>(delete)</em></td>
+</tr>
+<tr>
+<td><code>M-DEL</code></td>
+<td><code>M-d</code></td>
+<td style="text-align: left;">Word</td>
+</tr>
+<tr>
+<td><code>M-0</code> <code>C-k</code></td>
+<td><code>C-k</code></td>
+<td style="text-align: left;">Line <br/> <em>(to end of)</em></td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>DEL</code></td>
+<td><code>M-k</code></td>
+<td style="text-align: left;">Sentence</td>
+</tr>
+<tr>
+<td><code>M--</code> <code>C-M-k</code></td>
+<td><code>C-M-k</code></td>
+<td style="text-align: left;">Sexp</td>
+</tr>
+</tbody>
+</table>
+<h4 id="killing">Killing</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-W</code></td>
+<td style="text-align: left;">Kill region C-w</td>
+</tr>
+<tr>
+<td><code>M-w</code></td>
+<td style="text-align: left;">Copy region to kill ring</td>
+</tr>
+<tr>
+<td><code>M-z</code> char</td>
+<td style="text-align: left;">Kill through next occurrence of char</td>
+</tr>
+<tr>
+<td><code>C-y</code></td>
+<td style="text-align: left;">Yank back last thing killed</td>
+</tr>
+<tr>
+<td><code>M-y</code></td>
+<td style="text-align: left;">Replace last yank with previous kill</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="getting-help">Getting Help</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>1</code></td>
+<td style="text-align: left;">Remove help window</td>
+</tr>
+<tr>
+<td><code>C-M-v</code></td>
+<td style="text-align: left;">Scroll help window</td>
+</tr>
+<tr>
+<td><code>C-h</code> <code>a</code></td>
+<td style="text-align: left;">Apropos: show commands matching a string</td>
+</tr>
+<tr>
+<td><code>C-h</code> <code>k</code></td>
+<td style="text-align: left;">Describe the function a key runs</td>
+</tr>
+<tr>
+<td><code>C-h</code> <code>f</code></td>
+<td style="text-align: left;">Describe a function</td>
+</tr>
+<tr>
+<td><code>C-h</code> <code>m</code></td>
+<td style="text-align: left;">Get mode-specific information</td>
+</tr>
+</tbody>
+</table>
+<p>The help system is simple. Type <code>C-h</code> (or <code>F1</code>) and follow the directions. If you are a first-time user, type <code>C-h</code> <code>t</code>
+for a tutorial.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="multiple-windows">Multiple Windows</h3>
+<div class="section">
+<p>When two commands are shown, the second is a similar command for a frame instead of a window.</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>1</code></td>
+<td><code>C-x</code> <code>1</code></td>
+<td style="text-align: left;">Delete all other windows</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>2</code></td>
+<td><code>C-x</code> <code>2</code></td>
+<td style="text-align: left;">Split window, above and below</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>0</code></td>
+<td><code>C-x</code> <code>0</code></td>
+<td style="text-align: left;">Delete this window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>3</code></td>
+<td></td>
+<td style="text-align: left;">Split window, side by side</td>
+</tr>
+<tr>
+<td><code>C-M-v</code></td>
+<td></td>
+<td style="text-align: left;">Scroll other window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>o</code></td>
+<td><code>C-x</code> <code>o</code></td>
+<td style="text-align: left;">Switch cursor to another window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>b</code></td>
+<td><code>C-x</code> <code>4</code> <code>b</code></td>
+<td style="text-align: left;">Select buffer in other window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>C-o</code></td>
+<td><code>C-x</code> <code>4</code> <code>C-o</code></td>
+<td style="text-align: left;">Display buffer in other window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>f</code></td>
+<td><code>C-x</code> <code>4</code> <code>f</code></td>
+<td style="text-align: left;">Find file in other window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>r</code></td>
+<td><code>C-x</code> <code>4</code> <code>r</code></td>
+<td style="text-align: left;">Find file read-only in other window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>d</code></td>
+<td><code>C-x</code> <code>4</code> <code>d</code></td>
+<td style="text-align: left;">Run Dired in other window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>5</code> <code>.</code></td>
+<td><code>C-x</code> <code>4</code> <code>.</code></td>
+<td style="text-align: left;">Find tag in other window</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>^</code></td>
+<td></td>
+<td style="text-align: left;">Grow window taller</td>
+</tr>
+<tr>
+<td><code>C-x</code> ``</td>
+<td></td>
+<td style="text-align: left;">Grow window wider</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="formatting">Formatting</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TAB</code></td>
+<td style="text-align: left;">Indent current line (mode-dependent)</td>
+</tr>
+<tr>
+<td><code>C-M-\</code></td>
+<td style="text-align: left;">Indent region (mode-dependent)</td>
+</tr>
+<tr>
+<td><code>C-M-q</code></td>
+<td style="text-align: left;">Indent sexp (mode-dependent)</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>TAB</code></td>
+<td style="text-align: left;">Indent region rigidly arg columns</td>
+</tr>
+<tr>
+<td><code>M-;</code></td>
+<td style="text-align: left;">Indent for comment</td>
+</tr>
+<tr>
+<td><code>C-o</code></td>
+<td style="text-align: left;">Insert newline after point</td>
+</tr>
+<tr>
+<td><code>C-M-o</code></td>
+<td style="text-align: left;">Move rest of line vertically down</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-o</code></td>
+<td style="text-align: left;">Delete blank lines around point</td>
+</tr>
+<tr>
+<td><code>M-^</code></td>
+<td style="text-align: left;">Join line with previous (with arg, next)</td>
+</tr>
+<tr>
+<td><code>M-\</code></td>
+<td style="text-align: left;">Delete all white space around point</td>
+</tr>
+<tr>
+<td><code>M-SPC</code></td>
+<td style="text-align: left;">Put exactly one space at point</td>
+</tr>
+<tr>
+<td><code>M-q</code></td>
+<td style="text-align: left;">Fill paragraph</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>f</code></td>
+<td style="text-align: left;">Set fill column to arg</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>.</code></td>
+<td style="text-align: left;">Set prefix each line starts with</td>
+</tr>
+<tr>
+<td><code>M-o</code></td>
+<td style="text-align: left;">Set face</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="info">Info</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-h</code> <code>i</code></td>
+<td style="text-align: left;">Enter the Info documentation reader</td>
+</tr>
+<tr>
+<td><code>C-h</code> <code>S</code></td>
+<td style="text-align: left;">Find specified function or variable in Info</td>
+</tr>
+</tbody>
+</table>
+<h4 id="moving-within-a-node">Moving within a node</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SPC</code></td>
+<td style="text-align: left;">Scroll forward</td>
+</tr>
+<tr>
+<td><code>DEL</code></td>
+<td style="text-align: left;">Scroll reverse</td>
+</tr>
+<tr>
+<td><code>b</code></td>
+<td style="text-align: left;">Beginning of node</td>
+</tr>
+</tbody>
+</table>
+<h4 id="moving-between-nodes">Moving between nodes</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n</code></td>
+<td style="text-align: left;">Next node</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td style="text-align: left;">Previous node</td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td style="text-align: left;">Move up</td>
+</tr>
+<tr>
+<td><code>m</code></td>
+<td style="text-align: left;">Select menu item by name</td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td style="text-align: left;">Select nth menu item by number (1–9)</td>
+</tr>
+<tr>
+<td><code>f</code></td>
+<td style="text-align: left;">Follow cross reference (return with l)</td>
+</tr>
+<tr>
+<td><code>l</code></td>
+<td style="text-align: left;">Return to last node you saw</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td style="text-align: left;">Return to directory node</td>
+</tr>
+<tr>
+<td><code>t</code></td>
+<td style="text-align: left;">Go to top node of Info file</td>
+</tr>
+<tr>
+<td><code>g</code></td>
+<td style="text-align: left;">Go to any node by name</td>
+</tr>
+</tbody>
+</table>
+<h4 id="other">Other</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>h</code></td>
+<td style="text-align: left;">Run Info tutorial</td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td style="text-align: left;">Look up a subject in the indices</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td style="text-align: left;">Search nodes for regexp</td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td style="text-align: left;">Quit Info</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="minibuffer">Minibuffer</h3>
+<div class="section">
+<p>The following keys are defined in the minibuffer.</p>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TAB</code></td>
+<td style="text-align: left;">Complete as much as possible</td>
+</tr>
+<tr>
+<td><code>SPC</code></td>
+<td style="text-align: left;">Complete up to one word</td>
+</tr>
+<tr>
+<td><code>RET</code></td>
+<td style="text-align: left;">Complete and execute</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td style="text-align: left;">Show possible completions</td>
+</tr>
+<tr>
+<td><code>M-p</code></td>
+<td style="text-align: left;">Fetch previous minibuffer input</td>
+</tr>
+<tr>
+<td><code>M-n</code></td>
+<td style="text-align: left;">Fetch later minibuffer input or default</td>
+</tr>
+<tr>
+<td><code>M-r</code></td>
+<td style="text-align: left;">Regexp search backward through history</td>
+</tr>
+<tr>
+<td><code>M-s</code></td>
+<td style="text-align: left;">Regexp search forward through history</td>
+</tr>
+<tr>
+<td><code>C-g</code></td>
+<td style="text-align: left;">Abort command</td>
+</tr>
+</tbody>
+</table>
+<p>Type <code>C-x</code> <code>ESC</code> <code>ESC</code> to edit and repeat the last command that used the minibuffer. Type <code>F10</code> to activate menu bar
+items on text terminals.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tags">Tags</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-.</code></td>
+<td style="text-align: left;">Find a tag (a definition)</td>
+</tr>
+<tr>
+<td><code>C-u</code> <code>M-.</code></td>
+<td style="text-align: left;">Find next occurrence of tag</td>
+</tr>
+<tr>
+<td><code>M-x</code> visit-tags-table</td>
+<td style="text-align: left;">Specify a new tags file</td>
+</tr>
+<tr>
+<td><code>M-x</code> tags-search</td>
+<td style="text-align: left;">Regexp search on all files in tags table</td>
+</tr>
+<tr>
+<td><code>M-x</code> tags-query-replace</td>
+<td style="text-align: left;">Run query-replace on all the files</td>
+</tr>
+<tr>
+<td><code>M-,</code></td>
+<td style="text-align: left;">Continue last tags search or query-replace</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="rectangles">Rectangles</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>r</code></td>
+<td style="text-align: left;">Copy rectangle to register</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>k</code></td>
+<td style="text-align: left;">Kill rectangle</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>y</code></td>
+<td style="text-align: left;">Yank rectangle</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>o</code></td>
+<td style="text-align: left;">Open rectangle, shifting text right</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>c</code></td>
+<td style="text-align: left;">Blank out rectangle</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>t</code></td>
+<td style="text-align: left;">Prefix each line with a string</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="keyboard-macros">Keyboard Macros</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>(</code></td>
+<td style="text-align: left;">Start defining a keyboard macro</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>)</code></td>
+<td style="text-align: left;">End keyboard macro definition</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>e</code></td>
+<td style="text-align: left;">Execute last-defined keyboard macro</td>
+</tr>
+<tr>
+<td><code>C-u</code> <code>C-x</code> <code>(</code></td>
+<td style="text-align: left;">Append to last keyboard macro</td>
+</tr>
+<tr>
+<td><code>M-x</code> name-last-kbd-macro</td>
+<td style="text-align: left;">Name last keyboard macro</td>
+</tr>
+<tr>
+<td><code>M-x</code> insert-kbd-macro</td>
+<td style="text-align: left;">Insert Lisp definition in buffer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="buffers">Buffers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>b</code></td>
+<td style="text-align: left;">Select another buffer</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>C-b</code></td>
+<td style="text-align: left;">List all buffers</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>k</code></td>
+<td style="text-align: left;">Kill a buffer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="emacs-search">
+<h2 id="emacs-search">Emacs Search</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="regex-common">Regex (common)</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code> <code>(dot)</code></td>
+<td style="text-align: left;">Any single character except a newline</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td style="text-align: left;">Zero or more repeats</td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td style="text-align: left;">One or more repeats</td>
+</tr>
+<tr>
+<td><code>?</code></td>
+<td style="text-align: left;">Zero or one repeat</td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td style="text-align: left;">Quote special characters</td>
+</tr>
+<tr>
+<td><code>\c</code></td>
+<td style="text-align: left;">Quote regular expression special character c</td>
+</tr>
+<tr>
+<td><code>\|</code></td>
+<td style="text-align: left;">Alternative (“or”)</td>
+</tr>
+<tr>
+<td><code>\(...\)</code></td>
+<td style="text-align: left;">Grouping</td>
+</tr>
+<tr>
+<td><code>\(:?...\)</code></td>
+<td style="text-align: left;">Shy grouping</td>
+</tr>
+<tr>
+<td><code>\(:NUM...\)</code></td>
+<td style="text-align: left;">Explicit numbered grouping</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td style="text-align: left;">Same text as nth group</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td style="text-align: left;">At word break</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td style="text-align: left;">Not at word break</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="regex-entry">Regex (entry)</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Start</th>
+<th>End</th>
+<th style="text-align: left;">Entity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>^</code></td>
+<td><code>$</code></td>
+<td style="text-align: left;">Line</td>
+</tr>
+<tr>
+<td><code>\&lt;</code></td>
+<td><code>\&gt;</code></td>
+<td style="text-align: left;">Word</td>
+</tr>
+<tr>
+<td><code>\_&lt;</code></td>
+<td><code>\_&gt;</code></td>
+<td style="text-align: left;">Symbol</td>
+</tr>
+<tr>
+<td><code>\‘</code></td>
+<td><code>\’</code></td>
+<td style="text-align: left;">Buffer</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="regex-conflict">Regex (conflict)</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>These</th>
+<th>Others</th>
+<th style="text-align: left;">class</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[...]</code></td>
+<td><code>[^...]</code></td>
+<td style="text-align: left;">Explicit set</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td><code>\W</code></td>
+<td style="text-align: left;">Word-syntax character</td>
+</tr>
+<tr>
+<td><code>\sc</code></td>
+<td><code>\Sc</code></td>
+<td style="text-align: left;">Character with syntax c</td>
+</tr>
+<tr>
+<td><code>\cc</code></td>
+<td><code>\Cc</code></td>
+<td style="text-align: left;">Character with category c</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="incremental-search">Incremental Search</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-s</code></td>
+<td style="text-align: left;">Search forward</td>
+</tr>
+<tr>
+<td><code>C-r</code></td>
+<td style="text-align: left;">Search backward</td>
+</tr>
+<tr>
+<td><code>C-M-s</code></td>
+<td style="text-align: left;">Regular expression search</td>
+</tr>
+<tr>
+<td><code>C-M-r</code></td>
+<td style="text-align: left;">Reverse regular expression search</td>
+</tr>
+<tr>
+<td><code>M-p</code></td>
+<td style="text-align: left;">Select previous search string</td>
+</tr>
+<tr>
+<td><code>M-n</code></td>
+<td style="text-align: left;">Select next later search string</td>
+</tr>
+<tr>
+<td><code>RET</code></td>
+<td style="text-align: left;">Exit incremental search</td>
+</tr>
+<tr>
+<td><code>DEL</code></td>
+<td style="text-align: left;">Undo effect of last character</td>
+</tr>
+<tr>
+<td><code>C-g</code></td>
+<td style="text-align: left;">Abort current search</td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>C-s</code> or <code>C-r</code> again to repeat the search in either direction. If Emacs is still searching, <code>C-g</code> cancels only the
+part not matched.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="query-replace">Query Replace</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-%</code></td>
+<td style="text-align: left;">Interactively replace a text string</td>
+</tr>
+<tr>
+<td><code>M-x</code> regexp</td>
+<td style="text-align: left;">Using regular expressions</td>
+</tr>
+<tr>
+<td><code>SPC</code> / <code>y</code></td>
+<td style="text-align: left;">Replace this one, go on to next</td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td style="text-align: left;">Replace this one, don’t move</td>
+</tr>
+<tr>
+<td><code>DEL</code> / <code>n</code></td>
+<td style="text-align: left;">Skip to next without replacing</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td style="text-align: left;">Replace all remaining matches</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td style="text-align: left;">Back up to the previous match</td>
+</tr>
+<tr>
+<td><code>RET</code></td>
+<td style="text-align: left;">Exit query-replace</td>
+</tr>
+<tr>
+<td><code>C-r</code></td>
+<td style="text-align: left;">Enter recursive edit (C-M-c to exit)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="misc">
+<h2 id="misc">Misc</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="shells">Shells</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-!</code></td>
+<td style="text-align: left;">Execute a shell command</td>
+</tr>
+<tr>
+<td><code>M-&amp;</code></td>
+<td style="text-align: left;">Execute a shell command asynchronously</td>
+</tr>
+<tr>
+<td><code>M-</code></td>
+<td style="text-align: left;">Run a shell command on the region</td>
+</tr>
+<tr>
+<td><code>C-u</code> <code>M-</code></td>
+<td style="text-align: left;">Filter region through a shell command</td>
+</tr>
+<tr>
+<td><code>M-x</code> shell</td>
+<td style="text-align: left;">Start a shell in window shell</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="international-character-sets">International Character Sets</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>RET</code> <code>l</code></td>
+<td style="text-align: left;">specify principal language</td>
+</tr>
+<tr>
+<td><code>M-x</code> list-input-methods</td>
+<td style="text-align: left;">show all input methods</td>
+</tr>
+<tr>
+<td><code>C-\</code></td>
+<td style="text-align: left;">enable or disable input method</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>RET</code> <code>c</code></td>
+<td style="text-align: left;">set coding system for next command</td>
+</tr>
+<tr>
+<td><code>M-x</code> list-coding-systems</td>
+<td style="text-align: left;">show all coding systems</td>
+</tr>
+<tr>
+<td><code>M-x</code> prefer-coding-system</td>
+<td style="text-align: left;">choose preferred coding system</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="registers">Registers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>s</code></td>
+<td style="text-align: left;">Save region in register</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>i</code></td>
+<td style="text-align: left;">Insert register contents into buffer</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>SPC</code></td>
+<td style="text-align: left;">Save value of point in register</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>r</code> <code>j</code></td>
+<td style="text-align: left;">Jump to point saved in register</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="miscellaneous">Miscellaneous</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-u</code> num</td>
+<td style="text-align: left;">Numeric argument</td>
+</tr>
+<tr>
+<td><code>M--</code></td>
+<td style="text-align: left;">Negative argument</td>
+</tr>
+<tr>
+<td><code>C-q</code> char</td>
+<td style="text-align: left;">Quoted insert</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="commands-dealing-with-emacs-lisp">Commands Dealing with Emacs Lisp</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>C-e</code></td>
+<td style="text-align: left;">Eval sexp before point</td>
+</tr>
+<tr>
+<td><code>C-M-x</code></td>
+<td style="text-align: left;">Eval current defun</td>
+</tr>
+<tr>
+<td><code>M-x</code> eval-region</td>
+<td style="text-align: left;">Eval region</td>
+</tr>
+<tr>
+<td><code>M-:</code></td>
+<td style="text-align: left;">Read and eval minibuffer</td>
+</tr>
+<tr>
+<td><code>M-x</code> load-library</td>
+<td style="text-align: left;">Load a Lisp library from load-path</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="simple-customization">Simple Customization</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-x</code> <code>customize</code></td>
+<td style="text-align: left;">customize variables and faces</td>
+</tr>
+</tbody>
+</table>
+<p>Making global key bindings in Emacs Lisp:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">global</span><span class="o">-</span><span class="n">set</span><span class="o">-</span><span class="n">key</span><span class="w"> </span><span class="p">(</span><span class="n">kbd</span><span class="w"> </span><span class="s">&quot;C-c g&quot;</span><span class="p">)</span><span class="w"> </span><span class="err">’</span><span class="n">search</span><span class="o">-</span><span class="n">forward</span><span class="p">)</span>
+<span class="p">(</span><span class="n">global</span><span class="o">-</span><span class="n">set</span><span class="o">-</span><span class="n">key</span><span class="w"> </span><span class="p">(</span><span class="n">kbd</span><span class="w"> </span><span class="s">&quot;M-#&quot;</span><span class="p">)</span><span class="w"> </span><span class="err">’</span><span class="n">query</span><span class="o">-</span><span class="n">replace</span><span class="o">-</span><span class="n">regexp</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="abbrevs">Abbrevs</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>C-x</code> <code>a</code> <code>g</code></td>
+<td style="text-align: left;">Add global abbrev</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>a</code> <code>l</code></td>
+<td style="text-align: left;">Add mode-local abbrev</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>a</code> <code>i</code> <code>g</code></td>
+<td style="text-align: left;">Add global expansion for this abbrev</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>a</code> <code>i</code> <code>l</code></td>
+<td style="text-align: left;">Add mode-local expansion for this abbrev</td>
+</tr>
+<tr>
+<td><code>C-x</code> <code>a</code> <code>e</code></td>
+<td style="text-align: left;">Explicitly expand abbrev</td>
+</tr>
+<tr>
+<td><code>M-/</code></td>
+<td style="text-align: left;">Expand previous word dynamically</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="spelling-check">Spelling Check</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>M-$</code></td>
+<td style="text-align: left;">Check spelling of current word</td>
+</tr>
+<tr>
+<td><code>M-x</code> ispell-region</td>
+<td style="text-align: left;">Check spelling of all words in region</td>
+</tr>
+<tr>
+<td><code>M-x</code> ispell-buffer</td>
+<td style="text-align: left;">Check spelling of entire buffer</td>
+</tr>
+<tr>
+<td><code>M-x</code> flyspell-mode</td>
+<td style="text-align: left;">Toggle on-the-fly spell checking</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="writing-commands">Writing Commands</h3>
+<div class="section">
+<h4 id="syntax">Syntax</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span><span class="w"> </span><span class="nv">command-name</span><span class="w"> </span><span class="p">(</span><span class="nv">args</span><span class="p">)</span>
+<span class="s">&quot;documentation&quot;</span><span class="w"> </span><span class="p">(</span><span class="nv">interactive</span><span class="w"> </span><span class="s">&quot;template&quot;</span><span class="p">)</span>
+<span class="nv">body</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="example">Example</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="nb">defun</span><span class="w"> </span><span class="nv">this-line-to-top-of-window</span><span class="w"> </span><span class="p">(</span><span class="nv">line</span><span class="p">)</span>
+<span class="w">    </span><span class="s">&quot;Reposition current line to top of window.</span>
+<span class="s">With prefix argument LINE, put point on LINE.&quot;</span>
+<span class="w">    </span><span class="p">(</span><span class="nv">interactive</span><span class="w"> </span><span class="s">&quot;P&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="p">(</span><span class="nv">recenter</span><span class="w"> </span><span class="p">(</span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nb">null</span><span class="w"> </span><span class="nv">line</span><span class="p">)</span>
+<span class="w">                  </span><span class="mi">0</span>
+<span class="w">              </span><span class="p">(</span><span class="nv">prefix-numeric-value</span><span class="w"> </span><span class="nv">line</span><span class="p">))))</span>
+</code></pre></div>
+
+<p>The interactive spec says how to read arguments interactively. Type <code>C-h</code> <code>f</code> interactive <code>RET</code> for more details.</p>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

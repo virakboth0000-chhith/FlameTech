@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Neo4j Cheat Sheet — FlameTech</title>
+  <meta name="description" content="A Neo4j cheat sheet with getting started resources and information on how to query the database with Cypher.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#3b85ef}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(59,133,239,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Database</span>
+    <span>›</span>
+    <span>Neo4j</span>
+  </div>
+  <div class="post-icon">NE</div>
+  <h1>Neo4j <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>A Neo4j cheat sheet with getting started resources and information on how to query the database with Cypher.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Database</span>
+    <span class="meta-tag">DB</span> <span class="meta-tag">GraphDB</span> <span class="meta-tag">Database</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="getting-started-with-neo4j">Getting Started with Neo4j</h3>
+<div class="section">
+<p>Neo4j is a Graph Database consisting of nodes connected together by relationships. You might consider using a Graph
+database if you have a highly connected dataset or have queries with many joins.</p>
+<ul>
+<li><a href="https://neo4j.com/download">Download Neo4j Desktop</a> <em>download Neo4j desktop or server editions</em></li>
+<li><a href="https://sandbox.neo4j.com">Neo4j Sandbox</a> <em>pick a data set - no installation required</em></li>
+<li><a href="https://neo4j.com/aura">Neo4j Aura</a> <em>free Neo4j instance in the cloud</em></li>
+<li><a href="https://neo4j.com/graphacademy">Neo4j GraphAcademy</a> <em>free, self-paced, hands-on online training</em></li>
+<li><a href="https://neo4j.com/graphgists">GraphGists</a> <em>use ase and industry specific example graphs</em></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="graph-database-concepts">Graph Database Concepts</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Nodes</strong></td>
+<td>Nodes are commonly used to represent <em>entities</em> or <em>things</em> in your data. For example, a <strong>Person</strong> or <strong>Movie</strong></td>
+</tr>
+<tr>
+<td><strong>Relationships</strong></td>
+<td>Relationships are used to connect two nodes together and organise the data into structure. For example, a Person <strong>acted in</strong> a movie. A relationship has a <em>type</em> and <em>direction</em>, although the direction can be ignored at query time.</td>
+</tr>
+<tr>
+<td><strong>Labels</strong></td>
+<td>Labels are used to group nodes into categories. For example, a person may have <code>Person</code> and <code>Actor</code> labels.</td>
+</tr>
+<tr>
+<td><strong>Relationship Type</strong></td>
+<td>Each relationship has a type. Relationships allow you to explore smaller sections of a graph.</td>
+</tr>
+<tr>
+<td><strong>Properties</strong></td>
+<td>Both nodes and relationships can have properties set against them. Properties are <a href="https://neo4j.com/docs/cypher-manual/4.3/syntax/values/#cypher-values">name-value pairs</a>.</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="neo4j-syntax">
+<h2 id="neo4j-syntax">Neo4j Syntax</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="read-query-structure">Read query structure</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">[USE]</span>
+<span class="k">[MATCH WHERE]</span>
+<span class="k">[OPTIONAL MATCH WHERE]</span>
+<span class="k">[WITH [ORDER BY] [SKIP] [LIMIT]]</span>
+<span class="na">RETURN [ORDER BY] [SKIP] [LIMIT]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="write-only-query-structure">Write-only query structure</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">[USE]</span>
+<span class="na">(CREATE | MERGE)*</span>
+<span class="na">[SET|DELETE|REMOVE|FOREACH]*</span>
+<span class="k">[RETURN [ORDER BY] [SKIP] [LIMIT]]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="read-write-query-structure">Read-write query structure</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">[USE]</span>
+<span class="k">[MATCH WHERE]</span>
+<span class="k">[OPTIONAL MATCH WHERE]</span>
+<span class="k">[WITH [ORDER BY] [SKIP] [LIMIT]]</span>
+<span class="na">(CREATE | MERGE)*</span>
+<span class="na">[SET|DELETE|REMOVE|FOREACH]*</span>
+<span class="k">[RETURN [ORDER BY] [SKIP] [LIMIT]]</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="neo4j-reading-data">
+<h2 id="neo4j-reading-data">Neo4j Reading Data</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="match">MATCH</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">:</span><span class="n">Person</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="o">:</span><span class="n">Person</span><span class="p">)</span>
+<span class="n">WHERE</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Alice&#39;</span>
+</code></pre></div>
+
+<p>Node patterns can contain labels and properties.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">--&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Any pattern can be used in MATCH.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="w"> </span><span class="p">)</span><span class="o">--&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Patterns with node properties.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">--&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Assign a path to p.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">OPTIONAL</span><span class="w"> </span><span class="k">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-[</span><span class="n">r</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Optional pattern: nulls will be used for missing parts.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="where">WHERE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>WHERE n.property &lt;&gt; $value
+</code></pre></div>
+
+<p>Use a predicate to filter. Note that WHERE is always part of a MATCH, OPTIONAL MATCH or WITH clause. Putting it after a
+different clause in a query will alter what it does.</p>
+<div class="codehilite"><pre><span></span><code>WHERE EXISTS 
+</code></pre></div>
+
+<p>Use an existential subquery to filter.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="return">RETURN</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>RETURN *
+</code></pre></div>
+
+<p>Return the value of all variables.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">RETURN</span><span class="w"> </span><span class="nv">n</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">columnName</span>
+</code></pre></div>
+
+<p>Use alias for result column name.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">RETURN</span><span class="w"> </span><span class="nv">DISTINCT</span><span class="w"> </span><span class="nv">n</span>
+</code></pre></div>
+
+<p>Return unique rows.</p>
+<div class="codehilite"><pre><span></span><code>ORDER BY n.property
+</code></pre></div>
+
+<p>Sort the result.</p>
+<div class="codehilite"><pre><span></span><code>ORDER BY n.property DESC
+</code></pre></div>
+
+<p>Sort the result in descending order.</p>
+<div class="codehilite"><pre><span></span><code>SKIP $skipNumber
+</code></pre></div>
+
+<p>Skip a number of results.</p>
+<div class="codehilite"><pre><span></span><code>LIMIT $limitNumber
+</code></pre></div>
+
+<p>Limit the number of results.</p>
+<div class="codehilite"><pre><span></span><code>SKIP $skipNumber LIMIT $limitNumber
+</code></pre></div>
+
+<p>Skip results at the top and limit the number of results.</p>
+<div class="codehilite"><pre><span></span><code>RETURN count(*)
+</code></pre></div>
+
+<p>The number of matching rows. See Aggregating functions for more.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="with">WITH</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span> <span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">FRIEND</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">friend</span><span class="p">)</span>
+<span class="n">WHERE</span> <span class="n">user</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="o">$</span><span class="n">name</span>
+<span class="kr">WITH</span> <span class="n">user</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="n">friend</span><span class="p">)</span> <span class="n">AS</span> <span class="n">friends</span>
+<span class="n">WHERE</span> <span class="n">friends</span> <span class="o">&gt;</span> <span class="mi">10</span>
+<span class="kr">RETURN</span> <span class="n">user</span>
+</code></pre></div>
+
+<p>The WITH syntax is similar to RETURN. It separates query parts explicitly, allowing you to declare which variables to
+carry over to the next part.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span> <span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">-</span><span class="p">[:</span><span class="n">FRIEND</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">friend</span><span class="p">)</span>
+<span class="kr">WITH</span> <span class="n">user</span><span class="p">,</span> <span class="n">count</span><span class="p">(</span><span class="n">friend</span><span class="p">)</span> <span class="n">AS</span> <span class="n">friends</span>
+<span class="n">ORDER</span> <span class="kr">BY</span> <span class="n">friends</span> <span class="n">DESC</span>
+  <span class="n">SKIP</span> <span class="mi">1</span>
+  <span class="n">LIMIT</span> <span class="mi">3</span>
+<span class="kr">RETURN</span> <span class="n">user</span>
+</code></pre></div>
+
+<p>ORDER BY, SKIP, and LIMIT can also be used with WITH.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="union">UNION</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="kr">RETURN</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="n">UNION</span>
+<span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">LOVES</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="kr">RETURN</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+
+<p>Returns the distinct union of all query results. Result column types and names have to match.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="kr">RETURN</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">name</span>
+<span class="n">UNION</span><span class="w"> </span><span class="kr">ALL</span>
+<span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">LOVES</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="kr">RETURN</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">name</span>
+</code></pre></div>
+
+<p>Returns the union of all query results, including duplicated rows.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="neo4j-writing-data">
+<h2 id="neo4j-writing-data">Neo4j Writing Data</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="create">CREATE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CREATE (n )
+</code></pre></div>
+
+<p>Create a node with the given properties.</p>
+<div class="codehilite"><pre><span></span><code>CREATE (n $map)
+</code></pre></div>
+
+<p>Create a node with the given properties.</p>
+<div class="codehilite"><pre><span></span><code>UNWIND $listOfMaps AS properties
+CREATE (n) SET n = properties
+</code></pre></div>
+
+<p>Create nodes with the given properties.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">r</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Create a relationship with the given type and direction; bind a variable to it.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">CREATE</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">LOVES</span><span class="w"> </span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Create a relationship with the given type, direction, and properties.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="set">SET</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SET n.property1 = $value1,
+    n.property2 = $value2
+</code></pre></div>
+
+<p>Update or create a property.</p>
+<div class="codehilite"><pre><span></span><code>SET n = $map
+</code></pre></div>
+
+<p>Set all properties. This will remove any existing properties.</p>
+<div class="codehilite"><pre><span></span><code>SET n += $map
+</code></pre></div>
+
+<p>Add and update properties, while keeping existing ones.</p>
+<div class="codehilite"><pre><span></span><code>SET n:Person
+</code></pre></div>
+
+<p>Adds a label Person to a node.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="merge">MERGE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>MERGE (n:Person )
+  ON CREATE SET n.created = timestamp()
+  ON MATCH SET
+    n.counter = coalesce(n.counter, 0) + 1,
+    n.accessTime = timestamp()
+</code></pre></div>
+
+<p>Match a pattern or create it if it does not exist. Use ON CREATE and ON MATCH for conditional updates.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">:</span><span class="n">Person</span><span class="w"> </span><span class="p">),</span>
+<span class="w">      </span><span class="p">(</span><span class="n">b</span><span class="o">:</span><span class="n">Person</span><span class="w"> </span><span class="p">)</span>
+<span class="nf">MERGE</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">r</span><span class="o">:</span><span class="n">LOVES</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</code></pre></div>
+
+<p>MERGE finds or creates a relationship between the nodes.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">:</span><span class="n">Person</span><span class="w"> </span><span class="p">)</span>
+<span class="nf">MERGE</span>
+<span class="w">  </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="n">r</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">b</span><span class="o">:</span><span class="n">Person</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+
+<p>MERGE finds or creates paths attached to the node.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="delete">DELETE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>DELETE n, r
+</code></pre></div>
+
+<p>Delete a node and a relationship.</p>
+<div class="codehilite"><pre><span></span><code>DETACH DELETE n
+</code></pre></div>
+
+<p>Delete a node and all relationships connected to it.</p>
+<div class="codehilite"><pre><span></span><code>MATCH (n)
+DETACH DELETE n
+</code></pre></div>
+
+<p>Delete all nodes and relationships from the database.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="remove">REMOVE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>REMOVE n:Person
+</code></pre></div>
+
+<p>Remove a label from n.</p>
+<div class="codehilite"><pre><span></span><code>REMOVE n.property
+</code></pre></div>
+
+<p>Remove a property.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="foreach">FOREACH</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>FOREACH (r IN relationships(path) |
+  SET r.marked = true)
+</code></pre></div>
+
+<p>Execute a mutating operation for each relationship in a path.</p>
+<div class="codehilite"><pre><span></span><code>FOREACH (value IN coll |
+ CREATE (:Person ))
+</code></pre></div>
+
+<p>Execute a mutating operation for each element in a list.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="call-subquery">CALL subquery</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CALL 
+</code></pre></div>
+
+<p>This calls a subquery with two union parts. The result of the subquery can afterwards be post-processed.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="call-procedure">CALL procedure</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CALL db.labels() YIELD label
+</code></pre></div>
+
+<p>This shows a standalone call to the built-in procedure db.labels to list all labels used in the database. Note that
+required procedure arguments are given explicitly in brackets after the procedure name.</p>
+<div class="codehilite"><pre><span></span><code>CALL db.labels() YIELD *
+</code></pre></div>
+
+<p>Standalone calls may use YIELD * to return all columns.</p>
+<div class="codehilite"><pre><span></span><code>CALL java.stored.procedureWithArgs
+</code></pre></div>
+
+<p>Standalone calls may omit YIELD and also provide arguments implicitly via statement parameters, e.g. a standalone call
+requiring one argument input may be run by passing the parameter map .</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CALL</span><span class="w"> </span><span class="nl">db</span>.<span class="nv">labels</span><span class="ss">()</span><span class="w"> </span><span class="nv">YIELD</span><span class="w"> </span><span class="nv">label</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">count</span><span class="ss">(</span><span class="nv">label</span><span class="ss">)</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">count</span>
+</code></pre></div>
+
+<p>Calls the built-in procedure db.labels inside a larger query to count all labels used in the database. Calls inside a
+larger query always requires passing arguments and naming results explicitly with YIELD.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="import">Import</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>LOAD CSV FROM
+&#39;https://neo4j.com/docs/cypher-refcard/4.3/csv/artists.csv&#39; AS line
+CREATE (:Artist )
+</code></pre></div>
+
+<p>Load data from a CSV file and create nodes.</p>
+<div class="codehilite"><pre><span></span><code>LOAD CSV WITH HEADERS FROM
+&#39;https://neo4j.com/docs/cypher-refcard/4.3/csv/artists-with-headers.csv&#39; AS line
+CREATE (:Artist )
+</code></pre></div>
+
+<p>Load CSV data which has headers.</p>
+<div class="codehilite"><pre><span></span><code>USING PERIODIC COMMIT 500
+LOAD CSV WITH HEADERS FROM
+&#39;https://neo4j.com/docs/cypher-refcard/4.3/csv/artists-with-headers.csv&#39; AS line
+CREATE (:Artist )
+</code></pre></div>
+
+<p>Commit the current transaction after every 500 rows when importing large amounts of data.</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">LOAD</span><span class="w"> </span><span class="nt">CSV</span><span class="w"> </span><span class="nt">FROM</span>
+<span class="s1">&#39;https://neo4j.com/docs/cypher-refcard/4.3/csv/artists-fieldterminator.csv&#39;</span>
+<span class="nt">AS</span><span class="w"> </span><span class="nt">line</span><span class="w"> </span><span class="nt">FIELDTERMINATOR</span><span class="w"> </span><span class="s1">&#39;;&#39;</span>
+<span class="nt">CREATE</span><span class="w"> </span><span class="o">(</span><span class="p">:</span><span class="nd">Artist</span><span class="w"> </span><span class="o">)</span>
+</code></pre></div>
+
+<p>Use a different field terminator, not the default which is a comma (with no whitespace around it).</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">LOAD</span><span class="w"> </span><span class="nv">CSV</span><span class="w"> </span><span class="nv">FROM</span>
+<span class="s1">&#39;https://neo4j.com/docs/cypher-refcard/4.3/csv/artists.csv&#39;</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">line</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">DISTINCT</span><span class="w"> </span><span class="nv">file</span><span class="ss">()</span>
+</code></pre></div>
+
+<p>Returns the absolute path of the file that LOAD CSV is processing, returns null if called outside of LOAD CSV context.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">LOAD</span><span class="w"> </span><span class="n">CSV</span><span class="w"> </span><span class="n">FROM</span>
+<span class="s1">&#39;https://neo4j.com/docs/cypher-refcard/4.3/csv/artists.csv&#39;</span><span class="w"> </span><span class="n">AS</span><span class="w"> </span><span class="n">line</span>
+<span class="n">RETURN</span><span class="w"> </span><span class="n">linenumber</span><span class="p">()</span>
+</code></pre></div>
+
+<p>Returns the line number that LOAD CSV is currently processing, returns null if called outside of LOAD CSV context.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="operators">Operators</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>General</strong></td>
+<td>DISTINCT, ., []</td>
+</tr>
+<tr>
+<td><strong>Mathematical</strong></td>
+<td>+, -, *, /, %, ^</td>
+</tr>
+<tr>
+<td><strong>Comparison</strong></td>
+<td>=, &lt;&gt;, &lt;, &gt;, &lt;=, &gt;=, IS NULL, IS NOT NULL</td>
+</tr>
+<tr>
+<td><strong>Boolean</strong></td>
+<td>AND, OR, XOR, NOT</td>
+</tr>
+<tr>
+<td><strong>String</strong></td>
+<td>+</td>
+</tr>
+<tr>
+<td><strong>List</strong></td>
+<td>+, IN, [x], [x .. y]</td>
+</tr>
+<tr>
+<td><strong>Regular Expression</strong></td>
+<td>=~</td>
+</tr>
+<tr>
+<td><strong>String matching</strong></td>
+<td>STARTS WITH, ENDS WITH, CONTAINS</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="null">null</h3>
+<div class="section">
+<ul>
+<li>
+<p><code>null</code> is used to represent missing/undefined values.</p>
+</li>
+<li>
+<p><code>null</code> is not equal to <code>null</code>. Not knowing two values does not imply that they are the same value. So the expression
+  <code>null = null</code> yields <code>null</code> and not <code>true</code>. To check if an expression is <code>null</code>, use <code>IS NULL</code>.</p>
+</li>
+<li>Arithmetic expressions, comparisons and function calls (except <code>coalesce</code>) will return <code>null</code> if any argument is
+  <code>null</code>.</li>
+<li>An attempt to access a missing element in a list or a property that doesn’t exist yields <code>null</code>.</li>
+<li>In <code>OPTIONAL MATCH</code> clauses, <code>nulls</code> will be used for missing parts of the pattern.</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="patterns">Patterns</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>(n:Person)
+</code></pre></div>
+
+<p>Node with Person label.</p>
+<div class="codehilite"><pre><span></span><code>(n:Person:Swedish)
+</code></pre></div>
+
+<p>Node with both Person and Swedish labels.</p>
+<div class="codehilite"><pre><span></span><code>(n:Person )
+</code></pre></div>
+
+<p>Node with the declared properties.</p>
+<div class="codehilite"><pre><span></span><code>()-[r ]-()
+</code></pre></div>
+
+<p>Matches relationships with the declared properties.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">--&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Relationship from n to m.</p>
+<div class="codehilite"><pre><span></span><code>(n)--(m)
+</code></pre></div>
+
+<p>Relationship in any direction between n and m.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="o">:</span><span class="n">Person</span><span class="p">)</span><span class="o">--&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Node n labeled Person with relationship to m.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">&lt;-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Relationship of type KNOWS from n to m.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="o">|:</span><span class="n">LOVES</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Relationship of type KNOWS or of type LOVES from n to m.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-[</span><span class="n">r</span><span class="o">]-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Bind the relationship to variable r.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">*</span><span class="mf">1..5</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Variable length path of between 1 and 5 relationships from n to m.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">*</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Variable length path of any number of relationships from n to m. (See Performance section.)</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+
+<p>A relationship of type KNOWS from a node n to a node m with the declared property.</p>
+<div class="codehilite"><pre><span></span><code>shortestPath((n1:Person)-[*..6]-(n2:Person))
+</code></pre></div>
+
+<p>Find a single shortest path.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">allShortestPaths</span><span class="p">((</span><span class="n">n1</span><span class="o">:</span><span class="n">Person</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">*</span><span class="p">.</span><span class="mf">.6</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">n2</span><span class="o">:</span><span class="n">Person</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Find all shortest paths.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">size</span><span class="p">((</span><span class="n">n</span><span class="p">)</span><span class="o">--&gt;</span><span class="p">()</span><span class="o">--&gt;</span><span class="p">())</span>
+</code></pre></div>
+
+<p>Count the paths matching the pattern.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="use">USE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>USE myDatabase
+</code></pre></div>
+
+<p>Select myDatabase to execute query, or query part, against.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">USE</span><span class="w"> </span><span class="n">neo4j</span>
+<span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="o">:</span><span class="n">Person</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="o">:</span><span class="n">Person</span><span class="p">)</span>
+<span class="n">WHERE</span><span class="w"> </span><span class="n">n</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Alice&#39;</span>
+</code></pre></div>
+
+<p>MATCH query executed against neo4j database.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="show-functions-and-procedures">SHOW FUNCTIONS and PROCEDURES</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">FUNCTIONS</span>
+</code></pre></div>
+
+<p>Listing all available functions.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">SHOW</span> <span class="n">PROCEDURES</span> <span class="n">EXECUTABLE</span> <span class="n">YIELD</span> <span class="n">name</span>
+</code></pre></div>
+
+<p>List all procedures that can be executed by the current user and return only the name of the procedures.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="labels">Labels</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CREATE (n:Person )
+</code></pre></div>
+
+<p>Create a node with label and property.</p>
+<div class="codehilite"><pre><span></span><code>MERGE (n:Person )
+</code></pre></div>
+
+<p>Matches or creates unique node(s) with the label and property.</p>
+<div class="codehilite"><pre><span></span><code>SET n:Spouse:Parent:Employee
+</code></pre></div>
+
+<p>Add label(s) to a node.</p>
+<div class="codehilite"><pre><span></span><code>MATCH (n:Person)
+</code></pre></div>
+
+<p>Matches nodes labeled Person.</p>
+<div class="codehilite"><pre><span></span><code>MATCH (n:Person)
+WHERE n.name = $value
+</code></pre></div>
+
+<p>Matches nodes labeled Person with the given name.</p>
+<div class="codehilite"><pre><span></span><code>WHERE (n:Person)
+</code></pre></div>
+
+<p>Checks the existence of the label on the node.</p>
+<div class="codehilite"><pre><span></span><code>labels(n)
+</code></pre></div>
+
+<p>Labels of the node.</p>
+<div class="codehilite"><pre><span></span><code>REMOVE n:Person
+</code></pre></div>
+
+<p>Remove the label from the node.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lists">Lists</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>[&#39;a&#39;, &#39;b&#39;, &#39;c&#39;] AS list
+</code></pre></div>
+
+<p>Literal lists are declared in square brackets.</p>
+<div class="codehilite"><pre><span></span><code>size($list) AS len, $list[0] AS value
+</code></pre></div>
+
+<p>Lists can be passed in as parameters.</p>
+<div class="codehilite"><pre><span></span><code>range($firstNum, $lastNum, $step) AS list
+</code></pre></div>
+
+<p>range() creates a list of numbers (step is optional), other functions returning lists are: labels(), nodes(),
+relationships().</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="o">*</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">()</span>
+<span class="kr">RETURN</span><span class="w"> </span><span class="n">relationships</span><span class="p">(</span><span class="n">p</span><span class="p">)</span><span class="w"> </span><span class="kr">AS</span><span class="w"> </span><span class="n">r</span>
+</code></pre></div>
+
+<p>The list of relationships comprising a variable length path can be returned using named paths and relationships().</p>
+<div class="codehilite"><pre><span></span><code><span class="k">RETURN</span><span class="w"> </span><span class="nv">matchedNode</span>.<span class="nv">list</span>[<span class="mi">0</span>]<span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">value</span>,
+<span class="w">       </span><span class="nv">size</span><span class="ss">(</span><span class="nv">matchedNode</span>.<span class="nv">list</span><span class="ss">)</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">len</span>
+</code></pre></div>
+
+<p>Properties can be lists of strings, numbers or booleans.</p>
+<div class="codehilite"><pre><span></span><code>list[$idx] AS value,
+list[$startIdx..$endIdx] AS slice
+</code></pre></div>
+
+<p>List elements can be accessed with idx subscripts in square brackets. Invalid indexes return null. Slices can be
+retrieved with intervals from start_idx to end_idx, each of which can be omitted or negative. Out of range elements are
+ignored.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">UNWIND</span><span class="w"> </span>$<span class="nv">names</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">name</span>
+<span class="nv">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nv">n</span><span class="w"> </span><span class="ss">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">avg</span><span class="ss">(</span><span class="nv">n</span>.<span class="nv">age</span><span class="ss">)</span>
+</code></pre></div>
+
+<p>With UNWIND, any list can be transformed back into individual rows. The example matches all names from a list of names.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">MATCH</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="kr">RETURN</span><span class="w"> </span><span class="p">[(</span><span class="n">a</span><span class="p">)</span><span class="o">--&gt;</span><span class="p">(</span><span class="n">b</span><span class="p">)</span><span class="w"> </span><span class="n">WHERE</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;Bob&#39;</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">age</span><span class="p">]</span>
+</code></pre></div>
+
+<p>Pattern comprehensions may be used to do a custom projection from a match directly into a list.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nv">person</span><span class="ss">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">person</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Map projections may be easily constructed from nodes, relationships and other map values.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="maps">Maps</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>}
+</code></pre></div>
+
+<p>Literal maps are declared in curly braces much like property maps. Lists are supported.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">WITH</span><span class="w"> </span>}<span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">p</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">p</span>.<span class="nv">person</span>.<span class="nv">name</span>
+</code></pre></div>
+
+<p>Access the property of a nested map.</p>
+<div class="codehilite"><pre><span></span><code>MERGE (p:Person )
+  ON CREATE SET p = $map
+</code></pre></div>
+
+<p>Maps can be passed in as parameters and used either as a map or by accessing keys.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">MATCH</span><span class="w"> </span><span class="ss">(</span><span class="nv">matchedNode</span>:<span class="nv">Person</span><span class="ss">)</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">matchedNode</span>
+</code></pre></div>
+
+<p>Nodes and relationships are returned as maps of their data.</p>
+<div class="codehilite"><pre><span></span><code>map.name, map.age, map.children[0]
+</code></pre></div>
+
+<p>Map entries can be accessed by their keys. Invalid keys result in an error.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="predicates">Predicates</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>n.property &lt;&gt; $value
+</code></pre></div>
+
+<p>Use comparison operators.</p>
+<div class="codehilite"><pre><span></span><code>toString(n.property) = $value
+</code></pre></div>
+
+<p>Use functions.</p>
+<div class="codehilite"><pre><span></span><code>n.number &gt;= 1 AND n.number &lt;= 10
+</code></pre></div>
+
+<p>Use boolean operators to combine predicates.</p>
+<div class="codehilite"><pre><span></span><code><span class="mf">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="mf">.</span><span class="n">number</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">10</span>
+</code></pre></div>
+
+<p>Use chained operators to combine predicates.</p>
+<div class="codehilite"><pre><span></span><code>n:Person
+</code></pre></div>
+
+<p>Check for node labels.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">variable</span><span class="w"> </span><span class="n">IS</span><span class="w"> </span><span class="n">NOT</span><span class="w"> </span><span class="n">NULL</span>
+</code></pre></div>
+
+<p>Check if something is not null, e.g. that a property exists.</p>
+<div class="codehilite"><pre><span></span><code>n.property IS NULL OR n.property = $value
+</code></pre></div>
+
+<p>Either the property does not exist or the predicate is true.</p>
+<div class="codehilite"><pre><span></span><code>n.property = $value
+</code></pre></div>
+
+<p>Non-existing property returns null, which is not equal to anything.</p>
+<div class="codehilite"><pre><span></span><code>n[&quot;property&quot;] = $value
+</code></pre></div>
+
+<p>Properties may also be accessed using a dynamically computed property name.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">n</span><span class="p">.</span><span class="n">property</span> <span class="n">STARTS</span> <span class="kr">WITH</span> <span class="s">&#39;Tim&#39;</span> <span class="kr">OR</span>
+<span class="n">n</span><span class="p">.</span><span class="n">property</span> <span class="n">ENDS</span> <span class="kr">WITH</span> <span class="s">&#39;n&#39;</span> <span class="kr">OR</span>
+<span class="n">n</span><span class="p">.</span><span class="n">property</span> <span class="n">CONTAINS</span> <span class="s">&#39;goodie&#39;</span>
+</code></pre></div>
+
+<p>String matching.</p>
+<div class="codehilite"><pre><span></span><code>n.property =~ &#39;Tim.*&#39;
+</code></pre></div>
+
+<p>String regular expression matching.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Ensure the pattern has at least one match.</p>
+<div class="codehilite"><pre><span></span><code><span class="kr">NOT</span><span class="w"> </span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">-</span><span class="p">[</span><span class="o">:</span><span class="n">KNOWS</span><span class="p">]</span><span class="o">-&gt;</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Exclude matches to (n)-[:KNOWS]-&gt;(m) from the result.</p>
+<div class="codehilite"><pre><span></span><code>n.property IN [$value1, $value2]
+</code></pre></div>
+
+<p>Check if an element exists in a list.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="list-predicates">List predicates</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>all(x IN coll WHERE x.property IS NOT NULL)
+</code></pre></div>
+
+<p>Returns true if the predicate is true for all elements in the list.</p>
+<div class="codehilite"><pre><span></span><code>any(x IN coll WHERE x.property IS NOT NULL)
+</code></pre></div>
+
+<p>Returns true if the predicate is true for at least one element in the list.</p>
+<div class="codehilite"><pre><span></span><code>none(x IN coll WHERE x.property IS NOT NULL)
+</code></pre></div>
+
+<p>Returns true if the predicate is false for all elements in the list.</p>
+<div class="codehilite"><pre><span></span><code>single(x IN coll WHERE x.property IS NOT NULL)
+</code></pre></div>
+
+<p>Returns true if the predicate is true for exactly one element in the list.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="case">CASE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kr">CASE</span> <span class="n">n</span><span class="p">.</span><span class="n">eyes</span>
+ <span class="n">WHEN</span> <span class="s">&#39;blue&#39;</span> <span class="kr">THEN</span> <span class="mi">1</span>
+ <span class="n">WHEN</span> <span class="s">&#39;brown&#39;</span> <span class="kr">THEN</span> <span class="mi">2</span>
+ <span class="kr">ELSE</span> <span class="mi">3</span>
+<span class="kr">END</span>
+</code></pre></div>
+
+<p>Return THEN value from the matching WHEN value. The ELSE value is optional, and substituted for null if missing.</p>
+<div class="codehilite"><pre><span></span><code><span class="kr">CASE</span>
+ <span class="n">WHEN</span> <span class="n">n</span><span class="p">.</span><span class="n">eyes</span> <span class="o">=</span> <span class="s">&#39;blue&#39;</span> <span class="kr">THEN</span> <span class="mi">1</span>
+ <span class="n">WHEN</span> <span class="n">n</span><span class="p">.</span><span class="n">age</span> <span class="o">&lt;</span> <span class="mi">40</span> <span class="kr">THEN</span> <span class="mi">2</span>
+ <span class="kr">ELSE</span> <span class="mi">3</span>
+<span class="kr">END</span>
+</code></pre></div>
+
+<p>Return THEN value from the first WHEN predicate evaluating to true. Predicates are evaluated in order.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="list-expressions">List expressions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>size($list)
+</code></pre></div>
+
+<p>Number of elements in the list.</p>
+<div class="codehilite"><pre><span></span><code>reverse($list)
+</code></pre></div>
+
+<p>Reverse the order of the elements in the list.</p>
+<div class="codehilite"><pre><span></span><code>head($list), last($list), tail($list)
+</code></pre></div>
+
+<p>head() returns the first, last() the last element of the list. tail() returns all but the first element. All return null
+for an empty list.</p>
+<div class="codehilite"><pre><span></span><code>[x IN list | x.prop]
+</code></pre></div>
+
+<p>A list of the value of the expression for each element in the original list.</p>
+<div class="codehilite"><pre><span></span><code>[x IN list WHERE x.prop &lt;&gt; $value]
+</code></pre></div>
+
+<p>A filtered list of the elements where the predicate is true.</p>
+<div class="codehilite"><pre><span></span><code>[x IN list WHERE x.prop &lt;&gt; $value | x.prop]
+</code></pre></div>
+
+<p>A list comprehension that filters a list and extracts the value of the expression for each element in that list.</p>
+<div class="codehilite"><pre><span></span><code>reduce(s = &quot;&quot;, x IN list | s + x.prop)
+</code></pre></div>
+
+<p>Evaluate expression for each element in the list, accumulate the results.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions">Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>coalesce(n.property, $defaultValue)
+</code></pre></div>
+
+<p>The first non-null expression.</p>
+<div class="codehilite"><pre><span></span><code>timestamp()
+</code></pre></div>
+
+<p>Milliseconds since midnight, January 1, 1970 UTC.</p>
+<div class="codehilite"><pre><span></span><code>id(nodeOrRelationship)
+</code></pre></div>
+
+<p>The internal id of the relationship or node.</p>
+<div class="codehilite"><pre><span></span><code>toInteger($expr)
+</code></pre></div>
+
+<p>Converts the given input into an integer if possible; otherwise it returns null.</p>
+<div class="codehilite"><pre><span></span><code>toFloat($expr)
+</code></pre></div>
+
+<p>Converts the given input into a floating point number if possible; otherwise it returns null.</p>
+<div class="codehilite"><pre><span></span><code>toBoolean($expr)
+</code></pre></div>
+
+<p>Converts the given input into a boolean if possible; otherwise it returns null.</p>
+<div class="codehilite"><pre><span></span><code>keys($expr)
+</code></pre></div>
+
+<p>Returns a list of string representations for the property names of a node, relationship, or map.</p>
+<div class="codehilite"><pre><span></span><code>properties($expr)
+</code></pre></div>
+
+<p>Returns a map containing all the properties of a node or relationship.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="path-functions">Path functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>length(path)
+</code></pre></div>
+
+<p>The number of relationships in the path.</p>
+<div class="codehilite"><pre><span></span><code>nodes(path)
+</code></pre></div>
+
+<p>The nodes in the path as a list.</p>
+<div class="codehilite"><pre><span></span><code>relationships(path)
+</code></pre></div>
+
+<p>The relationships in the path as a list.</p>
+<div class="codehilite"><pre><span></span><code>[x IN nodes(path) | x.prop]
+</code></pre></div>
+
+<p>Extract properties from the nodes in a path.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="spatial-functions">Spatial functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>point()
+</code></pre></div>
+
+<p>Returns a point in a 2D cartesian coordinate system.</p>
+<div class="codehilite"><pre><span></span><code>point()
+</code></pre></div>
+
+<p>Returns a point in a 2D geographic coordinate system, with coordinates specified in decimal degrees.</p>
+<div class="codehilite"><pre><span></span><code>point()
+</code></pre></div>
+
+<p>Returns a point in a 3D cartesian coordinate system.</p>
+<div class="codehilite"><pre><span></span><code>point()
+</code></pre></div>
+
+<p>Returns a point in a 3D geographic coordinate system, with latitude and longitude in decimal degrees, and height in
+meters.</p>
+<div class="codehilite"><pre><span></span><code>distance(point(), point())
+</code></pre></div>
+
+<p>Returns a floating point number representing the linear distance between two points. The returned units will be the same
+as those of the point coordinates, and it will work for both 2D and 3D cartesian points.</p>
+<div class="codehilite"><pre><span></span><code>distance(point(), point())
+</code></pre></div>
+
+<p>Returns the geodesic distance between two points in meters. It can be used for 3D geographic points as well.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="neo4j-functions">
+<h2 id="neo4j-functions">Neo4j Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="temporal-functions">Temporal functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>date(&quot;2018-04-05&quot;)
+</code></pre></div>
+
+<p>Returns a date parsed from a string.</p>
+<div class="codehilite"><pre><span></span><code>localtime(&quot;12:45:30.25&quot;)
+</code></pre></div>
+
+<p>Returns a time with no time zone.</p>
+<div class="codehilite"><pre><span></span><code>time(&quot;12:45:30.25+01:00&quot;)
+</code></pre></div>
+
+<p>Returns a time in a specified time zone.</p>
+<div class="codehilite"><pre><span></span><code>localdatetime(&quot;2018-04-05T12:34:00&quot;)
+</code></pre></div>
+
+<p>Returns a datetime with no time zone.</p>
+<div class="codehilite"><pre><span></span><code>datetime(&quot;2018-04-05T12:34:00[Europe/Berlin]&quot;)
+</code></pre></div>
+
+<p>Returns a datetime in the specified time zone.</p>
+<div class="codehilite"><pre><span></span><code>datetime()
+</code></pre></div>
+
+<p>Transforms 3360000 as a UNIX Epoch time into a normal datetime.</p>
+<div class="codehilite"><pre><span></span><code>date()
+</code></pre></div>
+
+<p>All of the temporal functions can also be called with a map of named components. This example returns a date from year,
+month and day components. Each function supports a different set of possible components.</p>
+<div class="codehilite"><pre><span></span><code>datetime()
+</code></pre></div>
+
+<p>Temporal types can be created by combining other types. This example creates a datetime from a date and a time.</p>
+<div class="codehilite"><pre><span></span><code>date()
+</code></pre></div>
+
+<p>Temporal types can be created by selecting from more complex types, as well as overriding individual components. This
+example creates a date by selecting from a datetime, as well as overriding the day component.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">WITH</span><span class="w"> </span><span class="nv">date</span><span class="ss">(</span><span class="s2">&quot;2018-04-05&quot;</span><span class="ss">)</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">d</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">d</span>.<span class="nv">year</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">month</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">day</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">week</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">dayOfWeek</span>
+</code></pre></div>
+
+<p>Accessors allow extracting components of temporal types.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="duration-functions">Duration functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>duration(&quot;P1Y2M10DT12H45M30.25S&quot;)
+</code></pre></div>
+
+<p>Returns a duration of 1 year, 2 months, 10 days, 12 hours, 45 minutes and 30.25 seconds.</p>
+<div class="codehilite"><pre><span></span><code>duration.between($date1,$date2)
+</code></pre></div>
+
+<p>Returns a duration between two temporal instances.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">WITH</span><span class="w"> </span><span class="nv">duration</span><span class="ss">(</span><span class="s2">&quot;P1Y2M10DT12H45M&quot;</span><span class="ss">)</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">d</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">d</span>.<span class="nv">years</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">months</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">days</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">hours</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">minutes</span>
+</code></pre></div>
+
+<p>Returns 1 year, 14 months, 10 days, 12 hours and 765 minutes.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">WITH</span><span class="w"> </span><span class="nv">duration</span><span class="ss">(</span><span class="s2">&quot;P1Y2M10DT12H45M&quot;</span><span class="ss">)</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">d</span>
+<span class="k">RETURN</span><span class="w"> </span><span class="nv">d</span>.<span class="nv">years</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">monthsOfYear</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">days</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">hours</span>,<span class="w"> </span><span class="nv">d</span>.<span class="nv">minutesOfHour</span>
+</code></pre></div>
+
+<p>Returns 1 year, 2 months, 10 days, 12 hours and 45 minutes.</p>
+<div class="codehilite"><pre><span></span><code>date(&quot;2015-01-01&quot;) + duration(&quot;P1Y1M1D&quot;)
+</code></pre></div>
+
+<p>Returns a date of 2016-02-02. It is also possible to subtract durations from temporal instances.</p>
+<div class="codehilite"><pre><span></span><code>duration(&quot;PT30S&quot;) * 10
+</code></pre></div>
+
+<p>Returns a duration of 5 minutes. It is also possible to divide a duration by a number.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="mathematical-functions">Mathematical functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>abs($expr)
+</code></pre></div>
+
+<p>The absolute value.</p>
+<div class="codehilite"><pre><span></span><code>rand()
+</code></pre></div>
+
+<p>Returns a random number in the range from 0 (inclusive) to 1 (exclusive), [0,1). Returns a new value for each call. Also
+useful for selecting a subset or random ordering.</p>
+<div class="codehilite"><pre><span></span><code>round($expr)
+</code></pre></div>
+
+<p>Round to the nearest integer; ceil() and floor() find the next integer up or down.</p>
+<div class="codehilite"><pre><span></span><code>sqrt($expr)
+</code></pre></div>
+
+<p>The square root.</p>
+<div class="codehilite"><pre><span></span><code>sign($expr)
+</code></pre></div>
+
+<p>0 if zero, -1 if negative, 1 if positive.</p>
+<div class="codehilite"><pre><span></span><code>sin($expr)
+</code></pre></div>
+
+<p>Trigonometric functions also include cos(), tan(), cot(), asin(), acos(), atan(), atan2(), and haversin(). All arguments
+for the trigonometric functions should be in radians, if not otherwise specified.</p>
+<div class="codehilite"><pre><span></span><code>degrees($expr), radians($expr), pi()
+</code></pre></div>
+
+<p>Converts radians into degrees; use radians() for the reverse, and pi() for π.</p>
+<div class="codehilite"><pre><span></span><code>log10($expr), log($expr), exp($expr), e()
+</code></pre></div>
+
+<p>Logarithm base 10, natural logarithm, e to the power of the parameter, and the value of e.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-functions">String functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>toString($expression)
+</code></pre></div>
+
+<p>String representation of the expression.</p>
+<div class="codehilite"><pre><span></span><code>replace($original, $search, $replacement)
+</code></pre></div>
+
+<p>Replace all occurrences of search with replacement. All arguments must be expressions.</p>
+<div class="codehilite"><pre><span></span><code>substring($original, $begin, $subLength)
+</code></pre></div>
+
+<p>Get part of a string. The subLength argument is optional.</p>
+<div class="codehilite"><pre><span></span><code>left($original, $subLength),
+  right($original, $subLength)
+</code></pre></div>
+
+<p>The first part of a string. The last part of the string.</p>
+<div class="codehilite"><pre><span></span><code>trim($original), lTrim($original),
+  rTrim($original)
+</code></pre></div>
+
+<p>Trim all whitespace, or on the left or right side.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">toUpper</span><span class="ss">(</span>$<span class="nv">original</span><span class="ss">)</span>,<span class="w"> </span><span class="k">toLower</span><span class="ss">(</span>$<span class="nv">original</span><span class="ss">)</span>
+</code></pre></div>
+
+<p>UPPERCASE and lowercase.</p>
+<div class="codehilite"><pre><span></span><code>split($original, $delimiter)
+</code></pre></div>
+
+<p>Split a string into a list of strings.</p>
+<div class="codehilite"><pre><span></span><code>reverse($original)
+</code></pre></div>
+
+<p>Reverse a string.</p>
+<div class="codehilite"><pre><span></span><code>size($string)
+</code></pre></div>
+
+<p>Calculate the number of characters in the string.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="relationship-functions">Relationship functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">type</span><span class="p">(</span><span class="nx">a_relationship</span><span class="p">)</span>
+</code></pre></div>
+
+<p>String representation of the relationship type.</p>
+<div class="codehilite"><pre><span></span><code>startNode(a_relationship)
+</code></pre></div>
+
+<p>Start node of the relationship.</p>
+<div class="codehilite"><pre><span></span><code>endNode(a_relationship)
+</code></pre></div>
+
+<p>End node of the relationship.</p>
+<div class="codehilite"><pre><span></span><code>id(a_relationship)
+</code></pre></div>
+
+<p>The internal id of the relationship.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="aggregating-functions">Aggregating functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>count(*)
+</code></pre></div>
+
+<p>The number of matching rows.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">count</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+</code></pre></div>
+
+<p>The number of non-null values.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">count</span><span class="p">(</span><span class="n">DISTINCT</span><span class="w"> </span><span class="n">variable</span><span class="p">)</span>
+</code></pre></div>
+
+<p>All aggregating functions also take the DISTINCT operator, which removes duplicates from the values.</p>
+<div class="codehilite"><pre><span></span><code>collect(n.property)
+</code></pre></div>
+
+<p>List from the values, ignores null.</p>
+<div class="codehilite"><pre><span></span><code>sum(n.property)
+</code></pre></div>
+
+<p>Sum numerical values. Similar functions are avg(), min(), max().</p>
+<div class="codehilite"><pre><span></span><code>percentileDisc(n.property, $percentile)
+</code></pre></div>
+
+<p>Discrete percentile. Continuous percentile is percentileCont(). The percentile argument is from 0.0 to 1.0.</p>
+<div class="codehilite"><pre><span></span><code>stDev(n.property)
+</code></pre></div>
+
+<p>Standard deviation for a sample of a population. For an entire population use stDevP().</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="neo4j-schema-operations">
+<h2 id="neo4j-schema-operations">Neo4j Schema Operations</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="index">INDEX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">CREATE</span><span class="w"> </span><span class="nv">INDEX</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>:<span class="nv">Person</span><span class="ss">)</span><span class="w"> </span><span class="nv">ON</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>.<span class="nv">name</span><span class="ss">)</span>
+</code></pre></div>
+
+<p>Create an index on nodes with label Person and property name.</p>
+<div class="codehilite"><pre><span></span><code>CREATE INDEX index_name FOR ()-[k:KNOWS]-() ON (k.since)
+</code></pre></div>
+
+<p>Create an index on relationships with type KNOWS and property since with the name index_name.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">CREATE</span><span class="w"> </span><span class="nv">INDEX</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>:<span class="nv">Person</span><span class="ss">)</span><span class="w"> </span><span class="nv">ON</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>.<span class="nv">surname</span><span class="ss">)</span>
+<span class="nv">OPTIONS</span><span class="w"> </span>}
+</code></pre></div>
+
+<p>Create an index on nodes with label Person and property surname with the index provider native-btree-1.0 and given
+spatial.cartesian settings. The other index settings will have their default values.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">CREATE</span><span class="w"> </span><span class="nv">INDEX</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>:<span class="nv">Person</span><span class="ss">)</span><span class="w"> </span><span class="nv">ON</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>.<span class="nv">name</span>,<span class="w"> </span><span class="nv">p</span>.<span class="nv">age</span><span class="ss">)</span>
+</code></pre></div>
+
+<p>Create a composite index on nodes with label Person and the properties name and age, throws an error if the index
+already exist.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">CREATE</span><span class="w"> </span><span class="nv">INDEX</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="nv">NOT</span><span class="w"> </span><span class="nv">EXISTS</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>:<span class="nv">Person</span><span class="ss">)</span><span class="w"> </span><span class="nv">ON</span><span class="w"> </span><span class="ss">(</span><span class="nv">p</span>.<span class="nv">name</span>,<span class="w"> </span><span class="nv">p</span>.<span class="nv">age</span><span class="ss">)</span>
+</code></pre></div>
+
+<p>Create a composite index on nodes with label Person and the properties name and age if it does not already exist, does
+nothing if it did exist.</p>
+<div class="codehilite"><pre><span></span><code>CREATE LOOKUP INDEX lookup_index_name FOR (n) ON EACH labels(n)
+</code></pre></div>
+
+<p>Create a token lookup index with the name lookup_index_name on nodes with any label .</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="n">LOOKUP</span><span class="w"> </span><span class="k">INDEX</span><span class="w"> </span><span class="k">FOR</span><span class="w"> </span><span class="p">()</span><span class="o">-[</span><span class="n">r</span><span class="o">]-</span><span class="p">()</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="k">EACH</span><span class="w"> </span><span class="n">type</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Create a token lookup index on relationships with any relationship type.</p>
+<div class="codehilite"><pre><span></span><code>CREATE FULLTEXT INDEX node_fulltext_index_name FOR (n:Friend) ON EACH [n.name]
+OPTIONS }
+</code></pre></div>
+
+<p>Create a fulltext index on nodes with the name node_fulltext_index_name and analyzer swedish. Fulltext indexes on nodes
+can only be used by from the procedure db.index.fulltext.queryNodes. The other index settings will have their default
+values.</p>
+<div class="codehilite"><pre><span></span><code>CREATE FULLTEXT INDEX rel_fulltext_index_name FOR ()-[r:HAS_PET|BROUGHT_PET]-() ON EACH [r.since, r.price]
+</code></pre></div>
+
+<p>Create a fulltext index on relationships with the name rel_fulltext_index_name. Fulltext indexes on relationships can
+only be used by from the procedure db.index.fulltext.queryRelationships.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">INDEXES</span>
+</code></pre></div>
+
+<p>List all indexes.</p>
+<div class="codehilite"><pre><span></span><code>MATCH (n:Person) WHERE n.name = $value
+</code></pre></div>
+
+<p>An index can be automatically used for the equality comparison. Note that for example toLower(n.name) = $value will not
+use an index.</p>
+<div class="codehilite"><pre><span></span><code>MATCH (n:Person)
+WHERE n.name IN [$value]
+</code></pre></div>
+
+<p>An index can automatically be used for the IN list checks.</p>
+<div class="codehilite"><pre><span></span><code>MATCH (n:Person)
+WHERE n.name = $value and n.age = $value2
+</code></pre></div>
+
+<p>A composite index can be automatically used for equality comparison of both properties. Note that there needs to be
+predicates on all properties of the composite index for it to be used.</p>
+<div class="codehilite"><pre><span></span><code>MATCH (n:Person)
+USING INDEX n:Person(name)
+WHERE n.name = $value
+</code></pre></div>
+
+<p>Index usage can be enforced when Cypher uses a suboptimal index, or more than one index should be used.</p>
+<div class="codehilite"><pre><span></span><code>DROP INDEX index_name
+</code></pre></div>
+
+<p>Drop the index named index_name, throws an error if the index does not exist.</p>
+<div class="codehilite"><pre><span></span><code>DROP INDEX index_name IF EXISTS
+</code></pre></div>
+
+<p>Drop the index named index_name if it exists, does nothing if it does not exist.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="constraint">CONSTRAINT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT ON (p:Person)
+       ASSERT p.name IS UNIQUE
+</code></pre></div>
+
+<p>Create a unique property constraint on the label Person and property name. If any other node with that label is updated
+or created with a name that already exists, the write operation will fail. This constraint will create an accompanying
+index.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT uniqueness ON (p:Person)
+       ASSERT p.age IS UNIQUE
+</code></pre></div>
+
+<p>Create a unique property constraint on the label Person and property age with the name uniqueness. If any other node
+with that label is updated or created with a age that already exists, the write operation will fail. This constraint
+will create an accompanying index.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT ON (p:Person)
+       ASSERT p.surname IS UNIQUE
+       OPTIONS 
+</code></pre></div>
+
+<p>Create a unique property constraint on the label Person and property surname with the index provider native-btree-1.0
+for the accompanying index.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT ON (p:Person)
+       ASSERT p.name IS NOT NULL
+</code></pre></div>
+
+<p>(★) Create a node property existence constraint on the label Person and property name, throws an error if the constraint
+already exists. If a node with that label is created without a name, or if the name property is removed from an existing
+node with the Person label, the write operation will fail.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">CREATE</span><span class="w"> </span><span class="k">CONSTRAINT</span><span class="w"> </span><span class="n">node_exists</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="k">EXISTS</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="p">(</span><span class="n">p</span><span class="err">:</span><span class="n">Person</span><span class="p">)</span>
+<span class="w">       </span><span class="k">ASSERT</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="k">name</span><span class="w"> </span><span class="k">IS</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="no">NULL</span>
+</code></pre></div>
+
+<p>(★) If a node property existence constraint on the label Person and property name or any constraint with the name
+node_exists already exist then nothing happens. If no such constraint exists, then it will be created.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT ON ()-[l:LIKED]-()
+       ASSERT l.when IS NOT NULL
+</code></pre></div>
+
+<p>(★) Create a relationship property existence constraint on the type LIKED and property when. If a relationship with that
+type is created without a when, or if the when property is removed from an existing relationship with the LIKED type,
+the write operation will fail.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT relationship_exists ON ()-[l:LIKED]-()
+       ASSERT l.since IS NOT NULL
+</code></pre></div>
+
+<p>(★) Create a relationship property existence constraint on the type LIKED and property since with the name
+relationship_exists. If a relationship with that type is created without a since, or if the since property is removed
+from an existing relationship with the LIKED type, the write operation will fail.</p>
+<div class="codehilite"><pre><span></span><code>SHOW UNIQUE CONSTRAINTS YIELD *
+</code></pre></div>
+
+<p>List all unique constraints.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT ON (p:Person)
+      ASSERT (p.firstname, p.surname) IS NODE KEY
+</code></pre></div>
+
+<p>(★) Create a node key constraint on the label Person and properties firstname and surname. If a node with that label is
+created without both firstname and surname or if the combination of the two is not unique, or if the firstname and/or
+surname labels on an existing node with the Person label is modified to violate these constraints, the write operation
+will fail.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT node_key ON (p:Person)
+      ASSERT (p.name, p.surname) IS NODE KEY
+</code></pre></div>
+
+<p>(★) Create a node key constraint on the label Person and properties name and surname with the name node_key. If a node
+with that label is created without both name and surname or if the combination of the two is not unique, or if the name
+and/or surname labels on an existing node with the Person label is modified to violate these constraints, the write
+operation will fail.</p>
+<div class="codehilite"><pre><span></span><code>CREATE CONSTRAINT node_key_with_config ON (p:Person)
+      ASSERT (p.name, p.age) IS NODE KEY
+      OPTIONS }
+</code></pre></div>
+
+<p>(★) Create a node key constraint on the label Person and properties name and age with the name node_key_with_config and
+given spatial.wgs-84 settings for the accompanying index. The other index settings will have their default values.</p>
+<div class="codehilite"><pre><span></span><code>DROP CONSTRAINT uniqueness
+</code></pre></div>
+
+<p>Drop the constraint with the name uniqueness, throws an error if the constraint does not exist.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">DROP</span><span class="w"> </span><span class="nv">CONSTRAINT</span><span class="w"> </span><span class="nv">uniqueness</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="nv">EXISTS</span>
+</code></pre></div>
+
+<p>Drop the constraint with the name uniqueness if it exists, does nothing if it does not exist.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="performance">Performance</h3>
+<div class="section">
+<ul>
+<li>Use parameters instead of literals when possible. This allows Cypher to re-use your queries instead of having to parse
+  and build new execution plans.</li>
+<li>Always set an upper limit for your variable length patterns. It’s possible to have a query go wild and touch all nodes
+  in a graph by mistake.</li>
+<li>Return only the data you need. Avoid returning whole nodes and relationships — instead, pick the data you need and
+  return only that.</li>
+<li>Use <code>PROFILE</code> / <code>EXPLAIN</code> to analyze the performance of your queries. See
+  <a href="https://neo4j.com/docs/cypher-manual/4.3/query-tuning">Query Tuning</a> for more information on these and other topics,
+  such as planner hints.</li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="neo4j-multidatabase">
+<h2 id="neo4j-multidatabase">Neo4j Multidatabase</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="database-management">Database management</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CREATE OR REPLACE DATABASE myDatabase
+</code></pre></div>
+
+<p>(★) Create a database named myDatabase. If a database with that name exists, then the existing database is deleted and a
+new one created.</p>
+<div class="codehilite"><pre><span></span><code>STOP DATABASE myDatabase
+</code></pre></div>
+
+<p>(★) Stop the database myDatabase.</p>
+<div class="codehilite"><pre><span></span><code>START DATABASE myDatabase
+</code></pre></div>
+
+<p>(★) Start the database myDatabase.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">DATABASES</span>
+</code></pre></div>
+
+<p>List all databases in the system and information about them.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">DATABASES</span>
+<span class="nv">YIELD</span><span class="w"> </span><span class="nv">name</span>,<span class="w"> </span><span class="nv">currentStatus</span>
+<span class="nv">WHERE</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="nv">CONTAINS</span><span class="w"> </span><span class="s1">&#39;my&#39;</span><span class="w"> </span><span class="nv">AND</span><span class="w"> </span><span class="nv">currentStatus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;online&#39;</span>
+</code></pre></div>
+
+<p>List information about databases, filtered by name and online status and further refined by conditions on these.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">DATABASE</span><span class="w"> </span><span class="nv">myDatabase</span>
+</code></pre></div>
+
+<p>List information about the database myDatabase.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">DEFAULT</span><span class="w"> </span><span class="nv">DATABASE</span>
+</code></pre></div>
+
+<p>List information about the default database.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">HOME</span><span class="w"> </span><span class="nv">DATABASE</span>
+</code></pre></div>
+
+<p>List information about the current users home database.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">DROP</span><span class="w"> </span><span class="nv">DATABASE</span><span class="w"> </span><span class="nv">myDatabase</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="nv">EXISTS</span>
+</code></pre></div>
+
+<p>(★) Delete the database myDatabase, if it exists.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="neo4j-security">
+<h2 id="neo4j-security">Neo4j Security</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="user-management">User management</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CREATE USER alice SET PASSWORD $password
+</code></pre></div>
+
+<p>Create a new user and a password. This password must be changed on the first login.</p>
+<div class="codehilite"><pre><span></span><code>ALTER USER alice SET PASSWORD $password CHANGE NOT REQUIRED
+</code></pre></div>
+
+<p>Set a new password for a user. This user will not be required to change this password on the next login.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">ALTER</span><span class="w"> </span><span class="nv">USER</span><span class="w"> </span><span class="nv">alice</span><span class="w"> </span><span class="k">IF</span><span class="w"> </span><span class="nv">EXISTS</span><span class="w"> </span><span class="nv">SET</span><span class="w"> </span><span class="nv">PASSWORD</span><span class="w"> </span><span class="nv">CHANGE</span><span class="w"> </span><span class="nv">REQUIRED</span>
+</code></pre></div>
+
+<p>If the specified user exists, force this user to change their password on the next login.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">ALTER</span> <span class="n">USER</span> <span class="n">alice</span> <span class="kt">SET</span> <span class="n">STATUS</span> <span class="n">SUSPENDED</span>
+</code></pre></div>
+
+<p>(★) Change the user status to suspended. Use SET STATUS ACTIVE to reactivate the user.</p>
+<div class="codehilite"><pre><span></span><code>ALTER USER alice SET HOME DATABASE otherDb
+</code></pre></div>
+
+<p>(★) Change the home database of user to otherDb. Use REMOVE HOME DATABASE to unset the home database for the user and
+fallback to the default database.</p>
+<div class="codehilite"><pre><span></span><code>ALTER CURRENT USER SET PASSWORD FROM $old TO $new
+</code></pre></div>
+
+<p>Change the password of the logged-in user. The user will not be required to change this password on the next login.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">CURRENT</span><span class="w"> </span><span class="nv">USER</span>
+</code></pre></div>
+
+<p>List the currently logged-in user, their status, roles and whether they need to change their password. (★) Status and
+roles are Enterprise Edition only.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">USERS</span>
+</code></pre></div>
+
+<p>List all users in the system, their status, roles and if they need to change their password. (★) Status and roles are
+Enterprise Edition only.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">USERS</span>
+<span class="nv">YIELD</span><span class="w"> </span><span class="nv">user</span>,<span class="w"> </span><span class="nv">suspended</span>
+<span class="nv">WHERE</span><span class="w"> </span><span class="nv">suspended</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">true</span>
+</code></pre></div>
+
+<p>List users in the system, filtered by their name and status and further refined by whether they are suspended. (★)
+Status is Enterprise Edition only.</p>
+<div class="codehilite"><pre><span></span><code>RENAME USER alice TO alice_delete
+</code></pre></div>
+
+<p>Rename the user alice to alice_delete.</p>
+<div class="codehilite"><pre><span></span><code>DROP USER alice_delete
+</code></pre></div>
+
+<p>Delete the user.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="role-management">(★) Role management</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CREATE ROLE my_role
+</code></pre></div>
+
+<p>Create a role.</p>
+<div class="codehilite"><pre><span></span><code>CREATE ROLE my_second_role IF NOT EXISTS AS COPY OF my_role
+</code></pre></div>
+
+<p>Create a role named my_second_role, unless it already exists, as a copy of the existing my_role.</p>
+<div class="codehilite"><pre><span></span><code>RENAME ROLE my_second_role TO my_other_role
+</code></pre></div>
+
+<p>Rename a role named my_second_role to my_other_role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT ROLE my_role, my_other_role TO alice
+</code></pre></div>
+
+<p>Assign roles to a user.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE ROLE my_other_role FROM alice
+</code></pre></div>
+
+<p>Remove a specified role from a user.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">ROLES</span>
+</code></pre></div>
+
+<p>List all roles in the system.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">ROLES</span>
+<span class="nv">YIELD</span><span class="w"> </span><span class="nv">role</span>
+<span class="nv">WHERE</span><span class="w"> </span><span class="nv">role</span><span class="w"> </span><span class="nv">CONTAINS</span><span class="w"> </span><span class="s1">&#39;my&#39;</span>
+</code></pre></div>
+
+<p>List roles, filtered by the name of the role and further refined by whether the name contains 'my'.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">POPULATED</span><span class="w"> </span><span class="nv">ROLES</span><span class="w"> </span><span class="nv">WITH</span><span class="w"> </span><span class="nv">USERS</span>
+</code></pre></div>
+
+<p>List all roles that are assigned to at least one user in the system, and the users assigned to those roles.</p>
+<div class="codehilite"><pre><span></span><code>DROP ROLE my_role
+</code></pre></div>
+
+<p>Delete a role.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="graph-read-privileges">(★) Graph read privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT TRAVERSE ON GRAPH <span class="gs">* NODES *</span> TO my_role
+</code></pre></div>
+
+<p>Grant traverse privilege on all nodes and all graphs to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY READ  ON GRAPH foo RELATIONSHIP Type TO my_role
+</code></pre></div>
+
+<p>Deny read privilege on a specified property, on all relationships with a specified type in a specified graph, to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT MATCH  ON HOME GRAPH ELEMENTS Label TO my_role
+</code></pre></div>
+
+<p>Grant read privilege on all properties and traverse privilege in the home graph, to a role. Here, both privileges apply
+to all nodes and relationships with a specified label/type in the graph.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="graph-write-privileges">(★) Graph write privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT CREATE ON GRAPH * NODES Label TO my_role
+</code></pre></div>
+
+<p>Grant create privilege on all nodes with a specified label in all graphs to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY DELETE ON GRAPH neo4j TO my_role
+</code></pre></div>
+
+<p>Deny delete privilege on all nodes and relationships in a specified graph to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE SET LABEL Label ON GRAPH * FROM my_role
+</code></pre></div>
+
+<p>Revoke set label privilege for the specified label on all graphs to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT REMOVE LABEL * ON GRAPH foo TO my_role
+</code></pre></div>
+
+<p>Grant remove label privilege for all labels on a specified graph to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY SET PROPERTY  ON GRAPH foo RELATIONSHIPS Type TO my_role
+</code></pre></div>
+
+<p>Deny set property privilege on a specified property, on all relationships with a specified type in a specified graph, to
+a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT MERGE  ON GRAPH * NODES Label TO my_role
+</code></pre></div>
+
+<p>Grant merge privilege on all properties, on all nodes with a specified label in all graphs, to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE WRITE ON GRAPH * FROM my_role
+</code></pre></div>
+
+<p>Revoke write privilege on all graphs from a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY ALL GRAPH PRIVILEGES ON GRAPH foo TO my_role
+</code></pre></div>
+
+<p>Deny all graph privileges privilege on a specified graph to a role.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="show-privileges">(★) SHOW PRIVILEGES</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">PRIVILEGES</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">COMMANDS</span>
+</code></pre></div>
+
+<p>List all privileges in the system as Cypher commands.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">PRIVILEGES</span>
+</code></pre></div>
+
+<p>List all privileges in the system, and the roles that they are assigned to.</p>
+<div class="codehilite"><pre><span></span><code>SHOW PRIVILEGES
+YIELD role, action, access
+WHERE role = &#39;my_role&#39;
+</code></pre></div>
+
+<p>List information about privileges, filtered by role, action and access and further refined by the name of the role.</p>
+<div class="codehilite"><pre><span></span><code>SHOW ROLE my_role PRIVILEGES AS COMMANDS
+</code></pre></div>
+
+<p>List all privileges assigned to a role as Cypher commands.</p>
+<div class="codehilite"><pre><span></span><code>SHOW ROLE my_role, my_second_role PRIVILEGES AS COMMANDS
+</code></pre></div>
+
+<p>List all privileges assigned to each of the multiple roles as Cypher commands.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">USER</span><span class="w"> </span><span class="nv">alice</span><span class="w"> </span><span class="nv">PRIVILEGES</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">COMMANDS</span>
+</code></pre></div>
+
+<p>List all privileges of a user, and the role that they are assigned to as Cypher commands.</p>
+<div class="codehilite"><pre><span></span><code><span class="k">SHOW</span><span class="w"> </span><span class="nv">USER</span><span class="w"> </span><span class="nv">PRIVILEGES</span><span class="w"> </span><span class="nv">AS</span><span class="w"> </span><span class="nv">COMMANDS</span>
+</code></pre></div>
+
+<p>List all privileges of the currently logged in user, and the role that they are assigned to as Cypher commands.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="database-privileges">(★) Database privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT ACCESS ON DATABASE * TO my_role
+</code></pre></div>
+
+<p>Grant privilege to access and run queries against all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT START ON DATABASE * TO my_role
+</code></pre></div>
+
+<p>Grant privilege to start all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT STOP ON DATABASE * TO my_role
+</code></pre></div>
+
+<p>Grant privilege to stop all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT CREATE INDEX ON DATABASE foo TO my_role
+</code></pre></div>
+
+<p>Grant privilege to create indexes on a specified database to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT DROP INDEX ON DATABASE foo TO my_role
+</code></pre></div>
+
+<p>Grant privilege to drop indexes on a specified database to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT SHOW INDEX ON DATABASE * TO my_role
+</code></pre></div>
+
+<p>Grant privilege to show indexes on all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY INDEX MANAGEMENT ON DATABASE bar TO my_role
+</code></pre></div>
+
+<p>Deny privilege to create and drop indexes on a specified database to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT CREATE CONSTRAINT ON DATABASE * TO my_role
+</code></pre></div>
+
+<p>Grant privilege to create constraints on all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY DROP CONSTRAINT ON DATABASE * TO my_role
+</code></pre></div>
+
+<p>Deny privilege to drop constraints on all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY SHOW CONSTRAINT ON DATABASE foo TO my_role
+</code></pre></div>
+
+<p>Deny privilege to show constraints on a specified database to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE CONSTRAINT ON DATABASE * FROM my_role
+</code></pre></div>
+
+<p>Revoke granted and denied privileges to create and drop constraints on all databases from a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT CREATE NEW LABELS ON DATABASE * TO my_role
+</code></pre></div>
+
+<p>Grant privilege to create new labels on all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY CREATE NEW TYPES ON DATABASE foo TO my_role
+</code></pre></div>
+
+<p>Deny privilege to create new relationship types on a specified database to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE GRANT CREATE NEW PROPERTY NAMES ON DATABASE bar FROM my_role
+</code></pre></div>
+
+<p>Revoke the grant privilege to create new property names on a specified database from a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT NAME MANAGEMENT ON HOME DATABASE TO my_role
+</code></pre></div>
+
+<p>Grant privilege to create labels, relationship types, and property names on the home database to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT ALL ON DATABASE baz TO my_role
+</code></pre></div>
+
+<p>Grant privilege to access, create and drop indexes and constraints, create new labels, types and property names on a
+specified database to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT SHOW TRANSACTION (*) ON DATABASE foo TO my_role
+</code></pre></div>
+
+<p>Grant privilege to list transactions and queries from all users on a specified database to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY TERMINATE TRANSACTION (user1, user2) ON DATABASES * TO my_role
+</code></pre></div>
+
+<p>Deny privilege to kill transactions and queries from user1 and user2 on all databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE GRANT TRANSACTION MANAGEMENT ON HOME DATABASE FROM my_role
+</code></pre></div>
+
+<p>Revoke the granted privilege to list and kill transactions and queries from all users on the home database from a role.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="role-management-privileges">(★) Role management privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT CREATE ROLE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to create roles to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT RENAME ROLE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to rename roles to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT DROP ROLE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to delete roles to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY ASSIGN ROLE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Deny the privilege to assign roles to users to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY REMOVE ROLE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Deny the privilege to remove roles from users to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE DENY SHOW ROLE ON DBMS FROM my_role
+</code></pre></div>
+
+<p>Revoke the denied privilege to show roles from a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT ROLE MANAGEMENT ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant all privileges to manage roles to a role.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-management-privileges">(★) User management privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT CREATE USER ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to create users to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT RENAME USER ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to rename users to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY ALTER USER ON DBMS TO my_role
+</code></pre></div>
+
+<p>Deny the privilege to alter users to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE SET PASSWORDS ON DBMS FROM my_role
+</code></pre></div>
+
+<p>Revoke the granted and denied privileges to alter users' passwords from a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE GRANT SET USER STATUS ON DBMS FROM my_role
+</code></pre></div>
+
+<p>Revoke the granted privilege to alter the account status of users from a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT SET USER HOME DATABASE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege alter the home database of users to a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT DROP USER ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to delete users to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE DENY SHOW USER ON DBMS FROM my_role
+</code></pre></div>
+
+<p>Revoke the denied privilege to show users from a role.</p>
+<div class="codehilite"><pre><span></span><code>GRANT USER MANAGEMENT ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant all privileges to manage users to a role.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="database-management-privileges">(★) Database management privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT CREATE DATABASE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to create databases to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE DENY DROP DATABASE ON DBMS FROM my_role
+</code></pre></div>
+
+<p>Revoke the denied privilege to delete databases from a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY DATABASE MANAGEMENT ON DBMS TO my_role
+</code></pre></div>
+
+<p>Deny all privileges to manage database to a role.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="privilege-management-privileges">(★) Privilege management privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT SHOW PRIVILEGE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant the privilege to show privileges to a role.</p>
+<div class="codehilite"><pre><span></span><code>DENY ASSIGN PRIVILEGE ON DBMS TO my_role
+</code></pre></div>
+
+<p>Deny the privilege to assign privileges to roles to a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE GRANT REMOVE PRIVILEGE ON DBMS FROM my_role
+</code></pre></div>
+
+<p>Revoke the granted privilege to remove privileges from roles from a role.</p>
+<div class="codehilite"><pre><span></span><code>REVOKE PRIVILEGE MANAGEMENT ON DBMS FROM my_role
+</code></pre></div>
+
+<p>Revoke all granted and denied privileges for manage privileges from a role.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dbms-privileges">(★) DBMS privileges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GRANT ALL ON DBMS TO my_role
+</code></pre></div>
+
+<p>Grant privilege to perform all role management, user management, database management and privilege management to a role.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="note">
+<h2 id="note">★ Note</h2>
+<div class="h3-wrap-list">
+<p>(★) Functionality available in Neo4j Enterprise Edition.</p>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

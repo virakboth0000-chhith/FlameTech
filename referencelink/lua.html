@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Lua Cheat Sheet — FlameTech</title>
+  <meta name="description" content="The [Lua](https://www.lua.org/) cheat sheet is a one-page reference sheet for the Lua 5.4 programming language.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#00007f}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,127,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>Lua</span>
+  </div>
+  <div class="post-icon">LU</div>
+  <h1>Lua <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>The <a href="https://www.lua.org/">Lua</a> cheat sheet is a one-page reference sheet for the Lua 5.4 programming language.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">script</span> <span class="meta-tag">interpret</span> <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<ul>
+<li><a href="https://www.lua.org/">Lua</a> <em>(lua.org)</em></li>
+<li><a href="https://www.lua.org/docs.html">Lua Document</a> <em>(lua.org/docs.html)</em></li>
+<li><a href="https://learnxinyminutes.com/docs/lua/">Learn X in Y minutes</a> <em>(learnxinyminutes.com)</em></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hello-world">Hello World</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, World!&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- Hello, World!</span>
+
+<span class="c1">-- You can omit parentheses if the argument is one string or table literal</span>
+<span class="nb">print</span><span class="w"> </span><span class="s2">&quot;Hello, World!&quot;</span><span class="w">  </span><span class="c1">-- Hello, World!</span>
+
+<span class="nb">print</span><span class="w"> </span><span class="s">[[multi-line</span>
+<span class="s"> Hello</span>
+<span class="s"> World]]</span>
+</code></pre></div>
+
+<p>The famous "Hello World" program in Lua</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="variables">Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">18</span><span class="w"> </span><span class="c1">-- local variable</span>
+<span class="nv">boys</span><span class="p">,</span><span class="w"> </span><span class="nv">girls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="c1">-- global variables</span>
+
+<span class="c1">-- Now x = 1, y = 2, z = 3, and 4 is thrown away.</span>
+<span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span>
+
+<span class="c1">-- Undefined variables return nil.</span>
+<span class="c1">-- This is not an error:</span>
+<span class="nv">foo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">anUnknownVariable</span><span class="w">  </span><span class="c1">-- Now foo = nil.</span>
+
+<span class="c1">-- Variables are global by default unless declared with local.</span>
+</code></pre></div>
+
+<p>Lua is a dynamically typed language and hence only the values will have types not the variables.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="data-types">Data Types</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Value Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>number</code></td>
+<td>Represent (double-precision) numbers</td>
+</tr>
+<tr>
+<td><code>string</code></td>
+<td>Represents text</td>
+</tr>
+<tr>
+<td><code>nil</code></td>
+<td>Differentiates between values with data or not</td>
+</tr>
+<tr>
+<td><code>boolean</code></td>
+<td>true or false value</td>
+</tr>
+<tr>
+<td><code>function</code></td>
+<td>Represents a sub routine</td>
+</tr>
+<tr>
+<td><code>userdata</code></td>
+<td>Represents arbitrary C data</td>
+</tr>
+<tr>
+<td><code>thread</code></td>
+<td>Represents independent threads of execution</td>
+</tr>
+<tr>
+<td><code>table</code></td>
+<td>key-value pair, or array.</td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="#data-type-apis">Data Type APIs</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="io">IO</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">-- Writes data to the standard output or a file.</span>
+<span class="nb">io.write</span><span class="p">(</span><span class="s2">&quot;Enter your name: &quot;</span><span class="p">)</span>
+<span class="c1">-- Reads input from the user or a file. You can specify formats like &quot;*l&quot; (line), &quot;*n&quot; (number), or &quot;*a&quot; (all).</span>
+<span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">io.read</span><span class="p">()</span>
+
+<span class="nb">io.write</span><span class="p">(</span><span class="s2">&quot;Enter your age: &quot;</span><span class="p">)</span>
+<span class="nv">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">io.read</span><span class="p">()</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comments">Comments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">-- This is a single line comments</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="cm">--[[</span>
+<span class="cm"> Comments (multi-line) could also be written like this</span>
+<span class="cm">--]]</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="operators">
+<h2 id="operators">Operators</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="arithmetic">Arithmetic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">-- add</span>
+<span class="w">  </span><span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">30</span><span class="w">  </span><span class="c1">-- =&gt; 40</span>
+
+<span class="c1">-- subtract</span>
+<span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">40</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">10</span><span class="w">  </span><span class="c1">-- =&gt; 30</span>
+
+<span class="c1">-- multiply</span>
+<span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="w">   </span><span class="c1">-- =&gt; 250</span>
+
+<span class="c1">-- divide (float division)</span>
+<span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">4</span><span class="w">   </span><span class="c1">-- =&gt; 4.0</span>
+
+<span class="c1">-- divide (integer division, Lua 5.3+)</span>
+<span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">16</span><span class="w"> </span><span class="o">//</span><span class="w"> </span><span class="mi">4</span><span class="w">  </span><span class="c1">-- =&gt; 4</span>
+
+<span class="c1">-- modulo</span>
+<span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w">   </span><span class="c1">-- =&gt; 1</span>
+
+<span class="c1">-- power</span>
+<span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">^</span><span class="w"> </span><span class="mi">3</span><span class="w">    </span><span class="c1">-- =&gt; 125</span>
+
+<span class="c1">-- unary minus</span>
+<span class="nv">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span>
+<span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="nv">a</span><span class="w"> </span><span class="c1">-- =&gt; -12</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="relational">Relational</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+<span class="nv">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
+
+<span class="c1">-- equals</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="c1">-- false</span>
+
+<span class="c1">-- not equals</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">~=</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="c1">-- true</span>
+
+<span class="c1">-- greater than</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="c1">-- false</span>
+
+<span class="c1">-- less than</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="c1">-- true</span>
+
+<span class="c1">-- greater than or equals</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="c1">-- false</span>
+
+<span class="c1">-- less than or equals</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">a</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="c1">-- true</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical">Logical</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">-- and</span>
+<span class="kc">false</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="kc">nil</span><span class="w">  </span><span class="c1">--&gt; false</span>
+<span class="mi">0</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="mi">20</span><span class="w">       </span><span class="c1">--&gt; 20</span>
+<span class="mi">10</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="mi">20</span><span class="w">      </span><span class="c1">--&gt; 20</span>
+
+<span class="c1">-- or</span>
+<span class="kc">true</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="kc">false</span><span class="w">  </span><span class="c1">--&gt; true</span>
+<span class="mi">10</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="w">        </span><span class="c1">--&gt; 10</span>
+<span class="mi">12</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">4</span><span class="w">        </span><span class="c1">--&gt; 12</span>
+
+<span class="w">  </span><span class="c1">-- not</span>
+<span class="ow">not</span><span class="w"> </span><span class="kc">true</span><span class="w">       </span><span class="c1">--&gt; false</span>
+</code></pre></div>
+
+<p>Only nil and false are falsy; 0 and '' are true!</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="conditionals">
+<h2 id="conditionals">Conditionals</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="if-else">if-else</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">num</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is greater than 10&quot;</span><span class="p">)</span>
+<span class="kr">elseif</span><span class="w"> </span><span class="nv">num</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is smaller than 10&quot;</span><span class="p">)</span>
+<span class="kr">else</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is 10&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="c1">-- making a ternary operator</span>
+<span class="c1">-- This is similar to the a?b:c operator in C/js:</span>
+<span class="nv">ans</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aBoolValue</span><span class="w"> </span><span class="ow">and</span><span class="w"> </span><span class="s1">&#39;yes&#39;</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="s1">&#39;no&#39;</span><span class="w">  </span><span class="c1">--&gt; &#39;no&#39;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="loops">
+<h2 id="loops">Loops</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="while-loop">While loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="kr">while</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">i</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="kr">end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="for-loop">For loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">-- Numeric for loop (start, end, step)</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">i</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="c1">-- Generic for loop for tables</span>
+<span class="nv">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">t</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">)</span><span class="w"> </span><span class="c1">-- prints 1 10, 2 20, 3 30</span>
+<span class="kr">end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="repeat-until-loop">Repeat-until loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="kr">repeat</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">i</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="kr">until</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">5</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="breaking-out">Breaking out</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kr">while</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="nv">condition</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">break</span>
+<span class="w">  </span><span class="kr">end</span>
+<span class="kr">end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue">Continue</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">-- prints even numbers in [|1,10|]</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">i</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="mi">10</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">   </span><span class="kr">if</span><span class="w"> </span><span class="nv">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">    </span><span class="kr">goto</span><span class="w"> </span><span class="nl">continue</span>
+<span class="w">  </span><span class="kr">end</span>
+<span class="w">   </span><span class="nb">print</span><span class="p">(</span><span class="nv">i</span><span class="p">)</span>
+<span class="w">   </span><span class="p">::</span><span class="nl">continue</span><span class="p">::</span>
+<span class="kr">end</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="functions">
+<h2 id="functions">Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="creating-fns">Creating fns</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kr">function</span><span class="w"> </span><span class="nf">myFunction</span><span class="p">()</span>
+<span class="w">  </span><span class="kr">return</span><span class="w"> </span><span class="mi">1</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nf">myFunctionWithArgs</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span>
+<span class="w">  </span><span class="c1">-- ...</span>
+<span class="kr">end</span>
+
+<span class="c1">-- function as arg</span>
+<span class="kr">function</span><span class="w"> </span><span class="nf">operate</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">,</span><span class="w"> </span><span class="nv">func</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="nf">func</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span>
+<span class="kr">end</span>
+
+
+
+<span class="c1">-- anonymous function</span>
+<span class="kr">function</span><span class="w"> </span><span class="p">(</span><span class="nv">parameters</span><span class="p">)</span>
+<span class="w">    </span><span class="c1">-- body of the function</span>
+<span class="kr">end</span>
+
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">greet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">name</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="s2">&quot;Hello, &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">name</span>
+<span class="kr">end</span>
+
+
+<span class="c1">-- Not exported in the module</span>
+<span class="kd">local</span><span class="w"> </span><span class="kr">function</span><span class="w"> </span><span class="nf">myPrivateFunction</span><span class="p">()</span>
+<span class="kr">end</span>
+
+
+<span class="c1">-- Splats</span>
+<span class="kr">function</span><span class="w"> </span><span class="nf">doAction</span><span class="p">(</span><span class="nv">action</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Doing &#39;&quot;</span><span class="o">..</span><span class="nv">action</span><span class="o">..</span><span class="s2">&quot;&#39; to&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span>
+<span class="kr">end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="invoking-fns">Invoking fns</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nf">myFunction</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nf">greet</span><span class="p">(</span><span class="s2">&quot;Lua&quot;</span><span class="p">))</span><span class="w"> </span><span class="c1">-- Output: Hello, Lua</span>
+
+
+<span class="c1">-- function as arg</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">operate</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span>
+<span class="w">    </span><span class="kr">return</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nv">y</span>
+<span class="kr">end</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nv">result</span><span class="p">)</span><span class="w"> </span><span class="c1">-- Output: 8</span>
+
+
+<span class="nf">doAction</span><span class="p">(</span><span class="s1">&#39;write&#39;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Shirley&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Abed&quot;</span><span class="p">)</span>
+<span class="c1">--&gt; Doing &#39;write&#39; to Shirley Abed</span>
+</code></pre></div>
+
+<p>You can omit parentheses if the argument is one string or table literal</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">print</span><span class="w"> </span><span class="s2">&quot;Hello World&quot;</span><span class="w">     </span><span class="c1">--&gt;     print(&quot;Hello World&quot;)</span>
+
+<span class="nb">dofile</span><span class="w"> </span><span class="s1">&#39;a.lua&#39;</span><span class="w">          </span><span class="c1">--&gt;     dofile (&#39;a.lua&#39;)</span>
+
+<span class="nb">print</span><span class="w"> </span><span class="s">[[a multi-line    --&gt;     print([[a multi-line</span>
+<span class="s"> message]]</span><span class="w">                        </span><span class="nv">message</span><span class="p">]])</span>
+
+<span class="nv">f</span><span class="w">           </span><span class="c1">--&gt;     f()</span>
+
+<span class="nb">type</span><span class="w">                  </span><span class="c1">--&gt;     type()</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="data-type-apis">
+<h2 id="data-type-apis">Data Type APIs</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="global-functions">Global functions</h3>
+<div class="section">
+<p>Assert</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">my_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">my_table</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;my_table should exist!&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- This will not fail</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">nil</span>
+<span class="c1">-- This will cause a runtime error with the message &quot;a is nil&quot;</span>
+<span class="nb">assert</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;a is nil&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Type</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">my_var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="nv">my_var</span><span class="p">))</span><span class="w"> </span><span class="c1">-- &quot;number&quot;</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">my_str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;hello&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="nv">my_str</span><span class="p">))</span><span class="w"> </span><span class="c1">-- &quot;string&quot;</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">my_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="kr">end</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="nv">my_func</span><span class="p">))</span><span class="w"> </span><span class="c1">-- &quot;function&quot;</span>
+</code></pre></div>
+
+<p>Dofile &amp; Loadfile</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">-- Using dofile</span>
+<span class="nb">dofile</span><span class="p">(</span><span class="s2">&quot;my_file.lua&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- Executes my_file.lua immediately</span>
+
+<span class="c1">-- Using loadfile</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">my_func</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">loadfile</span><span class="p">(</span><span class="s2">&quot;my_file.lua&quot;</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">my_func</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="c1">-- my_file.lua is valid, now execute it</span>
+<span class="w">  </span><span class="nf">my_func</span><span class="p">()</span>
+<span class="kr">else</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error loading file.&quot;</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+
+<p>Pairs</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">my_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using pairs:&quot;</span><span class="p">)</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">key</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">pairs</span><span class="p">(</span><span class="nv">my_table</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">key</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Using ipairs:&quot;</span><span class="p">)</span>
+<span class="kr">for</span><span class="w"> </span><span class="nv">key</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nb">ipairs</span><span class="p">(</span><span class="nv">my_table</span><span class="p">)</span><span class="w"> </span><span class="kr">do</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">key</span><span class="p">,</span><span class="w"> </span><span class="nv">value</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+
+<p>To number</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">num1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">tonumber</span><span class="p">(</span><span class="s2">&quot;34&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">num1</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="p">(</span><span class="nv">num1</span><span class="p">))</span><span class="w"> </span><span class="c1">-- 34 number</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">num2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">tonumber</span><span class="p">(</span><span class="s2">&quot;34.5&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">num2</span><span class="p">,</span><span class="w"> </span><span class="nb">type</span><span class="p">(</span><span class="nv">num2</span><span class="p">))</span><span class="w"> </span><span class="c1">-- 34.5 number</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">num3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">tonumber</span><span class="p">(</span><span class="s2">&quot;abc&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">num3</span><span class="p">)</span><span class="w"> </span><span class="c1">-- nil (conversion failed)</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">hex_num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">tonumber</span><span class="p">(</span><span class="s2">&quot;8f&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">hex_num</span><span class="p">)</span><span class="w"> </span><span class="c1">-- 143 (8 * 16 + 15)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="strings">Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Hello&quot;</span>
+</code></pre></div>
+
+<p>Concatenation</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">s</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot; there&quot;</span><span class="w"> </span><span class="c1">-- =&gt; Hello there</span>
+</code></pre></div>
+
+<p>Commonly used methods</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">s</span><span class="p">:</span><span class="nf">upper</span><span class="p">()</span><span class="w"> </span><span class="c1">-- =&gt; HELLO</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">lower</span><span class="p">()</span><span class="w"> </span><span class="c1">-- =&gt; hello</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">len</span><span class="p">()</span><span class="w">   </span><span class="c1">-- =&gt; 5</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="s2">&quot;o&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- =&gt; 5</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">reverse</span><span class="p">()</span><span class="w"> </span><span class="c1">-- =&gt; olleH</span>
+</code></pre></div>
+
+<p>Sub</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;programming&quot;</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">sub</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="c1">-- (extracts substring) =&gt; &quot;ogram&quot;</span>
+</code></pre></div>
+
+<p>Gsub</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">s</span><span class="p">:</span><span class="nf">gsub</span><span class="p">()</span><span class="w"> </span><span class="c1">--&gt; (substitutes all matches)</span>
+</code></pre></div>
+
+<p>Char</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ha&quot;</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">rep</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="c1">-- // repeats 3 times -&gt; &quot;hahaha&quot;</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">s_char</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">string.char</span><span class="p">(</span><span class="mi">72</span><span class="p">,</span><span class="w"> </span><span class="mi">101</span><span class="p">,</span><span class="w"> </span><span class="mi">108</span><span class="p">,</span><span class="w"> </span><span class="mi">108</span><span class="p">,</span><span class="w"> </span><span class="mi">111</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">s_char</span><span class="p">)</span><span class="w"> </span><span class="c1">-- &quot;Hello&quot;</span>
+</code></pre></div>
+
+<p>Format</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Alice&quot;</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">30</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">formatted</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">string.format</span><span class="p">(</span><span class="s2">&quot;My name is %s and I am %d years old.&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">name</span><span class="p">,</span><span class="w"> </span><span class="nv">age</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">formatted</span><span class="p">)</span><span class="w"> </span><span class="c1">-- &quot;My name is Alice and I am 30 years old.&quot;</span>
+</code></pre></div>
+
+<p>Others</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">s</span><span class="p">:</span><span class="nf">match</span><span class="p">()</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">gmatch</span><span class="p">()</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">dump</span><span class="p">()</span>
+<span class="nv">s</span><span class="p">:</span><span class="nf">byte</span><span class="p">()</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="placeholder">placeholder</h3>
+<div class="section">
+</div></div>
+<div class="h3-wrap">
+<h3 id="math">Math</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">math.abs</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="c1">-- =&gt; 5</span>
+<span class="c1">-- Returns the absolute value of x.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.acos</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="c1">-- =&gt; 0</span>
+<span class="c1">-- Returns the arc cosine of x in radians.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.asin</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="c1">-- =&gt; 0</span>
+<span class="c1">-- Returns the arc sine of x in radians.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.atan</span><span class="p">(</span><span class="nv">y</span><span class="p">,</span><span class="w"> </span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; arctangent of y/x</span>
+<span class="c1">-- Returns the arctangent of `y/x` in radians, using the signs of both arguments to determine the correct quadrant.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.ceil</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; smallest integer greater than or equal to x</span>
+<span class="c1">-- Returns the smallest integer value not less than `x`.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.cos</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; cosine of x</span>
+<span class="c1">-- Returns the cosine of `x` (assumed to be in radians).</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.deg</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; radians to degrees</span>
+<span class="c1">-- Returns the angle `x` (in radians) converted to degrees.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.exp</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; e^x</span>
+<span class="c1">-- Returns the value of $e^x$, where $e$ is the base of natural logarithms.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.floor</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; largest integer less than or equal to x</span>
+<span class="c1">-- Returns the largest integer value not greater than `x`.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.fmod</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; remainder of x divided by y</span>
+<span class="c1">-- Returns the remainder of `x` divided by `y`, with the same sign as `x`.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.log</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">base</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; logarithm of x</span>
+<span class="c1">-- Returns the logarithm of `x` in the given `base`. If `base` is not provided, it defaults to the natural logarithm.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.max</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; largest argument</span>
+<span class="c1">-- Returns the largest among its arguments.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.min</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; smallest argument</span>
+<span class="c1">-- Returns the smallest among its arguments.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.modf</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; integer and fractional parts</span>
+<span class="c1">-- Returns two numbers: the integer part of `x` and the fractional part.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.pow</span><span class="p">(</span><span class="nv">x</span><span class="p">,</span><span class="w"> </span><span class="nv">y</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; x^y</span>
+<span class="c1">-- Returns `x` raised to the power of `y`.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.rad</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; degrees to radians</span>
+<span class="c1">-- Returns the angle `x` (in degrees) converted to radians.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.random</span><span class="p">(</span><span class="nv">m</span><span class="p">,</span><span class="w"> </span><span class="nv">n</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; random number</span>
+<span class="c1">-- Returns a pseudo-random number. When called without arguments, returns a float in the range $[0, 1)$. With one argument `n`, returns an integer in the range $[1, n]$. With two arguments `m` and `n`, returns an integer in the range $[m, n]$.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.sin</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; sine of x</span>
+<span class="c1">-- Returns the sine of `x` (assumed to be in radians).</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.sqrt</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; square root of x</span>
+<span class="c1">-- Returns the non-negative square root of `x`.</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="nb">math.tan</span><span class="p">(</span><span class="nv">x</span><span class="p">)</span><span class="err">`</span><span class="w"> </span><span class="c1">-- =&gt; tangent of x</span>
+<span class="c1">-- Returns the tangent of `x` (assumed to be in radians).</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="table-basics">Table basics</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">-- Array-like table (one-indexed)</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">colors</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">colors</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="c1">-- &quot;red&quot;</span>
+
+<span class="c1">-- Dictionary-like table</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">user</span><span class="p">.</span><span class="py">name</span><span class="p">)</span><span class="w"> </span><span class="c1">-- &quot;Jane&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">user</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">])</span><span class="w"> </span><span class="c1">-- 25</span>
+
+<span class="c1">-- Mixed table</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">mixed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">mixed</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="c1">-- 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">mixed</span><span class="p">.</span><span class="py">key</span><span class="p">)</span><span class="w"> </span><span class="c1">-- &quot;value&quot;</span>
+
+<span class="c1">-- Getting the length of an array-like table</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="nv">colors</span><span class="p">)</span><span class="w"> </span><span class="c1">-- 3</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="tables">Tables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">my_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+
+<span class="c1">-- insert (appends 30 to the end)</span>
+<span class="nb">table.insert</span><span class="p">(</span><span class="nv">my_table</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">)</span>
+
+<span class="c1">-- insertion (inserts 2 in position 1)</span>
+<span class="nb">table.insert</span><span class="p">(</span><span class="nv">my_table</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1">-- remove (remove item in position 3)</span>
+<span class="nb">table.remove</span><span class="p">(</span><span class="nv">my_table</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1">-- Default numerical sort</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="nb">table.sort</span><span class="p">(</span><span class="nv">numbers</span><span class="p">)</span><span class="w"> </span><span class="c1">-- </span>
+
+<span class="c1">-- Custom sort for descending order</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">numbers_desc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="nb">table.sort</span><span class="p">(</span><span class="nv">numbers_desc</span><span class="p">,</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">a</span><span class="p">,</span><span class="w"> </span><span class="nv">b</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">return</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nv">b</span>
+<span class="kr">end</span><span class="p">)</span><span class="w"> </span><span class="c1">-- </span>
+
+<span class="c1">-- concat</span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">fruit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="kd">local</span><span class="w"> </span><span class="nv">fruit_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">table.concat</span><span class="p">(</span><span class="nv">fruit</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;, &quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nv">fruit_string</span><span class="p">)</span><span class="w"> </span><span class="c1">-- apple, banana, cherry</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="misc">
+<h2 id="misc">Misc</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="classes">Classes</h3>
+<div class="section">
+<p>Classes aren't built in; there are different ways to make them using tables and metatables.</p>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+<p>Short explanation; what we are trying to do is basically making a table that can hold data and functions</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Dog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">Dog</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="w">  </span><span class="nv">newObj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="w">  </span><span class="nv">self</span><span class="p">.</span><span class="py">__index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">self</span>
+<span class="w">  </span><span class="kr">return</span><span class="w"> </span><span class="nb">setmetatable</span><span class="p">(</span><span class="nv">newObj</span><span class="p">,</span><span class="w"> </span><span class="nv">self</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">Dog</span><span class="p">:</span><span class="nf">makeSound</span><span class="p">()</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;I say &#39;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">self</span><span class="p">.</span><span class="py">sound</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="nv">mrDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Dog</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="nv">mrDog</span><span class="p">:</span><span class="nf">makeSound</span><span class="p">()</span><span class="w">  </span><span class="c1">-- &#39;I say woof&#39;</span>
+</code></pre></div>
+
+<p>Inheritance</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">LoudDog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Dog</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">LoudDog</span><span class="p">:</span><span class="nf">makeSound</span><span class="p">()</span>
+<span class="w">  </span><span class="nv">s</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">self</span><span class="p">.</span><span class="py">sound</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s1">&#39; &#39;</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">s</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">s</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">s</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="nv">seymour</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">LoudDog</span><span class="p">:</span><span class="nf">new</span><span class="p">()</span>
+<span class="nv">seymour</span><span class="p">:</span><span class="nf">makeSound</span><span class="p">()</span><span class="w">  </span><span class="c1">-- &#39;woof woof woof&#39;</span>
+</code></pre></div>
+
+<p>Another example</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Account</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">Account</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="nv">balance</span><span class="p">)</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">setmetatable</span><span class="p">(,</span><span class="w"> </span><span class="p">)</span>
+
+<span class="w">  </span><span class="c1">-- Your constructor stuff</span>
+<span class="w">  </span><span class="nv">t</span><span class="p">.</span><span class="py">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nv">balance</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<span class="w">  </span><span class="kr">return</span><span class="w"> </span><span class="nv">t</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">Account</span><span class="p">:</span><span class="nf">withdraw</span><span class="p">(</span><span class="nv">amount</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Withdrawing &quot;</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="nv">amount</span><span class="w"> </span><span class="o">..</span><span class="w"> </span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nv">self</span><span class="p">.</span><span class="py">balance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">self</span><span class="p">.</span><span class="py">balance</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="nv">amount</span>
+<span class="w">  </span><span class="nv">self</span><span class="p">:</span><span class="nf">report</span><span class="p">()</span>
+<span class="kr">end</span>
+
+<span class="kr">function</span><span class="w"> </span><span class="nc">Account</span><span class="p">:</span><span class="nf">report</span><span class="p">()</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Your current balance is: &quot;</span><span class="o">..</span><span class="nv">self</span><span class="p">.</span><span class="py">balance</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="nv">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">Account</span><span class="p">:</span><span class="nf">new</span><span class="p">(</span><span class="mi">9000</span><span class="p">)</span>
+<span class="nv">a</span><span class="p">:</span><span class="nf">withdraw</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span><span class="w">    </span><span class="c1">-- method call</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="meta-tables">Meta-tables</h3>
+<div class="section">
+<p>A metatable is simply a table with functions in it.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">mt</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+
+<span class="nv">mt</span><span class="p">.</span><span class="py">__tostring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">()</span><span class="w"> </span><span class="kr">return</span><span class="w"> </span><span class="s2">&quot;lol&quot;</span><span class="w"> </span><span class="kr">end</span>
+<span class="nv">mt</span><span class="p">.</span><span class="py">__add</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="w">       </span><span class="c1">-- a + b</span>
+<span class="nv">mt</span><span class="p">.</span><span class="py">__mul</span><span class="w">      </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">b</span><span class="p">)</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="w">       </span><span class="c1">-- a * b</span>
+<span class="nv">mt</span><span class="p">.</span><span class="py">__index</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">k</span><span class="p">)</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="w">       </span><span class="c1">-- Lookups (a[k] or a.k)</span>
+<span class="nv">mt</span><span class="p">.</span><span class="py">__newindex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="nv">k</span><span class="p">,</span><span class="w"> </span><span class="nv">v</span><span class="p">)</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="kr">end</span><span class="w">    </span><span class="c1">-- Setters (a[k] = v)</span>
+</code></pre></div>
+
+<p>Metatables allow you to override behavior of another table.</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">mytable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="nb">setmetatable</span><span class="p">(</span><span class="nv">mytable</span><span class="p">,</span><span class="w"> </span><span class="nv">mt</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nv">myobject</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="files">Files</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">local</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">io.open</span><span class="p">(</span><span class="s2">&quot;test.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="nv">file</span><span class="p">:</span><span class="nf">write</span><span class="p">(</span><span class="s2">&quot;Hello from Lua!&quot;</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">io.close</span><span class="p">(</span><span class="nv">file</span><span class="p">)</span>
+<span class="kr">end</span>
+
+<span class="kd">local</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">io.open</span><span class="p">(</span><span class="s2">&quot;test.txt&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+<span class="kr">if</span><span class="w"> </span><span class="nv">file</span><span class="w"> </span><span class="kr">then</span>
+<span class="w">  </span><span class="kd">local</span><span class="w"> </span><span class="nv">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">file</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="s2">&quot;*a&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">-- read all content</span>
+<span class="w">  </span><span class="nb">print</span><span class="p">(</span><span class="nv">content</span><span class="p">)</span>
+<span class="w">  </span><span class="nb">io.close</span><span class="p">(</span><span class="nv">file</span><span class="p">)</span>
+<span class="kr">end</span>
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

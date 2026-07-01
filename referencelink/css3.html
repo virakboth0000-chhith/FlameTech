@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>CSS 3 Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This is a quick reference cheat sheet for CSS goodness, listing selector syntax, properties, units and other useful bits of information.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#3473b5}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(52,115,181,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>CSS 3</span>
+  </div>
+  <div class="post-icon">C3</div>
+  <h1>CSS 3 <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This is a quick reference cheat sheet for CSS goodness, listing selector syntax, properties, units and other useful bits of information.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">web</span> <span class="meta-tag">css</span> <span class="meta-tag">style</span> <span class="meta-tag">Programming</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<p>CSS is rich in capabilities and is more than simply laying out pages.</p>
+<h4 id="external-stylesheet">External stylesheet</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">link</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;./path/to/stylesheet/style.css&quot;</span> <span class="na">rel</span><span class="o">=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text/css&quot;</span> <span class="p">/&gt;</span>
+</code></pre></div>
+
+<h4 id="internal-stylesheet">Internal stylesheet</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="w">  </span><span class="nt">body</span><span class="w"> </span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<h4 id="inline-styles">Inline styles</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">h2</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;text-align: center;&quot;</span><span class="p">&gt;</span>Centered text<span class="p">&lt;/</span><span class="nt">h2</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">p</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;color: blue; font-size: 18px;&quot;</span><span class="p">&gt;</span>Blue, 18-point text<span class="p">&lt;/</span><span class="nt">p</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="add-class">Add class</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;classname&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;class1 classn ...&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p>Support multiple classes on one element.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="important">!important</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">post-title</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Overrides all previous styling rules.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="selector">Selector</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">h1</span><span class="w"> </span>
+<span class="p">#</span><span class="nn">job-title</span><span class="w"> </span>
+<span class="nt">div</span><span class="p">.</span><span class="nc">hero</span><span class="w"> </span>
+<span class="nt">div</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nt">p</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#css-selectors">Selectors</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-color">Text color</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">2a2aff</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">green</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rgb</span><span class="o">(</span><span class="nt">34</span><span class="o">,</span><span class="w"> </span><span class="nt">12</span><span class="o">,</span><span class="w"> </span><span class="nt">64</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">hsla</span><span class="o">(</span><span class="nt">30</span><span class="w"> </span><span class="nt">100</span><span class="o">%</span><span class="w"> </span><span class="nt">50</span><span class="o">%</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+</code></pre></div>
+
+<p>See: <a href="#css-colors">Colors</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="background">Background</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">background-color</span><span class="o">:</span><span class="w"> </span><span class="nt">blue</span><span class="o">;</span>
+<span class="nt">background-image</span><span class="o">:</span><span class="w"> </span><span class="nt">url</span><span class="o">(</span><span class="s1">&#39;nyan-cat.gif&#39;</span><span class="o">);</span>
+<span class="nt">background-image</span><span class="o">:</span><span class="w"> </span><span class="nt">url</span><span class="o">(</span><span class="s1">&#39;../image.png&#39;</span><span class="o">);</span>
+</code></pre></div>
+
+<p>See: <a href="#css-backgrounds">Backgrounds</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="font">Font</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">page-title</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#css-fonts">Fonts</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="position">Position</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">box</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://learn-the-web.algonquindesign.ca/topics/css-layout-cheat-sheet/">Position</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="animation">Animation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">300ms</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">0s</span><span class="w"> </span><span class="nt">infinite</span><span class="o">;</span>
+
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">bounce</span><span class="w"> </span><span class="nt">300ms</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">infinite</span><span class="o">;</span>
+</code></pre></div>
+
+<p>See: <a href="#css-animation">Animation</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="comment">Comment</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c">/* This is a single line comment */</span>
+
+<span class="c">/* This is a </span>
+<span class="c">   multi-line comment */</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="flex-layout">Flex layout</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">div</span><span class="w"> </span>
+<span class="nt">div</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#css-flexbox">Flexbox</a> | <a href="#css-flexbox-tricks">Flex Tricks</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="grid-layout">Grid layout</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">container</span><span class="w"> </span>
+
+<span class="p">#</span><span class="nn">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nt">div</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#css-grid-layout">Grid Layout</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="variable-counter">Variable &amp; Counter</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">counter-set</span><span class="o">:</span><span class="w"> </span><span class="nt">subsection</span><span class="o">;</span>
+<span class="nt">counter-increment</span><span class="o">:</span><span class="w"> </span><span class="nt">subsection</span><span class="o">;</span>
+<span class="nt">counter-reset</span><span class="o">:</span><span class="w"> </span><span class="nt">subsection</span><span class="w"> </span><span class="nt">0</span><span class="o">;</span>
+
+<span class="p">:</span><span class="nd">root</span><span class="w"> </span>
+<span class="nt">element</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See: <a href="#css-dynamic-content">Dynamic content</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-selectors">
+<h2 id="css-selectors">CSS Selectors</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="examples">Examples</h3>
+<div class="section">
+<h4 id="groups-selector">Groups Selector</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">h1</span><span class="o">,</span>
+<span class="nt">h2</span><span class="w"> </span>
+</code></pre></div>
+
+<h4 id="chaining-selector">Chaining Selector</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">h3</span><span class="p">.</span><span class="nc">section-heading</span><span class="w"> </span>
+</code></pre></div>
+
+<h4 id="attribute-selector">Attribute Selector</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">div</span><span class="o">[</span><span class="nt">attribute</span><span class="o">=</span><span class="s1">&#39;SomeValue&#39;</span><span class="o">]</span><span class="w"> </span>
+</code></pre></div>
+
+<h4 id="first-child-selector">First Child Selector</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">p</span><span class="p">:</span><span class="nd">first-child</span><span class="w"> </span>
+</code></pre></div>
+
+<h4 id="no-children-selector">No Children Selector</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">box</span><span class="p">:</span><span class="nd">empty</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="basic">Basic</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*</code></td>
+<td>All elements</td>
+</tr>
+<tr>
+<td><code>div</code></td>
+<td>All div tags</td>
+</tr>
+<tr>
+<td><code>.classname</code></td>
+<td>All elements with class</td>
+</tr>
+<tr>
+<td><code>#idname</code></td>
+<td>Element with ID</td>
+</tr>
+<tr>
+<td><code>div,p</code></td>
+<td>All divs and paragraphs</td>
+</tr>
+<tr>
+<td><code>#idname *</code></td>
+<td>All elements inside #idname</td>
+</tr>
+</tbody>
+</table>
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Type_selectors">Type</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Class_selectors">Class</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/ID_selectors">ID</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Universal_selectors">Universal</a> selectors</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="combinators">Combinators</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Selector</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>div.classname</code></td>
+<td>Div with certain classname</td>
+</tr>
+<tr>
+<td><code>div#idname</code></td>
+<td>Div with certain ID</td>
+</tr>
+<tr>
+<td><code>div p</code></td>
+<td>Paragraphs inside divs</td>
+</tr>
+<tr>
+<td><code>div &gt; p</code></td>
+<td>All p tags<br><em>one level deep in div</em></td>
+</tr>
+<tr>
+<td><code>div + p</code></td>
+<td>P tags immediately after div</td>
+</tr>
+<tr>
+<td><code>div ~ p</code></td>
+<td>P tags preceded by div</td>
+</tr>
+</tbody>
+</table>
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Adjacent_sibling_combinator">Adjacent</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/General_sibling_combinator">Sibling</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Child_combinator">Child</a> selectors</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="attribute-selectors">Attribute selectors</h3>
+<div class="section">
+<p>|                      |                                    |
+| -------------------- | ---------------------------------- | ---------------------------- |
+| <code>a[target]</code>          | With a <yel>target</yel> attribute |
+| <code>a[target="_blank"]</code> | Open in new tab                    |
+| <code>a[href^="/index"]</code>  | Starts with <yel>/index</yel>      |
+| <code>[class              | ="chair"]</code>                         | Starts with <yel>chair</yel> |
+| <code>[class*="chair"]</code>   | containing <yel>chair</yel>        |
+| <code>[title~="chair"]</code>   | Contains the word <yel>chair</yel> |
+| <code>a[href$=".doc"]</code>    | Ends with <yel>.doc</yel>          |
+| <code>[type="button"]</code>    | Specified type                     |</p>
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Attribute_selectors">Attribute selectors</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-action-pseudo-classes">User action pseudo classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a:link</code></td>
+<td>Link in normal state</td>
+</tr>
+<tr>
+<td><code>a:active</code></td>
+<td>Link in clicked state</td>
+</tr>
+<tr>
+<td><code>a:hover</code></td>
+<td>Link with mouse over it</td>
+</tr>
+<tr>
+<td><code>a:visited</code></td>
+<td>Visited link</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pseudo-classes">Pseudo classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p::after</code></td>
+<td>Add content after p</td>
+</tr>
+<tr>
+<td><code>p::before</code></td>
+<td>Add content before p</td>
+</tr>
+<tr>
+<td><code>p::first-letter</code></td>
+<td>First letter in p</td>
+</tr>
+<tr>
+<td><code>p::first-line</code></td>
+<td>First line in p</td>
+</tr>
+<tr>
+<td><code>::selection</code></td>
+<td>Selected by user</td>
+</tr>
+<tr>
+<td><code>::placeholder</code></td>
+<td><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/::placeholder">Placeholder</a> attribute</td>
+</tr>
+<tr>
+<td><code>:root</code></td>
+<td>Documents root element</td>
+</tr>
+<tr>
+<td><code>:target</code></td>
+<td>Highlight active anchor</td>
+</tr>
+<tr>
+<td><code>div:empty</code></td>
+<td>Element with no children</td>
+</tr>
+<tr>
+<td><code>p:lang(en)</code></td>
+<td>P with en language attribute</td>
+</tr>
+<tr>
+<td><code>:not(span)</code></td>
+<td>Element that's not a span</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="input-pseudo-classes">Input pseudo classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>input:checked</code></td>
+<td>Checked inputs</td>
+</tr>
+<tr>
+<td><code>input:disabled</code></td>
+<td>Disabled inputs</td>
+</tr>
+<tr>
+<td><code>input:enabled</code></td>
+<td>Enabled inputs</td>
+</tr>
+<tr>
+<td><code>input:focus</code></td>
+<td>Input has focus</td>
+</tr>
+<tr>
+<td><code>input:in-range</code></td>
+<td>Value in range</td>
+</tr>
+<tr>
+<td><code>input:out-of-range</code></td>
+<td>Input value out of range</td>
+</tr>
+<tr>
+<td><code>input:valid</code></td>
+<td>Input with valid value</td>
+</tr>
+<tr>
+<td><code>input:invalid</code></td>
+<td>Input with invalid value</td>
+</tr>
+<tr>
+<td><code>input:optional</code></td>
+<td>No required attribute</td>
+</tr>
+<tr>
+<td><code>input:required</code></td>
+<td>Input with required attribute</td>
+</tr>
+<tr>
+<td><code>input:read-only</code></td>
+<td>With readonly attribute</td>
+</tr>
+<tr>
+<td><code>input:read-write</code></td>
+<td>No readonly attribute</td>
+</tr>
+<tr>
+<td><code>input:indeterminate</code></td>
+<td>With <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:indeterminate">indeterminate</a> state</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="structural-pseudo-classes">Structural pseudo classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>p:first-child</code></td>
+<td>First child</td>
+</tr>
+<tr>
+<td><code>p:last-child</code></td>
+<td>Last child</td>
+</tr>
+<tr>
+<td><code>p:first-of-type</code></td>
+<td>First of some type</td>
+</tr>
+<tr>
+<td><code>p:last-of-type</code></td>
+<td>Last of some type</td>
+</tr>
+<tr>
+<td><code>p:nth-child(2)</code></td>
+<td>Second child of its parent</td>
+</tr>
+<tr>
+<td><code>p:nth-child(3n42)</code></td>
+<td>Nth-child (an + b) formula</td>
+</tr>
+<tr>
+<td><code>p:nth-last-child(2)</code></td>
+<td>Second child from behind</td>
+</tr>
+<tr>
+<td><code>p:nth-of-type(2)</code></td>
+<td>Second p of its parent</td>
+</tr>
+<tr>
+<td><code>p:nth-last-of-type(2)</code></td>
+<td>...from behind</td>
+</tr>
+<tr>
+<td><code>p:only-of-type</code></td>
+<td>Unique of its parent</td>
+</tr>
+<tr>
+<td><code>p:only-child</code></td>
+<td>Only child of its parent</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-fonts">
+<h2 id="css-fonts">CSS Fonts</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="properties">Properties</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>font-family:</code></td>
+<td>\<font> <fontN></td>
+</tr>
+<tr>
+<td><code>font-size:</code></td>
+<td>\<size></td>
+</tr>
+<tr>
+<td><code>letter-spacing:</code></td>
+<td>\<size></td>
+</tr>
+<tr>
+<td><code>line-height:</code></td>
+<td>\<number></td>
+</tr>
+</tbody>
+</table>
+<p>| <code>font-weight:</code> | \<number> / bold / normal | | <code>font-style:</code> | italic / normal | | <code>text-decoration:</code> | underline /
+none |</p>
+<p>| <code>text-align:</code> | left / right<br>center / justify | | <code>text-transform:</code> | capitalize / uppercase / lowercase |</p>
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font">Font</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="shorthand">Shorthand</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>style</th>
+<th>weight</th>
+<th>size (required)</th>
+<th></th>
+<th>line-height</th>
+<th>family</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>font:</code></td>
+<td><code>italic</code></td>
+<td><code>400</code></td>
+<td><code>14px</code></td>
+<td><code>/</code></td>
+<td><code>1.5</code></td>
+<td><code>sans-serif</code></td>
+</tr>
+<tr>
+<td></td>
+<td>style</td>
+<td>weight</td>
+<td>size (required)</td>
+<td></td>
+<td>line-height</td>
+<td>family (required)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="example">Example</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">font-family</span><span class="o">:</span><span class="w"> </span><span class="nt">Arial</span><span class="o">,</span><span class="w"> </span><span class="nt">sans-serif</span><span class="o">;</span>
+<span class="nt">font-size</span><span class="o">:</span><span class="w"> </span><span class="nt">12pt</span><span class="o">;</span>
+<span class="nt">letter-spacing</span><span class="o">:</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">02em</span><span class="o">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="case">Case</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c">/* Hello */</span>
+<span class="nt">text-transform</span><span class="o">:</span><span class="w"> </span><span class="nt">capitalize</span><span class="o">;</span>
+
+<span class="c">/* HELLO */</span>
+<span class="nt">text-transform</span><span class="o">:</span><span class="w"> </span><span class="nt">uppercase</span><span class="o">;</span>
+
+<span class="c">/* hello */</span>
+<span class="nt">text-transform</span><span class="o">:</span><span class="w"> </span><span class="nt">lowercase</span><span class="o">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="font-face">@font-face</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">font-face</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-colors">
+<h2 id="css-colors">CSS Colors</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="named-color">Named color</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">red</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">orange</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">tan</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rebeccapurple</span><span class="o">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hexadecimal-color">Hexadecimal color</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">090</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">009900</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">090a</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="p">#</span><span class="nn">009900aa</span><span class="o">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="rgb-colors">rgb() Colors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rgb</span><span class="o">(</span><span class="nt">34</span><span class="o">,</span><span class="w"> </span><span class="nt">12</span><span class="o">,</span><span class="w"> </span><span class="nt">64</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">34</span><span class="o">,</span><span class="w"> </span><span class="nt">12</span><span class="o">,</span><span class="w"> </span><span class="nt">64</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rgb</span><span class="o">(</span><span class="nt">34</span><span class="w"> </span><span class="nt">12</span><span class="w"> </span><span class="nt">64</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">34</span><span class="w"> </span><span class="nt">12</span><span class="w"> </span><span class="nt">64</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">3</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rgb</span><span class="o">(</span><span class="nt">34</span><span class="w"> </span><span class="nt">12</span><span class="w"> </span><span class="nt">64</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">60</span><span class="o">%);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">34</span><span class="p">.</span><span class="nc">6</span><span class="w"> </span><span class="nt">12</span><span class="w"> </span><span class="nt">64</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">30</span><span class="o">%);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hsl-colors">HSL Colors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">hsl</span><span class="o">(</span><span class="nt">30</span><span class="o">,</span><span class="w"> </span><span class="nt">100</span><span class="o">%,</span><span class="w"> </span><span class="nt">50</span><span class="o">%,</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">hsla</span><span class="o">(</span><span class="nt">30</span><span class="o">,</span><span class="w"> </span><span class="nt">100</span><span class="o">%,</span><span class="w"> </span><span class="nt">50</span><span class="o">%,</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">hsl</span><span class="o">(</span><span class="nt">30</span><span class="w"> </span><span class="nt">100</span><span class="o">%</span><span class="w"> </span><span class="nt">50</span><span class="o">%</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">hsla</span><span class="o">(</span><span class="nt">30</span><span class="w"> </span><span class="nt">100</span><span class="o">%</span><span class="w"> </span><span class="nt">50</span><span class="o">%</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">0</span><span class="p">.</span><span class="nc">6</span><span class="o">);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">hsl</span><span class="o">(</span><span class="nt">30</span><span class="w"> </span><span class="nt">100</span><span class="o">%</span><span class="w"> </span><span class="nt">50</span><span class="o">%</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">60</span><span class="o">%);</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">hsla</span><span class="o">(</span><span class="nt">30</span><span class="p">.</span><span class="nc">2</span><span class="w"> </span><span class="nt">100</span><span class="o">%</span><span class="w"> </span><span class="nt">50</span><span class="o">%</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nt">60</span><span class="o">%);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="other">Other</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">inherit</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">initial</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">unset</span><span class="o">;</span>
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">transparent</span><span class="o">;</span>
+
+<span class="nt">color</span><span class="o">:</span><span class="w"> </span><span class="nt">currentcolor</span><span class="o">;</span><span class="w"> </span><span class="c">/* keyword */</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-backgrounds">
+<h2 id="css-backgrounds">CSS Backgrounds</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="properties_1">Properties</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>background:</code></td>
+<td><em>(Shorthand)</em></td>
+</tr>
+</tbody>
+</table>
+<p>| <code>background-color:</code> | See: <a href="#css-colors">Colors</a> | | <code>background-image:</code> | url(...) | | <code>background-position:</code> |
+left/center/right<br/>top/center/bottom | | <code>background-size:</code> | cover X Y | | <code>background-clip:</code> |
+border-box<br/>padding-box<br/>content-box | | <code>background-repeat:</code> | no-repeat<br/>repeat-x<br/>repeat-y | |
+<code>background-attachment:</code> | scroll/fixed/local | </p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="shorthand_1">Shorthand</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>color</th>
+<th>image</th>
+<th>positionX</th>
+<th>positionY</th>
+<th></th>
+<th>size</th>
+<th>repeat</th>
+<th>attachment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>background:</code></td>
+<td><code>#ff0</code></td>
+<td><code>url(a.jpg)</code></td>
+<td><code>left</code></td>
+<td><code>top</code></td>
+<td><code>/</code></td>
+<td><code>100px</code> <code>auto</code></td>
+<td><code>no-repeat</code></td>
+<td><code>fixed;</code></td>
+</tr>
+<tr>
+<td><code>background:</code></td>
+<td><code>#abc</code></td>
+<td><code>url(b.png)</code></td>
+<td><code>center</code></td>
+<td><code>center</code></td>
+<td><code>/</code></td>
+<td><code>cover</code></td>
+<td><code>repeat-x</code></td>
+<td><code>local;</code></td>
+</tr>
+<tr>
+<td></td>
+<td>color</td>
+<td>image</td>
+<td>posX</td>
+<td>posY</td>
+<td></td>
+<td>size</td>
+<td>repeat</td>
+<td>attach..</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples_1">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="nt">url</span><span class="o">(</span><span class="nt">img_man</span><span class="p">.</span><span class="nc">jpg</span><span class="o">)</span><span class="w"> </span><span class="nt">no-repeat</span><span class="w"> </span><span class="nt">center</span><span class="o">;</span>
+
+<span class="nt">background</span><span class="o">:</span>
+<span class="w">  </span><span class="nt">url</span><span class="o">(</span><span class="nt">img_flwr</span><span class="p">.</span><span class="nc">gif</span><span class="o">)</span><span class="w"> </span><span class="nt">right</span><span class="w"> </span><span class="nt">bottom</span><span class="w"> </span><span class="nt">no-repeat</span><span class="o">,</span>
+<span class="w">  </span><span class="nt">url</span><span class="o">(</span><span class="nt">paper</span><span class="p">.</span><span class="nc">gif</span><span class="o">)</span><span class="w"> </span><span class="nt">left</span><span class="w"> </span><span class="nt">top</span><span class="w"> </span><span class="nt">repeat</span><span class="o">;</span>
+
+<span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="nt">rgb</span><span class="o">(</span><span class="nt">2</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">36</span><span class="o">);</span>
+<span class="nt">background</span><span class="o">:</span><span class="w"> </span><span class="nt">linear-gradient</span><span class="o">(</span>
+<span class="w">  </span><span class="nt">90deg</span><span class="o">,</span>
+<span class="w">  </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">2</span><span class="o">,</span><span class="w"> </span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">36</span><span class="o">,</span><span class="w"> </span><span class="nt">1</span><span class="o">)</span><span class="w"> </span><span class="nt">0</span><span class="o">%,</span>
+<span class="w">  </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">13</span><span class="o">,</span><span class="w"> </span><span class="nt">232</span><span class="o">,</span><span class="w"> </span><span class="nt">230</span><span class="o">,</span><span class="w"> </span><span class="nt">1</span><span class="o">)</span><span class="w"> </span><span class="nt">35</span><span class="o">%,</span>
+<span class="w">  </span><span class="nt">rgba</span><span class="o">(</span><span class="nt">0</span><span class="o">,</span><span class="w"> </span><span class="nt">212</span><span class="o">,</span><span class="w"> </span><span class="nt">255</span><span class="o">,</span><span class="w"> </span><span class="nt">1</span><span class="o">)</span><span class="w"> </span><span class="nt">100</span><span class="o">%</span>
+<span class="o">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-the-box-model">
+<h2 id="css-the-box-model">CSS The Box Model</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="maximumsminimums">Maximums/Minimums</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">column</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-width">max-width</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-width">min-width</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/max-height">max-height</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/min-height">min-height</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="margin-padding">Margin / Padding</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">block-one</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">Margin</a> /
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/padding">Padding</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="box-sizing">Box-sizing</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Box-sizing">Box-sizing</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="visibility">Visibility</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">invisible-elements</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/visibility">Visibility</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="auto-keyword">Auto keyword</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">div</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/margin">Margin</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="overflow">Overflow</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">small-block</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/overflow">Overflow</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-animation">
+<h2 id="css-animation">CSS Animation</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="shorthand_2">Shorthand</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>name</th>
+<th>duration</th>
+<th>timing-function</th>
+<th>delay</th>
+<th>count</th>
+<th>direction</th>
+<th>fill-mode</th>
+<th>play-state</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>animation:</code></td>
+<td><code>bounce</code></td>
+<td><code>300ms</code></td>
+<td><code>linear</code></td>
+<td><code>100ms</code></td>
+<td><code>infinite</code></td>
+<td><code>alternate-reverse</code></td>
+<td><code>both</code></td>
+<td><code>reverse</code></td>
+</tr>
+<tr>
+<td></td>
+<td>name</td>
+<td>duration</td>
+<td>timing-function</td>
+<td>delay</td>
+<td>count</td>
+<td>direction</td>
+<td>fill-mode</td>
+<td>play-state</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="properties_2">Properties</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>animation:</code></td>
+<td><em>(shorthand)</em></td>
+</tr>
+<tr>
+<td><code>animation-name:</code></td>
+<td>\<name></td>
+</tr>
+<tr>
+<td><code>animation-duration:</code></td>
+<td>\<time>ms</td>
+</tr>
+<tr>
+<td><code>animation-timing-function:</code></td>
+<td>ease / linear / ease-in / ease-out / ease-in-out</td>
+</tr>
+<tr>
+<td><code>animation-delay:</code></td>
+<td>\<time>ms</td>
+</tr>
+<tr>
+<td><code>animation-iteration-count:</code></td>
+<td>infinite / \<number></td>
+</tr>
+<tr>
+<td><code>animation-direction:</code></td>
+<td>normal / reverse / alternate / alternate-reverse</td>
+</tr>
+<tr>
+<td><code>animation-fill-mode:</code></td>
+<td>none / forwards / backwards / both / initial / inherit</td>
+</tr>
+<tr>
+<td><code>animation-play-state:</code></td>
+<td>normal / reverse / alternate / alternate-reverse</td>
+</tr>
+</tbody>
+</table>
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/animation">Animation</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="example_1">Example</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c">/* @keyframes duration | timing-function | delay |</span>
+<span class="c">   iteration-count | direction | fill-mode | play-state | name */</span>
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">3s</span><span class="w"> </span><span class="nt">ease-in</span><span class="w"> </span><span class="nt">1s</span><span class="w"> </span><span class="nt">2</span><span class="w"> </span><span class="nt">reverse</span><span class="w"> </span><span class="nt">both</span><span class="w"> </span><span class="nt">paused</span><span class="w"> </span><span class="nt">slidein</span><span class="o">;</span>
+
+<span class="c">/* @keyframes duration | timing-function | delay | name */</span>
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">3s</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">1s</span><span class="w"> </span><span class="nt">slidein</span><span class="o">;</span>
+
+<span class="c">/* @keyframes duration | name */</span>
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">3s</span><span class="w"> </span><span class="nt">slidein</span><span class="o">;</span>
+
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">4s</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">0s</span><span class="w"> </span><span class="nt">infinite</span><span class="w"> </span><span class="nt">alternate</span><span class="w"> </span><span class="nt">move_eye</span><span class="o">;</span>
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">bounce</span><span class="w"> </span><span class="nt">300ms</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">0s</span><span class="w"> </span><span class="nt">infinite</span><span class="w"> </span><span class="nt">normal</span><span class="o">;</span>
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">bounce</span><span class="w"> </span><span class="nt">300ms</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">infinite</span><span class="o">;</span>
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">bounce</span><span class="w"> </span><span class="nt">300ms</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">infinite</span><span class="w"> </span><span class="nt">alternate-reverse</span><span class="o">;</span>
+<span class="nt">animation</span><span class="o">:</span><span class="w"> </span><span class="nt">bounce</span><span class="w"> </span><span class="nt">300ms</span><span class="w"> </span><span class="nt">linear</span><span class="w"> </span><span class="nt">2s</span><span class="w"> </span><span class="nt">infinite</span><span class="w"> </span><span class="nt">alternate-reverse</span><span class="w"> </span><span class="nt">forwards</span><span class="w"> </span><span class="nt">normal</span><span class="o">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="javascript-event">Javascript Event</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nx">one</span><span class="p">(</span><span class="s1">&#39;webkitAnimationEnd oanimationend msAnimationEnd animationend&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-flexbox">
+<h2 id="css-flexbox">CSS Flexbox</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="simple-example">Simple example</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nt">div</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="container">Container</h3>
+<div class="section">
+<p>.container </p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="child">Child</h3>
+<div class="section">
+<p>.container &gt; div </p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-flexbox-tricks">
+<h2 id="css-flexbox-tricks">CSS Flexbox Tricks</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="vertical-center">Vertical center</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+
+<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nt">div</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="vertical-center-2">Vertical center (2)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="reordering">Reordering</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">top</span><span class="w"> </span>
+
+<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">bottom</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="mobile-layout">Mobile layout</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+
+<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">top</span><span class="w"> </span>
+
+<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">content</span><span class="w"> </span>
+</code></pre></div>
+
+<p>A fixed-height top bar and a dynamic-height content area.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="table-like">Table-like</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+
+<span class="c">/* the &#39;px&#39; values here are just suggested percentages */</span>
+<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">checkbox</span><span class="w"> </span>
+<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">subject</span><span class="w"> </span>
+<span class="p">.</span><span class="nc">container</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">date</span><span class="w"> </span>
+</code></pre></div>
+
+<p>This creates columns that have different widths, but size accordingly according to the circumstances.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="vertical">Vertical</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Vertically-center all items.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="left-and-right">Left and right</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">menu</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">left</span><span class="w"> </span>
+<span class="p">.</span><span class="nc">menu</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="p">.</span><span class="nc">right</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-grid-layout">
+<h2 id="css-grid-layout">CSS Grid Layout</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="grid-template-columns">Grid Template Columns</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">grid-container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="fr-relative-unit">fr Relative Unit</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">grid</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="grid-gap">Grid Gap</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c">/*The distance between rows is 20px*/</span>
+<span class="c">/*The distance between columns is 10px*/</span>
+<span class="p">#</span><span class="nn">grid-container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="css-block-level-grid">CSS Block Level Grid</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">grid-container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="css-grid-row">CSS grid-row</h3>
+<div class="section">
+<p>CSS syntax:</p>
+<ul>
+<li>grid-row: grid-row-start / grid-row-end;</li>
+</ul>
+<h4 id="example_2">Example</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">item</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="css-inline-level-grid">CSS Inline Level Grid</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">grid-container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="minmax-function">minmax() Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">grid</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="grid-row-start-grid-row-end">grid-row-start &amp; grid-row-end</h3>
+<div class="section">
+<p>CSS syntax:</p>
+<ul>
+<li>grid-row-start: auto|row-line;<br></li>
+<li>grid-row-end: auto|row-line|span n;</li>
+</ul>
+<h4 id="example_3">Example</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">grid-row-start</span><span class="o">:</span><span class="w"> </span><span class="nt">2</span><span class="o">;</span>
+<span class="nt">grid-row-end</span><span class="o">:</span><span class="w"> </span><span class="nt">span</span><span class="w"> </span><span class="nt">2</span><span class="o">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="css-grid-row-gap">CSS grid-row-gap</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">grid-row-gap</span><span class="o">:</span><span class="w"> </span><span class="nt">length</span><span class="o">;</span>
+</code></pre></div>
+
+<p>Any legal length value, like px or %. 0 is the default value</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="css-grid-area">CSS grid-area</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">item1</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="justify-items">Justify Items</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="css-grid-template-areas">CSS grid-template-areas</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">item</span><span class="w"> </span>
+<span class="p">.</span><span class="nc">grid-container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="justify-self">Justify Self</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">grid-container</span><span class="w"> </span>
+
+<span class="p">.</span><span class="nc">grid-items</span><span class="w"> </span>
+</code></pre></div>
+
+<p>The grid items are positioned to the right (end) of the row.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="align-items">Align Items</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">container</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-dynamic-content">
+<h2 id="css-dynamic-content">CSS Dynamic Content</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="variable">Variable</h3>
+<div class="section">
+<p>Define CSS Variable</p>
+<div class="codehilite"><pre><span></span><code><span class="p">:</span><span class="nd">root</span><span class="w"> </span>
+</code></pre></div>
+
+<p>Variable Usage</p>
+<div class="codehilite"><pre><span></span><code><span class="p">#</span><span class="nn">firstParagraph</span><span class="w"> </span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/--*">CSS Variable</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="counter">Counter</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c">/* Set &quot;my-counter&quot; to 0 */</span>
+<span class="nt">counter-set</span><span class="o">:</span><span class="w"> </span><span class="nt">my-counter</span><span class="o">;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c">/* Increment &quot;my-counter&quot; by 1 */</span>
+<span class="nt">counter-increment</span><span class="o">:</span><span class="w"> </span><span class="nt">my-counter</span><span class="o">;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c">/* Decrement &quot;my-counter&quot; by 1 */</span>
+<span class="nt">counter-increment</span><span class="o">:</span><span class="w"> </span><span class="nt">my-counter</span><span class="w"> </span><span class="nt">-1</span><span class="o">;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c">/* Reset &quot;my-counter&quot; to 0 */</span>
+<span class="nt">counter-reset</span><span class="o">:</span><span class="w"> </span><span class="nt">my-counter</span><span class="o">;</span>
+</code></pre></div>
+
+<p>See also: <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/counter-set">Counter set</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="using-counters">Using counters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">body</span><span class="w"> </span>
+
+<span class="nt">h3</span><span class="p">::</span><span class="nd">before</span><span class="w"> </span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nt">ol</span><span class="w"> </span>
+
+<span class="nt">li</span><span class="p">::</span><span class="nd">before</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="css-3-tricks">
+<h2 id="css-3-tricks">Css 3 tricks</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="scrollbar-smooth">Scrollbar smooth</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">html</span><span class="w"> </span>
+</code></pre></div>
+
+<p><a href="#css-getting-started">Click me</a>, the page will scroll smoothly to Getting started</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="modern-css">
+<h2 id="modern-css">Modern CSS</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="container-queriessize">container queries(size)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">element-wrap</span><span class="w"> </span>
+<span class="p">@</span><span class="k">container</span><span class="w"> </span><span class="nt">element</span><span class="w"> </span><span class="o">(</span><span class="nt">min-inline-size</span><span class="o">:</span><span class="w"> </span><span class="nt">300px</span><span class="o">)</span><span class="w"> </span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="container-qeriesstyle">container qeries(style)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+<span class="err">}</span>
+
+<span class="p">@</span><span class="k">container</span><span class="w"> </span><span class="nt">style</span><span class="o">(</span><span class="nt">--variant</span><span class="o">:</span><span class="w"> </span><span class="nt">1</span><span class="o">)</span><span class="w">  </span><span class="c">/* You can&#39;t style .container, but can select inside it */</span>
+<span class="w">  </span><span class="p">.</span><span class="nc">other-things</span><span class="w"> </span>
+<span class="err">}</span>
+
+<span class="p">@</span><span class="k">container</span><span class="w"> </span><span class="nt">style</span><span class="o">(</span><span class="nt">--variant</span><span class="o">:</span><span class="w"> </span><span class="nt">2</span><span class="o">)</span><span class="w"> </span>
+<span class="w">  </span><span class="p">.</span><span class="nc">whatever</span><span class="w"> </span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="container-units">container units</h3>
+<div class="section">
+<ul>
+<li>The units are cqw (“container query width”),</li>
+<li>cqh (“container query height”),</li>
+<li>cqi (“container query inline”),</li>
+<li>cqb (“container query block”),</li>
+<li>cqmin (smaller of cqi and cqb),</li>
+<li>and cqmax (larger of cqi and cqb)</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">card</span><span class="w"> </span>
+
+<span class="nt">h2</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-has-pseudo-selector">the :has() pseudo selector</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">figure</span><span class="p">:</span><span class="nd">has</span><span class="o">(</span><span class="nt">figcaption</span><span class="o">)</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="nesting">nesting</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">cards</span><span class="w"> </span>
+<span class="w">    </span><span class="o">&amp;</span><span class="w"> </span><span class="p">.</span><span class="nc">card-title</span><span class="w"> </span>
+<span class="w">  </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="_1"></h3>
+<div class="section">
+</div></div>
+<div class="h3-wrap">
+<h3 id="scoping">scoping</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">scope</span><span class="w"> </span>
+<span class="w">  </span><span class="p">.</span><span class="nc">card</span><span class="w"> </span>
+<span class="w">  </span><span class="err">}</span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="cascade-layers">cascade layers</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c">/* Specify the order to apply styles in cascade */</span>
+<span class="p">@</span><span class="k">layer</span><span class="w"> </span><span class="nt">legacyCard</span><span class="o">,</span><span class="w"> </span><span class="nt">newCard</span><span class="p">;</span>
+
+<span class="c">/* Imagine you have a lot of styles */</span>
+<span class="p">@</span><span class="k">layer</span><span class="w"> </span><span class="nt">newCard</span><span class="w"> </span>
+<span class="err">}</span>
+<span class="p">@</span><span class="k">layer</span><span class="w"> </span><span class="nt">legacyCard</span><span class="w"> </span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical-properties">logical properties</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nt">button</span><span class="w"> </span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="p3-colors">p3 colors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;container&quot;</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;swatch&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">contenteditable</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">@</span><span class="k">scope</span><span class="w"> </span>
+<span class="w">      </span><span class="err">}</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;swatch&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">contenteditable</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">@</span><span class="k">scope</span><span class="w"> </span>
+<span class="w">      </span><span class="err">}</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;swatch&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">contenteditable</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">@</span><span class="k">scope</span><span class="w"> </span>
+<span class="w">      </span><span class="err">}</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;swatch&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">contenteditable</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">@</span><span class="k">scope</span><span class="w"> </span>
+<span class="w">      </span><span class="err">}</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;swatch&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">contenteditable</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">@</span><span class="k">scope</span><span class="w"> </span>
+<span class="w">      </span><span class="err">}</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+  <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;swatch&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">style</span> <span class="na">contenteditable</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="p">@</span><span class="k">scope</span><span class="w"> </span>
+<span class="w">      </span><span class="err">}</span>
+<span class="w">    </span><span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+  <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="color-mixing">color mixing</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">swatch</span><span class="w"> </span>
+<span class="w">  </span><span class="o">&amp;</span><span class="p">:</span><span class="nd">nth-child</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span><span class="w"> </span>
+<span class="w">  </span><span class="o">&amp;</span><span class="p">:</span><span class="nd">nth-child</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span><span class="w"> </span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="margin-trim">margin trim</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">container</span><span class="w"> </span>
+<span class="err">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-wrapping">text wrapping</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">balance</span><span class="w"> </span>
+<span class="p">.</span><span class="nc">pretty</span><span class="w"> </span>
+
+<span class="nt">html</span><span class="w"> </span>
+
+<span class="nt">main</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="subgrid">subgrid</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="nc">grid</span><span class="w"> </span>
+
+<span class="p">.</span><span class="nc">item</span><span class="w"> </span>
+
+<span class="p">.</span><span class="nc">subitem</span><span class="w"> </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://frontendmasters.com/blog/what-you-need-to-know-about-modern-css-spring-2024-edition/">frontendmasters.com </a></li>
+<li><a href="https://frontend30.com/css-selectors-cheatsheet/">CSS selectors cheatsheet</a> <em>(frontend30.com)</em></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes">MDN: Using CSS flexbox</a></li>
+<li><a href="http://www.sketchingwithcss.com/samplechapter/cheatsheet.html">Ultimate flexbox cheatsheet</a></li>
+<li><a href="http://grid.malven.co/">GRID: A simple visual cheatsheet</a></li>
+<li><a href="https://css-tricks.com/snippets/css/complete-guide-grid/">CSS Tricks: A Complete Guide to Grid</a></li>
+<li><a href="https://caniuse.com/#feat=css-grid">Browser support</a></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

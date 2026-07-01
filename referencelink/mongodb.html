@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>MongoDB Cheat Sheet — FlameTech</title>
+  <meta name="description" content="The MongoDB cheat sheet provides you with the most commonly used MongoDB commands and queries for your reference. the
+  cheatsheet is from mongodb developers we">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#6366f1}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(99,102,241,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Database</span>
+    <span>›</span>
+    <span>MongoDB</span>
+  </div>
+  <div class="post-icon">MO</div>
+  <h1>MongoDB <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>The MongoDB cheat sheet provides you with the most commonly used MongoDB commands and queries for your reference. the
+  cheatsheet is from mongodb developers website</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Database</span>
+    <span class="meta-tag">NoSQL</span> <span class="meta-tag">DB</span> <span class="meta-tag">Database</span> <span class="meta-tag">tooltip</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="connect-mongodb-shell">Connect MongoDB Shell</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>mongo # connects to mongodb://127.0.0.1:27017 by default
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nv">mongo</span><span class="w"> </span><span class="o">--</span><span class="nv">host</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">host</span><span class="o">&gt;</span><span class="w"> </span><span class="o">--</span><span class="nv">port</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">port</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="nv">u</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">user</span><span class="o">&gt;</span><span class="w"> </span><span class="o">-</span><span class="nv">p</span><span class="w"> </span><span class="o">&lt;</span><span class="nv">pwd</span><span class="o">&gt;</span><span class="w"> </span>#<span class="w"> </span><span class="nv">omit</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">password</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">you</span><span class="w"> </span><span class="nv">want</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">prompt</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>mongo &quot;mongodb://192.168.1.1:27017&quot;
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>mongo &quot;mongodb+srv://cluster-name.abcde.mongodb.net/&lt;dbname&gt;&quot; --username &lt;username&gt; # MongoDB Atlas
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="helpers">Helpers</h3>
+<div class="section">
+<p>Show dbs :</p>
+<div class="codehilite"><pre><span></span><code>db // prints the current database
+</code></pre></div>
+
+<p>Switch database :</p>
+<div class="codehilite"><pre><span></span><code>use &lt;database_name&gt;
+</code></pre></div>
+
+<p>Show collections :</p>
+<div class="codehilite"><pre><span></span><code><span class="k">show</span><span class="w"> </span><span class="nv">collections</span>
+</code></pre></div>
+
+<p>Run JavaScript file :</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">load</span><span class="p">(</span><span class="s2">&quot;myScript.js&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+</div></div>
+</div></div>
+<div class="h2-wrap" id="crud">
+<h2 id="crud">Crud</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="create">Create</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.insertOne()
+db.coll.insertMany([, ]) // ordered bulk insert
+db.coll.insertMany([, ], ) // unordered bulk insert
+db.coll.insertOne()
+db.coll.insertMany(, })
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="delete">Delete</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.deleteOne()
+db.coll.deleteMany( $and: [, ]) //delete all entries which contain both values
+db.coll.deleteMany( $or: [, ])  //delete all entries which contain any of the specified values
+db.coll.deleteMany() // WARNING! Deletes all the docs but not the collection itself and its index definitions
+db.coll.deleteMany(, })
+db.coll.findOneAndDelete()
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="update">Update</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.updateMany(, }) // WARNING! Replaces the entire document where &quot;_id&quot; = 1
+db.coll.updateOne(, })
+db.coll.updateOne(, })
+db.coll.updateOne(,  })
+db.coll.updateOne(, })
+db.coll.updateOne(, })
+db.coll.updateOne(, })
+db.coll.updateOne(, })
+db.coll.updateMany(}, })
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="array">Array</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.updateOne(, })
+db.coll.updateOne(, })
+db.coll.updateOne(, })
+db.coll.updateOne(, })  // last element
+db.coll.updateOne(, }) // first element
+db.coll.updateOne(, })
+db.coll.updateOne(, }})
+db.coll.updateOne(, })
+db.coll.updateMany(, })
+db.coll.updateMany(, }, }]})
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="update-many">Update many</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.updateMany(, })
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="findoneandupdate">FindOneAndUpdate</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.findOneAndUpdate(, }, )
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="upsert">Upsert</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.updateOne(, , $setOnInsert: }, )
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="replace">Replace</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.replaceOne(, )
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="write-concern">Write concern</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.updateMany(, }, })
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="find">Find</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">db</span><span class="p">.</span><span class="nx">coll</span><span class="p">.</span><span class="nx">findOne</span><span class="p">()</span><span class="w"> </span><span class="c1">// returns a single document</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">coll</span><span class="p">.</span><span class="nx">find</span><span class="p">()</span><span class="w">    </span><span class="c1">// returns a cursor - show 20 results - &quot;it&quot; to display more</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">coll</span><span class="p">.</span><span class="nx">find</span><span class="p">().</span><span class="nx">pretty</span><span class="p">()</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">coll</span><span class="p">.</span><span class="nx">find</span><span class="p">()</span><span class="w"> </span><span class="c1">// implicit logical &quot;AND&quot;.</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">coll</span><span class="p">.</span><span class="nx">find</span><span class="p">()</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">coll</span><span class="p">.</span><span class="nx">find</span><span class="p">().</span><span class="nx">explain</span><span class="p">(</span><span class="s">&quot;executionStats&quot;</span><span class="p">)</span><span class="w"> </span><span class="c1">// or &quot;queryPlanner&quot; or &quot;allPlansExecution&quot;</span>
+<span class="nx">db</span><span class="p">.</span><span class="nx">coll</span><span class="p">.</span><span class="nx">distinct</span><span class="p">(</span><span class="s">&quot;name&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="count">Count</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">estimatedDocumentCount</span><span class="p">()</span><span class="w">  </span><span class="c1">// estimation based on collection metadata</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">countDocuments</span><span class="p">()</span><span class="w"> </span><span class="c1">// alias for an aggregation pipeline - accurate count</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comparison">Comparison</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find(})
+db.coll.find(})
+db.coll.find(})
+db.coll.find(})
+db.coll.find(})
+db.coll.find(})
+db.coll.find(})
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical">Logical</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find(}})
+db.coll.find(, ]})
+db.coll.find(, ]})
+db.coll.find(}, }]},
+, }]}
+]
+})
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="element">Element</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find(})
+db.coll.find(})
+db.coll.find(})
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="aggregation-pipeline">Aggregation Pipeline</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">aggregate</span><span class="p">([</span>
+<span class="p">},</span>
+<span class="p">}},</span>
+<span class="p">}</span>
+<span class="p">])</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-search-with-a-text-index">Text search with a "text" index</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find(}, }).sort(})
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="regex">Regex</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">find</span><span class="p">()</span><span class="w"> </span><span class="c1">// regex: starts by letter &quot;M&quot;</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">find</span><span class="p">()</span><span class="w"> </span><span class="c1">// regex case insensitive</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="array_1">Array</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find(})
+db.coll.find(}) // impossible to index - prefer storing the size of the array &amp; update it
+db.coll.find(}}})
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="projections">Projections</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find(, ) // actors + \_id
+db.coll.find(, ) // actors
+db.coll.find(, ) // all but &quot;actors&quot; and &quot;summary&quot;
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="sort-skip-limit">Sort, skip, limit</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find().sort().skip(10).limit(3)
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="read-concern">Read Concern</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.find().readConcern(&quot;majority&quot;)
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="databases-and-collections">
+<h2 id="databases-and-collections">Databases and Collections</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="drop">Drop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="s s-Atom">db</span><span class="p">.</span><span class="s s-Atom">coll</span><span class="p">.</span><span class="nf">drop</span><span class="p">()</span>    <span class="o">//</span> <span class="s s-Atom">removes</span> <span class="s s-Atom">the</span> <span class="s s-Atom">collection</span> <span class="s s-Atom">and</span> <span class="s s-Atom">its</span> <span class="s s-Atom">index</span> <span class="s s-Atom">definitions</span>
+<span class="s s-Atom">db</span><span class="p">.</span><span class="nf">dropDatabase</span><span class="p">()</span> <span class="o">//</span> <span class="s s-Atom">double</span> <span class="s s-Atom">check</span> <span class="s s-Atom">that</span> <span class="s s-Atom">you</span> <span class="s s-Atom">are</span> <span class="o">*</span><span class="nv">NOT</span><span class="o">*</span> <span class="s s-Atom">on</span> <span class="s s-Atom">the</span> <span class="nv">PROD</span> <span class="s s-Atom">cluster</span><span class="p">...</span> <span class="o">:-</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="create-collection">Create Collection</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.createCollection(&quot;contacts&quot;, ,
+         email: ,
+         status: 
+      }
+   }}
+})
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="other-collection-functions">Other Collection Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>db.coll.stats()
+db.coll.storageSize()
+db.coll.totalIndexSize()
+db.coll.totalSize()
+db.coll.validate()
+db.coll.renameCollection(&quot;new_coll&quot;, true) // 2nd parameter to drop the target collection if exists
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="indexes">
+<h2 id="indexes">Indexes</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basics">Basics</h3>
+<div class="section">
+<h4 id="list">List</h4>
+<div class="codehilite"><pre><span></span><code>db.coll.getIndexes()
+db.coll.getIndexKeys()
+</code></pre></div>
+
+<h4 id="drop-indexes">Drop Indexes</h4>
+<div class="codehilite"><pre><span></span><code>db.coll.dropIndex(&quot;name_1&quot;)
+</code></pre></div>
+
+<h4 id="hideunhide-indexes">Hide/Unhide Indexes</h4>
+<div class="codehilite"><pre><span></span><code>db.coll.hideIndex(&quot;name_1&quot;)
+db.coll.unhideIndex(&quot;name_1&quot;)
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="create-indexes">Create Indexes</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1">// Index Types</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w">                </span><span class="c1">// single field index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w">     </span><span class="c1">// compound index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w"> </span><span class="c1">// text index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w">            </span><span class="c1">// wildcard text index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w">    </span><span class="c1">// wildcard index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w">              </span><span class="c1">// 2d index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w">        </span><span class="c1">// 2dsphere index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">()</span><span class="w">          </span><span class="c1">// hashed index</span>
+
+<span class="c1">// Index Options</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">(,</span><span class="w"> </span><span class="p">)</span><span class="w">      </span><span class="c1">// TTL index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">(,</span><span class="w"> </span><span class="p">)</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">(,</span><span class="w"> </span><span class="p">}})</span><span class="w"> </span><span class="c1">// partial index</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">(,</span><span class="w"> </span><span class="p">})</span><span class="w">    </span><span class="c1">// case insensitive index with strength = 1 or 2</span>
+<span class="n">db</span><span class="p">.</span><span class="n">coll</span><span class="p">.</span><span class="n">createIndex</span><span class="p">(,</span><span class="w"> </span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="others">
+<h2 id="others">Others</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="handy-commands">Handy commands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>use admin
+db.createUser()
+db.dropUser(&quot;root&quot;)
+db.auth( &quot;user&quot;, passwordPrompt() )
+
+use test
+db.getSiblingDB(&quot;dbname&quot;)
+db.currentOp()
+db.killOp(123) // opid
+
+db.fsyncLock()
+db.fsyncUnlock()
+
+db.getCollectionNames()
+db.getCollectionInfos()
+db.printCollectionStats()
+db.stats()
+
+db.getReplicationInfo()
+db.printReplicationInfo()
+db.isMaster()
+db.hostInfo()
+db.printShardingStatus()
+db.shutdownServer()
+db.serverStatus()
+
+db.setSlaveOk()
+db.getSlaveOk()
+
+db.getProfilingLevel()
+db.getProfilingStatus()
+db.setProfilingLevel(1, 200) // 0 == OFF, 1 == ON with slowms, 2 == ON
+
+db.enableFreeMonitoring()
+db.disableFreeMonitoring()
+db.getFreeMonitoringStatus()
+
+db.createView(&quot;viewName&quot;, &quot;sourceColl&quot;, [}])
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="replica-set">Replica Set</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>rs.status()
+rs.initiate(,
+    ,
+    ]
+})
+rs.add(&quot;mongodbd1.example.net:27017&quot;)
+rs.addArb(&quot;mongodbd2.example.net:27017&quot;)
+rs.remove(&quot;mongodbd1.example.net:27017&quot;)
+rs.conf()
+rs.isMaster()
+rs.printReplicationInfo()
+rs.printSlaveReplicationInfo()
+rs.reconfig(&lt;valid_conf&gt;)
+rs.slaveOk()
+rs.stepDown(20, 5) // (stepDownSecs, secondaryCatchUpPeriodSecs)
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="sharded-cluster">Sharded Cluster</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>sh.status()
+sh.addShard(&quot;rs1/mongodbd1.example.net:27017&quot;)
+sh.shardCollection(&quot;mydb.coll&quot;, )
+
+sh.moveChunk(&quot;mydb.coll&quot;, , &quot;shard0019&quot;)
+sh.splitAt(&quot;mydb.coll&quot;, )
+sh.splitFind(&quot;mydb.coll&quot;, )
+sh.disableAutoSplit()
+sh.enableAutoSplit()
+
+sh.startBalancer()
+sh.stopBalancer()
+sh.disableBalancing(&quot;mydb.coll&quot;)
+sh.enableBalancing(&quot;mydb.coll&quot;)
+sh.getBalancerState()
+sh.setBalancerState(true/false)
+sh.isBalancerRunning()
+
+sh.addTagRange(&quot;mydb.coll&quot;, , , &quot;NY&quot;)
+sh.removeTagRange(&quot;mydb.coll&quot;, , , &quot;NY&quot;)
+sh.addShardTag(&quot;shard0000&quot;, &quot;NYC&quot;)
+sh.removeShardTag(&quot;shard0000&quot;, &quot;NYC&quot;)
+
+sh.addShardToZone(&quot;shard0000&quot;, &quot;JFK&quot;)
+sh.removeShardFromZone(&quot;shard0000&quot;, &quot;NYC&quot;)
+sh.removeRangeFromZone(&quot;mydb.coll&quot;, , )
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="change-streams">Change Streams</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">watchCursor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">db</span>.<span class="nv">coll</span>.<span class="nv">watch</span><span class="ss">(</span><span class="w"> </span>[<span class="w">  </span>}<span class="w"> </span>]<span class="w"> </span><span class="ss">)</span>
+
+<span class="k">while</span><span class="w"> </span><span class="ss">(</span><span class="o">!</span><span class="nv">watchCursor</span>.<span class="nv">isExhausted</span><span class="ss">())</span>
+}
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

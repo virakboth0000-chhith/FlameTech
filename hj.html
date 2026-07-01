@@ -1,0 +1,605 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+        :root {
+    /* Dark mode variables (default) */
+    --primary: #ff2a6d;
+    --secondary: #05d9e8;
+    --dark: #01012b;
+    --darker: #000015;
+    --light: #f0f0f0;
+    --accent: #d1f7ff;
+    --primary-dark: #d1004a;
+    
+    /* Background colors */
+    --bg-primary: linear-gradient(135deg, var(--darker), var(--dark));
+    --bg-secondary: rgba(0, 0, 20, 0.8);
+    --bg-card: rgba(255, 255, 255, 0.05);
+    --bg-card-hover: rgba(255, 255, 255, 0.1);
+    
+    /* Text colors */
+    --text-primary: var(--light);
+    --text-secondary: #aaa;
+    --text-accent: var(--accent);
+    
+    /* Border colors */
+    --border-primary: rgba(255, 42, 109, 0.3);
+    --border-secondary: rgba(255, 42, 109, 0.2);
+    
+    /* Shadow colors */
+    --shadow-primary: rgba(0, 0, 0, 0.3);
+    --shadow-secondary: rgba(255, 42, 109, 0.5);
+}
+.light-mode {
+    --primary: #ff2a6d;
+    --secondary: #05d9e8;
+    --dark: #f0f0f0;
+    --darker: #ffffff;
+    --light: #01012b;
+    --accent: #d1f7ff;
+    --primary-dark: #d1004a;
+    
+    /* Background colors */
+    --bg-primary: linear-gradient(135deg, var(--darker), var(--dark));
+    --bg-secondary: rgba(255, 255, 255, 0.8);
+    --bg-card: rgba(0, 0, 0, 0.05);
+    --bg-card-hover: rgba(0, 0, 0, 0.1);
+    
+    /* Text colors */
+    --text-primary: var(--light);
+    --text-secondary: #555;
+    --text-accent: var(--accent);
+    
+    /* Border colors */
+    --border-primary: rgba(255, 42, 109, 0.3);
+    --border-secondary: rgba(255, 42, 109, 0.2);
+    
+    /* Shadow colors */
+    --shadow-primary: rgba(0, 0, 0, 0.1);
+    --shadow-secondary: rgba(255, 42, 109, 0.3);
+
+}
+        body {
+            background: linear-gradient(135deg, var(--darker), var(--dark));
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #4a5568;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+        }
+
+        .left-panel {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .right-panel {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .panel-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title i {
+            color: #4f46e5;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .url-input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .url-input::placeholder {
+            color: #a0aec0;
+        }
+
+        .customize-section {
+            background-color: var(--bg-card-hover);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+
+        .customize-title {
+            color: #2d3748;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .customize-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .option-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .option-label {
+            color: #4a5568;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .color-input {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .size-input {
+            width: 100%;
+            height: 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 0 10px;
+            font-size: 0.9rem;
+        }
+
+        .generate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .generate-btn:active {
+            transform: translateY(0);
+        }
+
+        .qr-container {
+            width: 280px;
+            height: 280px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            border-radius: 12px;
+            border: 2px dashed #e2e8f0;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        #qrCode {
+            width: 240px;
+            height: 240px;
+        }
+
+        .qr-placeholder {
+            text-align: center;
+            color: #a0aec0;
+        }
+
+        .qr-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #cbd5e0;
+        }
+
+        .qr-placeholder p {
+            font-size: 1rem;
+        }
+
+        .download-btn {
+            padding: 16px 32px;
+            background-color: #10b981;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .download-btn:hover {
+            background-color: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        .download-btn:disabled {
+            background-color: #a0aec0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        footer {
+            text-align: center;
+            color: #718096;
+            font-size: 0.9rem;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                padding: 25px;
+            }
+            
+            .container {
+                gap: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: var(--dark);
+            color: var(--light);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 16px rgba(255, 42, 109, 0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+       .theme-toggle:hover {
+            background: var(--secondary);
+            transform: scale(1.08);
+        }
+       
+
+        .light-mode .theme-toggle {
+            background: rgba(255, 255, 255, 0.9);
+            color: #374151;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .theme-toggle:hover {
+            background: #f6cf45;
+            color: white;
+        }
+    .light-mode .custormize-section{
+
+        background-color: white;
+    }
+    .light-mode .main-content{
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+    </style>
+    <link rel="stylesheet" href="flametech-light-mode.css">
+    <link rel="stylesheet" href="flametech-dark-mode.css">
+</head>
+<body>
+
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <div class="container">
+
+         
+        <a href="h.html" class = "backhome" id ="backhome" style="margin-bottom: -20px; margin-top: -10px; text-decoration:none; color:var(--secondary); font-weight:600;">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+
+        <header>
+            <h1>FlameTech | QR Code Generator</h1>
+            <p class="subtitle">Add a URL and we'll create a QR code for you to add to your design. People can scan the QR code to reach the URL.</p>
+        </header>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="panel-title">
+                    <i class="fas fa-link"></i>
+                    <span>URL</span>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Enter URL</label>
+                    <input type="url" class="url-input" id="urlInput" placeholder="https://www.example.com" value="https://www.example.com">
+                </div>
+                
+                <div class="customize-section">
+                    <div class="panel-title">
+                        <i class="fas fa-palette"></i>
+                        <span>Customize</span>
+                    </div>
+                    
+                    <div class="customize-options">
+                        <div class="option-group">
+                            <label class="option-label">QR Color</label>
+                            <input type="color" class="color-input" id="qrColor" value="#000000">
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Background</label>
+                            <input type="color" class="color-input" id="bgColor" value="#ffffff">
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Size</label>
+                            <select class="size-input" id="qrSize">
+                                <option value="200">200x200</option>
+                                <option value="240" selected>240x240</option>
+                                <option value="280">280x280</option>
+                                <option value="320">320x320</option>
+                            </select>
+                        </div>
+                        
+                        <div class="option-group">
+                            <label class="option-label">Error Correction</label>
+                            <select class="size-input" id="errorCorrection">
+                                <option value="L">Low (7%)</option>
+                                <option value="M" selected>Medium (15%)</option>
+                                <option value="Q">Quartile (25%)</option>
+                                <option value="H">High (30%)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="generate-btn" id="generateBtn">
+                    <i class="fas fa-qrcode"></i>
+                    Generate QR Code
+                </button>
+            </div>
+            
+            <div class="right-panel">
+                <div class="panel-title">
+                    <i class="fas fa-qrcode"></i>
+                    <span>Your QR Code</span>
+                </div>
+                
+                <div class="qr-container">
+                    <div class="qr-placeholder" id="qrPlaceholder">
+                        <i class="fas fa-qrcode"></i>
+                        <p>Your QR code will appear here</p>
+                    </div>
+                    <canvas id="qrCode"></canvas>
+                </div>
+                
+                <button class="download-btn" id="downloadBtn" disabled>
+                    <i class="fas fa-download"></i>
+                    Download QR Code
+                </button>
+            </div>
+        </div>
+        
+        <footer>
+            <p>&copy; 2025 FlameTech. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.0/build/qrcode.min.js"></script>
+    
+    <script>
+        // DOM Elements
+        const urlInput = document.getElementById('urlInput');
+        const qrColor = document.getElementById('qrColor');
+        const bgColor = document.getElementById('bgColor');
+        const qrSize = document.getElementById('qrSize');
+        const errorCorrection = document.getElementById('errorCorrection');
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const qrCodeCanvas = document.getElementById('qrCode');
+        const qrPlaceholder = document.getElementById('qrPlaceholder');
+        
+        // Generate QR Code
+        generateBtn.addEventListener('click', generateQRCode);
+        
+        // Generate on Enter key in URL input
+        urlInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') generateQRCode();
+        });
+        
+        // Generate QR code when page loads
+        window.addEventListener('DOMContentLoaded', generateQRCode);
+        
+        function generateQRCode() {
+            const url = urlInput.value.trim();
+            
+            // Validate URL
+            if (!url) {
+                alert('Please enter a valid URL');
+                urlInput.focus();
+                return;
+            }
+            
+            // Add https:// if no protocol is specified
+            let formattedUrl = url;
+            if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
+                formattedUrl = 'https://' + formattedUrl;
+                urlInput.value = formattedUrl;
+            }
+            
+            // QR Code options
+            const options = {
+                width: parseInt(qrSize.value),
+                height: parseInt(qrSize.value),
+                color: {
+                    dark: qrColor.value,
+                    light: bgColor.value
+                },
+                errorCorrectionLevel: errorCorrection.value
+            };
+            
+            // Generate QR Code
+            QRCode.toCanvas(qrCodeCanvas, formattedUrl, options, function(error) {
+                if (error) {
+                    console.error(error);
+                    alert('Error generating QR code. Please try again.');
+                    return;
+                }
+                
+                // Show the QR code and hide placeholder
+                qrCodeCanvas.style.display = 'block';
+                qrPlaceholder.style.display = 'none';
+                
+                // Enable download button
+                downloadBtn.disabled = false;
+            });
+        }
+        
+        // Download QR Code
+        downloadBtn.addEventListener('click', function() {
+            if (this.disabled) return;
+            
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = qrCodeCanvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+        
+        // Update QR code when customization options change
+        [qrColor, bgColor, qrSize, errorCorrection].forEach(element => {
+            element.addEventListener('change', generateQRCode);
+        });
+        
+
+         // Check for saved theme preference or default to dark
+    // ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+
+    </script>
+</body>
+</html>

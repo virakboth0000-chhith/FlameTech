@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Bash Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This is a quick reference cheat sheet to getting started with linux bash shell scripting.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#3e4548}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(62,69,72,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>Bash</span>
+  </div>
+  <div class="post-icon">BA</div>
+  <h1>Bash <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This is a quick reference cheat sheet to getting started with linux bash shell scripting.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">shell</span> <span class="meta-tag">sh</span> <span class="meta-tag">echo</span> <span class="meta-tag">script</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="hellosh">hello.sh</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+
+<span class="nv">VAR</span><span class="o">=</span><span class="s2">&quot;world&quot;</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello </span><span class="nv">$VAR</span><span class="s2">!&quot;</span><span class="w"> </span><span class="c1"># =&gt; Hello world!</span>
+</code></pre></div>
+
+<p>Execute the script</p>
+<p>```shell script
+$ bash hello.sh</p>
+<div class="codehilite"><pre><span></span><code>### Variables
+
+```bash
+NAME=&quot;John&quot;
+
+echo $    # =&gt; John (Variables)
+echo $NAME      # =&gt; John (Variables)
+echo &quot;$NAME&quot;    # =&gt; John (Variables)
+echo &#39;$NAME&#39;    # =&gt; $NAME (Exact string)
+echo &quot;$!&quot; # =&gt; John! (Variables)
+
+NAME = &quot;John&quot;   # =&gt; Error (about space)
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comments">Comments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># This is an inline Bash comment.</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>:<span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">This is a</span>
+<span class="s1">very neat comment</span>
+<span class="s1">in bash</span>
+<span class="s1">&#39;</span>
+</code></pre></div>
+
+<p>Multi-line comments use <code>:'</code> to open and <code>'</code> to close</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arguments">Arguments</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$1</code> … <code>$9</code></td>
+<td>Parameter 1 ... 9</td>
+</tr>
+<tr>
+<td><code>$0</code></td>
+<td>Name of the script itself</td>
+</tr>
+<tr>
+<td><code>$1</code></td>
+<td>First argument</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Positional parameter 10</td>
+</tr>
+<tr>
+<td><code>$#</code></td>
+<td>Number of arguments</td>
+</tr>
+<tr>
+<td><code>$$</code></td>
+<td>Process id of the shell</td>
+</tr>
+<tr>
+<td><code>$*</code></td>
+<td>All arguments</td>
+</tr>
+<tr>
+<td><code>$@</code></td>
+<td>All arguments, starting from first</td>
+</tr>
+<tr>
+<td><code>$-</code></td>
+<td>Current options</td>
+</tr>
+<tr>
+<td><code>$_</code></td>
+<td>Last argument of the previous command</td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="http://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables">Special parameters</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions">Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>get_name<span class="o">()</span><span class="w"> </span>
+
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;You are </span><span class="k">$(</span>get_name<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>See: <a href="#bash-functions">Functions</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="conditionals">Conditionals</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$string</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;String is empty&quot;</span>
+<span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$string</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;String is not empty&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+<p>See: <a href="#bash-conditionals">Conditionals</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="brace-expansion">Brace expansion</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>.js
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>``</td>
+<td>Same as <code>A B</code></td>
+</tr>
+<tr>
+<td><code>.js</code></td>
+<td>Same as <code>A.js B.js</code></td>
+</tr>
+<tr>
+<td>``</td>
+<td>Same as <code>1 2 3 4 5</code></td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="http://wiki.bash-hackers.org/syntax/expansion/brace">Brace expansion</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="shell-execution">Shell execution</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># =&gt; I&#39;m in /path/of/current</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;I&#39;m in </span><span class="k">$(</span>PWD<span class="k">)</span><span class="s2">&quot;</span>
+
+<span class="c1"># Same as:</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;I&#39;m in `pwd`&quot;</span>
+</code></pre></div>
+
+<p>See: <a href="http://wiki.bash-hackers.org/syntax/expansion/cmdsubst">Command substitution</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-parameter-expansions">
+<h2 id="bash-parameter-expansions">Bash Parameter expansions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="syntax">Syntax</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>Remove suffix</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Remove prefix</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Remove long suffix</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Remove long prefix</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Replace first match</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Replace all</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Replace suffix</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Replace prefix</td>
+</tr>
+</tbody>
+</table>
+<h4 id="substrings">Substrings</h4>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>Substring <em>(position, length)</em></td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Substring from the right</td>
+</tr>
+</tbody>
+</table>
+<h4 id="length">Length</h4>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>Length of <code>$FOO</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="default-values">Default values</h4>
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td><code>$FOO</code>, or <code>val</code> if unset</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Set <code>$FOO</code> to <code>val</code> if unset</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td><code>val</code> if <code>$FOO</code> is set</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Show message and exit if <code>$FOO</code> is unset</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="substitution">Substitution</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>$<span class="w">  </span><span class="c1">#=&gt; $food or &quot;Cake&quot;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nv">STR</span><span class="o">=</span><span class="s2">&quot;/path/to/foo.cpp&quot;</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">    </span><span class="c1"># /path/to/foo</span>
+<span class="nb">echo</span><span class="w"> </span>$.o<span class="w">  </span><span class="c1"># /path/to/foo.o</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">      </span><span class="c1"># /path/to</span>
+
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">     </span><span class="c1"># cpp (extension)</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">     </span><span class="c1"># foo.cpp (basepath)</span>
+
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">      </span><span class="c1"># path/to/foo.cpp</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">     </span><span class="c1"># foo.cpp</span>
+
+<span class="nb">echo</span><span class="w"> </span>$<span class="w"> </span><span class="c1"># /path/to/bar.cpp</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="slicing">Slicing</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">           </span><span class="c1"># =&gt; John</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">       </span><span class="c1"># =&gt; Jo</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">        </span><span class="c1"># =&gt; Jo</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">       </span><span class="c1"># =&gt; Joh</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">      </span><span class="c1"># =&gt; n</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">      </span><span class="c1"># =&gt; hn</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">    </span><span class="c1"># =&gt; hn</span>
+
+<span class="nv">length</span><span class="o">=</span><span class="m">2</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">  </span><span class="c1"># =&gt; Jo</span>
+</code></pre></div>
+
+<p>See: <a href="http://wiki.bash-hackers.org/syntax/pe">Parameter expansion</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="basepath-dirpath">basepath &amp; dirpath</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">SRC</span><span class="o">=</span><span class="s2">&quot;/path/to/foo.cpp&quot;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nv">BASEPATH</span><span class="o">=</span>$
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$BASEPATH</span><span class="w">  </span><span class="c1"># =&gt; &quot;foo.cpp&quot;</span>
+
+
+<span class="nv">DIRPATH</span><span class="o">=</span>$
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$DIRPATH</span><span class="w">   </span><span class="c1"># =&gt; &quot;/path/to/&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="transform">Transform</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">STR</span><span class="o">=</span><span class="s2">&quot;HELLO WORLD!&quot;</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">   </span><span class="c1"># =&gt; hELLO WORLD!</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">  </span><span class="c1"># =&gt; hello world!</span>
+
+<span class="nv">STR</span><span class="o">=</span><span class="s2">&quot;hello world!&quot;</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">   </span><span class="c1"># =&gt; Hello world!</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">  </span><span class="c1"># =&gt; HELLO WORLD!</span>
+
+<span class="nv">ARR</span><span class="o">=(</span>hello<span class="w"> </span>World<span class="o">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="w"> </span><span class="c1"># =&gt; hello world</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="w"> </span><span class="c1"># =&gt; Hello World</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-arrays">
+<h2 id="bash-arrays">Bash Arrays</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="defining-arrays">Defining arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">Fruits</span><span class="o">=(</span><span class="s1">&#39;Apple&#39;</span><span class="w"> </span><span class="s1">&#39;Banana&#39;</span><span class="w"> </span><span class="s1">&#39;Orange&#39;</span><span class="o">)</span>
+
+Fruits<span class="o">[</span><span class="m">0</span><span class="o">]=</span><span class="s2">&quot;Apple&quot;</span>
+Fruits<span class="o">[</span><span class="m">1</span><span class="o">]=</span><span class="s2">&quot;Banana&quot;</span>
+Fruits<span class="o">[</span><span class="m">2</span><span class="o">]=</span><span class="s2">&quot;Orange&quot;</span>
+
+<span class="nv">ARRAY1</span><span class="o">=(</span>foo<span class="o">)</span><span class="w"> </span><span class="c1"># =&gt; foo1 foo2</span>
+<span class="nv">ARRAY2</span><span class="o">=()</span><span class="w">    </span><span class="c1"># =&gt; A B C D</span>
+
+<span class="c1"># Merge =&gt; foo1 foo2 A B C D</span>
+<span class="nv">ARRAY3</span><span class="o">=(</span>$<span class="w"> </span>$<span class="o">)</span>
+
+<span class="c1"># declare construct</span>
+<span class="nb">declare</span><span class="w"> </span>-a<span class="w"> </span><span class="nv">Numbers</span><span class="o">=(</span><span class="m">1</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="m">3</span><span class="o">)</span>
+<span class="nv">Numbers</span><span class="o">+=(</span><span class="m">4</span><span class="w"> </span><span class="m">5</span><span class="o">)</span><span class="w"> </span><span class="c1"># Append =&gt; 1 2 3 4 5</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="indexing">Indexing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$</code></td>
+<td>First element</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Last element</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>All elements</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>All elements</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Number of all</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Length of 1st</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Length of nth</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Range</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td>Keys of all</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="iteration">Iteration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">Fruits</span><span class="o">=(</span><span class="s1">&#39;Apple&#39;</span><span class="w"> </span><span class="s1">&#39;Banana&#39;</span><span class="w"> </span><span class="s1">&#39;Orange&#39;</span><span class="o">)</span>
+
+<span class="k">for</span><span class="w"> </span>e<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$e</span>
+<span class="k">done</span>
+</code></pre></div>
+
+<h4 id="with-index">With index</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">  </span><span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;%s\t%s\n&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$i</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="operations">Operations</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">Fruits</span><span class="o">=(</span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;Watermelon&quot;</span><span class="o">)</span><span class="w">     </span><span class="c1"># Push</span>
+<span class="nv">Fruits</span><span class="o">+=(</span><span class="s1">&#39;Watermelon&#39;</span><span class="o">)</span><span class="w">                   </span><span class="c1"># Also Push</span>
+<span class="nv">Fruits</span><span class="o">=(</span><span class="w"> </span>$<span class="w"> </span><span class="o">)</span><span class="w">             </span><span class="c1"># Remove by regex match</span>
+<span class="nb">unset</span><span class="w"> </span>Fruits<span class="o">[</span><span class="m">2</span><span class="o">]</span><span class="w">                          </span><span class="c1"># Remove one item</span>
+<span class="nv">Fruits</span><span class="o">=(</span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="o">)</span><span class="w">                  </span><span class="c1"># Duplicate</span>
+<span class="nv">Fruits</span><span class="o">=(</span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="o">)</span><span class="w">  </span><span class="c1"># Concatenate</span>
+<span class="nv">lines</span><span class="o">=(</span><span class="sb">`</span>cat<span class="w"> </span><span class="s2">&quot;logfile&quot;</span><span class="sb">`</span><span class="o">)</span><span class="w">                  </span><span class="c1"># Read from file</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrays-as-arguments">Arrays as arguments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">function</span><span class="w"> </span>extract<span class="o">()</span>
+<span class="s2">&quot;</span>
+<span class="s2">}</span>
+<span class="s2">Fruits=(&#39;Apple&#39; &#39;Banana&#39; &#39;Orange&#39;)</span>
+<span class="s2">extract Fruits 2     # =&gt; Orangle</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-dictionaries">
+<h2 id="bash-dictionaries">Bash Dictionaries</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="defining">Defining</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">declare</span><span class="w"> </span>-A<span class="w"> </span>sounds
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>sounds<span class="o">[</span>dog<span class="o">]=</span><span class="s2">&quot;bark&quot;</span>
+sounds<span class="o">[</span>cow<span class="o">]=</span><span class="s2">&quot;moo&quot;</span>
+sounds<span class="o">[</span>bird<span class="o">]=</span><span class="s2">&quot;tweet&quot;</span>
+sounds<span class="o">[</span>wolf<span class="o">]=</span><span class="s2">&quot;howl&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="working-with-dictionaries">Working with dictionaries</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>$<span class="w"> </span><span class="c1"># Dog&#39;s sound</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">   </span><span class="c1"># All values</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">  </span><span class="c1"># All keys</span>
+<span class="nb">echo</span><span class="w"> </span>$<span class="w">  </span><span class="c1"># Number of elements</span>
+<span class="nb">unset</span><span class="w"> </span>sounds<span class="o">[</span>dog<span class="o">]</span><span class="w">   </span><span class="c1"># Delete dog</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="iteration_1">Iteration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>val<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$val</span>
+<span class="k">done</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>key<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$key</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-conditionals">
+<h2 id="bash-conditionals">Bash Conditionals</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="integer-conditions">Integer conditions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[[ NUM -eq NUM ]]</code></td>
+<td><yel>Eq</yel>ual</td>
+</tr>
+<tr>
+<td><code>[[ NUM -ne NUM ]]</code></td>
+<td><yel>N</yel>ot <yel>e</yel>qual</td>
+</tr>
+<tr>
+<td><code>[[ NUM -lt NUM ]]</code></td>
+<td><yel>L</yel>ess <yel>t</yel>han</td>
+</tr>
+<tr>
+<td><code>[[ NUM -le NUM ]]</code></td>
+<td><yel>L</yel>ess than or <yel>e</yel>qual</td>
+</tr>
+<tr>
+<td><code>[[ NUM -gt NUM ]]</code></td>
+<td><yel>G</yel>reater <yel>t</yel>han</td>
+</tr>
+<tr>
+<td><code>[[ NUM -ge NUM ]]</code></td>
+<td><yel>G</yel>reater than or <yel>e</yel>qual</td>
+</tr>
+<tr>
+<td><code>(( NUM &lt; NUM ))</code></td>
+<td>Less than</td>
+</tr>
+<tr>
+<td><code>(( NUM &lt;= NUM ))</code></td>
+<td>Less than or equal</td>
+</tr>
+<tr>
+<td><code>(( NUM &gt; NUM ))</code></td>
+<td>Greater than</td>
+</tr>
+<tr>
+<td><code>(( NUM &gt;= NUM ))</code></td>
+<td>Greater than or equal</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-conditions">String conditions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[[ -z STR ]]</code></td>
+<td>Empty string</td>
+</tr>
+<tr>
+<td><code>[[ -n STR ]]</code></td>
+<td><yel>N</yel>ot empty string</td>
+</tr>
+<tr>
+<td><code>[[ STR == STR ]]</code></td>
+<td>Equal</td>
+</tr>
+<tr>
+<td><code>[[ STR = STR ]]</code></td>
+<td>Equal (Same above)</td>
+</tr>
+<tr>
+<td><code>[[ STR &lt; STR ]]</code></td>
+<td>Less than <em>(ASCII)</em></td>
+</tr>
+<tr>
+<td><code>[[ STR &gt; STR ]]</code></td>
+<td>Greater than <em>(ASCII)</em></td>
+</tr>
+<tr>
+<td><code>[[ STR != STR ]]</code></td>
+<td>Not Equal</td>
+</tr>
+<tr>
+<td><code>[[ STR =~ STR ]]</code></td>
+<td>Regexp</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="example">Example</h3>
+<div class="section">
+<h4 id="string">String</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-z<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$string</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;String is empty&quot;</span>
+<span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$string</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;String is not empty&quot;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;This never happens&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+<h4 id="combinations">Combinations</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>X<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>Y<span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>...
+<span class="k">fi</span>
+</code></pre></div>
+
+<h4 id="equal">Equal</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$A</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$B</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span>...
+<span class="k">fi</span>
+</code></pre></div>
+
+<h4 id="regex">Regex</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s1">&#39;1. abc&#39;</span><span class="w"> </span><span class="o">=</span>~<span class="w"> </span><span class="o">([</span>a-z<span class="o">]</span>+<span class="o">)</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span>$
+<span class="k">fi</span>
+</code></pre></div>
+
+<h4 id="smaller">Smaller</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">((</span><span class="w"> </span><span class="nv">$a</span><span class="w"> </span>&lt;<span class="w"> </span><span class="nv">$b</span><span class="w"> </span><span class="o">))</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">   </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$a</span><span class="s2"> is smaller than </span><span class="nv">$b</span><span class="s2">&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+<h4 id="exists">Exists</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span>-e<span class="w"> </span><span class="s2">&quot;file.txt&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;file exists&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="file-conditions">File conditions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Condition</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[[ -e FILE ]]</code></td>
+<td><yel>E</yel>xists</td>
+</tr>
+<tr>
+<td><code>[[ -d FILE ]]</code></td>
+<td><yel>D</yel>irectory</td>
+</tr>
+<tr>
+<td><code>[[ -f FILE ]]</code></td>
+<td><yel>F</yel>ile</td>
+</tr>
+<tr>
+<td><code>[[ -h FILE ]]</code></td>
+<td>Symlink</td>
+</tr>
+<tr>
+<td><code>[[ -s FILE ]]</code></td>
+<td>Size is &gt; 0 bytes</td>
+</tr>
+<tr>
+<td><code>[[ -r FILE ]]</code></td>
+<td><yel>R</yel>eadable</td>
+</tr>
+<tr>
+<td><code>[[ -w FILE ]]</code></td>
+<td><yel>W</yel>ritable</td>
+</tr>
+<tr>
+<td><code>[[ -x FILE ]]</code></td>
+<td>Executable</td>
+</tr>
+<tr>
+<td><code>[[ f1 -nt f2 ]]</code></td>
+<td>f1 <yel>n</yel>ewer <yel>t</yel>han f2</td>
+</tr>
+<tr>
+<td><code>[[ f1 -ot f2 ]]</code></td>
+<td>f2 <yel>o</yel>lder <yel>t</yel>han f1</td>
+</tr>
+<tr>
+<td><code>[[ f1 -ef f2 ]]</code></td>
+<td>Same files</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="more-conditions">More conditions</h3>
+<div class="section">
+<p>| Condition            | Description          |
+| -------------------- | -------------------- | ----- | --- |
+| <code>[[ -o noclobber ]]</code> | If OPTION is enabled |
+| <code>[[ ! EXPR ]]</code>       | Not                  |
+| <code>[[ X &amp;&amp; Y ]]</code>       | And                  |
+| <code>[[ X                |                      | Y ]]</code> | Or  |</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical-and-or">logical and, or</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;y&#39;</span><span class="w"> </span>-a<span class="w"> </span><span class="nv">$2</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;yes&quot;</span>
+<span class="k">fi</span>
+
+<span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;n&#39;</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$2</span><span class="w"> </span>-lt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;no&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-loops">
+<h2 id="bash-loops">Bash Loops</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basic-for-loop">Basic for loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span>/etc/rc.*<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$i</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="c-like-for-loop">C-like for loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="o">((</span><span class="nv">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>i<span class="w"> </span>&lt;<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="p">;</span><span class="w"> </span>i++<span class="o">))</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$i</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="ranges">Ranges</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Welcome </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+
+<h4 id="with-step-size">With step size</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Welcome </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue">Continue</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>number<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">3</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$number</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="k">continue</span><span class="p">;</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$number</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="break">Break</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span><span class="w"> </span>number<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">3</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$number</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">2</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">        </span><span class="c1"># Skip entire rest of loop.</span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span>
+<span class="w">    </span><span class="k">fi</span>
+<span class="w">    </span><span class="c1"># This will only print 1</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$number</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="until">Until</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">count</span><span class="o">=</span><span class="m">0</span>
+<span class="k">until</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="nv">$count</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$count</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="o">((</span>count++<span class="o">))</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="while-with-increment">While with increment</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">i</span><span class="o">=</span><span class="m">1</span>
+<span class="k">while</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$i</span><span class="w"> </span>-lt<span class="w"> </span><span class="m">4</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Number: </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="o">((</span>i++<span class="o">))</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="while-with-decrement">While with decrement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">i</span><span class="o">=</span><span class="m">3</span>
+<span class="k">while</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="nv">$i</span><span class="w"> </span>-gt<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Number: </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="w">    </span><span class="o">((</span>i--<span class="o">))</span>
+<span class="k">done</span>
+</code></pre></div>
+
+<h4 id="combined-with-test">Combined with test</h4>
+<div class="codehilite"><pre><span></span><code><span class="nv">i</span><span class="o">=</span><span class="m">3</span>
+<span class="k">while</span><span class="w"> </span><span class="o">((</span>i--<span class="o">))</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Number: </span><span class="nv">$i</span><span class="s2">&quot;</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="forever">Forever</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span>true<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="c1"># here is some code.</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="forever-shorthand">Forever (shorthand)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span>:<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="c1"># here is some code.</span>
+<span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="reading-lines">Reading lines</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>line<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$line</span>
+<span class="k">done</span><span class="w"> </span>&lt;<span class="w"> </span>file.txt
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-functions">
+<h2 id="bash-functions">Bash Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="defining-functions">Defining functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>myfunc<span class="o">()</span><span class="w"> </span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Same as above (alternate syntax)</span>
+<span class="k">function</span><span class="w"> </span>myfunc<span class="o">()</span><span class="w"> </span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>myfunc<span class="w"> </span><span class="s2">&quot;John&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="returning-values">Returning values</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>myfunc<span class="o">()</span><span class="w"> </span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nv">result</span><span class="o">=</span><span class="s2">&quot;</span><span class="k">$(</span>myfunc<span class="k">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="raising-errors">Raising errors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>myfunc<span class="o">()</span><span class="w"> </span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span>myfunc<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;success&quot;</span>
+<span class="k">else</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;failure&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-options">
+<h2 id="bash-options">Bash Options</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="options">Options</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Avoid overlay files</span>
+<span class="c1"># (echo &quot;hi&quot; &gt; foo)</span>
+<span class="nb">set</span><span class="w"> </span>-o<span class="w"> </span>noclobber
+
+<span class="c1"># Used to exit upon error</span>
+<span class="c1"># avoiding cascading errors</span>
+<span class="nb">set</span><span class="w"> </span>-o<span class="w"> </span>errexit
+
+<span class="c1"># Unveils hidden failures</span>
+<span class="nb">set</span><span class="w"> </span>-o<span class="w"> </span>pipefail
+
+<span class="c1"># Exposes unset variables</span>
+<span class="nb">set</span><span class="w"> </span>-o<span class="w"> </span>nounset
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="glob-options">Glob options</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Non-matching globs are removed</span>
+<span class="c1"># (&#39;*.foo&#39; =&gt; &#39;&#39;)</span>
+<span class="nb">shopt</span><span class="w"> </span>-s<span class="w"> </span>nullglob
+
+<span class="c1"># Non-matching globs throw errors</span>
+<span class="nb">shopt</span><span class="w"> </span>-s<span class="w"> </span>failglob
+
+<span class="c1"># Case insensitive globs</span>
+<span class="nb">shopt</span><span class="w"> </span>-s<span class="w"> </span>nocaseglob
+
+<span class="c1"># Wildcards match dotfiles</span>
+<span class="c1"># (&quot;*.sh&quot; =&gt; &quot;.foo.sh&quot;)</span>
+<span class="nb">shopt</span><span class="w"> </span>-s<span class="w"> </span>dotglob
+
+<span class="c1"># Allow ** for recursive matches</span>
+<span class="c1"># (&#39;lib/**/*.rb&#39; =&gt; &#39;lib/a/b/c.rb&#39;)</span>
+<span class="nb">shopt</span><span class="w"> </span>-s<span class="w"> </span>globstar
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="bash-history">
+<h2 id="bash-history">Bash History</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="commands">Commands</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>history</code></td>
+<td>Show history</td>
+</tr>
+<tr>
+<td><code>sudo !!</code></td>
+<td>Run the previous command with sudo</td>
+</tr>
+<tr>
+<td><code>shopt -s histverify</code></td>
+<td>Don't execute expanded result immediately</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="expansions">Expansions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>!$</code></td>
+<td>Expand last parameter of most recent command</td>
+</tr>
+<tr>
+<td><code>!*</code></td>
+<td>Expand all parameters of most recent command</td>
+</tr>
+<tr>
+<td><code>!-n</code></td>
+<td>Expand <code>n</code>th most recent command</td>
+</tr>
+<tr>
+<td><code>!n</code></td>
+<td>Expand <code>n</code>th command in history</td>
+</tr>
+<tr>
+<td><code>!&lt;command&gt;</code></td>
+<td>Expand most recent invocation of command <code>&lt;command&gt;</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="operations_1">Operations</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>!!</code></td>
+<td>Execute last command again</td>
+</tr>
+<tr>
+<td><code>!!:s/&lt;FROM&gt;/&lt;TO&gt;/</code></td>
+<td>Replace first occurrence of <code>&lt;FROM&gt;</code> to <code>&lt;TO&gt;</code> in most recent command</td>
+</tr>
+<tr>
+<td><code>!!:gs/&lt;FROM&gt;/&lt;TO&gt;/</code></td>
+<td>Replace all occurrences of <code>&lt;FROM&gt;</code> to <code>&lt;TO&gt;</code> in most recent command</td>
+</tr>
+<tr>
+<td><code>!$:t</code></td>
+<td>Expand only basename from last parameter of most recent command</td>
+</tr>
+<tr>
+<td><code>!$:h</code></td>
+<td>Expand only directory from last parameter of most recent command</td>
+</tr>
+</tbody>
+</table>
+<p><code>!!</code> and <code>!$</code> can be replaced with any valid expansion.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="slices">Slices</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>!!:n</code></td>
+<td>Expand only <code>n</code>th token from most recent command (command is <code>0</code>; first argument is <code>1</code>)</td>
+</tr>
+<tr>
+<td><code>!^</code></td>
+<td>Expand first argument from most recent command</td>
+</tr>
+<tr>
+<td><code>!$</code></td>
+<td>Expand last token from most recent command</td>
+</tr>
+<tr>
+<td><code>!!:n-m</code></td>
+<td>Expand range of tokens from most recent command</td>
+</tr>
+<tr>
+<td><code>!!:n-$</code></td>
+<td>Expand <code>n</code>th token to last from most recent command</td>
+</tr>
+</tbody>
+</table>
+<p><code>!!</code> can be replaced with any valid expansion i.e. <code>!cat</code>, <code>!-2</code>, <code>!42</code>, etc.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="miscellaneous">
+<h2 id="miscellaneous">Miscellaneous</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="numeric-calculations">Numeric calculations</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">$((</span><span class="nv">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">200</span><span class="k">))</span><span class="w">      </span><span class="c1"># Add 200 to $a</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">$((</span><span class="nv">$RANDOM</span><span class="o">%</span><span class="m">200</span><span class="k">))</span><span class="w">  </span><span class="c1"># Random number 0..199</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="subshells">Subshells</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">(</span><span class="nb">cd</span><span class="w"> </span>somedir<span class="p">;</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;I&#39;m now in </span><span class="nv">$PWD</span><span class="s2">&quot;</span><span class="o">)</span>
+<span class="nb">pwd</span><span class="w"> </span><span class="c1"># still in first directory</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="inspecting-commands">Inspecting commands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">command</span><span class="w"> </span>-V<span class="w"> </span><span class="nb">cd</span>
+<span class="c1">#=&gt; &quot;cd is a function/alias/whatever&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="redirection">Redirection</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>hello.py<span class="w"> </span>&gt;<span class="w"> </span>output.txt<span class="w">   </span><span class="c1"># stdout to (file)</span>
+python<span class="w"> </span>hello.py<span class="w"> </span>&gt;&gt;<span class="w"> </span>output.txt<span class="w">  </span><span class="c1"># stdout to (file), append</span>
+python<span class="w"> </span>hello.py<span class="w"> </span><span class="m">2</span>&gt;<span class="w"> </span>error.log<span class="w">   </span><span class="c1"># stderr to (file)</span>
+python<span class="w"> </span>hello.py<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w">           </span><span class="c1"># stderr to stdout</span>
+python<span class="w"> </span>hello.py<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w">    </span><span class="c1"># stderr to (null)</span>
+python<span class="w"> </span>hello.py<span class="w"> </span><span class="p">&amp;</span>&gt;/dev/null<span class="w">    </span><span class="c1"># stdout and stderr to (null)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>hello.py<span class="w"> </span>&lt;<span class="w"> </span>foo.txt<span class="w">      </span><span class="c1"># feed foo.txt to stdin for python</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="source-relative">Source relative</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">source</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">/../share/foo.sh&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="directory-of-script">Directory of script</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">DIR</span><span class="o">=</span><span class="s2">&quot;</span>$<span class="s2">&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="caseswitch">Case/switch</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">case</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="k">in</span>
+<span class="w">    </span>start<span class="w"> </span><span class="p">|</span><span class="w"> </span>up<span class="o">)</span>
+<span class="w">    </span>vagrant<span class="w"> </span>up
+<span class="w">    </span><span class="p">;;</span>
+
+<span class="w">    </span>*<span class="o">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Usage: </span><span class="nv">$0</span><span class="s2"> &quot;</span>
+<span class="w">    </span><span class="p">;;</span>
+<span class="k">esac</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="trap-errors">Trap errors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">trap</span><span class="w"> </span><span class="s1">&#39;echo Error at about $LINENO&#39;</span><span class="w"> </span>ERR
+</code></pre></div>
+
+<p>or</p>
+<div class="codehilite"><pre><span></span><code>traperr<span class="o">()</span><span class="w">  </span>at<span class="w"> </span>about<span class="w"> </span>$<span class="s2">&quot;</span>
+<span class="s2">}</span>
+
+<span class="s2">set -o errtrace</span>
+<span class="s2">trap traperr ERR</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="printf">printf</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;Hello %s, I&#39;m %s&quot;</span><span class="w"> </span>Sven<span class="w"> </span>Olga
+<span class="c1">#=&gt; &quot;Hello Sven, I&#39;m Olga</span>
+
+<span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;1 + 1 = %d&quot;</span><span class="w"> </span><span class="m">2</span>
+<span class="c1">#=&gt; &quot;1 + 1 = 2&quot;</span>
+
+<span class="nb">printf</span><span class="w"> </span><span class="s2">&quot;Print a float: %f&quot;</span><span class="w"> </span><span class="m">2</span>
+<span class="c1">#=&gt; &quot;Print a float: 2.000000&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="getting-options">Getting options</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">=</span>~<span class="w"> </span>^-<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>!<span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;--&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="k">case</span><span class="w"> </span><span class="nv">$1</span><span class="w"> </span><span class="k">in</span>
+<span class="w">    </span>-V<span class="w"> </span><span class="p">|</span><span class="w"> </span>--version<span class="w"> </span><span class="o">)</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$version</span>
+<span class="w">    </span><span class="nb">exit</span>
+<span class="w">    </span><span class="p">;;</span>
+<span class="w">    </span>-s<span class="w"> </span><span class="p">|</span><span class="w"> </span>--string<span class="w"> </span><span class="o">)</span>
+<span class="w">    </span>shift<span class="p">;</span><span class="w"> </span><span class="nv">string</span><span class="o">=</span><span class="nv">$1</span>
+<span class="w">    </span><span class="p">;;</span>
+<span class="w">    </span>-f<span class="w"> </span><span class="p">|</span><span class="w"> </span>--flag<span class="w"> </span><span class="o">)</span>
+<span class="w">    </span><span class="nv">flag</span><span class="o">=</span><span class="m">1</span>
+<span class="w">    </span><span class="p">;;</span>
+<span class="k">esac</span><span class="p">;</span><span class="w"> </span>shift<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+<span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="nv">$1</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s1">&#39;--&#39;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span><span class="w"> </span>shift<span class="p">;</span><span class="w"> </span><span class="k">fi</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="check-for-commands-result">Check for command's result</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span>ping<span class="w"> </span>-c<span class="w"> </span><span class="m">1</span><span class="w"> </span>google.com<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;It appears you have a working internet connection&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="special-variables">Special variables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Expression</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$?</code></td>
+<td>Exit status of last task</td>
+</tr>
+<tr>
+<td><code>$!</code></td>
+<td>PID of last background task</td>
+</tr>
+<tr>
+<td><code>$$</code></td>
+<td>PID of shell</td>
+</tr>
+<tr>
+<td><code>$0</code></td>
+<td>Filename of the shell script</td>
+</tr>
+</tbody>
+</table>
+<p>See <a href="http://wiki.bash-hackers.org/syntax/shellvars#special_parameters_and_shell_variables">Special parameters</a>.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="grep-check">Grep check</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s1">&#39;foo&#39;</span><span class="w"> </span>~/.bash_history<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;You appear to have typed &#39;foo&#39; in the past&quot;</span>
+<span class="k">fi</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="backslash-escapes">Backslash escapes</h3>
+<div class="section">
+<ul>
+<li>&nbsp;</li>
+<li>!</li>
+<li>\"</li>
+<li>#</li>
+<li>\&amp;</li>
+<li>\'</li>
+<li>(</li>
+<li>)</li>
+<li>\,</li>
+<li>\;</li>
+<li>\&lt;</li>
+<li>&gt;</li>
+<li>[</li>
+<li>|</li>
+<li>\</li>
+<li>]</li>
+<li>\^</li>
+<li>\</li>
+<li>`</li>
+<li>\$</li>
+<li>*</li>
+<li>\?</li>
+</ul>
+<p>Escape these special characters with <code>\</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="heredoc">Heredoc</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>cat<span class="w"> </span><span class="s">&lt;&lt;END</span>
+<span class="s">hello world</span>
+<span class="s">END</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="go-to-previous-directory">Go to previous directory</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">pwd</span><span class="w"> </span><span class="c1"># /home/user/foo</span>
+<span class="nb">cd</span><span class="w"> </span>bar/
+<span class="nb">pwd</span><span class="w"> </span><span class="c1"># /home/user/foo/bar</span>
+<span class="nb">cd</span><span class="w"> </span>-
+<span class="nb">pwd</span><span class="w"> </span><span class="c1"># /home/user/foo</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="reading-input">Reading input</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;Proceed? [y/n]: &quot;</span>
+<span class="nb">read</span><span class="w"> </span>ans
+<span class="nb">echo</span><span class="w"> </span><span class="nv">$ans</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="nb">read</span><span class="w"> </span>-n<span class="w"> </span><span class="m">1</span><span class="w"> </span>ans<span class="w">    </span><span class="c1"># Just one character</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="conditional-execution">Conditional execution</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>commit<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>push
+git<span class="w"> </span>commit<span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Commit failed&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="strict-mode">Strict mode</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+<span class="nv">IFS</span><span class="o">=</span><span class="s1">$&#39;\n\t&#39;</span>
+</code></pre></div>
+
+<p>See: <a href="http://redsymbol.net/articles/unofficial-bash-strict-mode/">Unofficial bash strict mode</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="optional-arguments">Optional arguments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">args</span><span class="o">=(</span><span class="s2">&quot;</span><span class="nv">$@</span><span class="s2">&quot;</span><span class="o">)</span>
+<span class="nv">args</span><span class="o">+=(</span>foo<span class="o">)</span>
+<span class="nv">args</span><span class="o">+=(</span>bar<span class="o">)</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span>
+</code></pre></div>
+
+<p>Put the arguments into an array and then append</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://devhints.io/bash">Devhints</a> <em>(devhints.io)</em></li>
+<li><a href="http://wiki.bash-hackers.org/">Bash-hackers wiki</a> <em>(bash-hackers.org)</em></li>
+<li><a href="http://wiki.bash-hackers.org/syntax/shellvars">Shell vars</a> <em>(bash-hackers.org)</em></li>
+<li><a href="https://learnxinyminutes.com/docs/bash/">Learn bash in y minutes</a> <em>(learnxinyminutes.com)</em></li>
+<li><a href="http://mywiki.wooledge.org/BashGuide">Bash Guide</a> <em>(mywiki.wooledge.org)</em></li>
+<li><a href="https://www.shellcheck.net/">ShellCheck</a> <em>(shellcheck.net)</em></li>
+<li><a href="https://devmanual.gentoo.org/tools-reference/bash/index.html">shell - Standard Shell</a> <em>(devmanual.gentoo.org)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

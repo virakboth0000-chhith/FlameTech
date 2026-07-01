@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>PHP Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This [PHP](https://www.php.net/manual/en/) cheat sheet provides a reference for quickly looking up the correct syntax for the code you use most frequently.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#7477a9}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(116,119,169,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>PHP</span>
+  </div>
+  <div class="post-icon">PH</div>
+  <h1>PHP <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This <a href="https://www.php.net/manual/en/">PHP</a> cheat sheet provides a reference for quickly looking up the correct syntax for the code you use most frequently.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">web</span> <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span> <span class="meta-tag">runCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="hellophp">hello.php</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span> <span class="c1">// begin with a PHP open tag.</span>
+
+<span class="k">echo</span> <span class="s2">&quot;Hello World</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="p">(</span><span class="s2">&quot;Hello cheatsheets.zip&quot;</span><span class="p">);</span>
+
+<span class="cp">?&gt;</span>
+</code></pre></div>
+
+<p>PHP run command</p>
+<p>```shell script
+$ php hello.php</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">### Variables</span>
+
+<span class="err">```</span><span class="n">php</span>
+<span class="o">$</span><span class="n">boolean1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="bp">true</span><span class="p">;</span>
+<span class="o">$</span><span class="n">boolean2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">True</span><span class="p">;</span>
+
+<span class="o">$</span><span class="nb nb-Type">int</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">12</span><span class="p">;</span>
+<span class="o">$</span><span class="nb nb-Type">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">3.1415926</span><span class="p">;</span>
+<span class="n">unset</span><span class="p">(</span><span class="o">$</span><span class="nb nb-Type">float</span><span class="p">);</span><span class="w">  </span><span class="o">//</span><span class="w"> </span><span class="n">Delete</span><span class="w"> </span><span class="n">variable</span>
+
+<span class="o">$</span><span class="n">str1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;How are you?&quot;</span><span class="p">;</span>
+<span class="o">$</span><span class="n">str2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Fine, thanks&#39;</span><span class="p">;</span>
+</code></pre></div>
+
+<p>See: <a href="#php-types">Types</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="strings">Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$url = &quot;cheatsheets.zip&quot;;</span>
+<span class="x">echo &quot;I&#39;m learning PHP at $url&quot;;</span>
+
+<span class="x">// Concatenate strings</span>
+<span class="x">echo &quot;I&#39;m learning PHP at &quot; . $url;</span>
+
+<span class="x">$hello = &quot;Hello, &quot;;</span>
+<span class="x">$hello .= &quot;World!&quot;;</span>
+<span class="x">echo $hello;   # =&gt; Hello, World!</span>
+</code></pre></div>
+
+<p>See: <a href="#php-strings">Strings</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrays">Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$num = [1, 3, 5, 7, 9];</span>
+<span class="x">$num[5] = 11;</span>
+<span class="x">unset($num[2]);    // Delete variable</span>
+<span class="x">print_r($num);     # =&gt; 1 3 7 9 11</span>
+<span class="x">echo count($num);  # =&gt; 5</span>
+</code></pre></div>
+
+<p>See: <a href="#php-arrays">Arrays</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="operators">Operators</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$x = 1;</span>
+<span class="x">$y = 2;</span>
+
+<span class="x">$sum = $x + $y;</span>
+<span class="x">echo $sum;   # =&gt; 3</span>
+</code></pre></div>
+
+<p>See: <a href="#php-operators">Operators</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="include">Include</h3>
+<div class="section">
+<h4 id="varsphp">vars.php</h4>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span> <span class="c1">// begin with a PHP open tag.</span>
+<span class="nv">$fruit</span> <span class="o">=</span> <span class="s1">&#39;apple&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="s2">&quot;I was imported&quot;</span><span class="p">;</span>
+<span class="k">return</span> <span class="s1">&#39;Anything you like.&#39;</span><span class="p">;</span>
+<span class="cp">?&gt;</span>
+</code></pre></div>
+
+<h4 id="testphp">test.php</h4>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span>
+<span class="k">include</span> <span class="s1">&#39;vars.php&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="nv">$fruit</span> <span class="o">.</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">;</span>   <span class="c1"># =&gt; apple</span>
+
+<span class="cm">/* Same as include,</span>
+<span class="cm">cause an error if cannot be included*/</span>
+<span class="k">require</span> <span class="s1">&#39;vars.php&#39;</span><span class="p">;</span>
+
+<span class="c1">// Also works</span>
+<span class="k">include</span><span class="p">(</span><span class="s1">&#39;vars.php&#39;</span><span class="p">);</span>
+<span class="k">require</span><span class="p">(</span><span class="s1">&#39;vars.php&#39;</span><span class="p">);</span>
+
+<span class="c1">// Include through HTTP</span>
+<span class="k">include</span> <span class="s1">&#39;http://x.com/file.php&#39;</span><span class="p">;</span>
+
+<span class="c1">// Include and the return statement</span>
+<span class="nv">$result</span> <span class="o">=</span> <span class="k">include</span> <span class="s1">&#39;vars.php&#39;</span><span class="p">;</span>
+<span class="k">echo</span> <span class="nv">$result</span><span class="p">;</span>  <span class="c1"># =&gt; Anything you like.</span>
+<span class="cp">?&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions">Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">function add($num1, $num2 = 1) </span>
+<span class="x">echo add(10);    # =&gt; 11</span>
+<span class="x">echo add(10, 5); # =&gt; 15</span>
+</code></pre></div>
+
+<p>See: <a href="#php-functions">Functions</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="comments">Comments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x"># This is a one line shell-style comment</span>
+
+<span class="x">// This is a one line c++ style comment</span>
+
+<span class="x">/* This is a multi line comment</span>
+<span class="x">   yet another line of comment */</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="constants">Constants</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">const MY_CONST = &quot;hello&quot;;</span>
+
+<span class="x">echo MY_CONST;   # =&gt; hello</span>
+
+<span class="x"># =&gt; MY_CONST is: hello</span>
+<span class="x">echo &#39;MY_CONST is: &#39; . MY_CONST;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="classes">Classes</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">class Student </span>
+<span class="x">}</span>
+<span class="x">$alex = new Student(&quot;Alex&quot;);</span>
+</code></pre></div>
+
+<p>See: <a href="#php-classes">Classes</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-types">
+<h2 id="php-types">PHP Types</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="boolean">Boolean</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$boolean1 = true;</span>
+<span class="x">$boolean2 = TRUE;</span>
+<span class="x">$boolean3 = false;</span>
+<span class="x">$boolean4 = FALSE;</span>
+
+<span class="x">$boolean5 = (boolean) 1;   # =&gt; true</span>
+<span class="x">$boolean6 = (boolean) 0;   # =&gt; false</span>
+</code></pre></div>
+
+<p>Boolean are case-insensitive</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="integer">Integer</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$int1 = 28;    # =&gt; 28</span>
+<span class="x">$int2 = -32;   # =&gt; -32</span>
+<span class="x">$int3 = 012;   # =&gt; 10 (octal)</span>
+<span class="x">$int4 = 0x0F;  # =&gt; 15 (hex)</span>
+<span class="x">$int5 = 0b101; # =&gt; 5  (binary)</span>
+
+<span class="x"># =&gt; 2000100000 (decimal, PHP 7.4.0)</span>
+<span class="x">$int6 = 2_000_100_000;</span>
+</code></pre></div>
+
+<p>See also: <a href="https://www.php.net/manual/en/language.types.integer.php">Integers</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="strings_1">Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">echo &#39;this is a simple string&#39;;</span>
+</code></pre></div>
+
+<p>See: <a href="#php-strings">Strings</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrays_1">Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$arr = array(&quot;hello&quot;, &quot;world&quot;, &quot;!&quot;);</span>
+</code></pre></div>
+
+<p>See: <a href="#php-arrays">Arrays</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="float-double">Float (Double)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$float1 = 1.234;</span>
+<span class="x">$float2 = 1.2e7;</span>
+<span class="x">$float3 = 7E-10;</span>
+
+<span class="x">$float4 = 1_234.567;  // as of PHP 7.4.0</span>
+<span class="x">var_dump($float4);    // float(1234.567)</span>
+
+<span class="x">$float5 = 1 + &quot;10.5&quot;;   # =&gt; 11.5</span>
+<span class="x">$float6 = 1 + &quot;-1.3e3&quot;; # =&gt; -1299</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="null">Null</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$a = null;</span>
+<span class="x">$b = &#39;Hello php!&#39;;</span>
+<span class="x">echo $a ?? &#39;a is unset&#39;; # =&gt; a is unset</span>
+<span class="x">echo $b ?? &#39;b is unset&#39;; # =&gt; Hello php</span>
+
+<span class="x">$a = array();</span>
+<span class="x">$a == null    # =&gt; true</span>
+<span class="x">$a === null   # =&gt; false</span>
+<span class="x">is_null($a)   # =&gt; false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="iterables">Iterables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">function bar(): iterable </span>
+<span class="x">function gen(): iterable </span>
+<span class="x">foreach (bar() as $value) </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-strings">
+<h2 id="php-strings">PHP Strings</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="string">String</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x"># =&gt; &#39;$String&#39;</span>
+<span class="x">$sgl_quotes = &#39;$String&#39;;</span>
+
+<span class="x"># =&gt; &#39;This is a $String.&#39;</span>
+<span class="x">$dbl_quotes = &quot;This is a $sgl_quotes.&quot;;</span>
+
+<span class="x"># =&gt; a   tab character.</span>
+<span class="x">$escaped   = &quot;a \t tab character.&quot;;</span>
+
+<span class="x"># =&gt; a slash and a t: \t</span>
+<span class="x">$unescaped = &#39;a slash and a t: \t&#39;;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multi-line">Multi-line</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$str = &quot;foo&quot;;</span>
+
+<span class="x">// Uninterpolated multi-liners</span>
+<span class="x">$nowdoc = &lt;&lt;&lt;&#39;END&#39;</span>
+<span class="x">Multi line string</span>
+<span class="x">$str</span>
+<span class="x">END;</span>
+
+<span class="x">// Will do string interpolation</span>
+<span class="x">$heredoc = &lt;&lt;&lt;END</span>
+<span class="x">Multi line</span>
+<span class="x">$str</span>
+<span class="x">END;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="manipulation">Manipulation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$s = &quot;Hello Phper&quot;;</span>
+<span class="x">echo strlen($s);       # =&gt; 11</span>
+
+<span class="x">echo substr($s, 0, 3); # =&gt; Hel</span>
+<span class="x">echo substr($s, 1);    # =&gt; ello Phper</span>
+<span class="x">echo substr($s, -4, 3);# =&gt; hpe</span>
+
+<span class="x">echo strtoupper($s);   # =&gt; HELLO PHPER</span>
+<span class="x">echo strtolower($s);   # =&gt; hello phper</span>
+
+<span class="x">echo strpos($s, &quot;l&quot;);      # =&gt; 2</span>
+<span class="x">var_dump(strpos($s, &quot;L&quot;)); # =&gt; false</span>
+</code></pre></div>
+
+<p>See: <a href="https://www.php.net/manual/en/ref.strings.php">String Functions</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-arrays">
+<h2 id="php-arrays">PHP Arrays</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="defining">Defining</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$a1 = [&quot;hello&quot;, &quot;world&quot;, &quot;!&quot;]</span>
+<span class="x">$a2 = array(&quot;hello&quot;, &quot;world&quot;, &quot;!&quot;);</span>
+<span class="x">$a3 = explode(&quot;,&quot;, &quot;apple,pear,peach&quot;);</span>
+</code></pre></div>
+
+<h4 id="mixed-int-and-string-keys">Mixed int and string keys</h4>
+<div class="codehilite"><pre><span></span><code><span class="x">$array = array(</span>
+<span class="x">    &quot;foo&quot; =&gt; &quot;bar&quot;,</span>
+<span class="x">    &quot;bar&quot; =&gt; &quot;foo&quot;,</span>
+<span class="x">    100   =&gt; -100,</span>
+<span class="x">    -100  =&gt; 100,</span>
+<span class="x">);</span>
+<span class="x">var_dump($array);</span>
+</code></pre></div>
+
+<h4 id="short-array-syntax">Short array syntax</h4>
+<div class="codehilite"><pre><span></span><code><span class="x">$array = [</span>
+<span class="x">    &quot;foo&quot; =&gt; &quot;bar&quot;,</span>
+<span class="x">    &quot;bar&quot; =&gt; &quot;foo&quot;,</span>
+<span class="x">];</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multi-array">Multi array</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$multiArray = [</span>
+<span class="x">    [1, 2, 3],</span>
+<span class="x">    [4, 5, 6],</span>
+<span class="x">    [7, 8, 9],</span>
+<span class="x">];</span>
+
+<span class="x">print_r($multiArray[0][0]) # =&gt; 1</span>
+<span class="x">print_r($multiArray[0][1]) # =&gt; 2</span>
+<span class="x">print_r($multiArray[0][2]) # =&gt; 3</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multi-type">Multi type</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$array = array(</span>
+<span class="x">    &quot;foo&quot; =&gt; &quot;bar&quot;,</span>
+<span class="x">    42    =&gt; 24,</span>
+<span class="x">    &quot;multi&quot; =&gt; array(</span>
+<span class="x">         &quot;dim&quot; =&gt; array(</span>
+<span class="x">             &quot;a&quot; =&gt; &quot;foo&quot;</span>
+<span class="x">         )</span>
+<span class="x">    )</span>
+<span class="x">);</span>
+
+<span class="x"># =&gt; string(3) &quot;bar&quot;</span>
+<span class="x">var_dump($array[&quot;foo&quot;]);</span>
+
+<span class="x"># =&gt; int(24)</span>
+<span class="x">var_dump($array[42]);</span>
+
+<span class="x"># =&gt;  string(3) &quot;foo&quot;</span>
+<span class="x">var_dump($array[&quot;multi&quot;][&quot;dim&quot;][&quot;a&quot;]);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="manipulation_1">manipulation</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$arr = array(5 =&gt; 1, 12 =&gt; 2);</span>
+<span class="x">$arr[] = 56;      // Append</span>
+<span class="x">$arr[&quot;x&quot;] = 42;   // Add with key</span>
+<span class="x">sort($arr);       // Sort</span>
+<span class="x">unset($arr[5]);   // Remove</span>
+<span class="x">unset($arr);      // Remove all</span>
+</code></pre></div>
+
+<p>See: <a href="https://www.php.net/manual/en/ref.array.php">Array Functions</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="indexing-iteration">Indexing iteration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$array = array(&#39;a&#39;, &#39;b&#39;, &#39;c&#39;);</span>
+<span class="x">$count = count($array);</span>
+
+<span class="x">for ($i = 0; $i &lt; $count; $i++) , v:\n&quot;;</span>
+<span class="x">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="value-iteration">Value iteration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$colors = array(&#39;red&#39;, &#39;blue&#39;, &#39;green&#39;);</span>
+
+<span class="x">foreach ($colors as $color) </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="key-iteration">Key iteration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$arr = [&quot;foo&quot; =&gt; &quot;bar&quot;, &quot;bar&quot; =&gt; &quot;foo&quot;];</span>
+
+<span class="x">foreach ( $arr as $key =&gt; $value )</span>
+<span class="x">\n&quot;;</span>
+<span class="x">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="concatenate-arrays">Concatenate arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$a = [1, 2];</span>
+<span class="x">$b = [3, 4];</span>
+
+<span class="x">// PHP 7.4 later</span>
+<span class="x"># =&gt; [1, 2, 3, 4]</span>
+<span class="x">$result = [...$a, ...$b];</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="into-functions">Into functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$array = [1, 2];</span>
+
+<span class="x">function foo(int $a, int $b) </span>
+<span class="x">foo(...$array);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="splat-operator">Splat Operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">function foo($first, ...$other) </span>
+<span class="x">foo(&#39;a&#39;, &#39;b&#39;, &#39;c&#39; /*, ...*/ );</span>
+<span class="x">// or</span>
+<span class="x">function foo($first, string ...$other)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-operators">
+<h2 id="php-operators">PHP Operators</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="arithmetic">Arithmetic</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td>Addition</td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Subtraction</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>Multiplication</td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Division</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>Modulo</td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>Exponentiation</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="assignment">Assignment</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a += b</code></td>
+<td>Same as <code>a = a + b</code></td>
+</tr>
+<tr>
+<td><code>a -= b</code></td>
+<td>Same as <code>a = a – b</code></td>
+</tr>
+<tr>
+<td><code>a *= b</code></td>
+<td>Same as <code>a = a * b</code></td>
+</tr>
+<tr>
+<td><code>a /= b</code></td>
+<td>Same as <code>a = a / b</code></td>
+</tr>
+<tr>
+<td><code>a %= b</code></td>
+<td>Same as <code>a = a % b</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="comparison">Comparison</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>==</code></td>
+<td>Equal</td>
+</tr>
+<tr>
+<td><code>===</code></td>
+<td>Identical</td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>Not equal</td>
+</tr>
+<tr>
+<td><code>&lt;&gt;</code></td>
+<td>Not equal</td>
+</tr>
+<tr>
+<td><code>!==</code></td>
+<td>Not identical</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>Less than</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>Greater than</td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>Less than or equal</td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>Greater than or equal</td>
+</tr>
+<tr>
+<td><code>&lt;=&gt;</code></td>
+<td>Less than/equal/greater than</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="logical">Logical</h3>
+<div class="section">
+<p>| -     | -            |
+| ----- | ------------ | --- | --- |
+| <code>and</code> | And          |
+| <code>or</code>  | Or           |
+| <code>xor</code> | Exclusive or |
+| <code>!</code>   | Not          |
+| <code>&amp;&amp;</code>  | And          |
+| <code>|              |</code>   | Or  |</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arithmetic_1">Arithmetic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">// Arithmetic</span>
+<span class="x">$sum        = 1 + 1; // 2</span>
+<span class="x">$difference = 2 - 1; // 1</span>
+<span class="x">$product    = 2 * 2; // 4</span>
+<span class="x">$quotient   = 2 / 1; // 2</span>
+
+<span class="x">// Shorthand arithmetic</span>
+<span class="x">$num = 0;</span>
+<span class="x">$num += 1;       // Increment $num by 1</span>
+<span class="x">echo $num++;     // Prints 1 (increments after evaluation)</span>
+<span class="x">echo ++$num;     // Prints 3 (increments before evaluation)</span>
+<span class="x">$num /= $float;  // Divide and assign the quotient to $num</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="bitwise">Bitwise</h3>
+<div class="section">
+<p>| -    | -                  |
+| ---- | ------------------ | ----------------- |
+| <code>&amp;</code>  | And                |
+| <code>|</code>                  | Or (inclusive or) |
+| <code>^</code>  | Xor (exclusive or) |
+| <code>~</code>  | Not                |
+| <code>&lt;&lt;</code> | Shift left         |
+| <code>&gt;&gt;</code> | Shift right        |</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-conditionals">
+<h2 id="php-conditionals">PHP Conditionals</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="if-elseif-else">If elseif else</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$a = 10;</span>
+<span class="x">$b = 20;</span>
+
+<span class="x">if ($a &gt; $b)  elseif ($a == $b)  else </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch">Switch</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$x = 0;</span>
+<span class="x">switch ($x) </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="ternary-operator">Ternary operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x"># =&gt; Does</span>
+<span class="x">print (false ? &#39;Not&#39; : &#39;Does&#39;);</span>
+
+<span class="x">$x = false;</span>
+<span class="x"># =&gt; Does</span>
+<span class="x">print($x ?: &#39;Does&#39;);</span>
+
+<span class="x">$a = null;</span>
+<span class="x">$b = &#39;Does print&#39;;</span>
+<span class="x"># =&gt; a is unset</span>
+<span class="x">echo $a ?? &#39;a is unset&#39;;</span>
+<span class="x"># =&gt; print</span>
+<span class="x">echo $b ?? &#39;b is unset&#39;;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="match">Match</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$statusCode = 500;</span>
+<span class="x">$message = match($statusCode) ;</span>
+<span class="x">echo $message; # =&gt; server error</span>
+</code></pre></div>
+
+<p>See: <a href="https://www.php.net/manual/en/control-structures.match.php">Match</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="match-expressions">Match expressions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$age = 23;</span>
+
+<span class="x">$result = match (true) ;</span>
+
+<span class="x">echo $result; # =&gt; young adult</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-loops">
+<h2 id="php-loops">PHP Loops</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="while">while</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$i = 1;</span>
+<span class="x"># =&gt; 12345</span>
+<span class="x">while ($i &lt;= 5) </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="do-while">do while</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$i = 1;</span>
+<span class="x"># =&gt; 12345</span>
+<span class="x">do  while ($i &lt;= 5);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="for-i">for i</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x"># =&gt; 12345</span>
+<span class="x">for ($i = 1; $i &lt;= 5; $i++) </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="break">break</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x"># =&gt; 123</span>
+<span class="x">for ($i = 1; $i &lt;= 5; $i++) </span>
+<span class="x">    echo $i;</span>
+<span class="x">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue">continue</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x"># =&gt; 1235</span>
+<span class="x">for ($i = 1; $i &lt;= 5; $i++) </span>
+<span class="x">    echo $i;</span>
+<span class="x">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="foreach">foreach</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$a = [&#39;foo&#39; =&gt; 1, &#39;bar&#39; =&gt; 2];</span>
+<span class="x"># =&gt; 12</span>
+<span class="x">foreach ($a as $k) </span>
+</code></pre></div>
+
+<p>See: <a href="#php-value-iteration">Array iteration</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-functions">
+<h2 id="php-functions">PHP Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="returning-values">Returning values</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">function square($x)</span>
+
+
+<span class="x">echo square(4);  # =&gt; 16</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="return-types">Return types</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">// Basic return type declaration</span>
+<span class="x">function sum($a, $b): float </span>
+<span class="x">function get_item(): string </span>
+
+<span class="x">class C </span>
+<span class="x">// Returning an object</span>
+<span class="x">function getC(): C </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="nullable-return-types">Nullable return types</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">// Available in PHP 7.1</span>
+<span class="x">function nullOrString(int $v) : ?string</span>
+
+<span class="x">echo nullOrString(3);       # =&gt; odd</span>
+<span class="x">var_dump(nullOrString(4));  # =&gt; NULL</span>
+</code></pre></div>
+
+<p>See: <a href="https://www.php.net/manual/en/migration71.new-features.php">Nullable types</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="void-functions">Void functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">// Available in PHP 7.1</span>
+<span class="x">function voidFunction(): void</span>
+
+
+<span class="x">voidFunction();  # =&gt; Hello</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="variable-functions">Variable functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">function bar($arg = &#39;&#39;)</span>
+
+
+<span class="x">$func = &#39;bar&#39;;</span>
+<span class="x">$func(&#39;test&#39;); # =&gt; In bar(); arg: test</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="anonymous-functions">Anonymous functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$greet = function($name)</span>
+<span class="x">;</span>
+
+<span class="x">$greet(&#39;World&#39;); # =&gt; Hello World</span>
+<span class="x">$greet(&#39;PHP&#39;);   # =&gt; Hello PHP</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="recursive-functions">Recursive functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">function recursion($x)</span>
+
+<span class="x">}</span>
+<span class="x">recursion(1);  # =&gt; 1234</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="default-parameters">Default parameters</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">function coffee($type = &quot;cappuccino&quot;)</span>
+
+<span class="x"># =&gt; Making a cup of cappuccino.</span>
+<span class="x">echo coffee();</span>
+<span class="x"># =&gt; Making a cup of .</span>
+<span class="x">echo coffee(null);</span>
+<span class="x"># =&gt; Making a cup of espresso.</span>
+<span class="x">echo coffee(&quot;espresso&quot;);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrow-functions">Arrow Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$y = 1;</span>
+
+<span class="x">$fn1 = fn($x) =&gt; $x + $y;</span>
+
+<span class="x">// equivalent to using $y by value:</span>
+<span class="x">$fn2 = function ($x) use ($y) ;</span>
+<span class="x">echo $fn1(5);   # =&gt; 6</span>
+<span class="x">echo $fn2(5);   # =&gt; 6</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-classes">
+<h2 id="php-classes">PHP Classes</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="constructor">Constructor</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">class Student </span>
+<span class="x">    public function print() </span>
+<span class="x">}</span>
+<span class="x">$alex = new Student(&quot;Alex&quot;);</span>
+<span class="x">$alex-&gt;print();    # =&gt; Name: Alex</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="inheritance">Inheritance</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">class ExtendClass extends SimpleClass</span>
+
+<span class="x">}</span>
+
+<span class="x">$extended = new ExtendClass();</span>
+<span class="x">$extended-&gt;displayVar();</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="classes-variables">Classes variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">class MyClass</span>
+</code></pre></div>
+
+<p>Access statically</p>
+<div class="codehilite"><pre><span></span><code><span class="x">echo MyClass::MY_CONST;   # =&gt; value</span>
+<span class="x">echo MyClass::$staticVar; # =&gt; static</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="magic-methods">Magic Methods</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">class MyClass</span>
+
+<span class="x">    // opposite to __construct()</span>
+<span class="x">    public function __destruct()</span>
+
+<span class="x">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="interface">Interface</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">interface Foo</span>
+
+<span class="x">interface Bar</span>
+
+<span class="x">class Cls implements Foo, Bar</span>
+
+<span class="x">    public function doSomethingElse() </span>
+<span class="x">}</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-trait">
+<h2 id="php-trait">PHP Trait</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="trait-declaration-use-case">Trait declaration &amp; Use case</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">// Declare Trait allows reuse of code</span>
+<span class="x">// across multiple classes for common characteristics or use cases</span>
+
+<span class="cp">&lt;?php</span>
+<span class="k">trait</span> <span class="nx">Logger</span> 
+<span class="p">}</span>
+
+<span class="c1">// Use case : </span>
+<span class="c1">// Call trait with &quot;use &lt;trait name&gt; in Class&quot;</span>
+
+<span class="k">class</span> <span class="nc">User</span> 
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="nc">Product</span> 
+<span class="p">}</span>
+
+<span class="nv">$user</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">User</span><span class="p">();</span>
+<span class="nv">$user</span><span class="o">-&gt;</span><span class="na">createUser</span><span class="p">();</span> <span class="c1">// Output ex: | 2025-06-18 14:06:09 | User created.</span>
+
+<span class="nv">$product</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Product</span><span class="p">();</span>
+<span class="nv">$product</span><span class="o">-&gt;</span><span class="na">createProduct</span><span class="p">();</span> <span class="c1">// Output ex: | 2025-06-18 14:06:09 | Product created.</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-enums-php-81">
+<h2 id="php-enums-php-81">PHP Enums (PHP 8.1)</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="enum-declaration-use-case">Enum Declaration &amp; Use case</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span>
+<span class="c1">// enum is a data type that allows you to define a set of named constants,</span>
+<span class="c1">// representing a fixed group of related values</span>
+
+<span class="nx">enum</span> <span class="nx">Status</span> 
+
+<span class="c1">// Use case</span>
+
+<span class="k">function</span> <span class="nf">getStatusMessage</span><span class="p">(</span><span class="nx">Status</span> <span class="nv">$status</span><span class="p">)</span><span class="o">:</span> <span class="nx">string</span> <span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nv">$currentStatus</span> <span class="o">=</span> <span class="nx">Status</span><span class="o">::</span><span class="na">Approved</span><span class="p">;</span>
+<span class="k">echo</span> <span class="nx">getStatusMessage</span><span class="p">(</span><span class="nv">$currentStatus</span><span class="p">);</span> <span class="c1">// Output : Your request has been approved.</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="php-date-time-handling">
+<h2 id="php-date-time-handling">PHP Date &amp; Time Handling</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="current-date-and-time">Current date and time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">// DateTime in PHP handles both date and time</span>
+
+<span class="cp">&lt;?php</span>
+<span class="nv">$now</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$now</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s.u&#39;</span><span class="p">);</span> 
+
+<span class="c1">// Output ex: 2024-04-27 14:35:22.123456</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="creating-specific-datetime-objects">Creating specific date/time objects</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span>
+<span class="c1">// Create a date object</span>
+<span class="nv">$d</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="s1">&#39;2024-04-27&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$d</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;Y-m-d&#39;</span><span class="p">);</span> 
+
+<span class="c1">// Output : 2024-04-27</span>
+
+<span class="c1">// Create a time object </span>
+<span class="nv">$t</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="s1">&#39;15:30:45&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$t</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;H:i:s&#39;</span><span class="p">);</span> 
+
+<span class="c1">// Output : 15:30:45</span>
+
+<span class="c1">// Create a datetime object</span>
+<span class="nv">$dt</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="s1">&#39;2024-04-27 15:30:45&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$dt</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">);</span> 
+
+<span class="c1">// Output :  2024-04-27 15:30:45</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="converting-between-date-formats">Converting between date formats</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span>
+<span class="c1">// Convert a string to a DateTime object</span>
+<span class="nv">$date_str</span> <span class="o">=</span> <span class="s2">&quot;2024-04-27 14:00&quot;</span><span class="p">;</span>
+<span class="nv">$dt_obj</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="nv">$date_str</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$dt_obj</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">);</span> 
+
+<span class="c1">// Output : 2024-04-27 14:00:0027</span>
+
+<span class="c1">// Convert a DateTime object to a string</span>
+<span class="nv">$formatted_str</span> <span class="o">=</span> <span class="nv">$dt_obj</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;d/m/Y H:i&#39;</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$formatted_str</span><span class="p">;</span>
+
+<span class="c1">// Output :  27/04/2024 14:00</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="timestamps-and-unix-time">Timestamps and Unix time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span>
+<span class="c1">// Get current timestamp</span>
+<span class="nv">$timestamp</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
+<span class="k">echo</span> <span class="nv">$timestamp</span><span class="p">;</span> 
+
+<span class="c1">// Output ex:  1750253583</span>
+
+<span class="c1">// Convert timestamp back to DateTime</span>
+<span class="nv">$dt_from_timestamp</span> <span class="o">=</span> <span class="p">(</span><span class="k">new</span> <span class="nx">DateTime</span><span class="p">())</span><span class="o">-&gt;</span><span class="na">setTimestamp</span><span class="p">(</span><span class="nv">$timestamp</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$dt_from_timestamp</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;Y-m-d H:i:s&#39;</span><span class="p">);</span>
+
+<span class="c1">// Output ex : 2025-06-18 13:33:03</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="date-difference-and-timedelta">Date difference and timedelta</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?php</span>
+<span class="nv">$date1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="s1">&#39;2024-04-27&#39;</span><span class="p">);</span>
+<span class="nv">$date2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">DateTime</span><span class="p">(</span><span class="s1">&#39;2024-05-01&#39;</span><span class="p">);</span>
+
+<span class="nv">$interval</span> <span class="o">=</span> <span class="nv">$date1</span><span class="o">-&gt;</span><span class="na">diff</span><span class="p">(</span><span class="nv">$date2</span><span class="p">);</span>
+<span class="k">echo</span> <span class="nv">$interval</span><span class="o">-&gt;</span><span class="na">days</span><span class="p">;</span> 
+
+<span class="c1">// Output : 4</span>
+
+<span class="c1">// Using DateInterval for date arithmetic</span>
+<span class="nv">$new_date</span> <span class="o">=</span> <span class="k">clone</span> <span class="nv">$date1</span><span class="p">;</span>
+<span class="nv">$new_date</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="k">new</span> <span class="nx">DateInterval</span><span class="p">(</span><span class="s1">&#39;P10D&#39;</span><span class="p">));</span>
+<span class="k">echo</span> <span class="nv">$new_date</span><span class="o">-&gt;</span><span class="na">format</span><span class="p">(</span><span class="s1">&#39;Y-m-d&#39;</span><span class="p">);</span> 
+
+<span class="c1">// Output : 2024-05-07</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="miscellaneous">
+<h2 id="miscellaneous">Miscellaneous</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basic-error-handling">Basic error handling</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">try  catch (Exception $e)  finally </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="exception-in-php-80">Exception in PHP 8.0</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$nullableValue = null;</span>
+
+<span class="x">try  catch (InvalidArgumentException) </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="custom-exception">Custom exception</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">class MyException extends Exception </span>
+</code></pre></div>
+
+<p>Usage</p>
+<div class="codehilite"><pre><span></span><code><span class="x">try </span>
+<span class="x">} catch (MyException $e) </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="nullsafe-operator">Nullsafe Operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">// As of PHP 8.0.0, this line:</span>
+<span class="x">$result = $repo?-&gt;getUser(5)?-&gt;name;</span>
+
+<span class="x">// Equivalent to the following code:</span>
+<span class="x">if (is_null($repo))  else  else </span>
+<span class="x">}</span>
+</code></pre></div>
+
+<p>See also: <a href="https://wiki.php.net/rfc/nullsafe_operator">Nullsafe Operator</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="regular-expressions">Regular expressions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$str = &quot;Visit cheatsheets.zip&quot;;</span>
+<span class="x">echo preg_match(&quot;/ch/i&quot;, $str); # =&gt; 1</span>
+</code></pre></div>
+
+<p>See: <a href="regex.html#regex-in-php">Regex in PHP</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fopen-mode">fopen() mode</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>r</code></td>
+<td>Read</td>
+</tr>
+<tr>
+<td><code>r+</code></td>
+<td>Read and write, prepend</td>
+</tr>
+<tr>
+<td><code>w</code></td>
+<td>Write, truncate</td>
+</tr>
+<tr>
+<td><code>w+</code></td>
+<td>Read and write, truncate</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td>Write, append</td>
+</tr>
+<tr>
+<td><code>a+</code></td>
+<td>Read and write, append</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="super-global-variables">Super Global Variables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$_SERVER</code></td>
+<td style="text-align: left;">Holds information about headers, paths, and script locations</td>
+</tr>
+<tr>
+<td><code>$_GET</code></td>
+<td style="text-align: left;">Contains data sent via URL parameters (query string)</td>
+</tr>
+<tr>
+<td><code>$_POST</code></td>
+<td style="text-align: left;">Contains data sent via HTTP POST method</td>
+</tr>
+<tr>
+<td><code>$_FILES</code></td>
+<td style="text-align: left;">Contains information about uploaded files</td>
+</tr>
+<tr>
+<td><code>$_COOKIE</code></td>
+<td style="text-align: left;">Contains cookie data</td>
+</tr>
+<tr>
+<td><code>$_SESSION</code></td>
+<td style="text-align: left;">Stores session variables</td>
+</tr>
+<tr>
+<td><code>$_REQUEST</code></td>
+<td style="text-align: left;">Contains data from <code>$_GET</code>, <code>$_POST</code>, and <code>$_COOKIE</code></td>
+</tr>
+<tr>
+<td><code>$_ENV</code></td>
+<td style="text-align: left;">Contains environment variables</td>
+</tr>
+<tr>
+<td><code>$GLOBALS</code></td>
+<td style="text-align: left;">References all global variables available in the script</td>
+</tr>
+</tbody>
+</table>
+<p>Super Global Variables are built-in variables always available in all scopes.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="runtime-defined-constants">Runtime defined Constants</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">define(&quot;CURRENT_DATE&quot;, date(&#39;Y-m-d&#39;));</span>
+
+<span class="x">// One possible representation</span>
+<span class="x">echo CURRENT_DATE;   # =&gt; 2021-01-05</span>
+
+<span class="x"># =&gt; CURRENT_DATE is: 2021-01-05</span>
+<span class="x">echo &#39;CURRENT_DATE is: &#39; . CURRENT_DATE;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://www.php.net/manual/en/index.php">PHP Docs</a></li>
+<li><a href="https://learnxinyminutes.com/docs/php/">Learn X in Y minutes</a></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Grok CLI Cheat Sheet — FlameTech</title>
+  <meta name="description" content="[Grok CLI](https://www.grokcli.dev/docs/) is a conversational AI terminal tool powered by X.AI&#x27;s Grok models, with file operations, code analysis, Plan Mode, an">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#7c3aed}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(124,58,237,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>AI</span>
+    <span>›</span>
+    <span>Grok CLI</span>
+  </div>
+  <div class="post-icon">GC</div>
+  <h1>Grok CLI <span>cheatsheet</span></h1>
+  <div class="post-intro"><p><a href="https://www.grokcli.dev/docs/">Grok CLI</a> is a conversational AI terminal tool powered by X.AI's Grok models, with file operations, code analysis, Plan Mode, and MCP support.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> AI</span>
+    <span class="meta-tag">grok</span> <span class="meta-tag">xai</span> <span class="meta-tag">ai</span> <span class="meta-tag">cli</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="quick-start">Quick Start</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Run immediately (no install)</span>
+$<span class="w"> </span><span class="nv">GROK_API_KEY</span><span class="o">=</span>your_key<span class="w"> </span>npx<span class="w"> </span>-y<span class="w"> </span>grok-cli-hurry-mode@latest
+
+<span class="c1"># Install globally</span>
+$<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>grok-cli-hurry-mode@latest
+
+<span class="c1"># Start interactive session</span>
+$<span class="w"> </span>grok
+
+<span class="c1"># Send initial message</span>
+$<span class="w"> </span>grok<span class="w"> </span><span class="s2">&quot;Help me understand this project&quot;</span>
+
+<span class="c1"># Headless / non-interactive mode</span>
+$<span class="w"> </span>grok<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;explain the auth module&quot;</span>
+
+<span class="c1"># Use a specific model</span>
+$<span class="w"> </span>grok<span class="w"> </span>-m<span class="w"> </span>grok-4-latest<span class="w"> </span><span class="s2">&quot;refactor this file&quot;</span>
+
+<span class="c1"># Set working directory</span>
+$<span class="w"> </span>grok<span class="w"> </span>-d<span class="w"> </span>/path/to/project
+
+<span class="c1"># Set max tool rounds</span>
+$<span class="w"> </span>grok<span class="w"> </span>--max-tool-rounds<span class="w"> </span><span class="m">100</span><span class="w"> </span><span class="s2">&quot;rewrite the API&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="authentication">Authentication</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Env variable</td>
+<td><code>export GROK_API_KEY=your_key</code></td>
+</tr>
+<tr>
+<td>Inline (npx)</td>
+<td><code>GROK_API_KEY=key npx grok-cli-hurry-mode@latest</code></td>
+</tr>
+<tr>
+<td>CLI flag</td>
+<td><code>grok --api-key your_key</code></td>
+</tr>
+<tr>
+<td>Settings file</td>
+<td>Set <code>apiKey</code> in <code>~/.grok/user-settings.json</code></td>
+</tr>
+</tbody>
+</table>
+<p>Get your API key from <a href="https://console.x.ai">console.x.ai</a>.</p>
+<p>Persist in shell profile:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export GROK_API_KEY=your_key&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
+<span class="nb">source</span><span class="w"> </span>~/.zshrc
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="installation-methods">Installation Methods</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>npm (recommended)</td>
+<td><code>npm install -g grok-cli-hurry-mode@latest</code></td>
+</tr>
+<tr>
+<td>npx (no install)</td>
+<td><code>npx grok-cli-hurry-mode@latest</code></td>
+</tr>
+<tr>
+<td>yarn</td>
+<td><code>yarn global add grok-cli-hurry-mode@latest</code></td>
+</tr>
+<tr>
+<td>pnpm</td>
+<td><code>pnpm add -g grok-cli-hurry-mode@latest</code></td>
+</tr>
+<tr>
+<td>bun</td>
+<td><code>bun add -g grok-cli-hurry-mode@latest</code></td>
+</tr>
+<tr>
+<td>Auto script</td>
+<td><code>curl -fsSL https://raw.githubusercontent.com/hinetapora/grok-cli-hurry-mode/main/install.sh \| bash</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Requirements:</strong> Node.js (latest LTS), npm/yarn/pnpm, internet connection.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ai-models">AI Models</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>grok-code-fast-1</code></td>
+<td>Default — optimized for code</td>
+</tr>
+<tr>
+<td><code>grok-4-latest</code></td>
+<td>Latest, enhanced capabilities</td>
+</tr>
+<tr>
+<td><code>grok-3-fast</code></td>
+<td>Fast, general-purpose</td>
+</tr>
+</tbody>
+</table>
+<p>Override with <code>-m</code>, <code>GROK_MODEL</code> env var, or <code>~/.grok/user-settings.json</code>.</p>
+<p>Custom base URL: <code>-u https://api.x.ai/v1</code> or <code>GROK_BASE_URL</code>.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="cli-options">
+<h2 id="cli-options">CLI Options</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="all-options">All Options</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--api-key &lt;key&gt;</code></td>
+<td><code>-k</code></td>
+<td>Grok API key</td>
+</tr>
+<tr>
+<td><code>--base-url &lt;url&gt;</code></td>
+<td><code>-u</code></td>
+<td>API base URL</td>
+</tr>
+<tr>
+<td><code>--model &lt;model&gt;</code></td>
+<td><code>-m</code></td>
+<td>Model to use</td>
+</tr>
+<tr>
+<td><code>--prompt &lt;text&gt;</code></td>
+<td><code>-p</code></td>
+<td>Headless mode prompt</td>
+</tr>
+<tr>
+<td><code>--directory &lt;dir&gt;</code></td>
+<td><code>-d</code></td>
+<td>Set working directory</td>
+</tr>
+<tr>
+<td><code>--max-tool-rounds &lt;n&gt;</code></td>
+<td></td>
+<td>Max tool rounds (default: 400)</td>
+</tr>
+<tr>
+<td><code>--version</code></td>
+<td><code>-V</code></td>
+<td>Show version</td>
+</tr>
+<tr>
+<td><code>--help</code></td>
+<td><code>-h</code></td>
+<td>Show help</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Environment variables:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GROK_API_KEY</code></td>
+<td>API key (required)</td>
+</tr>
+<tr>
+<td><code>GROK_MODEL</code></td>
+<td>Default model</td>
+</tr>
+<tr>
+<td><code>GROK_BASE_URL</code></td>
+<td>Custom API endpoint</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="subcommands">Subcommands</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># AI-generated git commit and push</span>
+$<span class="w"> </span>grok<span class="w"> </span>git<span class="w"> </span>commit-and-push
+$<span class="w"> </span>grok<span class="w"> </span>git<span class="w"> </span>commit-and-push<span class="w"> </span>-d<span class="w"> </span>/path/to/repo
+$<span class="w"> </span>grok<span class="w"> </span>git<span class="w"> </span>commit-and-push<span class="w"> </span>-m<span class="w"> </span>grok-4-latest
+
+<span class="c1"># MCP server management</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>&lt;name&gt;
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>add-json<span class="w"> </span>&lt;name&gt;<span class="w"> </span>&lt;json&gt;
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>remove<span class="w"> </span>&lt;name&gt;
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>list
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span><span class="nb">test</span><span class="w"> </span>&lt;name&gt;
+</code></pre></div>
+
+<p><code>git commit-and-push</code> accepts the same <code>-d</code>, <code>-k</code>, <code>-u</code>, <code>-m</code>, <code>--max-tool-rounds</code> flags as the main command.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="interactive-mode">
+<h2 id="interactive-mode">Interactive Mode</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="keyboard-shortcuts">Keyboard Shortcuts</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Shift+Tab</code> twice</td>
+<td>Enter Plan Mode</td>
+</tr>
+<tr>
+<td><code>Shift+Tab</code></td>
+<td>Toggle auto-edit mode</td>
+</tr>
+<tr>
+<td><code>Ctrl+I</code></td>
+<td>Context tooltip (workspace info)</td>
+</tr>
+<tr>
+<td><code>Ctrl+C</code></td>
+<td>Clear current input</td>
+</tr>
+<tr>
+<td><code>Esc</code></td>
+<td>Interrupt current operation</td>
+</tr>
+<tr>
+<td><code>↑</code> / <code>↓</code></td>
+<td>Browse input history</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Auto-edit mode:</strong> Hands-free file editing — the AI edits files without confirmation prompts.</p>
+<p><strong>Context tooltip (<code>Ctrl+I</code>):</strong> Shows project stats, git branch, memory pressure, and session info.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="slash-commands">Slash Commands</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/help</code></td>
+<td>Show available commands</td>
+</tr>
+<tr>
+<td><code>/clear</code></td>
+<td>Clear terminal screen</td>
+</tr>
+<tr>
+<td><code>/models</code></td>
+<td>List available models</td>
+</tr>
+<tr>
+<td><code>/exit</code></td>
+<td>Quit the application</td>
+</tr>
+<tr>
+<td><code>/compact</code></td>
+<td>Compress conversation context</td>
+</tr>
+<tr>
+<td><code>/commit-and-push</code></td>
+<td>AI commit message and push</td>
+</tr>
+<tr>
+<td><code>/init-agent</code></td>
+<td>Initialize agent docs</td>
+</tr>
+<tr>
+<td><code>/docs</code></td>
+<td>Open documentation</td>
+</tr>
+<tr>
+<td><code>/readme</code></td>
+<td>Generate README</td>
+</tr>
+<tr>
+<td><code>/api-docs</code></td>
+<td>Generate API docs</td>
+</tr>
+<tr>
+<td><code>/changelog</code></td>
+<td>Generate changelog</td>
+</tr>
+<tr>
+<td><code>/comments</code></td>
+<td>Add code comments</td>
+</tr>
+<tr>
+<td><code>/update-agent-docs</code></td>
+<td>Update agent docs</td>
+</tr>
+<tr>
+<td><code>/heal</code></td>
+<td>Self-healing system check</td>
+</tr>
+<tr>
+<td><code>/guardrails</code></td>
+<td>Show guardrails status</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="config-files">Config Files</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>~/.grok/user-settings.json</code></td>
+<td>Global user settings</td>
+</tr>
+<tr>
+<td><code>.grok/settings.json</code></td>
+<td>Project-level settings</td>
+</tr>
+<tr>
+<td><code>.grok/GROK.md</code></td>
+<td>Project context for AI</td>
+</tr>
+</tbody>
+</table>
+<p><strong>user-settings.json example:</strong></p>
+<div class="codehilite"><pre><span></span><code>
+</code></pre></div>
+
+<p><strong>Create project context:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Add custom context for Plan Mode</span>
+$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>.grok
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# Project Rules&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>.grok/GROK.md
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="tools">
+<h2 id="tools">Tools</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="core-tools">Core Tools</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Read</strong></td>
+<td>Read files — text, images, PDFs, notebooks</td>
+</tr>
+<tr>
+<td><strong>Write</strong></td>
+<td>Create or overwrite files</td>
+</tr>
+<tr>
+<td><strong>Edit</strong></td>
+<td>Precise string find-and-replace</td>
+</tr>
+<tr>
+<td><strong>Bash</strong></td>
+<td>Execute shell commands</td>
+</tr>
+<tr>
+<td><strong>Grep</strong></td>
+<td>Regex search via ripgrep</td>
+</tr>
+<tr>
+<td><strong>Glob</strong></td>
+<td>File pattern matching</td>
+</tr>
+<tr>
+<td><strong>LS</strong></td>
+<td>Directory listing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Read</strong> supports line offset/limit for large files and displays images visually.</p>
+<p><strong>Edit</strong> supports:</p>
+<ul>
+<li>Exact string replacement</li>
+<li>Regex patterns</li>
+<li>Single or all-occurrence replacement</li>
+</ul>
+<p><strong>Bash</strong> supports:</p>
+<ul>
+<li>stdout/stderr capture</li>
+<li>Background processes</li>
+<li>Timeout management</li>
+<li>Environment variable handling</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="advanced-tools">Advanced Tools</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MultiEdit</strong></td>
+<td>Atomic multi-file edits with rollback</td>
+</tr>
+<tr>
+<td><strong>WebFetch</strong></td>
+<td>Retrieve and parse web content</td>
+</tr>
+<tr>
+<td><strong>WebSearch</strong></td>
+<td>Real-time web search</td>
+</tr>
+<tr>
+<td><strong>Task</strong></td>
+<td>Delegate to specialized sub-agents</td>
+</tr>
+<tr>
+<td><strong>TodoWrite</strong></td>
+<td>Task tracking and progress</td>
+</tr>
+</tbody>
+</table>
+<p><strong>MultiEdit</strong> operations: create, edit, delete, rename, move — all in one atomic transaction.</p>
+<p><strong>Task</strong> (sub-agent delegation):</p>
+<ul>
+<li>Token-optimized processing</li>
+<li>Complex research and analysis</li>
+<li>Autonomous completion with report</li>
+</ul>
+<p><strong>WebFetch:</strong> HTML → Markdown conversion with AI content extraction and caching.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ide-tools">IDE Tools</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>NotebookEdit</strong></td>
+<td>Edit Jupyter notebook cells</td>
+</tr>
+<tr>
+<td><strong>BashOutput</strong></td>
+<td>Stream background process output</td>
+</tr>
+<tr>
+<td><strong>KillBash</strong></td>
+<td>Terminate background processes</td>
+</tr>
+</tbody>
+</table>
+<p>The AI <strong>automatically selects</strong> the right tool combination for your request — no manual invocation needed.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="plan-mode">
+<h2 id="plan-mode">Plan Mode</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="activating-plan-mode">Activating Plan Mode</h3>
+<div class="section">
+<p>Press <strong><code>Shift+Tab</code> twice</strong> in quick succession:</p>
+<div class="codehilite"><pre><span></span><code>🎯 Plan Mode: Analysis
+📊 Exploring codebase and gathering insights...
+</code></pre></div>
+
+<p><strong>Or use headless mode:</strong></p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>grok<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;analyze changes in this PR and create plan&quot;</span>
+$<span class="w"> </span>grok<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;check if changes follow architecture guidelines&quot;</span>
+</code></pre></div>
+
+<p><strong>What is blocked in Plan Mode:</strong></p>
+<ul>
+<li>All file write/edit operations</li>
+<li>Destructive bash commands</li>
+<li>Any state-modifying operations</li>
+</ul>
+<p><strong>What is allowed:</strong></p>
+<ul>
+<li>Reading files (<code>ls</code>, <code>cat</code>, <code>grep</code>)</li>
+<li>Web search and fetch</li>
+<li>Project structure analysis</li>
+<li>Plan generation (writes only to plan output)</li>
+</ul>
+<p><strong>Exit Plan Mode:</strong></p>
+<ul>
+<li><code>Enter</code> — confirm and execute the plan</li>
+<li><code>Esc</code> — exit without executing</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="plan-mode-phases">Plan Mode Phases</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Duration</th>
+<th>What Happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔍 Analysis</td>
+<td>1–5 sec</td>
+<td>Project type, structure, deps</td>
+</tr>
+<tr>
+<td>🧠 Strategy</td>
+<td>5–15 sec</td>
+<td>AI generates implementation plan</td>
+</tr>
+<tr>
+<td>📋 Presentation</td>
+<td>1–2 sec</td>
+<td>Format plan for review</td>
+</tr>
+<tr>
+<td>✅ Approval</td>
+<td>User-controlled</td>
+<td>Review, confirm, or refine</td>
+</tr>
+</tbody>
+</table>
+<p>Plan Mode analyzes: project type (Node/Python/React/etc.), directory structure, key components, dependencies, entry points, modules, and architectural patterns.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="plan-mode-tips">Plan Mode Tips</h3>
+<div class="section">
+<p>Use Plan Mode for:</p>
+<ul>
+<li>Complex multi-file features</li>
+<li>Large-scale refactoring</li>
+<li>Exploring unfamiliar codebases</li>
+<li>Risk assessment before changes</li>
+</ul>
+<p><strong>Tips:</strong></p>
+<ul>
+<li>Be specific about what you want</li>
+<li>Review the plan before approving</li>
+<li>Use <code>/heal</code> if something breaks</li>
+<li>Create <code>.grok/GROK.md</code> for custom context</li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="mcp-servers">
+<h2 id="mcp-servers">MCP Servers</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="managing-mcp-servers">Managing MCP Servers</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Add stdio server</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>myserver<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-t<span class="w"> </span>stdio<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-c<span class="w"> </span>npx<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-a<span class="w"> </span>-y<span class="w"> </span>my-mcp-package
+
+<span class="c1"># Add HTTP/SSE server</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>myserver<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-t<span class="w"> </span>http<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span>https://api.example.com/mcp
+
+<span class="c1"># Add with env vars and headers</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>myserver<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-t<span class="w"> </span>http<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-u<span class="w"> </span>https://api.example.com/mcp<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">API_KEY</span><span class="o">=</span>secret<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-h<span class="w"> </span><span class="nv">Authorization</span><span class="o">=</span><span class="s2">&quot;Bearer token&quot;</span>
+
+<span class="c1"># Add from raw JSON</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>add-json<span class="w"> </span>myserver<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span><span class="s1">&#39;}&#39;</span>
+
+<span class="c1"># List all servers</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>list
+
+<span class="c1"># Test connection</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span><span class="nb">test</span><span class="w"> </span>myserver
+
+<span class="c1"># Remove a server</span>
+$<span class="w"> </span>grok<span class="w"> </span>mcp<span class="w"> </span>remove<span class="w"> </span>myserver
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="mcp-config-schema">MCP Config Schema</h3>
+<div class="section">
+<p><strong>In <code>.grok/settings.json</code>:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>Transport types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>When to Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stdio</code></td>
+<td>Local subprocess (default)</td>
+</tr>
+<tr>
+<td><code>http</code></td>
+<td>Remote HTTP endpoint</td>
+</tr>
+<tr>
+<td><code>sse</code></td>
+<td>Server-Sent Events</td>
+</tr>
+<tr>
+<td><code>streamable_http</code></td>
+<td>Streaming HTTP</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="add-server-options">Add Server Options</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Alias</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--transport &lt;type&gt;</code></td>
+<td><code>-t</code></td>
+<td>stdio / http / sse / streamable_http</td>
+</tr>
+<tr>
+<td><code>--command &lt;cmd&gt;</code></td>
+<td><code>-c</code></td>
+<td>Executable (stdio only)</td>
+</tr>
+<tr>
+<td><code>--args [args...]</code></td>
+<td><code>-a</code></td>
+<td>Command arguments (stdio only)</td>
+</tr>
+<tr>
+<td><code>--url &lt;url&gt;</code></td>
+<td><code>-u</code></td>
+<td>Server URL (http/sse)</td>
+</tr>
+<tr>
+<td><code>--headers [kv...]</code></td>
+<td><code>-h</code></td>
+<td>HTTP headers (<code>key=value</code>)</td>
+</tr>
+<tr>
+<td><code>--env [kv...]</code></td>
+<td><code>-e</code></td>
+<td>Env vars (<code>key=value</code>)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="troubleshooting">
+<h2 id="troubleshooting">Troubleshooting</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="common-issues">Common Issues</h3>
+<div class="section">
+<p><strong>API key not found:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Verify env var is set</span>
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="nv">$GROK_API_KEY</span>
+
+<span class="c1"># Or set inline</span>
+$<span class="w"> </span><span class="nv">GROK_API_KEY</span><span class="o">=</span>key<span class="w"> </span>grok<span class="w"> </span><span class="s2">&quot;hello&quot;</span>
+</code></pre></div>
+
+<p><strong>Command not found after install:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Add npm global bin to PATH</span>
+$<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s1">&#39;export PATH=&quot;$(npm config get prefix)/bin:$PATH&quot;&#39;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>~/.zshrc
+$<span class="w"> </span><span class="nb">source</span><span class="w"> </span>~/.zshrc
+$<span class="w"> </span>which<span class="w"> </span>grok
+</code></pre></div>
+
+<p><strong>Permission errors on install:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Use sudo (not recommended) or node version manager</span>
+$<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>grok-cli-hurry-mode<span class="w"> </span>--force
+
+<span class="c1"># Or use nvm/fnm without sudo</span>
+$<span class="w"> </span>nvm<span class="w"> </span>use<span class="w"> </span>--lts
+$<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>grok-cli-hurry-mode
+</code></pre></div>
+
+<p><strong>Stuck / cached installation:</strong></p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>pkill<span class="w"> </span>-f<span class="w"> </span>grok
+$<span class="w"> </span>npm<span class="w"> </span>uninstall<span class="w"> </span>-g<span class="w"> </span>grok-cli-hurry-mode
+$<span class="w"> </span>npm<span class="w"> </span>cache<span class="w"> </span>clean<span class="w"> </span>--force
+$<span class="w"> </span>npm<span class="w"> </span>install<span class="w"> </span>-g<span class="w"> </span>grok-cli-hurry-mode@latest
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="useful-env-vars">Useful Env Vars</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GROK_API_KEY</code></td>
+<td>API key (required)</td>
+</tr>
+<tr>
+<td><code>GROK_MODEL</code></td>
+<td>Override default model</td>
+</tr>
+<tr>
+<td><code>GROK_BASE_URL</code></td>
+<td>Custom API endpoint</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Default API endpoint:</strong> <code>https://api.x.ai/v1</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="git-smart-push">Git Smart Push</h3>
+<div class="section">
+<p>The automated release system creates version bump commits, so always use smart push to avoid conflicts:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Correct — handles auto version bumps</span>
+$<span class="w"> </span>npm<span class="w"> </span>run<span class="w"> </span>smart-push
+$<span class="w"> </span>git<span class="w"> </span>pushup
+
+<span class="c1"># Wrong — causes &quot;fetch first&quot; errors</span>
+$<span class="w"> </span>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://www.grokcli.dev/docs/">Official Documentation</a> <em>(grokcli.dev)</em></li>
+<li><a href="https://www.grokcli.dev/docs/guides/plan-mode">Plan Mode Guide</a> <em>(grokcli.dev)</em></li>
+<li><a href="https://www.grokcli.dev/docs/tools/overview">Tools Overview</a> <em>(grokcli.dev)</em></li>
+<li><a href="https://www.grokcli.dev/docs/architecture/overview">Architecture Overview</a> <em>(grokcli.dev)</em></li>
+<li><a href="https://github.com/hinetapora/grok-cli-hurry-mode">GitHub Repository</a> <em>(github.com)</em></li>
+<li><a href="https://console.x.ai">xAI API Console</a> <em>(console.x.ai)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Awk Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This is a one page quick reference cheat sheet to the [GNU awk](https://www.gnu.org/software/gawk/manual/gawk.html), which covers commonly used awk expressions ">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#475569}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(71,85,105,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Linux Command</span>
+    <span>›</span>
+    <span>Awk</span>
+  </div>
+  <div class="post-icon">AW</div>
+  <h1>Awk <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This is a one page quick reference cheat sheet to the <a href="https://www.gnu.org/software/gawk/manual/gawk.html">GNU awk</a>, which covers commonly used awk expressions and commands.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Linux Command</span>
+    <span class="meta-tag">bash</span> <span class="meta-tag">text</span> <span class="meta-tag">script</span> <span class="meta-tag">Linux Command</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="have-a-try">Have a try</h3>
+<div class="section">
+<p>```shell script 
+$ awk -F: '' /etc/passwd</p>
+<div class="codehilite"><pre><span></span><code><span class="o">---</span>
+
+<span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">             </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">                         </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="o">-------------</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">-------------------------</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n n-Quoted">`-F:`</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="n">Colon</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="k">separator</span><span class="w">      </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n n-Quoted">``</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">Awk</span><span class="w"> </span><span class="n">program</span><span class="w">               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n n-Quoted">`print`</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="n">Prints</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">current</span><span class="w"> </span><span class="n">record</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n n-Quoted">`$1`</span><span class="w">          </span><span class="o">|</span><span class="w"> </span><span class="k">First</span><span class="w"> </span><span class="n">field</span><span class="w">               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n n-Quoted">`$NF`</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="k">Last</span><span class="w"> </span><span class="n">field</span><span class="w">                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="n n-Quoted">`/etc/passwd`</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">Input</span><span class="w"> </span><span class="k">data</span><span class="w"> </span><span class="k">file</span><span class="w">           </span><span class="o">|</span>
+
+
+
+<span class="c1">### Awk program</span>
+</code></pre></div>
+
+<p>BEGIN        <br />
+   <pattern 1> 
+   <pattern 2> 
+   ...
+END            </p>
+<div class="codehilite"><pre><span></span><code>#### Example
+</code></pre></div>
+
+<p>awk '
+    BEGIN 
+    !/(login|shutdown)/ 
+    END 
+' /etc/passwd</p>
+<div class="codehilite"><pre><span></span><code>### Variables 
+
+```bash
+          $1      $2/$(NF-1)    $3/$NF
+           ▼          ▼           ▼
+        ┌──────┬──────────────────┬───────┐
+$0/NR ▶ │  ID  │  WEBSITE         │  URI  │
+        ├──────┼──────────────────┼───────┤
+$0/NR ▶ │  1   │  cheatsheets.zip │  awk  │
+        ├──────┼──────────────────┼───────┤
+$0/NR ▶ │  2   │  google.com      │  25   │
+        └──────┴──────────────────┴───────┘
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code># First and last field
+awk -F: &#39;&#39; /etc/passwd
+
+# With line number
+awk -F: &#39;&#39; /etc/passwd
+
+# Second last field
+awk -F: &#39;&#39; /etc/passwd
+
+# Custom string
+awk -F: &#39;&#39; /etc/passwd
+</code></pre></div>
+
+<p>See: <a href="#awk-variables">Variables</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="awk-program-examples">Awk program examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>        <span class="o">#</span> <span class="n">Prints</span> <span class="s">&quot;hello world&quot;</span>
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s">&#39;&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>         <span class="o">#</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="n">Specify</span> <span class="n">field</span> <span class="n">separator</span>
+
+<span class="o">#</span> <span class="o">/</span><span class="n">pattern</span><span class="o">/</span> <span class="n">Execute</span> <span class="n">actions</span> <span class="n">only</span> <span class="n">for</span> <span class="n">matched</span> <span class="n">pattern</span>
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s">&#39;/root/ &#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+
+<span class="o">#</span> <span class="kr">BEGIN</span> <span class="n">block</span> <span class="n">is</span> <span class="n">executed</span> <span class="n">once</span> <span class="n">at</span> <span class="n">the</span> <span class="n">start</span>
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s">&#39;BEGIN  &#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+
+<span class="o">#</span> <span class="kr">END</span> <span class="n">block</span> <span class="n">is</span> <span class="n">executed</span> <span class="n">once</span> <span class="n">at</span> <span class="n">the</span> <span class="n">end</span>
+<span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="s">&#39; END &#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="conditions">Conditions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>awk -F: &#39;$3&gt;30 &#39; /etc/passwd
+</code></pre></div>
+
+<p>See: <a href="#awk-conditions">Conditions</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generate-1000-spaces">Generate 1000 spaces</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN&#39;</span>
+</code></pre></div>
+
+<p>See: <a href="#awk-loops">Loops</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrays">Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="err">&#39;</span><span class="kr">BEGIN</span> 
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<p>See: <a href="#awk-arrays">Arrays</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions">Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">#</span> <span class="o">=&gt;</span> <span class="mi">5</span>
+<span class="n">awk</span> <span class="s">&#39;BEGIN&#39;</span>
+<span class="o">#</span> <span class="o">=&gt;</span> <span class="n">HELLO</span>
+<span class="n">awk</span> <span class="s">&#39;BEGIN&#39;</span>
+<span class="o">#</span> <span class="o">=&gt;</span> <span class="n">hel</span>
+<span class="n">awk</span> <span class="s">&#39;BEGIN&#39;</span>
+</code></pre></div>
+
+<p>See: <a href="#awk-functions">Functions</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="awk-variables">
+<h2 id="awk-variables">Awk Variables</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="build-in-variables">Build-in variables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$0</code></td>
+<td>Whole line</td>
+</tr>
+<tr>
+<td><code>$1, $2...$NF</code></td>
+<td>First, second… last field</td>
+</tr>
+<tr>
+<td><code>NR</code></td>
+<td><code>N</code>umber of <code>R</code>ecords</td>
+</tr>
+<tr>
+<td><code>NF</code></td>
+<td><code>N</code>umber of <code>F</code>ields</td>
+</tr>
+<tr>
+<td><code>OFS</code></td>
+<td><code>O</code>utput <code>F</code>ield <code>S</code>eparator <br> <em>(default " ")</em></td>
+</tr>
+<tr>
+<td><code>FS</code></td>
+<td>input <code>F</code>ield <code>S</code>eparator <br> <em>(default " ")</em></td>
+</tr>
+<tr>
+<td><code>ORS</code></td>
+<td><code>O</code>utput <code>R</code>ecord <code>S</code>eparator <br> <em>(default "\n")</em></td>
+</tr>
+<tr>
+<td><code>RS</code></td>
+<td>input <code>R</code>ecord <code>S</code>eparator <br> <em>(default "\n")</em></td>
+</tr>
+<tr>
+<td><code>FILENAME</code></td>
+<td>Name of the file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="expressions">Expressions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$1 == "root"</code></td>
+<td>First field equals root</td>
+</tr>
+<tr>
+<td>``</td>
+<td>Second last field</td>
+</tr>
+<tr>
+<td><code>NR!=1</code></td>
+<td>From 2nd record</td>
+</tr>
+<tr>
+<td><code>NR &gt; 3</code></td>
+<td>From 4th record</td>
+</tr>
+<tr>
+<td><code>NR == 1</code></td>
+<td>First record</td>
+</tr>
+<tr>
+<td><code>END</code></td>
+<td>Total records</td>
+</tr>
+<tr>
+<td><code>BEGIN</code></td>
+<td>Output format</td>
+</tr>
+<tr>
+<td>``</td>
+<td>Line number</td>
+</tr>
+<tr>
+<td>``</td>
+<td>Line number (tab)</td>
+</tr>
+<tr>
+<td>``</td>
+<td>Replace 1st field with line number</td>
+</tr>
+<tr>
+<td><code>$NF &gt; 4</code></td>
+<td>Last field &gt; 4</td>
+</tr>
+<tr>
+<td><code>NR % 2 == 0</code></td>
+<td>Even records</td>
+</tr>
+<tr>
+<td><code>NR==10, NR==20</code></td>
+<td>Records 10 to 20</td>
+</tr>
+<tr>
+<td><code>BEGIN</code></td>
+<td>Total arguments</td>
+</tr>
+<tr>
+<td><code>ORS=NR%5?",":"\n"</code></td>
+<td>Concatenate records</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples">Examples</h3>
+<div class="section">
+<p>Print sum and average</p>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="err">&#39;</span>
+     <span class="kr">END</span> 
+<span class="err">&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+</code></pre></div>
+
+<p>Printing parameters</p>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span>
+</code></pre></div>
+
+<p>Output field separator as a comma</p>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="err">&#39;</span><span class="kr">BEGIN</span> 
+    <span class="err">&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+</code></pre></div>
+
+<p>Position of match</p>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+<p>Length of match</p>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environment-variables">Environment Variables</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ARGC</code></td>
+<td>Number or arguments</td>
+</tr>
+<tr>
+<td><code>ARGV</code></td>
+<td>Array of arguments</td>
+</tr>
+<tr>
+<td><code>FNR</code></td>
+<td><code>F</code>ile <code>N</code>umber of <code>R</code>ecords</td>
+</tr>
+<tr>
+<td><code>OFMT</code></td>
+<td>Format for numbers <br> <em>(default "%.6g")</em></td>
+</tr>
+<tr>
+<td><code>RSTART</code></td>
+<td>Location in the string</td>
+</tr>
+<tr>
+<td><code>RLENGTH</code></td>
+<td>Length of match</td>
+</tr>
+<tr>
+<td><code>SUBSEP</code></td>
+<td>Multi-dimensional array separator <br> <em>(default "\034")</em></td>
+</tr>
+<tr>
+<td><code>ARGIND</code></td>
+<td>Argument Index</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="gnu-awk-only">GNU awk only</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ENVIRON</code></td>
+<td>Environment variables</td>
+</tr>
+<tr>
+<td><code>IGNORECASE</code></td>
+<td>Ignore case</td>
+</tr>
+<tr>
+<td><code>CONVFMT</code></td>
+<td>Conversion format</td>
+</tr>
+<tr>
+<td><code>ERRNO</code></td>
+<td>System errors</td>
+</tr>
+<tr>
+<td><code>FIELDWIDTHS</code></td>
+<td>Fixed width fields</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="defining-variable">Defining variable</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="n">var1</span><span class="o">=</span><span class="s2">&quot;Hello&quot;</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="n">var2</span><span class="o">=</span><span class="s2">&quot;Wold&quot;</span><span class="w"> </span><span class="s1">&#39;</span>
+<span class="w">    </span><span class="n">END</span><span class="w"> </span>
+<span class="s1">&#39; &lt;/dev/null</span>
+</code></pre></div>
+
+<h4 id="use-shell-variables">Use shell variables</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="n">varName</span><span class="o">=</span><span class="s2">&quot;$PWD&quot;</span><span class="w"> </span><span class="s1">&#39;</span>
+<span class="w">    </span><span class="n">END</span><span class="w"> </span><span class="s1">&#39; &lt;/dev/null</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="awk-operators">
+<h2 id="awk-operators">Awk Operators</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="operators">Operators</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>``</td>
+<td>First field</td>
+</tr>
+<tr>
+<td><code>$2 == "foo"</code></td>
+<td>Equals</td>
+</tr>
+<tr>
+<td><code>$2 != "foo"</code></td>
+<td>Not equals</td>
+</tr>
+<tr>
+<td><code>"foo" in array</code></td>
+<td>In array</td>
+</tr>
+</tbody>
+</table>
+<h4 id="regular-expression">Regular expression</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/regex/</code></td>
+<td>Line matches</td>
+</tr>
+<tr>
+<td><code>!/regex/</code></td>
+<td>Line not matches</td>
+</tr>
+<tr>
+<td><code>$1 ~ /regex/</code></td>
+<td>Field matches</td>
+</tr>
+<tr>
+<td><code>$1 !~ /regex/</code></td>
+<td>Field not matches</td>
+</tr>
+</tbody>
+</table>
+<h4 id="more-conditions">More conditions</h4>
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>($2 &lt;= 4 \|\| $3 &lt; 20)</code></td>
+<td>Or</td>
+</tr>
+<tr>
+<td><code>($1 == 4 &amp;&amp; $3 &lt; 20)</code></td>
+<td>And</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="operations">Operations</h3>
+<div class="section">
+<h4 id="arithmetic-operations">Arithmetic operations</h4>
+<ul>
+<li><code>+</code></li>
+<li><code>-</code></li>
+<li><code>*</code></li>
+<li><code>/</code></li>
+<li><code>%</code></li>
+<li><code>++</code></li>
+<li><code>--</code></li>
+</ul>
+<h4 id="shorthand-assignments">Shorthand assignments</h4>
+<ul>
+<li><code>+=</code></li>
+<li><code>-=</code></li>
+<li><code>*=</code></li>
+<li><code>/=</code></li>
+<li><code>%=</code></li>
+</ul>
+<h4 id="comparison-operators">Comparison operators</h4>
+<ul>
+<li><code>==</code></li>
+<li><code>!=</code></li>
+<li><code>&lt;</code></li>
+<li><code>&gt;</code></li>
+<li><code>&lt;=</code></li>
+<li><code>&gt;=</code></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples_1">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+<h4 id="not-match">Not match</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+<h4 id="if-in-array">if in array</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="awk-functions">
+<h2 id="awk-functions">Awk Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="common-functions">Common functions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>index(s,t)</code></td>
+<td>Position in string s where string t occurs, 0 if not found</td>
+</tr>
+<tr>
+<td><code>length(s)</code></td>
+<td>Length of string s (or $0 if no arg)</td>
+</tr>
+<tr>
+<td><code>rand</code></td>
+<td>Random number between 0 and 1</td>
+</tr>
+<tr>
+<td><code>substr(s,index,len)</code></td>
+<td>Return len-char substring of s that begins at index (counted from 1)</td>
+</tr>
+<tr>
+<td><code>srand</code></td>
+<td>Set seed for rand and return previous seed</td>
+</tr>
+<tr>
+<td><code>int(x)</code></td>
+<td>Truncate x to integer value</td>
+</tr>
+<tr>
+<td><code>split(s,a,fs)</code></td>
+<td>Split string s into array a split by fs, returning length of a</td>
+</tr>
+<tr>
+<td><code>match(s,r)</code></td>
+<td>Position in string s where regex r occurs, or 0 if not found</td>
+</tr>
+<tr>
+<td><code>sub(r,t,s)</code></td>
+<td>Substitute t for first occurrence of regex r in string s (or $0 if s not given)</td>
+</tr>
+<tr>
+<td><code>gsub(r,t,s)</code></td>
+<td>Substitute t for all occurrences of regex r in string s</td>
+</tr>
+<tr>
+<td><code>system(cmd)</code></td>
+<td>Execute cmd and return exit status</td>
+</tr>
+<tr>
+<td><code>tolower(s)</code></td>
+<td>String s to lowercase</td>
+</tr>
+<tr>
+<td><code>toupper(s)</code></td>
+<td>String s to uppercase</td>
+</tr>
+<tr>
+<td><code>getline</code></td>
+<td>Set $0 to next input record from current input file.</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-defined-function">User defined function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="err">&#39;</span>
+    <span class="o">#</span> <span class="n">Returns</span> <span class="n">minimum</span> <span class="n">number</span>
+    <span class="n">function</span> <span class="n">find_min</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">)</span>
+    <span class="o">#</span> <span class="n">Returns</span> <span class="n">maximum</span> <span class="n">number</span>
+    <span class="n">function</span> <span class="n">find_max</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">)</span>
+    <span class="o">#</span> <span class="n">Main</span> <span class="n">function</span>
+    <span class="n">function</span> <span class="n">main</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">)</span>
+    <span class="o">#</span> <span class="n">Script</span> <span class="n">execution</span> <span class="n">starts</span> <span class="n">here</span>
+    <span class="kr">BEGIN</span> 
+<span class="err">&#39;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="awk-arrays">
+<h2 id="awk-arrays">Awk Arrays</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="array-with-index">Array with index</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="array-with-key">Array with key</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="array-with-split">Array with split</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="array-with-asort">Array with asort</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multi-dimensional">Multi-dimensional</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multi-dimensional-iteration">Multi-dimensional iteration</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="err">&#39;</span><span class="kr">BEGIN</span> 
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="awk-conditions">
+<h2 id="awk-conditions">Awk Conditions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="if-else-statement">if-else statement</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="o">-</span><span class="n">v</span> <span class="n">count</span><span class="o">=</span><span class="mi">2</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+<h4 id="ternary-operator">Ternary operator</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="o">-</span><span class="n">v</span> <span class="n">count</span><span class="o">=</span><span class="mi">2</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="exists">Exists</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+<h4 id="not-exists">Not exists</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch">switch</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>awk -F: &#39;
+}&#39; /etc/passwd
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="awk-loops">
+<h2 id="awk-loops">Awk Loops</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="fori">for...i</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+<h4 id="powers-of-two-between-1-and-100">Powers of two between 1 and 100</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="forin">for...in</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span>
+</code></pre></div>
+
+<h4 id="arguments">Arguments</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN &#39;</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples_2">Examples</h3>
+<div class="section">
+<h4 id="reverse-records">Reverse records</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="o">-</span><span class="n">F</span><span class="p">:</span> <span class="err">&#39;</span>
+    <span class="kr">END</span> 
+<span class="err">&#39;</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+</code></pre></div>
+
+<h4 id="reverse-fields">Reverse fields</h4>
+<div class="codehilite"><pre><span></span><code>awk -F: &#39;&#39; /etc/passwd
+</code></pre></div>
+
+<h4 id="sum-by-record">Sum by record</h4>
+<div class="codehilite"><pre><span></span><code>awk -F: &#39;&#39; /etc/passwd
+</code></pre></div>
+
+<h4 id="sum-whole-file">Sum whole file</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">awk</span><span class="w"> </span><span class="nt">-F</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;</span>
+<span class="s1">    ;</span>
+<span class="s1">    END</span>
+<span class="s1">&#39;</span><span class="w"> </span><span class="o">/</span><span class="nt">etc</span><span class="o">/</span><span class="nt">passwd</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="while">while</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="err">&#39;</span><span class="kr">BEGIN</span> 
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+<h4 id="dowhile">do...while</h4>
+<div class="codehilite"><pre><span></span><code><span class="nv">awk</span><span class="w"> </span><span class="err">&#39; while (i &lt;= 5)</span>
+}<span class="err">&#39; /etc/passwd</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="break">Break</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="err">&#39;</span><span class="kr">BEGIN</span> 
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue">Continue</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="err">&#39;</span><span class="kr">BEGIN</span> 
+    <span class="n">print</span> <span class="s">&quot;&quot;</span>
+<span class="p">}</span><span class="err">&#39;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="awk-formatted-printing">
+<h2 id="awk-formatted-printing">Awk Formatted Printing</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="usage">Usage</h3>
+<div class="section">
+<h4 id="right-align">Right align</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN&#39;</span>
+
+<span class="p">|</span>     <span class="n">hello</span><span class="p">|</span>
+</code></pre></div>
+
+<h4 id="left-align">Left align</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">awk</span> <span class="s">&#39;BEGIN&#39;</span>
+
+<span class="p">|</span><span class="n">hello</span>     <span class="p">|</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="common-specifiers">Common specifiers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Character</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c</code></td>
+<td>ASCII character</td>
+</tr>
+<tr>
+<td><code>d</code></td>
+<td>Decimal integer</td>
+</tr>
+<tr>
+<td><code>e</code>, <code>E</code>, <code>f</code></td>
+<td>Floating-point format</td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td>Unsigned octal value</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td>String</td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>Literal %</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="space">Space</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>awk -F: &#39;&#39; /etc/passwd | head -n 3
+</code></pre></div>
+
+<p>Outputs</p>
+<p>```shell script
+root       /root
+bin        /bin
+daemon     /sbin</p>
+<div class="codehilite"><pre><span></span><code>### Header
+</code></pre></div>
+
+<p>awk -F: 'BEGIN </p>
+<p>' /etc/passwd | head -n 5</p>
+<div class="codehilite"><pre><span></span><code>Outputs
+</code></pre></div>
+
+<p>User       Home
+----       ----
+root       /root
+bin        /bin
+daemon     /sbin</p>
+<div class="codehilite"><pre><span></span><code><span class="o">##</span> <span class="n">Miscellaneous</span>
+
+<span class="o">###</span> <span class="n">Regex</span> <span class="n">Metacharacters</span>
+
+<span class="o">-</span> <span class="err">`\`</span>
+<span class="o">-</span> <span class="err">`</span><span class="o">^</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="o">$</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="p">.</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="p">[</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="p">]</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="p">|</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="p">(</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="p">)</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="o">*</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`</span><span class="o">+</span><span class="err">`</span>
+<span class="o">-</span> <span class="err">`?`</span>
+
+
+
+<span class="o">###</span> <span class="n">Escape</span> <span class="n">Sequences</span>
+
+<span class="p">|</span> <span class="o">-</span>    <span class="p">|</span> <span class="o">-</span>                   <span class="p">|</span>
+<span class="p">|</span> <span class="o">----</span> <span class="p">|</span> <span class="o">-------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`\</span><span class="n">b</span><span class="err">`</span> <span class="p">|</span> <span class="n">Backspace</span>           <span class="p">|</span>
+<span class="p">|</span> <span class="err">`\</span><span class="n">f</span><span class="err">`</span> <span class="p">|</span> <span class="n">Form</span> <span class="n">feed</span>           <span class="p">|</span>
+<span class="p">|</span> <span class="err">`\</span><span class="n">n</span><span class="err">`</span> <span class="p">|</span> <span class="n">Newline</span> <span class="p">(</span><span class="n">line</span> <span class="n">feed</span><span class="p">)</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`\</span><span class="n">r</span><span class="err">`</span> <span class="p">|</span> <span class="n">Carriage</span> <span class="n">return</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`\</span><span class="n">t</span><span class="err">`</span> <span class="p">|</span> <span class="n">Horizontal</span> <span class="n">tab</span>      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`\</span><span class="n">v</span><span class="err">`</span> <span class="p">|</span> <span class="n">Vertical</span> <span class="n">tab</span>        <span class="p">|</span>
+
+<span class="o">###</span> <span class="n">Run</span> <span class="n">script</span>
+
+<span class="err">```</span><span class="n">shell</span> <span class="n">script</span>
+<span class="o">$</span> <span class="n">cat</span> <span class="n">demo</span><span class="p">.</span><span class="n">awk</span>
+<span class="o">#</span><span class="err">!</span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">awk</span> <span class="o">-</span><span class="n">f</span>
+<span class="kr">BEGIN</span> 
+
+<span class="kr">END</span>   
+<span class="o">$</span> <span class="n">awk</span> <span class="o">-</span><span class="n">f</span> <span class="n">demo</span><span class="p">.</span><span class="n">awk</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">passwd</span>
+<span class="mi">69</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://www-zeuthen.desy.de/dv/documentation/unixguide/infohtml/gawk/gawk.html">The GNU Awk User's Guide</a>
+  <em>(www-zeuthen.desy.de)</em></li>
+<li><a href="https://gist.github.com/Rafe/3102414">AWK cheatsheet</a> <em>(gist.github.com)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

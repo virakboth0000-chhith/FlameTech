@@ -1,0 +1,3883 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>LaTeX Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This cheat sheet summarizes a reference list of [LaTeX](https://www.latex-project.org/) commonly used display math notation and some application examples of [Ka">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#2a338a}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(42,51,138,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>LaTeX</span>
+  </div>
+  <div class="post-icon">LA</div>
+  <h1>LaTeX <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This cheat sheet summarizes a reference list of <a href="https://www.latex-project.org/">LaTeX</a> commonly used display math notation and some application examples of <a href="https://katex.org/">KaTeX</a>.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">Programming</span> <span class="meta-tag">katex</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<p><a href="https://www.latex-project.org/">LaTeX</a> A TEX-based typesetting system suitable for producing scientific, mathematical,
+and physical documents of high print quality.</p>
+<ul>
+<li><a href="https://www.latex-project.org/">LaTeX official website</a> <em>(latex-project.org)</em></li>
+<li><a href="https://katex.org/">KaTeX official website</a> <em>(katex.org)</em></li>
+</ul>
+<p>And <a href="https://katex.org/">KaTeX</a> handles only a smaller subset of LaTeX's mathematical notation for display on the web</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="example">Example</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c">% \f is defined as #1f(#2) using the macro</span>
+<span class="n">f</span><span class="o">\</span><span class="n">relax</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="o">\</span><span class="n">int_</span><span class="o">^\</span><span class="n">infty</span>
+<span class="w">    </span><span class="n">f</span><span class="o">\</span><span class="n">hat</span><span class="o">\</span><span class="n">xi</span><span class="o">\</span><span class="p">,</span><span class="n">e</span><span class="o">^</span>
+<span class="w">    </span><span class="o">\</span><span class="p">,</span><span class="n">d</span><span class="o">\</span><span class="n">xi</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="c">% \f is defined as #1f(#2) using the macro</span>
+f<span class="k">\relax</span>(x) = <span class="k">\int_</span><span class="nb">^</span><span class="k">\infty</span>
+    f<span class="k">\hat\xi\,</span>e<span class="nb">^</span>
+    <span class="k">\,</span>d<span class="k">\xi</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="inline">Inline</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>Based on KaTeX in one lineExample  
+Example： <span class="sb">`KaTeX:\int_0^\infty x^2 dx`</span>
+</code></pre></div>
+
+<p>Example based on KaTeX showing on one line: <code>KaTeX:\int_0^\infty x^2 dx</code></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="supported-functions">
+<h2 id="supported-functions">Supported Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="accents">Accents</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:a'</code> <pur><code>a'</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tilde</code> <pur><code>\tilde</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mathring</code> <pur><code>\mathring</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:a''</code> <pur><code>a''</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\widetilde</code> <pur><code>\widetilde</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overgroup</code> <pur><code>\overgroup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:a^</code> <pur><code>a^</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\utilde</code> <pur><code>\utilde</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\undergroup</code> <pur><code>\undergroup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\acute</code> <pur><code>\acute</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vec</code> <pur><code>\vec</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Overrightarrow</code> <pur><code>\Overrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bar</code> <pur><code>\bar</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overleftarrow</code> <pur><code>\overleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overrightarrow</code> <pur><code>\overrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\breve</code> <pur><code>\breve</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underleftarrow</code> <pur><code>\underleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underrightarrow</code> <pur><code>\underrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\check</code> <pur><code>\check</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overleftharpoon</code> <pur><code>\overleftharpoon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overrightharpoon</code> <pur><code>\overrightharpoon</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\dot</code> <pur><code>\dot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overleftrightarrow</code> <pur><code>\overleftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overbrace</code> <pur><code>\overbrace</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ddot</code> <pur><code>\ddot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underleftrightarrow</code> <pur><code>\underleftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underbrace</code> <pur><code>\underbrace</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\grave</code> <pur><code>\grave</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overline</code> <pur><code>\overline</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overlinesegment</code> <pur><code>\overlinesegment</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\hat</code> <pur><code>\hat</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underline</code> <pur><code>\underline</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underlinesegment</code> <pur><code>\underlinesegment</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\widehat</code> <pur><code>\widehat</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\widecheck</code> <pur><code>\widecheck</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underbar</code> <pur><code>\underbar</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="emphasis-in-text">Emphasis in \text&lcub;...&rcub;</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\'</code> <pur><code>\'</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\~</code> <pur><code>\~</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\.</code> <pur><code>\.</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\H</code> <pur><code>\H</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;">``KaTeX:\``` <pur><code>\&#96;</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\=</code> <pur><code>\=</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\"</code> <pur><code>\"</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\v</code> <pur><code>\v</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\^</code> <pur><code>\^</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\u</code> <pur><code>\u</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\r</code> <pur><code>\r</code></pur></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="delimiter-sizing">Delimiter Sizing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\left(\LARGE\right)</code></td>
+<td style="text-align: left;"><pur><code>\left(\LARGE\right)</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:( \big( \Big( \bigg( \Bigg(</code></td>
+<td style="text-align: left;"><pur><code>( \big( \Big( \bigg( \Bigg(</code></pur></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>\left</code></td>
+<td style="text-align: left;"><code>\big</code></td>
+<td style="text-align: left;"><code>\bigl</code></td>
+<td style="text-align: left;"><code>\bigm</code></td>
+<td style="text-align: left;"><code>\bigr</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>\middle</code></td>
+<td style="text-align: left;"><code>\Big</code></td>
+<td style="text-align: left;"><code>\Bigl</code></td>
+<td style="text-align: left;"><code>\Bigm</code></td>
+<td style="text-align: left;"><code>\Bigr</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>\right</code></td>
+<td style="text-align: left;"><code>\bigg</code></td>
+<td style="text-align: left;"><code>\biggl</code></td>
+<td style="text-align: left;"><code>\biggm</code></td>
+<td style="text-align: left;"><code>\biggr</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>\</code></td>
+<td style="text-align: left;"><code>\Bigg</code></td>
+<td style="text-align: left;"><code>\Biggl</code></td>
+<td style="text-align: left;"><code>\Biggm</code></td>
+<td style="text-align: left;"><code>\Biggr</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="greek-and-hebrew-letters">Greek and Hebrew letters</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\alpha</code></td>
+<td style="text-align: left;"><pur><code>\alpha</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\kappa</code></td>
+<td style="text-align: left;"><pur><code>\kappa</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\psi</code></td>
+<td style="text-align: left;"><pur><code>\psi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\digamma</code></td>
+<td style="text-align: left;"><pur><code>\digamma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Delta</code></td>
+<td style="text-align: left;"><pur><code>\Delta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Theta</code></td>
+<td style="text-align: left;"><pur><code>\Theta</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\beta</code></td>
+<td style="text-align: left;"><pur><code>\beta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lambda</code></td>
+<td style="text-align: left;"><pur><code>\lambda</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rho</code></td>
+<td style="text-align: left;"><pur><code>\rho</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varepsilon</code></td>
+<td style="text-align: left;"><pur><code>\varepsilon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Gamma</code></td>
+<td style="text-align: left;"><pur><code>\Gamma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Upsilon</code></td>
+<td style="text-align: left;"><pur><code>\Upsilon</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\chi</code></td>
+<td style="text-align: left;"><pur><code>\chi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mu</code></td>
+<td style="text-align: left;"><pur><code>\mu</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sigma</code></td>
+<td style="text-align: left;"><pur><code>\sigma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varkappa</code></td>
+<td style="text-align: left;"><pur><code>\varkappa</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Lambda</code></td>
+<td style="text-align: left;"><pur><code>\Lambda</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Xi</code></td>
+<td style="text-align: left;"><pur><code>\Xi</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\delta</code></td>
+<td style="text-align: left;"><pur><code>\delta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nu</code></td>
+<td style="text-align: left;"><pur><code>\nu</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tau</code></td>
+<td style="text-align: left;"><pur><code>\tau</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varphi</code></td>
+<td style="text-align: left;"><pur><code>\varphi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Omega</code></td>
+<td style="text-align: left;"><pur><code>\Omega</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\epsilon</code></td>
+<td style="text-align: left;"><pur><code>\epsilon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:o</code></td>
+<td style="text-align: left;"><pur><code>o</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\theta</code></td>
+<td style="text-align: left;"><pur><code>\theta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varpi</code></td>
+<td style="text-align: left;"><pur><code>\varpi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Phi</code></td>
+<td style="text-align: left;"><pur><code>\Phi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\aleph</code></td>
+<td style="text-align: left;"><pur><code>\aleph</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\eta</code></td>
+<td style="text-align: left;"><pur><code>\eta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\omega</code></td>
+<td style="text-align: left;"><pur><code>\omega</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\upsilon</code></td>
+<td style="text-align: left;"><pur><code>\upsilon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varrho</code></td>
+<td style="text-align: left;"><pur><code>\varrho</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Pi</code></td>
+<td style="text-align: left;"><pur><code>\Pi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\beth</code></td>
+<td style="text-align: left;"><pur><code>\beth</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gamma</code></td>
+<td style="text-align: left;"><pur><code>\gamma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\phi</code></td>
+<td style="text-align: left;"><pur><code>\phi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xi</code></td>
+<td style="text-align: left;"><pur><code>\xi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varsigma</code></td>
+<td style="text-align: left;"><pur><code>\varsigma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Psi</code></td>
+<td style="text-align: left;"><pur><code>\Psi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\daleth</code></td>
+<td style="text-align: left;"><pur><code>\daleth</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\iota</code></td>
+<td style="text-align: left;"><pur><code>\iota</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\pi</code></td>
+<td style="text-align: left;"><pur><code>\pi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\zeta</code></td>
+<td style="text-align: left;"><pur><code>\zeta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vartheta</code></td>
+<td style="text-align: left;"><pur><code>\vartheta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Sigma</code></td>
+<td style="text-align: left;"><pur><code>\Sigma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gimel</code></td>
+<td style="text-align: left;"><pur><code>\gimel</code></pur></td>
+</tr>
+</tbody>
+</table>
+<h4 id="other-letters">Other letters</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\imath</code></td>
+<td style="text-align: left;"><pur><code>\imath</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nabla</code></td>
+<td style="text-align: left;"><pur><code>\nabla</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Im</code></td>
+<td style="text-align: left;"><pur><code>\Im</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Reals</code></td>
+<td style="text-align: left;"><pur><code>\Reals</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\jmath</code></td>
+<td style="text-align: left;"><pur><code>\jmath</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\partial</code></td>
+<td style="text-align: left;"><pur><code>\partial</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\image</code></td>
+<td style="text-align: left;"><pur><code>\image</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\wp</code></td>
+<td style="text-align: left;"><pur><code>\wp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\aleph</code></td>
+<td style="text-align: left;"><pur><code>\aleph</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Game</code></td>
+<td style="text-align: left;"><pur><code>\Game</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Bbbk</code></td>
+<td style="text-align: left;"><pur><code>\Bbbk</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\weierp</code></td>
+<td style="text-align: left;"><pur><code>\weierp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\alef</code></td>
+<td style="text-align: left;"><pur><code>\alef</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Finv</code></td>
+<td style="text-align: left;"><pur><code>\Finv</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\N</code></td>
+<td style="text-align: left;"><pur><code>\N</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Z</code></td>
+<td style="text-align: left;"><pur><code>\Z</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\alefsym</code></td>
+<td style="text-align: left;"><pur><code>\alefsym</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cnums</code></td>
+<td style="text-align: left;"><pur><code>\cnums</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\natnums</code></td>
+<td style="text-align: left;"><pur><code>\natnums</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\beth</code></td>
+<td style="text-align: left;"><pur><code>\beth</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Complex</code></td>
+<td style="text-align: left;"><pur><code>\Complex</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\R</code></td>
+<td style="text-align: left;"><pur><code>\R</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gimel</code></td>
+<td style="text-align: left;"><pur><code>\gimel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ell</code></td>
+<td style="text-align: left;"><pur><code>\ell</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Re</code></td>
+<td style="text-align: left;"><pur><code>\Re</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\daleth</code></td>
+<td style="text-align: left;"><pur><code>\daleth</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\hbar</code></td>
+<td style="text-align: left;"><pur><code>\hbar</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\real</code></td>
+<td style="text-align: left;"><pur><code>\real</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\eth</code></td>
+<td style="text-align: left;"><pur><code>\eth</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\hslash</code></td>
+<td style="text-align: left;"><pur><code>\hslash</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\reals</code></td>
+<td style="text-align: left;"><pur><code>\reals</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="alphabets-and-unicode">Alphabets and Unicode</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Alpha</code></td>
+<td style="text-align: left;"><pur><code>\Alpha</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Beta</code></td>
+<td style="text-align: left;"><pur><code>\Beta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Gamma</code></td>
+<td style="text-align: left;"><pur><code>\Gamma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Delta</code></td>
+<td style="text-align: left;"><pur><code>\Delta</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Epsilon</code></td>
+<td style="text-align: left;"><pur><code>\Epsilon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Zeta</code></td>
+<td style="text-align: left;"><pur><code>\Zeta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Eta</code></td>
+<td style="text-align: left;"><pur><code>\Eta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Theta</code></td>
+<td style="text-align: left;"><pur><code>\Theta</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Iota</code></td>
+<td style="text-align: left;"><pur><code>\Iota</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Kappa</code></td>
+<td style="text-align: left;"><pur><code>\Kappa</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Lambda</code></td>
+<td style="text-align: left;"><pur><code>\Lambda</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Mu</code></td>
+<td style="text-align: left;"><pur><code>\Mu</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Nu</code></td>
+<td style="text-align: left;"><pur><code>\Nu</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Xi</code></td>
+<td style="text-align: left;"><pur><code>\Xi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Omicron</code></td>
+<td style="text-align: left;"><pur><code>\Omicron</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Pi</code></td>
+<td style="text-align: left;"><pur><code>\Pi</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Rho</code></td>
+<td style="text-align: left;"><pur><code>\Rho</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Sigma</code></td>
+<td style="text-align: left;"><pur><code>\Sigma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Tau</code></td>
+<td style="text-align: left;"><pur><code>\Tau</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Upsilon</code></td>
+<td style="text-align: left;"><pur><code>\Upsilon</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Phi</code></td>
+<td style="text-align: left;"><pur><code>\Phi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Chi</code></td>
+<td style="text-align: left;"><pur><code>\Chi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Psi</code></td>
+<td style="text-align: left;"><pur><code>\Psi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Omega</code></td>
+<td style="text-align: left;"><pur><code>\Omega</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\varGamma</code></td>
+<td style="text-align: left;"><pur><code>\varGamma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varDelta</code></td>
+<td style="text-align: left;"><pur><code>\varDelta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varTheta</code></td>
+<td style="text-align: left;"><pur><code>\varTheta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varLambda</code></td>
+<td style="text-align: left;"><pur><code>\varLambda</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\varXi</code></td>
+<td style="text-align: left;"><pur><code>\varXi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varPi</code></td>
+<td style="text-align: left;"><pur><code>\varPi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varSigma</code></td>
+<td style="text-align: left;"><pur><code>\varSigma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varUpsilon</code></td>
+<td style="text-align: left;"><pur><code>\varUpsilon</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\varPhi</code></td>
+<td style="text-align: left;"><pur><code>\varPhi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varPsi</code></td>
+<td style="text-align: left;"><pur><code>\varPsi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varOmega</code></td>
+<td style="text-align: left;"><pur><code>\varOmega</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\alpha</code></td>
+<td style="text-align: left;"><pur><code>\alpha</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\beta</code></td>
+<td style="text-align: left;"><pur><code>\beta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gamma</code></td>
+<td style="text-align: left;"><pur><code>\gamma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\delta</code></td>
+<td style="text-align: left;"><pur><code>\delta</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\epsilon</code></td>
+<td style="text-align: left;"><pur><code>\epsilon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\zeta</code></td>
+<td style="text-align: left;"><pur><code>\zeta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\eta</code></td>
+<td style="text-align: left;"><pur><code>\eta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\theta</code></td>
+<td style="text-align: left;"><pur><code>\theta</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\iota</code></td>
+<td style="text-align: left;"><pur><code>\iota</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\kappa</code></td>
+<td style="text-align: left;"><pur><code>\kappa</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lambda</code></td>
+<td style="text-align: left;"><pur><code>\lambda</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mu</code></td>
+<td style="text-align: left;"><pur><code>\mu</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\nu</code></td>
+<td style="text-align: left;"><pur><code>\nu</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xi</code></td>
+<td style="text-align: left;"><pur><code>\xi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\omicron</code></td>
+<td style="text-align: left;"><pur><code>\omicron</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\pi</code></td>
+<td style="text-align: left;"><pur><code>\pi</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\rho</code></td>
+<td style="text-align: left;"><pur><code>\rho</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sigma</code></td>
+<td style="text-align: left;"><pur><code>\sigma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tau</code></td>
+<td style="text-align: left;"><pur><code>\tau</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\upsilon</code></td>
+<td style="text-align: left;"><pur><code>\upsilon</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\phi</code></td>
+<td style="text-align: left;"><pur><code>\phi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\chi</code></td>
+<td style="text-align: left;"><pur><code>\chi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\psi</code></td>
+<td style="text-align: left;"><pur><code>\psi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\omega</code></td>
+<td style="text-align: left;"><pur><code>\omega</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\varepsilon</code></td>
+<td style="text-align: left;"><pur><code>\varepsilon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varkappa</code></td>
+<td style="text-align: left;"><pur><code>\varkappa</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vartheta</code></td>
+<td style="text-align: left;"><pur><code>\vartheta</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\thetasym</code></td>
+<td style="text-align: left;"><pur><code>\thetasym</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\varpi</code></td>
+<td style="text-align: left;"><pur><code>\varpi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varrho</code></td>
+<td style="text-align: left;"><pur><code>\varrho</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varsigma</code></td>
+<td style="text-align: left;"><pur><code>\varsigma</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varphi</code></td>
+<td style="text-align: left;"><pur><code>\varphi</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\digamma</code></td>
+<td style="text-align: left;"><pur><code>\digamma</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="annotation">Annotation</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\cancel</code></td>
+<td style="text-align: left;"><pur><code>\cancel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overbrace^}</code></td>
+<td style="text-align: left;"><pur><code>\overbrace^}</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bcancel</code></td>
+<td style="text-align: left;"><pur><code>\bcancel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underbrace_}</code></td>
+<td style="text-align: left;"><pur><code>\underbrace_}</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xcancel</code></td>
+<td style="text-align: left;"><pur><code>\xcancel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\not =</code></td>
+<td style="text-align: left;"><pur><code>\not =</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sout</code></td>
+<td style="text-align: left;"><pur><code>\sout</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\boxed</code></td>
+<td style="text-align: left;"><pur><code>\boxed</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\$a_</code> <em><red>MD syntax conflict</red></em></td>
+<td style="text-align: left;"><pur><code>$a_</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:a_\angln</code></td>
+<td style="text-align: left;"><pur><code>a_\angln</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\phase</code></td>
+<td style="text-align: left;"><pur><code>\phase</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p><pur>\tag x+y^</pur></p>
+<div class="codehilite"><pre><span></span><code>\tag x+y^
+</code></pre></div>
+
+<p><pur>\tag* x+y^</pur></p>
+<div class="codehilite"><pre><span></span><code>\tag* x+y^
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="vertical-layout">Vertical layout</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:x_n</code></td>
+<td style="text-align: left;"><pur><code>x_n</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\stackrel</code></td>
+<td style="text-align: left;"><pur><code>\stackrel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:a \atop b</code></td>
+<td style="text-align: left;"><code>a \atop b</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:e^x</code></td>
+<td style="text-align: left;"><pur><code>e^x</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overset</code></td>
+<td style="text-align: left;"><pur><code>\overset</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:a\raiseboxc</code></td>
+<td style="text-align: left;"><code>a\raiseboxc</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:_u^o</code></td>
+<td style="text-align: left;"><pur><code>_u^o</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underset</code></td>
+<td style="text-align: left;"><pur><code>\underset</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:a+\left(\vcenterc$}}\right)</code></td>
+<td style="text-align: left;"><code>a+\left(\vcenterc$}}\right)</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sum_}</code></td>
+<td style="text-align: left;"><pur><code>\sum_}</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="overlap-and-spacing">Overlap and Spacing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\mathllap</code> <pur>\mathllap</pur></td>
+<td style="text-align: left;"><code>KaTeX:\left(x^}\right)</code></td>
+<td style="text-align: left;"><pur>\left(x^}\right)</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\mathrlap</code> <pur>\mathrlap</pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqrt}</code></td>
+<td style="text-align: left;"><pur>\sqrt}</pur></td>
+</tr>
+</tbody>
+</table>
+<p><code>\sum_} x_</code></p>
+<div class="codehilite"><pre><span></span><code>\sum_} x_
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="katexlatex-math-constructs"><code>KaTeX:\LaTeX</code> math constructs</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Preview</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Preview</th>
+<th style="text-align: left;">Method</th>
+<th style="text-align: left;">Preview</th>
+<th style="text-align: left;">Method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\frac</code></td>
+<td style="text-align: left;"><pur><code>\frac</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overline</code></td>
+<td style="text-align: left;"><pur><code>\overline</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\overrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:f'</code></td>
+<td style="text-align: left;"><pur><code>f'</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underline</code></td>
+<td style="text-align: left;"><pur><code>\underline</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\overleftarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sqrt</code></td>
+<td style="text-align: left;"><pur><code>\sqrt</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\widehat</code></td>
+<td style="text-align: left;"><pur><code>\widehat</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\overbrace</code></td>
+<td style="text-align: left;"><pur><code>\overbrace</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sqrt[n]</code></td>
+<td style="text-align: left;"><pur><code>\sqrt[n]</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\widetilde</code></td>
+<td style="text-align: left;"><pur><code>\widetilde</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\underbrace</code></td>
+<td style="text-align: left;"><pur><code>\underbrace</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="delimiters">Delimiters</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:()</code></td>
+<td style="text-align: left;"><pur><code>()</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lparen \rparen</code></td>
+<td style="text-align: left;"><pur><code>\lparen</code> <code>\rparen</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:⌈ ⌉</code></td>
+<td style="text-align: left;"><pur><code>⌈ ⌉</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lceil \rceil</code></td>
+<td style="text-align: left;"><pur><code>\lceil</code> <code>\rceil</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\uparrow</code></td>
+<td style="text-align: left;"><pur><code>\uparrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:[]</code></td>
+<td style="text-align: left;"><pur><code>[]</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lbrack \rbrack</code></td>
+<td style="text-align: left;"><pur><code>\lbrack</code> <code>\rbrack</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:⌊ ⌋</code></td>
+<td style="text-align: left;"><pur><code>⌊ ⌋</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lfloor \rfloor</code></td>
+<td style="text-align: left;"><pur><code>\lfloor</code> <code>\rfloor</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\downarrow</code></td>
+<td style="text-align: left;"><pur><code>\downarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\</code></td>
+<td style="text-align: left;"><pur>``</pur></td>
+<td style="text-align: left;"><code>KaTeX:\lbrace \rbrace</code></td>
+<td style="text-align: left;"><pur><code>\lbrace</code> <code>\rbrace</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:⎰⎱</code></td>
+<td style="text-align: left;"><pur><code>⎰⎱</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lmoustache  \rmoustache</code></td>
+<td style="text-align: left;"><pur><code>\lmoustache</code> <code>\rmoustache</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\updownarrow</code></td>
+<td style="text-align: left;"><pur><code>\updownarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:⟨ ⟩</code></td>
+<td style="text-align: left;"><pur><code>⟨⟩</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\langle \rangle</code></td>
+<td style="text-align: left;"><pur><code>\langle</code> <code>\rangle</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:⟮ ⟯</code></td>
+<td style="text-align: left;"><pur><code>⟮ ⟯</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lgroup \rgroup</code></td>
+<td style="text-align: left;"><pur><code>\lgroup</code> <code>\rgroup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Uparrow</code></td>
+<td style="text-align: left;"><pur><code>\Uparrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:∣</code></td>
+<td style="text-align: left;"><pur><code>\|</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vert</code></td>
+<td style="text-align: left;"><pur><code>\vert</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:┌ ┐</code></td>
+<td style="text-align: left;"><pur><code>┌ ┐</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ulcorner \urcorner</code></td>
+<td style="text-align: left;"><pur><code>\ulcorner</code> <code>\urcorner</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Downarrow</code></td>
+<td style="text-align: left;"><pur><code>\Downarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\|</code> <em>(<red>MD syntax conflict</red>)</em></td>
+<td style="text-align: left;"><pur><code>\&#124;</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Vert</code></td>
+<td style="text-align: left;"><pur><code>\Vert</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:└ ┘</code></td>
+<td style="text-align: left;"><pur><code>└ ┘</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\llcorner \lrcorner</code></td>
+<td style="text-align: left;"><pur><code>\llcorner</code> <code>\lrcorner</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Updownarrow</code></td>
+<td style="text-align: left;"><pur><code>\Updownarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:∣ ∣</code></td>
+<td style="text-align: left;"><pur><code>\lvert</code> <code>\rvert</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lVert \rVert</code></td>
+<td style="text-align: left;"><pur><code>\lVert</code> <code>\rVert</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><pur><code>\left.</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><pur><code>\right.</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\backslash</code></td>
+<td style="text-align: left;"><pur><code>\backslash</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lang</code> <code>KaTeX:\rang</code></td>
+<td style="text-align: left;"><pur><code>\lang</code> <code>\rang</code><pur></td>
+<td style="text-align: left;"><code>KaTeX:\lt \gt</code></td>
+<td style="text-align: left;"><pur><code>\lt \gt</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:⟦ ⟧</code></td>
+<td style="text-align: left;"><pur><code>⟦ ⟧</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\llbracket \rrbracket</code></td>
+<td style="text-align: left;"><pur><code>\llbracket</code> <code>\rrbracket</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lBrace \rBrace</code></td>
+<td style="text-align: left;"><pur><code>\lBrace \rBrace</code></pur></td>
+</tr>
+</tbody>
+</table>
+<p>The pair of expressions <code>\left</code> <code>KaTeX:s_1</code> and <code>\right</code> <code>KaTeX:s_2</code> can be used to match the height of the separators
+<code>KaTeX:s_1</code> and <code>KaTeX:s_2</code> to the height of their content, e.g. :</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\left\|</code></td>
+<td style="text-align: left;"><code>KaTeX:expr</code></td>
+<td style="text-align: left;"><code>KaTeX:\right\|</code></td>
+<td style="text-align: left;"><code>KaTeX:\left\</code></td>
+<td style="text-align: left;"><code>KaTeX:\left\Vert</code></td>
+<td style="text-align: left;"><code>KaTeX:expr</code></td>
+<td style="text-align: left;"><code>KaTeX:\right.</code></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="variable-size-symbols">Variable Size Symbols</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sum</code></td>
+<td style="text-align: left;"><pur><code>\sum</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\int</code></td>
+<td style="text-align: left;"><pur><code>\int</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\biguplus</code></td>
+<td style="text-align: left;"><pur><code>\biguplus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigoplus</code></td>
+<td style="text-align: left;"><pur><code>\bigoplus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigvee</code></td>
+<td style="text-align: left;"><pur><code>\bigvee</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\prod</code></td>
+<td style="text-align: left;"><pur><code>\prod</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\oint</code></td>
+<td style="text-align: left;"><pur><code>\oint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigcap</code></td>
+<td style="text-align: left;"><pur><code>\bigcap</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigotimes</code></td>
+<td style="text-align: left;"><pur><code>\bigotimes</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigwedge</code></td>
+<td style="text-align: left;"><pur><code>\bigwedge</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\coprod</code></td>
+<td style="text-align: left;"><pur><code>\coprod</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\iint</code></td>
+<td style="text-align: left;"><pur><code>\iint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigcup</code></td>
+<td style="text-align: left;"><pur><code>\bigcup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigodot</code></td>
+<td style="text-align: left;"><pur><code>\bigodot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigodot</code></td>
+<td style="text-align: left;"><pur><code>\bigodot</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="standard-function-name">standard function name</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: left;">preview</th>
+<th style="text-align: left;">method</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\arccos</code></td>
+<td style="text-align: left;"><pur><code>\arccos</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\arcsin</code></td>
+<td style="text-align: left;"><pur><code>\arcsin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\arcsin</code></td>
+<td style="text-align: left;"><pur><code>\arcsin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\arg</code></td>
+<td style="text-align: left;"><pur><code>\arg</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\cos</code></td>
+<td style="text-align: left;"><pur><code>\cos</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cosh</code></td>
+<td style="text-align: left;"><pur><code>\cosh</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cot</code></td>
+<td style="text-align: left;"><pur><code>\cot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\coth</code></td>
+<td style="text-align: left;"><pur><code>\coth</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\csc</code></td>
+<td style="text-align: left;"><pur><code>\csc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\deg</code></td>
+<td style="text-align: left;"><pur><code>\deg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\det</code></td>
+<td style="text-align: left;"><pur><code>\det</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dim</code></td>
+<td style="text-align: left;"><pur><code>\dim</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\exp</code></td>
+<td style="text-align: left;"><pur><code>\exp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gcd</code></td>
+<td style="text-align: left;"><pur><code>\gcd</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\hom</code></td>
+<td style="text-align: left;"><pur><code>\hom</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\inf</code></td>
+<td style="text-align: left;"><pur><code>\inf</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ker</code></td>
+<td style="text-align: left;"><pur><code>\ker</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lg</code></td>
+<td style="text-align: left;"><pur><code>\lg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lim</code></td>
+<td style="text-align: left;"><pur><code>\lim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\liminf</code></td>
+<td style="text-align: left;"><pur><code>\liminf</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\limsup</code></td>
+<td style="text-align: left;"><pur><code>\limsup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ln</code></td>
+<td style="text-align: left;"><pur><code>\ln</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\log</code></td>
+<td style="text-align: left;"><pur><code>\log</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\max</code></td>
+<td style="text-align: left;"><pur><code>\max</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\min</code></td>
+<td style="text-align: left;"><pur><code>\min</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Pr</code></td>
+<td style="text-align: left;"><pur><code>\Pr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sec</code></td>
+<td style="text-align: left;"><pur><code>\sec</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sin</code></td>
+<td style="text-align: left;"><pur><code>\sin</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sinh</code></td>
+<td style="text-align: left;"><pur><code>\sinh</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sup</code></td>
+<td style="text-align: left;"><pur><code>\sup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tan</code></td>
+<td style="text-align: left;"><pur><code>\tan</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tanh</code></td>
+<td style="text-align: left;"><pur><code>\tanh</code></pur></td>
+</tr>
+</tbody>
+</table>
+<h4 id="function-names-should-be-in-roman-font-not-italics-for-example">Function names should be in roman font, not italics, for example:</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Correct:</td>
+<td style="text-align: left;"><pur><code>\tan(at-n\pi)</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightarrow</code></td>
+<td style="text-align: left;"><code>KaTeX:\tan(at-n\pi)</code></td>
+</tr>
+<tr>
+<td style="text-align: left;">Incorrect:</td>
+<td style="text-align: left;"><pur><code>tan(at-n\pi)</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightarrow</code></td>
+<td style="text-align: left;"><code>KaTeX:tan(at-n\pi)</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="logic-and-set-theory">Logic and Set Theory</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\forall</code></td>
+<td style="text-align: left;"><pur><code>\forall</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\complement</code></td>
+<td style="text-align: left;"><pur><code>\complement</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\therefore</code></td>
+<td style="text-align: left;"><pur><code>\therefore</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\emptyset</code></td>
+<td style="text-align: left;"><pur><code>\emptyset</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\exists</code></td>
+<td style="text-align: left;"><pur><code>\exists</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\subset</code></td>
+<td style="text-align: left;"><pur><code>\subset</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\because</code></td>
+<td style="text-align: left;"><pur><code>\because</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\empty</code></td>
+<td style="text-align: left;"><pur><code>\empty</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\exist</code></td>
+<td style="text-align: left;"><pur><code>\exist</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\supset</code></td>
+<td style="text-align: left;"><pur><code>\supset</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mapsto</code></td>
+<td style="text-align: left;"><pur><code>\mapsto</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varnothing</code></td>
+<td style="text-align: left;"><pur><code>\varnothing</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\nexists</code></td>
+<td style="text-align: left;"><pur><code>\nexists</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mid</code></td>
+<td style="text-align: left;"><pur><code>\mid</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\to</code></td>
+<td style="text-align: left;"><pur><code>\to</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\implies</code></td>
+<td style="text-align: left;"><pur><code>\implies</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\in</code></td>
+<td style="text-align: left;"><pur><code>\in</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\land</code></td>
+<td style="text-align: left;"><pur><code>\land</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gets</code></td>
+<td style="text-align: left;"><pur><code>\gets</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\impliedby</code></td>
+<td style="text-align: left;"><pur><code>\impliedby</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\isin</code></td>
+<td style="text-align: left;"><pur><code>\isin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lor</code></td>
+<td style="text-align: left;"><pur><code>\lor</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\leftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\iff</code></td>
+<td style="text-align: left;"><pur><code>\iff</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\notin</code></td>
+<td style="text-align: left;"><pur><code>\notin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ni</code></td>
+<td style="text-align: left;"><pur><code>\ni</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\notni</code></td>
+<td style="text-align: left;"><pur><code>\notni</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\neg</code> <code>KaTeX:\lnot</code></td>
+<td style="text-align: left;"><pur><code>\neg</code></pur> or <pur><code>\lnot</code></pur></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Set</code></td>
+<td style="text-align: left;"><pur>\Set</pur></td>
+<td style="text-align: left;"><code>KaTeX:\set</code></td>
+<td style="text-align: left;"><pur>\set</pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="special-symbols">special symbols</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bra</code></td>
+<td style="text-align: left;"><pur>\bra</pur></td>
+<td style="text-align: left;"><code>KaTeX:\ket</code></td>
+<td style="text-align: left;"><pur>\ket</pur></td>
+<td style="text-align: left;"><code>KaTeX:\braket</code></td>
+<td style="text-align: left;"><pur><code>\braket</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Bra</code></td>
+<td style="text-align: left;"><pur>\Bra</pur></td>
+<td style="text-align: left;"><code>KaTeX:\Ket</code></td>
+<td style="text-align: left;"><pur>\Ket</pur></td>
+<td style="text-align: left;"><code>KaTeX:\Braket \| ψ }</code></td>
+<td style="text-align: left;"><pur><code>\Braket \| ψ }</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="operator">
+<h2 id="operator">Operator</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="mathematical-operator">Mathematical operator</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\arcsin</code></td>
+<td style="text-align: left;"><pur><code>\arcsin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cosec</code></td>
+<td style="text-align: left;"><pur><code>\cosec</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\deg</code></td>
+<td style="text-align: left;"><pur><code>\deg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sec</code></td>
+<td style="text-align: left;"><pur><code>\sec</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\arccos</code></td>
+<td style="text-align: left;"><pur><code>\arccos</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cosh</code></td>
+<td style="text-align: left;"><pur><code>\cosh</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dim</code></td>
+<td style="text-align: left;"><pur><code>\dim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sin</code></td>
+<td style="text-align: left;"><pur><code>\sin</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\arctan</code></td>
+<td style="text-align: left;"><pur><code>\arctan</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cot</code></td>
+<td style="text-align: left;"><pur><code>\cot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\exp</code></td>
+<td style="text-align: left;"><pur><code>\exp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sinh</code></td>
+<td style="text-align: left;"><pur><code>\sinh</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\arctg</code></td>
+<td style="text-align: left;"><pur><code>\arctg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cotg</code></td>
+<td style="text-align: left;"><pur><code>\cotg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\hom</code></td>
+<td style="text-align: left;"><pur><code>\hom</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sh</code></td>
+<td style="text-align: left;"><pur><code>\sh</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\arcctg</code></td>
+<td style="text-align: left;"><pur><code>\arcctg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\coth</code></td>
+<td style="text-align: left;"><pur><code>\coth</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ker</code></td>
+<td style="text-align: left;"><pur><code>\ker</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tan</code></td>
+<td style="text-align: left;"><pur><code>\tan</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\arg</code></td>
+<td style="text-align: left;"><pur><code>\arg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\csc</code></td>
+<td style="text-align: left;"><pur><code>\csc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lg</code></td>
+<td style="text-align: left;"><pur><code>\lg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tanh</code></td>
+<td style="text-align: left;"><pur><code>\tanh</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ch</code></td>
+<td style="text-align: left;"><pur><code>\ch</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ctg</code></td>
+<td style="text-align: left;"><pur><code>\ctg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ln</code></td>
+<td style="text-align: left;"><pur><code>\ln</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tg</code></td>
+<td style="text-align: left;"><pur><code>\tg</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\cos</code></td>
+<td style="text-align: left;"><pur><code>\cos</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cth</code></td>
+<td style="text-align: left;"><pur><code>\cth</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\log</code></td>
+<td style="text-align: left;"><pur><code>\log</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\th</code></td>
+<td style="text-align: left;"><pur><code>\th</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\operatorname</code></td>
+<td style="text-align: left;"><pur><code>\operatorname</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\argmax</code></td>
+<td style="text-align: left;"><pur><code>\argmax</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\injlim</code></td>
+<td style="text-align: left;"><pur><code>\injlim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\min</code></td>
+<td style="text-align: left;"><pur><code>\min</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varinjlim</code></td>
+<td style="text-align: left;"><pur><code>\varinjlim</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\argmin</code></td>
+<td style="text-align: left;"><pur><code>\argmin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lim</code></td>
+<td style="text-align: left;"><pur><code>\lim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\plim</code></td>
+<td style="text-align: left;"><pur><code>\plim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varliminf</code></td>
+<td style="text-align: left;"><pur><code>\varliminf</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\det</code></td>
+<td style="text-align: left;"><pur><code>\det</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\liminf</code></td>
+<td style="text-align: left;"><pur><code>\liminf</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Pr</code></td>
+<td style="text-align: left;"><pur><code>\Pr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varlimsup</code></td>
+<td style="text-align: left;"><pur><code>\varlimsup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gcd</code></td>
+<td style="text-align: left;"><pur><code>\gcd</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\limsup</code></td>
+<td style="text-align: left;"><pur><code>\limsup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\projlim</code></td>
+<td style="text-align: left;"><pur><code>\projlim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varprojlim</code></td>
+<td style="text-align: left;"><pur><code>\varprojlim</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\inf</code></td>
+<td style="text-align: left;"><pur><code>\inf</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\max</code></td>
+<td style="text-align: left;"><pur><code>\max</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sup</code></td>
+<td style="text-align: left;"><pur><code>\sup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\operatorname*</code></td>
+<td style="text-align: left;"><pur><code>\operatorname*</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\operatornamewithlimits</code></td>
+<td style="text-align: left;"><pur><code>\operatornamewithlimits</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="big-operator">Big operator</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sum</code></td>
+<td style="text-align: left;"><pur><code>\sum</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\prod</code></td>
+<td style="text-align: left;"><pur><code>\prod</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigotimes</code></td>
+<td style="text-align: left;"><pur><code>\bigotimes</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigvee</code></td>
+<td style="text-align: left;"><pur><code>\bigvee</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\int</code></td>
+<td style="text-align: left;"><pur><code>\int</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\coprod</code></td>
+<td style="text-align: left;"><pur><code>\coprod</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigoplus</code></td>
+<td style="text-align: left;"><pur><code>\bigoplus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigwedge</code></td>
+<td style="text-align: left;"><pur><code>\bigwedge</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\iint</code></td>
+<td style="text-align: left;"><pur><code>\iint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\intop</code></td>
+<td style="text-align: left;"><pur><code>\intop</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigodot</code></td>
+<td style="text-align: left;"><pur><code>\bigodot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigcap</code></td>
+<td style="text-align: left;"><pur><code>\bigcap</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\iiint</code></td>
+<td style="text-align: left;"><pur><code>\iiint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\smallint</code></td>
+<td style="text-align: left;"><pur><code>\smallint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\biguplus</code></td>
+<td style="text-align: left;"><pur><code>\biguplus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigcup</code></td>
+<td style="text-align: left;"><pur><code>\bigcup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\oint</code></td>
+<td style="text-align: left;"><pur><code>\oint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\oiint</code></td>
+<td style="text-align: left;"><pur><code>\oiint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\oiiint</code></td>
+<td style="text-align: left;"><pur><code>\oiiint</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigsqcup</code></td>
+<td style="text-align: left;"><pur><code>\bigsqcup</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="fractions-and-binomials">Fractions and binomials</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\frac</code></td>
+<td style="text-align: left;"><pur><code>\frac</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tfrac</code></td>
+<td style="text-align: left;"><pur><code>\tfrac</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:</code></td>
+<td style="text-align: left;"><pur>``</pur></td>
+<td style="text-align: left;"><code>KaTeX:\dfrac</code></td>
+<td style="text-align: left;"><pur><code>\dfrac</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\genfrac ( ] a</code></td>
+<td style="text-align: left;"><pur><code>\genfrac ( ] a</code></pur></td>
+<td style="text-align: left;"><code>KaTeX: b+1}</code></td>
+<td style="text-align: left;"><pur><code>b+1}</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:a/b</code></td>
+<td style="text-align: left;"><pur><code>a/b</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cfrac}</code></td>
+<td style="text-align: left;"><pur><code>\cfrac}</code></pur></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\binom</code></td>
+<td style="text-align: left;"><pur><code>\binom</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dbinom</code></td>
+<td style="text-align: left;"><pur><code>\dbinom</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:</code></td>
+<td style="text-align: left;"><pur><code>&lt;/pur&gt;   | `KaTeX:` | &lt;pur&gt;</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\tbinom</code></td>
+<td style="text-align: left;"><pur><code>\tbinom</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:</code></td>
+<td style="text-align: left;"><pur>``</pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sqrt">\sqrt</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\sqrt</code></td>
+<td style="text-align: left;"><pur><code>\sqrt</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqrt[3]</code></td>
+<td style="text-align: left;"><pur><code>\sqrt[3]</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="binary-operator">Binary operator</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:+</code></td>
+<td style="text-align: left;"><pur><code>+</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cdot</code></td>
+<td style="text-align: left;"><pur><code>\cdot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gtrdot</code></td>
+<td style="text-align: left;"><pur><code>\gtrdot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:x \pmod a</code></td>
+<td style="text-align: left;"><pur><code>x \pmod a</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:-</code></td>
+<td style="text-align: left;"><pur><code>-</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cdotp</code></td>
+<td style="text-align: left;"><pur><code>\cdotp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\intercal</code></td>
+<td style="text-align: left;"><pur><code>\intercal</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:x \pod a</code></td>
+<td style="text-align: left;"><pur><code>x \pod a</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:/</code></td>
+<td style="text-align: left;"><pur><code>/</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\centerdot</code></td>
+<td style="text-align: left;"><pur><code>\centerdot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\land</code></td>
+<td style="text-align: left;"><pur><code>\land</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rhd</code></td>
+<td style="text-align: left;"><pur><code>\rhd</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:*</code></td>
+<td style="text-align: left;"><pur><code>*</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\circ</code></td>
+<td style="text-align: left;"><pur><code>\circ</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftthreetimes</code></td>
+<td style="text-align: left;"><pur><code>\leftthreetimes</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightthreetimes</code></td>
+<td style="text-align: left;"><pur><code>\rightthreetimes</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\amalg</code></td>
+<td style="text-align: left;"><pur><code>\amalg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\circledast</code></td>
+<td style="text-align: left;"><pur><code>\circledast</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ldotp</code></td>
+<td style="text-align: left;"><pur><code>\ldotp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rtimes</code></td>
+<td style="text-align: left;"><pur><code>\rtimes</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\And</code></td>
+<td style="text-align: left;"><pur><code>\And</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\circledcirc</code></td>
+<td style="text-align: left;"><pur><code>\circledcirc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lor</code></td>
+<td style="text-align: left;"><pur><code>\lor</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\setminus</code></td>
+<td style="text-align: left;"><pur><code>\setminus</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ast</code></td>
+<td style="text-align: left;"><pur><code>\ast</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\circleddash</code></td>
+<td style="text-align: left;"><pur><code>\circleddash</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lessdot</code></td>
+<td style="text-align: left;"><pur><code>\lessdot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\smallsetminus</code></td>
+<td style="text-align: left;"><pur><code>\smallsetminus</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\barwedge</code></td>
+<td style="text-align: left;"><pur><code>\barwedge</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Cup</code></td>
+<td style="text-align: left;"><pur><code>\Cup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lhd</code></td>
+<td style="text-align: left;"><pur><code>\lhd</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqcap</code></td>
+<td style="text-align: left;"><pur><code>\sqcap</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bigcirc</code></td>
+<td style="text-align: left;"><pur><code>\bigcirc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cup</code></td>
+<td style="text-align: left;"><pur><code>\cup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ltimes</code></td>
+<td style="text-align: left;"><pur><code>\ltimes</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqcup</code></td>
+<td style="text-align: left;"><pur><code>\sqcup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bmod</code></td>
+<td style="text-align: left;"><pur><code>\bmod</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\curlyvee</code></td>
+<td style="text-align: left;"><pur><code>\curlyvee</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:x\mod a</code></td>
+<td style="text-align: left;"><pur><code>x\mod a</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\times</code></td>
+<td style="text-align: left;"><pur><code>\times</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\boxdot</code></td>
+<td style="text-align: left;"><pur><code>\boxdot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\curlywedge</code></td>
+<td style="text-align: left;"><pur><code>\curlywedge</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mp</code></td>
+<td style="text-align: left;"><pur><code>\mp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\unlhd</code></td>
+<td style="text-align: left;"><pur><code>\unlhd</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\boxminus</code></td>
+<td style="text-align: left;"><pur><code>\boxminus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\div</code></td>
+<td style="text-align: left;"><pur><code>\div</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\odot</code></td>
+<td style="text-align: left;"><pur><code>\odot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\unrhd</code></td>
+<td style="text-align: left;"><pur><code>\unrhd</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\boxplus</code></td>
+<td style="text-align: left;"><pur><code>\boxplus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\divideontimes</code></td>
+<td style="text-align: left;"><pur><code>\divideontimes</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ominus</code></td>
+<td style="text-align: left;"><pur><code>\ominus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\uplus</code></td>
+<td style="text-align: left;"><pur><code>\uplus</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\boxtimes</code></td>
+<td style="text-align: left;"><pur><code>\boxtimes</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dotplus</code></td>
+<td style="text-align: left;"><pur><code>\dotplus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\oplus</code></td>
+<td style="text-align: left;"><pur><code>\oplus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vee</code></td>
+<td style="text-align: left;"><pur><code>\vee</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bullet</code></td>
+<td style="text-align: left;"><pur><code>\bullet</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\doublebarwedge</code></td>
+<td style="text-align: left;"><pur><code>\doublebarwedge</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\otimes</code></td>
+<td style="text-align: left;"><pur><code>\otimes</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\veebar</code></td>
+<td style="text-align: left;"><pur><code>\veebar</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Cap</code></td>
+<td style="text-align: left;"><pur><code>\Cap</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\doublecap</code></td>
+<td style="text-align: left;"><pur><code>\doublecap</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\oslash</code></td>
+<td style="text-align: left;"><pur><code>\oslash</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\wedge</code></td>
+<td style="text-align: left;"><pur><code>\wedge</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\cap</code></td>
+<td style="text-align: left;"><pur><code>\cap</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\doublecup</code></td>
+<td style="text-align: left;"><pur><code>\doublecup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\pm</code></td>
+<td style="text-align: left;"><pur><code>\pm</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\plusmn</code></td>
+<td style="text-align: left;"><pur><code>\plusmn</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\wr</code></td>
+<td style="text-align: left;"><pur><code>\wr</code></pur>`</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="relation">
+<h2 id="relation">Relation</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="relation_1">Relation</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:=</code></td>
+<td style="text-align: left;"><pur><code>=</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\doteqdot</code></td>
+<td style="text-align: left;"><pur><code>\doteqdot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lessapprox</code></td>
+<td style="text-align: left;"><pur><code>\lessapprox</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\smile</code></td>
+<td style="text-align: left;"><pur><code>\smile</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:&lt;</code></td>
+<td style="text-align: left;"><pur><code>&lt;</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\eqcirc</code></td>
+<td style="text-align: left;"><pur><code>\eqcirc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lesseqgtr</code></td>
+<td style="text-align: left;"><pur><code>\lesseqgtr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqsubset</code></td>
+<td style="text-align: left;"><pur><code>\sqsubset</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:&gt;</code></td>
+<td style="text-align: left;"><pur><code>&gt;</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\eqcolon</code></td>
+<td style="text-align: left;"><pur><code>\eqcolon</code></pur> or <pur><code>\minuscolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lesseqqgtr</code></td>
+<td style="text-align: left;"><pur><code>\lesseqqgtr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqsubseteq</code></td>
+<td style="text-align: left;"><pur><code>\sqsubseteq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX::</code></td>
+<td style="text-align: left;"><pur><code>:</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Eqcolon</code></td>
+<td style="text-align: left;"><pur><code>\Eqcolon</code></pur> or <pur><code>\minuscoloncolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lessgtr</code></td>
+<td style="text-align: left;"><pur><code>\lessgtr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqsupset</code></td>
+<td style="text-align: left;"><pur><code>\sqsupset</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\approx</code></td>
+<td style="text-align: left;"><pur><code>\approx</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\eqqcolon</code></td>
+<td style="text-align: left;"><pur><code>\eqqcolon</code></pur> or <pur><code>\equalscolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lesssim</code></td>
+<td style="text-align: left;"><pur><code>\lesssim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sqsupseteq</code></td>
+<td style="text-align: left;"><pur><code>\sqsupseteq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\approxcolon</code></td>
+<td style="text-align: left;"><pur><code>\approxcolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Eqqcolon</code></td>
+<td style="text-align: left;"><pur><code>\Eqqcolon</code></pur> or <pur><code>\equalscoloncolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ll</code></td>
+<td style="text-align: left;"><pur><code>\ll</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Subset</code></td>
+<td style="text-align: left;"><pur><code>\Subset</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\approxcoloncolon</code></td>
+<td style="text-align: left;"><pur><code>\approxcoloncolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\eqsim</code></td>
+<td style="text-align: left;"><pur><code>\eqsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lll</code></td>
+<td style="text-align: left;"><pur><code>\lll</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\subset</code></td>
+<td style="text-align: left;"><pur><code>\subset</code></pur> or <pur><code>\sub</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\approxeq</code></td>
+<td style="text-align: left;"><pur><code>\approxeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\eqslantgtr</code></td>
+<td style="text-align: left;"><pur><code>\eqslantgtr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\llless</code></td>
+<td style="text-align: left;"><pur><code>\llless</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\subseteq</code></td>
+<td style="text-align: left;"><pur><code>\subseteq</code></pur> or <pur><code>\sube</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\asymp</code></td>
+<td style="text-align: left;"><pur><code>\asymp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\eqslantless</code></td>
+<td style="text-align: left;"><pur><code>\eqslantless</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lt</code></td>
+<td style="text-align: left;"><pur><code>\lt</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\subseteqq</code></td>
+<td style="text-align: left;"><pur><code>\subseteqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\backepsilon</code></td>
+<td style="text-align: left;"><pur><code>\backepsilon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\equiv</code></td>
+<td style="text-align: left;"><pur><code>\equiv</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mid</code></td>
+<td style="text-align: left;"><pur><code>\mid</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succ</code></td>
+<td style="text-align: left;"><pur><code>\succ</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\backsim</code></td>
+<td style="text-align: left;"><pur><code>\backsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\fallingdotseq</code></td>
+<td style="text-align: left;"><pur><code>\fallingdotseq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\models</code></td>
+<td style="text-align: left;"><pur><code>\models</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succapprox</code></td>
+<td style="text-align: left;"><pur><code>\succapprox</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\backsimeq</code></td>
+<td style="text-align: left;"><pur><code>\backsimeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\frown</code></td>
+<td style="text-align: left;"><pur><code>\frown</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\multimap</code></td>
+<td style="text-align: left;"><pur><code>\multimap</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succcurlyeq</code></td>
+<td style="text-align: left;"><pur><code>\succcurlyeq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\between</code></td>
+<td style="text-align: left;"><pur><code>\between</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ge</code></td>
+<td style="text-align: left;"><pur><code>\ge</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\origof</code></td>
+<td style="text-align: left;"><pur><code>\origof</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succeq</code></td>
+<td style="text-align: left;"><pur><code>\succeq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bowtie</code></td>
+<td style="text-align: left;"><pur><code>\bowtie</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\geq</code></td>
+<td style="text-align: left;"><pur><code>\geq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\owns</code></td>
+<td style="text-align: left;"><pur><code>\owns</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succsim</code></td>
+<td style="text-align: left;"><pur><code>\succsim</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\bumpeq</code></td>
+<td style="text-align: left;"><pur><code>\bumpeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\geqq</code></td>
+<td style="text-align: left;"><pur><code>\geqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\parallel</code></td>
+<td style="text-align: left;"><pur><code>\parallel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Supset</code></td>
+<td style="text-align: left;"><pur><code>\Supset</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Bumpeq</code></td>
+<td style="text-align: left;"><pur><code>\Bumpeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\geqslant</code></td>
+<td style="text-align: left;"><pur><code>\geqslant</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\perp</code></td>
+<td style="text-align: left;"><pur><code>\perp</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\supset</code></td>
+<td style="text-align: left;"><pur><code>\supset</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\circeq</code></td>
+<td style="text-align: left;"><pur><code>\circeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gg</code></td>
+<td style="text-align: left;"><pur><code>\gg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\pitchfork</code></td>
+<td style="text-align: left;"><pur><code>\pitchfork</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\supseteq</code></td>
+<td style="text-align: left;"><pur><code>\supseteq</code></pur> or <pur><code>\supe</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\colonapprox</code></td>
+<td style="text-align: left;"><pur><code>\colonapprox</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ggg</code></td>
+<td style="text-align: left;"><pur><code>\ggg</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\prec</code></td>
+<td style="text-align: left;"><pur><code>\prec</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\supseteqq</code></td>
+<td style="text-align: left;"><pur><code>\supseteqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Colonapprox</code></td>
+<td style="text-align: left;"><pur><code>\Colonapprox</code></pur> or <pur><code>\coloncolonapprox</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gggtr</code></td>
+<td style="text-align: left;"><pur><code>\gggtr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\precapprox</code></td>
+<td style="text-align: left;"><pur><code>\precapprox</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\thickapprox</code></td>
+<td style="text-align: left;"><pur><code>\thickapprox</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\coloneq</code></td>
+<td style="text-align: left;"><pur><code>\coloneq</code></pur> or <pur><code>\colonminus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gt</code></td>
+<td style="text-align: left;"><pur><code>\gt</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\preccurlyeq</code></td>
+<td style="text-align: left;"><pur><code>\preccurlyeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\thicksim</code></td>
+<td style="text-align: left;"><pur><code>\thicksim</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Coloneq</code></td>
+<td style="text-align: left;"><pur><code>\Coloneq</code></pur> or <pur><code>\coloncolonminus</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gtrapprox</code></td>
+<td style="text-align: left;"><pur><code>\gtrapprox</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\preceq</code></td>
+<td style="text-align: left;"><pur><code>\preceq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\trianglelefteq</code></td>
+<td style="text-align: left;"><pur><code>\trianglelefteq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\coloneqq</code></td>
+<td style="text-align: left;"><pur><code>\coloneqq</code></pur> or <pur><code>\colonequals</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gtreqless</code></td>
+<td style="text-align: left;"><pur><code>\gtreqless</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\precsim</code></td>
+<td style="text-align: left;"><pur><code>\precsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\triangleq</code></td>
+<td style="text-align: left;"><pur><code>\triangleq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Coloneqq</code></td>
+<td style="text-align: left;"><pur><code>\Coloneqq</code></pur> or <pur><code>\coloncolonequals</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gtreqqless</code></td>
+<td style="text-align: left;"><pur><code>\gtreqqless</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\propto</code></td>
+<td style="text-align: left;"><pur><code>\propto</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\trianglerighteq</code></td>
+<td style="text-align: left;"><pur><code>\trianglerighteq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\colonsim</code></td>
+<td style="text-align: left;"><pur><code>\colonsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gtrless</code></td>
+<td style="text-align: left;"><pur><code>\gtrless</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\risingdotseq</code></td>
+<td style="text-align: left;"><pur><code>\risingdotseq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varpropto</code></td>
+<td style="text-align: left;"><pur><code>\varpropto</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Colonsim</code></td>
+<td style="text-align: left;"><pur><code>\Colonsim</code></pur> or <pur><code>\coloncolonsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\gtrsim</code></td>
+<td style="text-align: left;"><pur><code>\gtrsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\shortmid</code></td>
+<td style="text-align: left;"><pur><code>\shortmid</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vartriangle</code></td>
+<td style="text-align: left;"><pur><code>\vartriangle</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\cong</code></td>
+<td style="text-align: left;"><pur><code>\cong</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\imageof</code></td>
+<td style="text-align: left;"><pur><code>\imageof</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\shortparallel</code></td>
+<td style="text-align: left;"><pur><code>\shortparallel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vartriangleleft</code></td>
+<td style="text-align: left;"><pur><code>\vartriangleleft</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\curlyeqprec</code></td>
+<td style="text-align: left;"><pur><code>\curlyeqprec</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\in</code></td>
+<td style="text-align: left;"><pur><code>\in</code></pur> or <pur><code>\isin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sim</code></td>
+<td style="text-align: left;"><pur><code>\sim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vartriangleright</code></td>
+<td style="text-align: left;"><pur><code>\vartriangleright</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\curlyeqsucc</code></td>
+<td style="text-align: left;"><pur><code>\curlyeqsucc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Join</code></td>
+<td style="text-align: left;"><pur><code>\Join</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\simcolon</code></td>
+<td style="text-align: left;"><pur><code>\simcolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vcentcolon</code></td>
+<td style="text-align: left;"><pur><code>\vcentcolon</code></pur> or <pur><code>\ratio</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\dashv</code></td>
+<td style="text-align: left;"><pur><code>\dashv</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\le</code></td>
+<td style="text-align: left;"><pur><code>\le</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\simcoloncolon</code></td>
+<td style="text-align: left;"><pur><code>\simcoloncolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vdash</code></td>
+<td style="text-align: left;"><pur><code>\vdash</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\dblcolon</code></td>
+<td style="text-align: left;"><pur><code>\dblcolon</code></pur> or <pur><code>\coloncolon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leq</code></td>
+<td style="text-align: left;"><pur><code>\leq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\simeq</code></td>
+<td style="text-align: left;"><pur><code>\simeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vDash</code></td>
+<td style="text-align: left;"><pur><code>\vDash</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\doteq</code></td>
+<td style="text-align: left;"><pur><code>\doteq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leqq</code></td>
+<td style="text-align: left;"><pur><code>\leqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\smallfrown</code></td>
+<td style="text-align: left;"><pur><code>\smallfrown</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Vdash</code></td>
+<td style="text-align: left;"><pur><code>\Vdash</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Doteq</code></td>
+<td style="text-align: left;"><pur><code>\Doteq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leqslant</code></td>
+<td style="text-align: left;"><pur><code>\leqslant</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\smallsmile</code></td>
+<td style="text-align: left;"><pur><code>\smallsmile</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Vvdash</code></td>
+<td style="text-align: left;"><pur><code>\Vvdash</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="negative-relationship">Negative relationship</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gnapprox</code></td>
+<td style="text-align: left;"><pur><code>\gnapprox</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ngeqslant</code></td>
+<td style="text-align: left;"><pur><code>\ngeqslant</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nsubseteq</code></td>
+<td style="text-align: left;"><pur><code>\nsubseteq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\precneqq</code></td>
+<td style="text-align: left;"><pur><code>\precneqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gneq</code></td>
+<td style="text-align: left;"><pur><code>\gneq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ngtr</code></td>
+<td style="text-align: left;"><pur><code>\ngtr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nsubseteqq</code></td>
+<td style="text-align: left;"><pur><code>\nsubseteqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\precnsim</code></td>
+<td style="text-align: left;"><pur><code>\precnsim</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gneqq</code></td>
+<td style="text-align: left;"><pur><code>\gneqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nleq</code></td>
+<td style="text-align: left;"><pur><code>\nleq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nsucc</code></td>
+<td style="text-align: left;"><pur><code>\nsucc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\subsetneq</code></td>
+<td style="text-align: left;"><pur><code>\subsetneq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gnsim</code></td>
+<td style="text-align: left;"><pur><code>\gnsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nleqq</code></td>
+<td style="text-align: left;"><pur><code>\nleqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nsucceq</code></td>
+<td style="text-align: left;"><pur><code>\nsucceq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\subsetneqq</code></td>
+<td style="text-align: left;"><pur><code>\subsetneqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gvertneqq</code></td>
+<td style="text-align: left;"><pur><code>\gvertneqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nleqslant</code></td>
+<td style="text-align: left;"><pur><code>\nleqslant</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nsupseteq</code></td>
+<td style="text-align: left;"><pur><code>\nsupseteq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succnapprox</code></td>
+<td style="text-align: left;"><pur><code>\succnapprox</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lnapprox</code></td>
+<td style="text-align: left;"><pur><code>\lnapprox</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nless</code></td>
+<td style="text-align: left;"><pur><code>\nless</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nsupseteqq</code></td>
+<td style="text-align: left;"><pur><code>\nsupseteqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succneqq</code></td>
+<td style="text-align: left;"><pur><code>\succneqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lneq</code></td>
+<td style="text-align: left;"><pur><code>\lneq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nmid</code></td>
+<td style="text-align: left;"><pur><code>\nmid</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ntriangleleft</code></td>
+<td style="text-align: left;"><pur><code>\ntriangleleft</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\succnsim</code></td>
+<td style="text-align: left;"><pur><code>\succnsim</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lneqq</code></td>
+<td style="text-align: left;"><pur><code>\lneqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\notin</code></td>
+<td style="text-align: left;"><pur><code>\notin</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ntrianglelefteq</code></td>
+<td style="text-align: left;"><pur><code>\ntrianglelefteq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\supsetneq</code></td>
+<td style="text-align: left;"><pur><code>\supsetneq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lnsim</code></td>
+<td style="text-align: left;"><pur><code>\lnsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\notni</code></td>
+<td style="text-align: left;"><pur><code>\notni</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ntriangleright</code></td>
+<td style="text-align: left;"><pur><code>\ntriangleright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\supsetneqq</code></td>
+<td style="text-align: left;"><pur><code>\supsetneqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lvertneqq</code></td>
+<td style="text-align: left;"><pur><code>\lvertneqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nparallel</code></td>
+<td style="text-align: left;"><pur><code>\nparallel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ntrianglerighteq</code></td>
+<td style="text-align: left;"><pur><code>\ntrianglerighteq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varsubsetneq</code></td>
+<td style="text-align: left;"><pur><code>\varsubsetneq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ncong</code></td>
+<td style="text-align: left;"><pur><code>\ncong</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nprec</code></td>
+<td style="text-align: left;"><pur><code>\nprec</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nvdash</code></td>
+<td style="text-align: left;"><pur><code>\nvdash</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varsubsetneqq</code></td>
+<td style="text-align: left;"><pur><code>\varsubsetneqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ne</code></td>
+<td style="text-align: left;"><pur><code>\ne</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\npreceq</code></td>
+<td style="text-align: left;"><pur><code>\npreceq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nvDash</code></td>
+<td style="text-align: left;"><pur><code>\nvDash</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varsupsetneq</code></td>
+<td style="text-align: left;"><pur><code>\varsupsetneq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\neq</code></td>
+<td style="text-align: left;"><pur><code>\neq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nshortmid</code></td>
+<td style="text-align: left;"><pur><code>\nshortmid</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nVDash</code></td>
+<td style="text-align: left;"><pur><code>\nVDash</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\varsupsetneqq</code></td>
+<td style="text-align: left;"><pur><code>\varsupsetneqq</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ngeq</code></td>
+<td style="text-align: left;"><pur><code>\ngeq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nshortparallel</code></td>
+<td style="text-align: left;"><pur><code>\nshortparallel</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nVdash</code></td>
+<td style="text-align: left;"><pur><code>\nVdash</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\ngeqq</code></td>
+<td style="text-align: left;"><pur><code>\ngeqq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nsim</code></td>
+<td style="text-align: left;"><pur><code>\nsim</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\precnapprox</code></td>
+<td style="text-align: left;"><pur><code>\precnapprox</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p><code>KaTeX:\not =</code> <pur><code>\not =</code></pur></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrow">Arrow</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\circlearrowleft</code></td>
+<td style="text-align: left;"><pur><code>\circlearrowleft</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftharpoonup</code></td>
+<td style="text-align: left;"><pur><code>\leftharpoonup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rArr</code></td>
+<td style="text-align: left;"><pur><code>\rArr</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\circlearrowright</code></td>
+<td style="text-align: left;"><pur><code>\circlearrowright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftleftarrows</code></td>
+<td style="text-align: left;"><pur><code>\leftleftarrows</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rarr</code></td>
+<td style="text-align: left;"><pur><code>\rarr</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\curvearrowleft</code></td>
+<td style="text-align: left;"><pur><code>\curvearrowleft</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\leftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\restriction</code></td>
+<td style="text-align: left;"><pur><code>\restriction</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\curvearrowright</code></td>
+<td style="text-align: left;"><pur><code>\curvearrowright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Leftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\Leftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightarrow</code></td>
+<td style="text-align: left;"><pur><code>\rightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Darr</code></td>
+<td style="text-align: left;"><pur><code>\Darr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftrightarrows</code></td>
+<td style="text-align: left;"><pur><code>\leftrightarrows</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Rightarrow</code></td>
+<td style="text-align: left;"><pur><code>\Rightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\dArr</code></td>
+<td style="text-align: left;"><pur><code>\dArr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftrightharpoons</code></td>
+<td style="text-align: left;"><pur><code>\leftrightharpoons</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightarrowtail</code></td>
+<td style="text-align: left;"><pur><code>\rightarrowtail</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\darr</code></td>
+<td style="text-align: left;"><pur><code>\darr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\leftrightsquigarrow</code></td>
+<td style="text-align: left;"><pur><code>\leftrightsquigarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightharpoondown</code></td>
+<td style="text-align: left;"><pur><code>\rightharpoondown</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\dashleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\dashleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Lleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\Lleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightharpoonup</code></td>
+<td style="text-align: left;"><pur><code>\rightharpoonup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\dashrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\dashrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\longleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\longleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightleftarrows</code></td>
+<td style="text-align: left;"><pur><code>\rightleftarrows</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\downarrow</code></td>
+<td style="text-align: left;"><pur><code>\downarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Longleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\Longleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightleftharpoons</code></td>
+<td style="text-align: left;"><pur><code>\rightleftharpoons</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Downarrow</code></td>
+<td style="text-align: left;"><pur><code>\Downarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\longleftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\longleftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightrightarrows</code></td>
+<td style="text-align: left;"><pur><code>\rightrightarrows</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\downdownarrows</code></td>
+<td style="text-align: left;"><pur><code>\downdownarrows</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Longleftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\Longleftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\rightsquigarrow</code></td>
+<td style="text-align: left;"><pur><code>\rightsquigarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\downharpoonleft</code></td>
+<td style="text-align: left;"><pur><code>\downharpoonleft</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\longmapsto</code></td>
+<td style="text-align: left;"><pur><code>\longmapsto</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Rrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\Rrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\downharpoonright</code></td>
+<td style="text-align: left;"><pur><code>\downharpoonright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\longrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\longrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Rsh</code></td>
+<td style="text-align: left;"><pur><code>\Rsh</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\gets</code></td>
+<td style="text-align: left;"><pur><code>\gets</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Longrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\Longrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\searrow</code></td>
+<td style="text-align: left;"><pur><code>\searrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Harr</code></td>
+<td style="text-align: left;"><pur><code>\Harr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\looparrowleft</code></td>
+<td style="text-align: left;"><pur><code>\looparrowleft</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\swarrow</code></td>
+<td style="text-align: left;"><pur><code>\swarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\hArr</code></td>
+<td style="text-align: left;"><pur><code>\hArr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\looparrowright</code></td>
+<td style="text-align: left;"><pur><code>\looparrowright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\to</code></td>
+<td style="text-align: left;"><pur><code>\to</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\harr</code></td>
+<td style="text-align: left;"><pur><code>\harr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Lrarr</code></td>
+<td style="text-align: left;"><pur><code>\Lrarr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\twoheadleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\twoheadleftarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\hookleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\hookleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lrArr</code></td>
+<td style="text-align: left;"><pur><code>\lrArr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\twoheadrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\twoheadrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\hookrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\hookrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lrarr</code></td>
+<td style="text-align: left;"><pur><code>\lrarr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Uarr</code></td>
+<td style="text-align: left;"><pur><code>\Uarr</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\iff</code></td>
+<td style="text-align: left;"><pur><code>\iff</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Lsh</code></td>
+<td style="text-align: left;"><pur><code>\Lsh</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\uArr</code></td>
+<td style="text-align: left;"><pur><code>\uArr</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\impliedby</code></td>
+<td style="text-align: left;"><pur><code>\impliedby</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mapsto</code></td>
+<td style="text-align: left;"><pur><code>\mapsto</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\uarr</code></td>
+<td style="text-align: left;"><pur><code>\uarr</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\implies</code></td>
+<td style="text-align: left;"><pur><code>\implies</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nearrow</code></td>
+<td style="text-align: left;"><pur><code>\nearrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\uparrow</code></td>
+<td style="text-align: left;"><pur><code>\uparrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Larr</code></td>
+<td style="text-align: left;"><pur><code>\Larr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\nleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Uparrow</code></td>
+<td style="text-align: left;"><pur><code>\Uparrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lArr</code></td>
+<td style="text-align: left;"><pur><code>\lArr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nLeftarrow</code></td>
+<td style="text-align: left;"><pur><code>\nLeftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\updownarrow</code></td>
+<td style="text-align: left;"><pur><code>\updownarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\larr</code></td>
+<td style="text-align: left;"><pur><code>\larr</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nleftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\nleftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Updownarrow</code></td>
+<td style="text-align: left;"><pur><code>\Updownarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\leadsto</code></td>
+<td style="text-align: left;"><pur><code>\leadsto</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nLeftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\nLeftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\upharpoonleft</code></td>
+<td style="text-align: left;"><pur><code>\upharpoonleft</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\leftarrow</code></td>
+<td style="text-align: left;"><pur><code>\leftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\nrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\upharpoonright</code></td>
+<td style="text-align: left;"><pur><code>\upharpoonright</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Leftarrow</code></td>
+<td style="text-align: left;"><pur><code>\Leftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nRightarrow</code></td>
+<td style="text-align: left;"><pur><code>\nRightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\upuparrows</code></td>
+<td style="text-align: left;"><pur><code>\upuparrows</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\leftarrowtail</code></td>
+<td style="text-align: left;"><pur><code>\leftarrowtail</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nwarrow</code></td>
+<td style="text-align: left;"><pur><code>\nwarrow</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\leftharpoondown</code></td>
+<td style="text-align: left;"><pur><code>\leftharpoondown</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Rarr</code></td>
+<td style="text-align: left;"><pur><code>\Rarr</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="extensible-arrows">Extensible arrows</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\xleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xrightarrow[under]</code></td>
+<td style="text-align: left;"><pur><code>\xrightarrow[under]</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xLeftarrow</code></td>
+<td style="text-align: left;"><pur><code>\xLeftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xRightarrow</code></td>
+<td style="text-align: left;"><pur><code>\xRightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xleftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\xleftrightarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xLeftrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\xLeftrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xhookleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\xhookleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xhookrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\xhookrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xtwoheadleftarrow</code></td>
+<td style="text-align: left;"><pur><code>\xtwoheadleftarrow</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xtwoheadrightarrow</code></td>
+<td style="text-align: left;"><pur><code>\xtwoheadrightarrow</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xleftharpoonup</code></td>
+<td style="text-align: left;"><pur><code>\xleftharpoonup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xrightharpoonup</code></td>
+<td style="text-align: left;"><pur><code>\xrightharpoonup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xleftharpoondown</code></td>
+<td style="text-align: left;"><pur><code>\xleftharpoondown</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xrightharpoondown</code></td>
+<td style="text-align: left;"><pur><code>\xrightharpoondown</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xleftrightharpoons</code></td>
+<td style="text-align: left;"><pur><code>\xleftrightharpoons</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xrightleftharpoons</code></td>
+<td style="text-align: left;"><pur><code>\xrightleftharpoons</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xtofrom</code></td>
+<td style="text-align: left;"><pur><code>\xtofrom</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\xmapsto</code></td>
+<td style="text-align: left;"><pur><code>\xmapsto</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\xlongequal</code></td>
+<td style="text-align: left;"><pur><code>\xlongequal</code></pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="symbols-and-punctuation">
+<h2 id="symbols-and-punctuation">Symbols and Punctuation</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="symbols-and-punctuation_1">Symbols and Punctuation</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:% comment</code></td>
+<td style="text-align: left;"><pur><code>% comment</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dots</code></td>
+<td style="text-align: left;"><pur><code>\dots</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\KaTeX</code></td>
+<td style="text-align: left;"><pur><code>\KaTeX</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\%</code></td>
+<td style="text-align: left;"><pur><code>\%</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\cdots</code></td>
+<td style="text-align: left;"><pur><code>\cdots</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\LaTeX</code></td>
+<td style="text-align: left;"><pur><code>\LaTeX</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\#</code></td>
+<td style="text-align: left;"><pur><code>\#</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ddots</code></td>
+<td style="text-align: left;"><pur><code>\ddots</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\TeX</code></td>
+<td style="text-align: left;"><pur><code>\TeX</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\&amp;</code></td>
+<td style="text-align: left;"><pur><code>\&amp;</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ldots</code></td>
+<td style="text-align: left;"><pur><code>\ldots</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\nabla</code></td>
+<td style="text-align: left;"><pur><code>\nabla</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\_</code></td>
+<td style="text-align: left;"><pur><code>\_</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\vdots</code></td>
+<td style="text-align: left;"><pur><code>\vdots</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\infty</code></td>
+<td style="text-align: left;"><pur><code>\infty</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dotsb</code></td>
+<td style="text-align: left;"><pur><code>\dotsb</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\infin</code></td>
+<td style="text-align: left;"><pur><code>\infin</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dotsc</code></td>
+<td style="text-align: left;"><pur><code>\dotsc</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\checkmark</code></td>
+<td style="text-align: left;"><pur><code>\checkmark</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dotsi</code></td>
+<td style="text-align: left;"><pur><code>\dotsi</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dag</code></td>
+<td style="text-align: left;"><pur><code>\dag</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dotsm</code></td>
+<td style="text-align: left;"><pur><code>\dotsm</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dagger</code></td>
+<td style="text-align: left;"><pur><code>\dagger</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\dotso</code></td>
+<td style="text-align: left;"><pur><code>\dotso</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sdot</code></td>
+<td style="text-align: left;"><pur><code>\sdot</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ddag</code></td>
+<td style="text-align: left;"><pur><code>\ddag</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mathellipsis</code></td>
+<td style="text-align: left;"><pur><code>\mathellipsis</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\ddagger</code></td>
+<td style="text-align: left;"><pur><code>\ddagger</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:`</code></td>
+<td style="text-align: left;"><pur>`</pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Box</code></td>
+<td style="text-align: left;"><pur><code>\Box</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Dagger</code></td>
+<td style="text-align: left;"><pur><code>\Dagger</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lq</code></td>
+<td style="text-align: left;"><pur><code>\lq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\square</code></td>
+<td style="text-align: left;"><pur><code>\square</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\angle</code></td>
+<td style="text-align: left;"><pur><code>\angle</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\blacksquare</code></td>
+<td style="text-align: left;"><pur><code>\blacksquare</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\measuredangle</code></td>
+<td style="text-align: left;"><pur><code>\measuredangle</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\rq</code></td>
+<td style="text-align: left;"><pur><code>\rq</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\triangle</code></td>
+<td style="text-align: left;"><pur><code>\triangle</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sphericalangle</code></td>
+<td style="text-align: left;"><pur><code>\sphericalangle</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\triangledown</code></td>
+<td style="text-align: left;"><pur><code>\triangledown</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\top</code></td>
+<td style="text-align: left;"><pur><code>\top</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:"</code></td>
+<td style="text-align: left;"><pur><code>"</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\triangleleft</code></td>
+<td style="text-align: left;"><pur><code>\triangleleft</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bot</code></td>
+<td style="text-align: left;"><pur><code>\bot</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\triangleright</code></td>
+<td style="text-align: left;"><pur><code>\triangleright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\$</code></td>
+<td style="text-align: left;"><pur><code>\$</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\colon</code></td>
+<td style="text-align: left;"><pur><code>\colon</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigtriangledown</code></td>
+<td style="text-align: left;"><pur><code>\bigtriangledown</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\backprime</code></td>
+<td style="text-align: left;"><pur><code>\backprime</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigtriangleup</code></td>
+<td style="text-align: left;"><pur><code>\bigtriangleup</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\pounds</code></td>
+<td style="text-align: left;"><pur><code>\pounds</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\prime</code></td>
+<td style="text-align: left;"><pur><code>\prime</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\blacktriangle</code></td>
+<td style="text-align: left;"><pur><code>\blacktriangle</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mathsterling</code></td>
+<td style="text-align: left;"><pur><code>\mathsterling</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\blacktriangledown</code></td>
+<td style="text-align: left;"><pur><code>\blacktriangledown</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\blacktriangleleft</code></td>
+<td style="text-align: left;"><pur><code>\blacktriangleleft</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\yen</code></td>
+<td style="text-align: left;"><pur><code>\yen</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\blacktriangleright</code></td>
+<td style="text-align: left;"><pur><code>\blacktriangleright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\surd</code></td>
+<td style="text-align: left;"><pur><code>\surd</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\diamond</code></td>
+<td style="text-align: left;"><pur><code>\diamond</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\degree</code></td>
+<td style="text-align: left;"><pur><code>\degree</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Diamond</code></td>
+<td style="text-align: left;"><pur><code>\Diamond</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\lozenge</code></td>
+<td style="text-align: left;"><pur><code>\lozenge</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\mho</code></td>
+<td style="text-align: left;"><pur><code>\mho</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\blacklozenge</code></td>
+<td style="text-align: left;"><pur><code>\blacklozenge</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\diagdown</code></td>
+<td style="text-align: left;"><pur><code>\diagdown</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur> or <pur><code>\P</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\star</code></td>
+<td style="text-align: left;"><pur><code>\star</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\diagup</code></td>
+<td style="text-align: left;"><pur><code>\diagup</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur> or <pur><code>\S</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\bigstar</code></td>
+<td style="text-align: left;"><pur><code>\bigstar</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\flat</code></td>
+<td style="text-align: left;"><pur><code>\flat</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\clubsuit</code></td>
+<td style="text-align: left;"><pur><code>\clubsuit</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\natural</code></td>
+<td style="text-align: left;"><pur><code>\natural</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\copyright</code></td>
+<td style="text-align: left;"><pur><code>\copyright</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\clubs</code></td>
+<td style="text-align: left;"><pur><code>\clubs</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\sharp</code></td>
+<td style="text-align: left;"><pur><code>\sharp</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\circledR</code></td>
+<td style="text-align: left;"><pur><code>\circledR</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\diamondsuit</code></td>
+<td style="text-align: left;"><pur><code>\diamondsuit</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\heartsuit</code></td>
+<td style="text-align: left;"><pur><code>\heartsuit</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\diamonds</code></td>
+<td style="text-align: left;"><pur><code>\diamonds</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\hearts</code></td>
+<td style="text-align: left;"><pur><code>\hearts</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\circledS</code></td>
+<td style="text-align: left;"><pur><code>\circledS</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\spadesuit</code></td>
+<td style="text-align: left;"><pur><code>\spadesuit</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\spades</code></td>
+<td style="text-align: left;"><pur><code>\spades</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\text</code></td>
+<td style="text-align: left;"><pur><code>\text</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\maltese</code></td>
+<td style="text-align: left;"><pur><code>\maltese</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\minuso</code></td>
+<td style="text-align: left;"><pur><code>\minuso</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="environments">
+<h2 id="environments">Environments</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="environments-1">Environments 1</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-2">Environments 2</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-3">Environments 3</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-4">Environments 4</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-5">Environments 5</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-6">Environments 6</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-7">Environments 7</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-8">Environments 8</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">def</span>\<span class="nv">arraystretch</span>
+<span class="w">   </span>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">c</span><span class="w"> </span>\\<span class="w"> </span>\<span class="nv">hline</span>
+<span class="w">   </span><span class="nv">d</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">e</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">f</span><span class="w"> </span>\\
+<span class="w">   </span>\<span class="nv">hdashline</span>
+<span class="w">   </span><span class="nv">g</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">h</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">i</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\def\arraystretch</span>
+   <span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="nb">&amp;</span> c <span class="k">\\</span> <span class="k">\hline</span>
+   d <span class="nb">&amp;</span> e <span class="nb">&amp;</span> f <span class="k">\\</span>
+   <span class="k">\hdashline</span>
+   g <span class="nb">&amp;</span> h <span class="nb">&amp;</span> i
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-9">Environments 9</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code><span class="nv">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span>\<span class="nv">text</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span>\<span class="nv">text</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>x = <span class="k">\begin</span>
+   a <span class="nb">&amp;</span><span class="k">\text</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span><span class="k">\text</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-10">Environments 10</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span>\<span class="nv">text</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span>\<span class="nv">text</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>⇒…
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span><span class="k">\text</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span><span class="k">\text</span> d
+<span class="k">\end</span>⇒…
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-11">Environments 11</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">c</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="nv">d</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a <span class="nb">&amp;</span> b <span class="k">\\</span>
+   c <span class="nb">&amp;</span> d
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-12">Environments 12</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\sum_
+   i\in\Lambda\\
+   0&lt;j&lt;n
+\end}
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\sum_</span>
+   i<span class="k">\in\Lambda\\</span>
+   0&lt;j&lt;n
+<span class="k">\end</span><span class="nb">}</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-13">Environments 13</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+\<span class="nv">begin</span><span class="w">  </span><span class="nv">a</span><span class="w"> </span><span class="o">&amp;=</span><span class="nv">b</span><span class="o">+</span><span class="nv">c</span>\\
+<span class="w">      </span><span class="o">&amp;=</span><span class="nv">e</span><span class="o">+</span><span class="nv">f</span>
+\<span class="k">end</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+<span class="k">\begin</span>  a <span class="nb">&amp;</span>=b+c<span class="k">\\</span>
+      <span class="nb">&amp;</span>=e+f
+<span class="k">\end</span>
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-14">Environments 14</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="o">&amp;=</span><span class="nv">b</span><span class="o">+</span><span class="nv">c</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">d</span><span class="o">+</span><span class="nv">e</span><span class="o">&amp;=</span><span class="nv">f</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a<span class="nb">&amp;</span>=b+c <span class="k">\\</span>
+   d+e<span class="nb">&amp;</span>=f
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-15">Environments 15</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="nv">a</span><span class="o">=</span><span class="nv">b</span><span class="w"> </span>\\
+<span class="w">   </span><span class="nv">e</span><span class="o">=</span><span class="nv">b</span><span class="o">+</span><span class="nv">c</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   a=b <span class="k">\\</span>
+   e=b+c
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-16">Environments 16</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code>\<span class="nv">begin</span>
+<span class="w">   </span><span class="mi">10</span><span class="o">&amp;</span><span class="nv">x</span><span class="o">+&amp;</span><span class="mi">3</span><span class="o">&amp;</span><span class="nv">y</span><span class="o">=</span><span class="mi">2</span>\\
+<span class="w">   </span><span class="mi">3</span><span class="o">&amp;</span><span class="nv">x</span><span class="o">+&amp;</span><span class="mi">13</span><span class="o">&amp;</span><span class="nv">y</span><span class="o">=</span><span class="mi">4</span>
+\<span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   10<span class="nb">&amp;</span>x+<span class="nb">&amp;</span>3<span class="nb">&amp;</span>y=2<span class="k">\\</span>
+   3<span class="nb">&amp;</span>x+<span class="nb">&amp;</span>13<span class="nb">&amp;</span>y=4
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="environments-17">Environments 17</h3>
+<div class="section">
+<!--rehype:body-style=display: flex;flex-direction: row;justify-content: flex-start;-->
+
+<div class="codehilite"><pre><span></span><code><span class="err">\</span><span class="k">begin</span>
+<span class="w">   </span><span class="n">A</span><span class="w"> </span><span class="err">@</span><span class="o">&gt;</span><span class="n">a</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="n">B</span><span class="w"> </span><span class="err">\\</span>
+<span class="nv">@VbVV</span><span class="w"> </span><span class="nv">@AAcA</span><span class="w"> </span><span class="err">\\</span>
+<span class="w">   </span><span class="n">C</span><span class="w"> </span><span class="err">@</span><span class="o">=</span><span class="w"> </span><span class="n">D</span>
+<span class="err">\</span><span class="k">end</span>
+</code></pre></div>
+
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   A @&gt;a&gt;&gt; B <span class="k">\\</span>
+@VbVV @AAcA <span class="k">\\</span>
+   C @= D
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="lists">
+<h2 id="lists">Lists</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="unordered-list">Unordered List</h3>
+<div class="section">
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   <span class="k">\item</span> item1
+   <span class="k">\item</span> item2
+   <span class="k">\item</span> item3
+<span class="k">\end</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="ordered-list">Ordered List</h3>
+<div class="section">
+<!--rehype:style=flex:1;-->
+
+<div class="codehilite"><pre><span></span><code><span class="k">\begin</span>
+   <span class="k">\item</span> item1
+   <span class="k">\item</span> item2
+   <span class="k">\item</span> item3
+<span class="k">\begin</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="style-color-size-and-font">
+<h2 id="style-color-size-and-font">Style, Color, Size and Font</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="color">Color</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\color F=ma</code></td>
+<td style="text-align: left;"><pur><code>\color F=ma</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\textcolor</code></td>
+<td style="text-align: left;"><pur><code>\textcolor</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\textcolor</code></td>
+<td style="text-align: left;"><pur><code>\textcolor</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\colorbox</code></td>
+<td style="text-align: left;"><pur><code>\colorbox</code></pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\fcolorbox</code></td>
+<td style="text-align: left;"><pur><code>\fcolorbox</code></pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="font">Font</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Huge AB</code></td>
+<td style="text-align: left;"><pur><code>\Huge AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\normalsize AB</code></td>
+<td style="text-align: left;"><pur><code>\normalsize AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\normalsize AB</code></td>
+<td style="text-align: left;"><pur>\normalsize AB</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\huge AB</code></td>
+<td style="text-align: left;"><pur><code>\huge AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\huge AB</code></td>
+<td style="text-align: left;"><pur><code>\huge AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\small AB</code></td>
+<td style="text-align: left;"><pur>\small AB</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\LARGE AB</code></td>
+<td style="text-align: left;"><pur><code>\LARGE AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\LARGE AB</code></td>
+<td style="text-align: left;"><pur><code>\LARGE AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\footnotesize AB</code></td>
+<td style="text-align: left;"><pur>\footnotesize AB</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\Large AB</code></td>
+<td style="text-align: left;"><pur><code>\Large AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\Large AB</code></td>
+<td style="text-align: left;"><pur><code>\Large AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\scriptsize AB</code></td>
+<td style="text-align: left;"><pur>\scriptsize AB</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\large AB</code></td>
+<td style="text-align: left;"><pur><code>\large AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\large AB</code></td>
+<td style="text-align: left;"><pur><code>\large AB</code></pur></td>
+<td style="text-align: left;"><code>KaTeX:\tiny AB</code></td>
+<td style="text-align: left;"><pur>\tiny AB</pur></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="style">Style</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+<th style="text-align: left;">:-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\displaystyle\sum_^n</code></td>
+<td style="text-align: left;"><pur>\displaystyle\sum_^n</pur></td>
+<td style="text-align: left;"><code>KaTeX:\textstyle\sum_^n</code></td>
+<td style="text-align: left;"><pur>\textstyle\sum_^n</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\scriptstyle x</code></td>
+<td style="text-align: left;"><pur>\scriptstyle x</pur></td>
+<td style="text-align: left;"><code>KaTeX:\scriptscriptstyle x</code></td>
+<td style="text-align: left;"><pur>\scriptscriptstyle x</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\lim\limits_x</code></td>
+<td style="text-align: left;"><pur>\lim\limits_x</pur></td>
+<td style="text-align: left;"><code>KaTeX:\lim\nolimits_x</code></td>
+<td style="text-align: left;"><pur>\lim\nolimits_x</pur></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>KaTeX:\verb!x^2!</code></td>
+<td style="text-align: left;"><pur>\verb!x^2!</pur></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also See</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://www.latex-project.org/">LaTeX official website</a> <em>(latex-project.org)</em></li>
+<li><a href="https://katex.org/">KaTeX official website</a> <em>(katex.org)</em></li>
+<li><a href="https://www.cmor-faculty.rice.edu/~heinken/latex/symbols.pdf">symbols.pdf</a> <em>(cmor-faculty.rice.edu)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

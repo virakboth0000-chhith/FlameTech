@@ -1,0 +1,1035 @@
+/* Shared dark mode for all FlameTech HTML pages. */
+/* Palette consolidated to emerald (#10b981) as primary accent and teal (#00a884) as secondary accent. */
+body:not(.light-mode) {
+  --primary: #10b981 !important;
+  --secondary: #00a884 !important;
+  --dark: #0f172a !important;
+  --darker: #1e293b !important;
+  --light: #e2e8f0 !important;
+  --accent: #94a3b8 !important;
+  --bg-primary:
+    linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 168, 132, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 12% 2%, rgba(16, 185, 129, 0.1), transparent 28%),
+    radial-gradient(circle at 88% 8%, rgba(0, 168, 132, 0.08), transparent 27%),
+    linear-gradient(135deg, #0f172a 0%, #111827 46%, #0f1f2e 100%) !important;
+  --bg-secondary: rgba(30, 41, 59, 0.88) !important;
+  --bg-card: rgba(30, 41, 59, 0.92) !important;
+  --bg-card-hover: rgba(30, 41, 59, 0.96) !important;
+  --text-primary: #e2e8f0 !important;
+  --text-secondary: #94a3b8 !important;
+  --text-accent: #34d399 !important;
+  --border-primary: rgba(16, 185, 129, 0.18) !important;
+  --border-secondary: rgba(0, 168, 132, 0.18) !important;
+  --shadow-primary: rgba(0, 0, 0, 0.35) !important;
+  --shadow-secondary: rgba(16, 185, 129, 0.15) !important;
+  --code-purple: #a78bfa !important;
+  --code-amber: #fbbf24 !important;
+  --code-line: rgba(16, 185, 129, 0.07) !important;
+  --code-panel: rgba(15, 23, 42, 0.88) !important;
+}
+ 
+body:not(.light-mode),
+body:not(.light-mode),
+body:not(.light-mode) .hero::before {
+  background:
+    linear-gradient(rgba(16,185,129,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,168,132,.035) 1px, transparent 1px),
+    radial-gradient(ellipse at 30% 50%, rgba(16,185,129,.12), transparent 60%),
+    radial-gradient(ellipse at 70% 50%, rgba(0,168,132,.10), transparent 60%) !important;
+  background-size: 28px 28px, 28px 28px, auto, auto !important;
+}
+ 
+body:not(.light-mode),
+body:not(.light-mode) *,
+body:not(.light-mode),
+body:not(.light-mode) * {
+  font-family: "Cascadia Code", "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, "Segoe UI", monospace !important;
+}
+ 
+body:not(.light-mode) .fas,
+body:not(.light-mode) .far,
+body:not(.light-mode) .fab,
+body:not(.light-mode) .fa,
+body:not(.light-mode) .fa-solid,
+body:not(.light-mode) .fa-regular,
+body:not(.light-mode) .fa-brands,
+body:not(.light-mode) [class^="fa-"],
+body:not(.light-mode) [class*=" fa-"] {
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+  font-style: normal;
+  font-variant: normal;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+ 
+body:not(.light-mode) .logo {
+  color: var(--primary) !important;
+  text-shadow: 0 0 20px rgba(16, 185, 129, 0.3) !important;
+}
+ 
+body:not(.light-mode) .logo i,
+body:not(.light-mode) .resource-link,
+body:not(.light-mode) .footer-column h3 {
+  color: var(--secondary) !important;
+}
+ 
+body:not(.light-mode) .nav-links a,
+body:not(.light-mode) p,
+body:not(.light-mode) li,
+body:not(.light-mode) label,
+body:not(.light-mode) .copyright {
+  color: var(--text-secondary) !important;
+  -webkit-text-fill-color: var(--text-secondary) !important;
+}
+ 
+body:not(.light-mode) .nav-links a:hover,
+body:not(.light-mode) .footer-column ul li a:hover {
+  color: var(--primary) !important;
+}
+ 
+/* ── HERO ── */
+body:not(.light-mode) .section-title {
+  text-shadow: 0 0 24px rgba(16, 185, 129, 0.25) !important;
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .hero h1 {
+  text-shadow: none !important;
+  color: transparent !important;
+  background: linear-gradient(135deg, #34d399, #00a884) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+ 
+body:not(.light-mode) .hero h1 .highlight {
+  background: linear-gradient(135deg, #34d399, #00a884) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+ 
+body:not(.light-mode) .hero p,
+body:not(.light-mode) .hero p * {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+}
+ 
+body:not(.light-mode) .hero-badge,
+body:not(.light-mode) .hero-badge * {
+  color: #34d399 !important;
+  -webkit-text-fill-color: #34d399 !important;
+  -webkit-background-clip: unset !important;
+  background-clip: unset !important;
+}
+ 
+body:not(.light-mode) .search-stats {
+  color: #64748b !important;
+  -webkit-text-fill-color: #64748b !important;
+}
+ 
+body:not(.light-mode) .search-box {
+  background: rgba(30, 41, 59, 0.82) !important;
+  border: 1px solid rgba(16, 185, 129, 0.15) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 22px rgba(0, 0, 0, 0.25) !important;
+}
+ 
+body:not(.light-mode) input,
+body:not(.light-mode) textarea,
+body:not(.light-mode) select {
+  background: #1e293bd1 !important;
+  border-color: rgba(16, 185, 129, 0.16) !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) input::placeholder,
+body:not(.light-mode) textarea::placeholder {
+  color: #475569 !important;
+}
+ 
+body:not(.light-mode) .ai-card,
+body:not(.light-mode) .language-card,
+body:not(.light-mode) .platform-card,
+body:not(.light-mode) .resource-card,
+body:not(.light-mode) .shortcut-card,
+body:not(.light-mode) .add-shortcut-btn,
+body:not(.light-mode) .contribution-info,
+body:not(.light-mode) .contribution-form,
+body:not(.light-mode) .faq-item,
+body:not(.light-mode) .tool-card,
+body:not(.light-mode) .feature-card,
+body:not(.light-mode) .task-card,
+body:not(.light-mode) .goal-card,
+body:not(.light-mode) .settings-card,
+body:not(.light-mode) .modal-content {
+  background:
+    linear-gradient(90deg, var(--code-line) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.92)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.12) !important;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28) !important;
+  color: var(--text-primary) !important;
+}
+ 
+body:not(.light-mode) .ai-card:hover,
+body:not(.light-mode) .language-card:hover,
+body:not(.light-mode) .platform-card:hover,
+body:not(.light-mode) .resource-card:hover,
+body:not(.light-mode) .shortcut-card:hover,
+body:not(.light-mode) .tool-card:hover,
+body:not(.light-mode) .feature-card:hover {
+  border-color: rgba(0, 168, 132, 0.3) !important;
+  box-shadow: 0 20px 46px rgba(0, 168, 132, 0.1) !important;
+}
+ 
+body:not(.light-mode) .ai-info h3,
+body:not(.light-mode) .language-card h3,
+body:not(.light-mode) .resource-card h3,
+body:not(.light-mode) .platform-card h3,
+body:not(.light-mode) .shortcut-name,
+body:not(.light-mode) .faq-question,
+body:not(.light-mode) .highlight {
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .ai-info p,
+body:not(.light-mode) .language-card p,
+body:not(.light-mode) .resource-card p,
+body:not(.light-mode) .platform-card p,
+body:not(.light-mode) .shortcut-url,
+body:not(.light-mode) .comparison-feature p {
+  color: #64748b !important;
+}
+ 
+body:not(.light-mode) .ai-category,
+body:not(.light-mode) .category-tab {
+  background: rgba(0, 168, 132, 0.1) !important;
+  border-color: rgba(0, 168, 132, 0.2) !important;
+  color: #00a884 !important;
+}
+ 
+body:not(.light-mode) .btn,
+body:not(.light-mode) .ai-link,
+body:not(.light-mode) .submit-btn,
+body:not(.light-mode) .compare-btn,
+body:not(.light-mode) .modal-btn.btn-save {
+  background: linear-gradient(135deg, #10b981, #00a884) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 26px rgba(16, 185, 129, 0.2) !important;
+}
+ 
+body:not(.light-mode) .btn-secondary,
+body:not(.light-mode) .btn-cancel {
+  background: rgba(30, 41, 59, 0.78) !important;
+  border-color: rgba(16, 185, 129, 0.22) !important;
+  color: #34d399 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2) !important;
+}
+ 
+body:not(.light-mode) .theme-toggle {
+  background: linear-gradient(135deg, #1e293b, #0f2337) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  color: #34d399 !important;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.3) !important;
+}
+ 
+body:not(.light-mode) footer {
+  background:
+    linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px) 0 0 / 28px 28px,
+    linear-gradient(180deg, rgba(30, 41, 59, 0.82), #0a1120) !important;
+  border-top: 1px solid rgba(16, 185, 129, 0.12) !important;
+}
+ 
+body:not(.light-mode) .social-links a {
+  background: #1e293b !important;
+  color: #34d399 !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25) !important;
+}
+ 
+body:not(.light-mode) .social-links a:hover {
+  background: var(--primary) !important;
+  color: #ffffff !important;
+}
+ 
+/* ── FOCUS DASHBOARD ── */
+body:not(.light-mode) .focus-dashboard {
+  background:
+    linear-gradient(90deg, var(--code-line) 1px, transparent 1px) 0 0 / 24px 24px,
+    rgba(15, 23, 42, 0.95) !important;
+  border: 1px solid rgba(16, 185, 129, 0.12) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard-head {
+  border-bottom: 1px solid rgba(16, 185, 129, 0.1) !important;
+  padding-bottom: 12px !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard-head h1 {
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .system-status {
+  color: #10b981 !important;
+}
+ 
+body:not(.light-mode) .focus-stat-card,
+body:not(.light-mode) .focus-panel,
+body:not(.light-mode) .streak-panel,
+body:not(.light-mode) .monthly-panel,
+body:not(.light-mode) .hobby-panel,
+body:not(.light-mode) .next-week-panel,
+body:not(.light-mode) .sessions-panel,
+body:not(.light-mode) .habit-tracker-panel,
+body:not(.light-mode) .daily-progress-panel {
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.92)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.12) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28) !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .focus-stat-card span,
+body:not(.light-mode) .focus-panel h2,
+body:not(.light-mode) .streak-panel > span {
+  color: #64748b !important;
+}
+ 
+body:not(.light-mode) .focus-stat-card strong,
+body:not(.light-mode) .streak-panel strong,
+body:not(.light-mode) .mini-metric strong {
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .focus-stat-card small {
+  color: #475569 !important;
+}
+ 
+body:not(.light-mode) .focus-stat-track {
+  background: #1e293b !important;
+}
+ 
+body:not(.light-mode) .focus-stat-track span,
+body:not(.light-mode) .focus-stat-track b {
+  background: #10b981 !important;
+}
+ 
+body:not(.light-mode) .focus-stat-track.purple span,
+body:not(.light-mode) .focus-stat-track.purple b {
+  background: #a855f7 !important;
+}
+ 
+body:not(.light-mode) .focus-stat-track.green span,
+body:not(.light-mode) .focus-stat-track.green b {
+  background: #10b981 !important;
+}
+ 
+body:not(.light-mode) .focus-stat-track.amber span,
+body:not(.light-mode) .focus-stat-track.amber b {
+  background: #f59e0b !important;
+}
+ 
+body:not(.light-mode) .streak-strip {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(16, 185, 129, 0.1) !important;
+}
+ 
+body:not(.light-mode) .streak-strip.success {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #6ee7b7 !important;
+}
+ 
+body:not(.light-mode) .streak-strip.purple {
+  background: rgba(168, 85, 247, 0.12) !important;
+  color: #d8b4fe !important;
+}
+ 
+body:not(.light-mode) .streak-strip.amber {
+  background: rgba(245, 158, 11, 0.12) !important;
+  color: #fde68a !important;
+}
+ 
+body:not(.light-mode) .mini-bar b,
+body:not(.light-mode) .mini-bar.green b,
+body:not(.light-mode) .mini-bar.amber b,
+body:not(.light-mode) .mini-bar.purple b {
+  background: #10b981 !important;
+}
+ 
+body:not(.light-mode) .mini-bar.green,
+body:not(.light-mode) .mini-bar.green b {
+  background: #10b981 !important;
+  color: #6ee7b7 !important;
+}
+ 
+body:not(.light-mode) .mini-bar.amber,
+body:not(.light-mode) .mini-bar.amber b {
+  background: #f59e0b !important;
+  color: #fde68a !important;
+}
+ 
+body:not(.light-mode) .mini-bar.purple,
+body:not(.light-mode) .mini-bar.purple b {
+  background: #a855f7 !important;
+  color: #d8b4fe !important;
+}
+ 
+body:not(.light-mode) .mini-metric {
+  color: #64748b !important;
+}
+ 
+body:not(.light-mode) .hobby-row {
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .hobby-row span {
+  color: #cbd5e1 !important;
+}
+ 
+body:not(.light-mode) .hobby-row em {
+  color: #64748b !important;
+}
+ 
+body:not(.light-mode) .hobby-row div {
+  background: #1e293b !important;
+}
+ 
+body:not(.light-mode) .hobby-row b {
+  background: #10b981 !important;
+}
+ 
+body:not(.light-mode) .hobby-row .red b {
+  background: #ef4444 !important;
+}
+ 
+body:not(.light-mode) .hobby-row .amber b {
+  background: #f59e0b !important;
+}
+ 
+body:not(.light-mode) .hobby-row .pink b {
+  background: #ec4899 !important;
+}
+ 
+body:not(.light-mode) .next-week-panel li,
+body:not(.light-mode) .session-list li {
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .next-week-panel li em,
+body:not(.light-mode) .session-list em {
+  color: #64748b !important;
+}
+ 
+body:not(.light-mode) .dot {
+  background: #334155 !important;
+}
+ 
+body:not(.light-mode) .dot.green {
+  background: #10b981 !important;
+}
+ 
+body:not(.light-mode) .dot.blue {
+  background: #00a884 !important;
+}
+ 
+body:not(.light-mode) .habit-row {
+  border-top-color: rgba(16, 185, 129, 0.1) !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .habit-row.head {
+  color: #64748b !important;
+}
+ 
+body:not(.light-mode) .habit-row em {
+  color: #fbbf24 !important;
+}
+ 
+body:not(.light-mode) .habit-day-picker label {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #64748b !important;
+  background: rgba(15, 23, 42, 0.5) !important;
+}
+ 
+body:not(.light-mode) .habit-day-btn {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #10b981 !important;
+}
+ 
+body:not(.light-mode) .habit-day-btn.done {
+  border-color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.12) !important;
+}
+ 
+body:not(.light-mode) .mini-add-btn,
+body:not(.light-mode) .mini-delete-btn,
+body:not(.light-mode) .mini-system-actions button {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  background: #0f172a !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .mini-add-btn {
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .mini-delete-btn {
+  color: #f87171 !important;
+}
+ 
+body:not(.light-mode) .mini-system-form input,
+body:not(.light-mode) .mini-system-form select {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  background: rgba(15, 23, 42, 0.8) !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .line-chart .task-line {
+  stroke: #10b981 !important;
+}
+ 
+body:not(.light-mode) .line-chart .hobby-line {
+  stroke: var(--code-purple) !important;
+}
+ 
+body:not(.light-mode) .line-chart circle {
+  fill: #10b981 !important;
+}
+ 
+body:not(.light-mode) .chart-days {
+  color: #64748b !important;
+}
+ 
+body:not(.light-mode) .chart-legend {
+  color: var(--code-purple) !important;
+}
+ 
+body:not(.light-mode) .chart-legend span:first-child {
+  color: #10b981 !important;
+}
+ 
+body:not(.light-mode) .focus-empty-row,
+body:not(.light-mode) .habit-empty-row {
+  color: #334155 !important;
+}
+ 
+body:not(.light-mode) .blitzit-session-input {
+  background: #0a1120 !important;
+}
+ 
+body:not(.light-mode) .blitzit-session-input label {
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .blitzit-session-input input {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .blitzit-session-input button {
+  background: #00a884 !important;
+  color: #ffffff !important;
+}
+ 
+body:not(.light-mode) .blitzit-session-input button:hover {
+  background: #10b981 !important;
+}
+ 
+body:not(.light-mode) .blitzit-mode-selector::before {
+  background: linear-gradient(to bottom, rgba(16, 185, 129, 0.08), transparent) !important;
+}
+ 
+body:not(.light-mode) .blitzit-mode-btn {
+  background: #1e293b !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #94a3b8 !important;
+}
+ 
+body:not(.light-mode) .blitzit-mode-btn.active {
+  background: #00a884 !important;
+  color: #ffffff !important;
+}
+ 
+body:not(.light-mode) .blitzit-display {
+  background:
+    repeating-linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0 1px, transparent 1px 30px),
+    rgba(15, 23, 42, 0.9) !important;
+  color: #e2e8f0 !important;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(16, 185, 129, 0.1) !important;
+}
+ 
+body:not(.light-mode) .blitzit-preset {
+  background: #0f172a !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+ 
+body:not(.light-mode) .blitzit-preset:hover {
+  background: #1e293b !important;
+  border-color: #00a884 !important;
+}
+ 
+body:not(.light-mode) .blitzit-preset.active {
+  background: #00a884 !important;
+  color: #ffffff !important;
+}
+ 
+body:not(.light-mode) .blitzit-preset-time {
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .blitzit-task-section {
+  background: #0a1120 !important;
+}
+ 
+body:not(.light-mode) .blitzit-task-title {
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .blitzit-task-item {
+  background: rgba(30, 41, 59, 0.95) !important;
+  border-color: rgba(16, 185, 129, 0.1) !important;
+}
+ 
+body:not(.light-mode) .blitzit-task-desc {
+  color: #94a3b8 !important;
+}
+ 
+body:not(.light-mode) .blitzit-task-meta {
+  color: #475569 !important;
+}
+ 
+body:not(.light-mode) .blitzit-btn {
+  background: #1e293b !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .blitzit-btn:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .blitzit-mode-selector {
+  background: #0f172a !important;
+  border-color: rgba(16, 185, 129, 0.1) !important;
+}
+ 
+body:not(.light-mode) .blitzit-presets {
+  gap: 12px !important;
+}
+ 
+body:not(.light-mode) #timerPresets .blitzit-preset,
+body:not(.light-mode) #stopwatchSessionTracker,
+body:not(.light-mode) #timerSessionTracker {
+  background: #0f172a !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .blitzit-tab-content {
+  background: rgba(15, 23, 42, 0.5) !important;
+}
+ 
+body:not(.light-mode) .blitzit-mode-btn {
+  background: #1e293b !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+  font-weight: 600 !important;
+}
+ 
+body:not(.light-mode) .blitzit-mode-btn.active {
+  background: linear-gradient(135deg, #10b981, #00a884) !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+}
+ 
+body:not(.light-mode) #blitzitCompletionMessage {
+  background: rgba(16, 185, 129, 0.08) !important;
+  border-color: #10b981 !important;
+  color: #6ee7b7 !important;
+}
+ 
+body:not(.light-mode) .back-button {
+  color: #00a884 !important;
+}
+ 
+body:not(.light-mode) .blitzit-btn,
+body:not(.light-mode) #blitzitResetBtn,
+body:not(.light-mode) #blitzitStopwatchResetBtn {
+  background: #1e293b !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .blitzit-btn:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: #34d399 !important;
+  color: #6ee7b7 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .focus-timer-panel {
+  background:
+    linear-gradient(90deg, rgba(16, 185, 129, 0.045) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(180deg, rgba(30, 41, 59, 0.98), rgba(15, 23, 42, 0.94)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > .blitzit-mode-selector,
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > .blitzit-display,
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > #timerControls,
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > #stopwatchControls,
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > #timerPresets,
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > #blitzitLapTimes,
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > .blitzit-session-input {
+  background: transparent !important;
+  border: 0 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-mode-selector::before {
+  color: #475569 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-mode-btn {
+  background: rgba(15, 23, 42, 0.82) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  color: #34d399 !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-mode-btn.active {
+  background: linear-gradient(135deg, #10b981, #00a884) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .focus-timer-panel > .blitzit-display {
+  background:
+    repeating-linear-gradient(180deg, rgba(16, 185, 129, 0.04) 0 1px, transparent 1px 30px),
+    rgba(15, 23, 42, 0.72) !important;
+  border: 1px solid rgba(16, 185, 129, 0.12) !important;
+  border-radius: 6px !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-preset {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border: 1px solid rgba(16, 185, 129, 0.18) !important;
+  color: #e2e8f0 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-preset:hover {
+  background: rgba(30, 41, 59, 0.9) !important;
+  border-color: rgba(0, 168, 132, 0.42) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-preset.active {
+  background: rgba(0, 168, 132, 0.14) !important;
+  border-color: #00a884 !important;
+  box-shadow: inset 0 0 0 1px rgba(0, 168, 132, 0.2) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-preset-time {
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-btn {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border: 1px solid rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-btn-primary {
+  background: linear-gradient(135deg, #10b981, #00a884) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard #blitzitResetBtn,
+body:not(.light-mode) .focus-dashboard #blitzitStopwatchResetBtn {
+  background: rgba(16, 185, 129, 0.08) !important;
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard #timerSessionTracker,
+body:not(.light-mode) .focus-dashboard #stopwatchSessionTracker {
+  background: transparent !important;
+  border: 0 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard #timerSessionTracker .blitzit-progress-container,
+body:not(.light-mode) .focus-dashboard #stopwatchSessionTracker .blitzit-stopwatch-progress-container {
+  background: rgba(16, 185, 129, 0.1) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard #timerSessionTracker .blitzit-session-info,
+body:not(.light-mode) .focus-dashboard #stopwatchSessionTracker .blitzit-session-info {
+  color: #475569 !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-session-input > div {
+  background: rgba(15, 23, 42, 0.86) !important;
+  border-color: rgba(16, 185, 129, 0.18) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-session-input > div button,
+body:not(.light-mode) .focus-dashboard .blitzit-session-input > div input {
+  color: #e2e8f0 !important;
+}
+ 
+/* ── HEADER ── */
+body:not(.light-mode) header,
+body:not(.light-mode) header {
+  background:
+    linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px) 0 0 / 24px 24px,
+    linear-gradient(180deg, rgba(30, 41, 59, 0.97), rgba(15, 23, 42, 0.94)) !important;
+  border: 1px solid rgba(16, 185, 129, 0.14) !important;
+  border-bottom-color: rgba(0, 168, 132, 0.18) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: blur(16px) saturate(145%) !important;
+  top: 0px !important;
+  width: 100% !important;
+  border-radius: 22px !important;
+}
+ 
+body:not(.light-mode) .sidebar-toggle-btn,
+body:not(.light-mode) .sidebar-toggle-btn {
+  background: #1e293b !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(16, 185, 129, 0.16) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3) !important;
+}
+ 
+body:not(.light-mode) .sidebar-toggle-btn:hover,
+body:not(.light-mode) .sidebar-toggle-btn:hover {
+  background: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .nav-links a,
+body:not(.light-mode) .nav-links a {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+}
+ 
+body:not(.light-mode) .nav-links a:hover,
+body:not(.light-mode) .nav-links a:hover,
+body:not(.light-mode) .footer-column ul li a:hover,
+body:not(.light-mode) .feature-link:hover,
+body:not(.light-mode) .back-button {
+  color: #34d399 !important;
+  -webkit-text-fill-color: #34d399 !important;
+}
+ 
+/* ── BRAND OVERRIDES ── */
+body:not(.light-mode) .logo,
+body:not(.light-mode) .logo {
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .logo i,
+body:not(.light-mode) .logo i,
+body:not(.light-mode) .resource-link,
+body:not(.light-mode) .footer-column h3,
+body:not(.light-mode) .search-box button,
+body:not(.light-mode) .search-box button {
+  color: #00a884 !important;
+}
+ 
+body:not(.light-mode) .search-box,
+body:not(.light-mode) .search-box,
+body:not(.light-mode) input,
+body:not(.light-mode) textarea,
+body:not(.light-mode) select,
+body:not(.light-mode) .focus-dashboard .session-goal-form input {
+  border-color: rgba(16, 185, 129, 0.2) !important;
+}
+ 
+body:not(.light-mode) .ai-card,
+body:not(.light-mode) .language-card,
+body:not(.light-mode) .platform-card,
+body:not(.light-mode) .resource-card,
+body:not(.light-mode) .shortcut-card,
+body:not(.light-mode) .add-shortcut-btn,
+body:not(.light-mode) .contribution-info,
+body:not(.light-mode) .contribution-form,
+body:not(.light-mode) .faq-item,
+body:not(.light-mode) .tool-card,
+body:not(.light-mode) .feature-card,
+body:not(.light-mode) .task-card,
+body:not(.light-mode) .goal-card,
+body:not(.light-mode) .settings-card,
+body:not(.light-mode) .modal-content,
+body:not(.light-mode) .focus-dashboard,
+body:not(.light-mode) .focus-stat-card,
+body:not(.light-mode) .focus-panel,
+body:not(.light-mode) .streak-panel,
+body:not(.light-mode) .monthly-panel,
+body:not(.light-mode) .hobby-panel,
+body:not(.light-mode) .next-week-panel,
+body:not(.light-mode) .sessions-panel,
+body:not(.light-mode) .habit-tracker-panel,
+body:not(.light-mode) .daily-progress-panel,
+body:not(.light-mode) .focus-dashboard .focus-timer-panel {
+  border-color: rgba(16, 185, 129, 0.14) !important;
+}
+ 
+body:not(.light-mode) .ai-card:hover,
+body:not(.light-mode) .language-card:hover,
+body:not(.light-mode) .platform-card:hover,
+body:not(.light-mode) .resource-card:hover,
+body:not(.light-mode) .shortcut-card:hover,
+body:not(.light-mode) .tool-card:hover,
+body:not(.light-mode) .feature-card:hover {
+  border-color: rgba(0, 168, 132, 0.34) !important;
+  box-shadow: 0 20px 46px rgba(16, 185, 129, 0.1) !important;
+}
+ 
+body:not(.light-mode) .btn,
+body:not(.light-mode) .btn-primary,
+body:not(.light-mode) .ai-link,
+body:not(.light-mode) .submit-btn,
+body:not(.light-mode) .compare-btn,
+body:not(.light-mode) .modal-btn.btn-save,
+body:not(.light-mode) .blitzit-session-input button,
+body:not(.light-mode) .blitzit-mode-btn.active,
+body:not(.light-mode) .blitzit-btn-primary,
+body:not(.light-mode) .focus-dashboard .blitzit-btn-primary,
+body:not(.light-mode) .focus-dashboard .blitzit-add-task-btn,
+body:not(.light-mode) .focus-dashboard #saveSessionGoalBtn,
+body:not(.light-mode) .focus-dashboard #blitzitSetSessionsBtn,
+body:not(.light-mode) .mini-add-btn,
+body:not(.light-mode) .mini-system-actions button:first-child {
+  background: linear-gradient(135deg, #10b981, #00a884) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.2) !important;
+}
+ 
+body:not(.light-mode) .btn:hover,
+body:not(.light-mode) .btn-primary:hover,
+body:not(.light-mode) .ai-link:hover,
+body:not(.light-mode) .submit-btn:hover,
+body:not(.light-mode) .compare-btn:hover,
+body:not(.light-mode) .modal-btn.btn-save:hover,
+body:not(.light-mode) .blitzit-session-input button:hover,
+body:not(.light-mode) .blitzit-btn-primary:hover,
+body:not(.light-mode) .focus-dashboard .blitzit-add-task-btn:hover,
+body:not(.light-mode) .focus-dashboard #saveSessionGoalBtn:hover,
+body:not(.light-mode) .focus-dashboard #blitzitSetSessionsBtn:hover,
+body:not(.light-mode) .mini-add-btn:hover {
+  background: linear-gradient(135deg, #0e9f72, #00907a) !important;
+  color: #ffffff !important;
+  box-shadow: 0 14px 28px rgba(16, 185, 129, 0.22) !important;
+}
+ 
+body:not(.light-mode) .btn-secondary,
+body:not(.light-mode) .btn-cancel,
+body:not(.light-mode) .blitzit-btn,
+body:not(.light-mode) #blitzitResetBtn,
+body:not(.light-mode) #blitzitStopwatchResetBtn,
+body:not(.light-mode) .focus-dashboard #blitzitResetBtn,
+body:not(.light-mode) .focus-dashboard #blitzitStopwatchResetBtn,
+body:not(.light-mode) .blitzit-mode-btn,
+body:not(.light-mode) .habit-day-btn,
+body:not(.light-mode) .mini-delete-btn,
+body:not(.light-mode) .mini-system-actions button {
+  background: #1a2540 !important;
+  border: 1px solid rgba(16, 185, 129, 0.22) !important;
+  color: #34d399 !important;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2) !important;
+}
+ 
+body:not(.light-mode) .btn-secondary:hover,
+body:not(.light-mode) .btn-cancel:hover,
+body:not(.light-mode) .blitzit-btn:hover,
+body:not(.light-mode) #blitzitResetBtn:hover,
+body:not(.light-mode) #blitzitStopwatchResetBtn:hover,
+body:not(.light-mode) .blitzit-mode-btn:hover,
+body:not(.light-mode) .habit-day-btn:hover,
+body:not(.light-mode) .mini-delete-btn:hover,
+body:not(.light-mode) .mini-system-actions button:hover {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border-color: rgba(0, 168, 132, 0.35) !important;
+  color: #00a884 !important;
+}
+ 
+body:not(.light-mode) .blitzit-preset.active,
+body:not(.light-mode) .focus-dashboard .blitzit-preset.active,
+body:not(.light-mode) .habit-day-btn.done {
+  background: rgba(16, 185, 129, 0.14) !important;
+  border-color: #34d399 !important;
+  color: #6ee7b7 !important;
+}
+ 
+body:not(.light-mode) .blitzit-preset-time,
+body:not(.light-mode) .focus-dashboard .blitzit-preset-time,
+body:not(.light-mode) .ai-info h3,
+body:not(.light-mode) .language-card h3,
+body:not(.light-mode) .resource-card h3,
+body:not(.light-mode) .platform-card h3,
+body:not(.light-mode) .shortcut-name,
+body:not(.light-mode) .faq-question,
+body:not(.light-mode) .highlight {
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .theme-toggle,
+body:not(.light-mode) .sidebar-toggle-btn,
+body:not(.light-mode) .sidebar-toggle-btn,
+body:not(.light-mode) .social-links a {
+  background: linear-gradient(135deg, #1e293b, #162032) !important;
+  border-color: rgba(16, 185, 129, 0.18) !important;
+  color: #34d399 !important;
+}
+ 
+body:not(.light-mode) .theme-toggle:hover,
+body:not(.light-mode) .sidebar-toggle-btn:hover,
+body:not(.light-mode) .sidebar-toggle-btn:hover,
+body:not(.light-mode) .social-links a:hover {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-add-task-btn,
+body:not(.light-mode) .focus-dashboard #saveSessionGoalBtn,
+body:not(.light-mode) .focus-dashboard #blitzitSetSessionsBtn {
+  background: linear-gradient(135deg, #10b981, #00a884) !important;
+  border: 1px solid transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.2) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .blitzit-add-task-btn:hover,
+body:not(.light-mode) .focus-dashboard #saveSessionGoalBtn:hover,
+body:not(.light-mode) .focus-dashboard #blitzitSetSessionsBtn:hover {
+  background: linear-gradient(135deg, #0e9f72, #00907a) !important;
+  color: #ffffff !important;
+  transform: translateY(-1px) !important;
+}
+ 
+body:not(.light-mode) .focus-dashboard .session-goal-form input {
+  background: rgba(15, 23, 42, 0.92) !important;
+  border-color: rgba(16, 185, 129, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+ 
+@media (max-width: 768px) {
+  body:not(.light-mode) header {
+    top: 8px !important;
+    width: calc(100% - 16px) !important;
+    margin: 0 8px !important;
+    border-radius: 18px !important;
+  }
+ 
+  body:not(.light-mode) .nav-links.active {
+    background: rgba(15, 23, 42, 0.96) !important;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.4) !important;
+  }
+}

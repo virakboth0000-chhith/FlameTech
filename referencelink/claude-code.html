@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Claude Code Cheat Sheet — FlameTech</title>
+  <meta name="description" content="[Claude Code](https://code.claude.com) is an agentic AI coding tool by Anthropic — reads your codebase, edits files, runs commands, and integrates with your dev">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#cc785c}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(204,120,92,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>AI</span>
+    <span>›</span>
+    <span>Claude Code</span>
+  </div>
+  <div class="post-icon">CC</div>
+  <h1>Claude Code <span>cheatsheet</span></h1>
+  <div class="post-intro"><p><a href="https://code.claude.com">Claude Code</a> is an agentic AI coding tool by Anthropic — reads your codebase, edits files, runs commands, and integrates with your development tools.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> AI</span>
+    <span class="meta-tag">AI</span> <span class="meta-tag">CLI</span> <span class="meta-tag">Anthropic</span> <span class="meta-tag">coding</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="installation">Installation</h3>
+<div class="section">
+<h4 id="macos-linux-wsl">macOS / Linux / WSL</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-fsSL<span class="w"> </span>https://claude.ai/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</code></pre></div>
+
+<h4 id="windows-powershell">Windows PowerShell</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&gt;</span> <span class="nb">irm </span><span class="n">https</span><span class="p">://</span><span class="n">claude</span><span class="p">.</span><span class="n">ai</span><span class="p">/</span><span class="n">install</span><span class="p">.</span><span class="n">ps1</span> <span class="p">|</span> <span class="nb">iex</span>
+</code></pre></div>
+
+<h4 id="homebrew-macos">Homebrew (macOS)</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>brew<span class="w"> </span>install<span class="w"> </span>--cask<span class="w"> </span>claude-code
+</code></pre></div>
+
+<h4 id="winget-windows">WinGet (Windows)</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&gt;</span> <span class="n">winget</span> <span class="n">install</span> <span class="n">Anthropic</span><span class="p">.</span><span class="n">ClaudeCode</span>
+</code></pre></div>
+
+<p>Native install auto-updates. Homebrew/WinGet require <code>brew upgrade claude-code</code> or <code>winget upgrade Anthropic.ClaudeCode</code> to update.</p>
+<p>Windows requires <a href="https://git-scm.com/downloads/win">Git for Windows</a>.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="first-session">First Session</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span><span class="nb">cd</span><span class="w"> </span>your-project
+$<span class="w"> </span>claude
+</code></pre></div>
+
+<ul>
+<li>Log in on first run (Claude Pro / Max / Team / Enterprise or Anthropic Console)</li>
+<li>Type <code>/help</code> for all commands</li>
+<li>Type <code>/resume</code> to continue a prior conversation</li>
+<li>Press <code>?</code> to see keyboard shortcuts</li>
+<li>Type <code>exit</code> or press <code>Ctrl+D</code> to quit</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="key-concepts">Key Concepts</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Agent loop</td>
+<td>Claude reads, edits files, runs commands, and repeats</td>
+</tr>
+<tr>
+<td>CLAUDE.md</td>
+<td>Persistent instructions Claude reads every session</td>
+</tr>
+<tr>
+<td>Auto memory</td>
+<td>Claude saves learnings across sessions automatically</td>
+</tr>
+<tr>
+<td>Skills</td>
+<td>Custom <code>/commands</code> for reusable workflows</td>
+</tr>
+<tr>
+<td>Hooks</td>
+<td>Shell scripts triggered at lifecycle events</td>
+</tr>
+<tr>
+<td>MCP</td>
+<td>Connect Claude to external tools and APIs</td>
+</tr>
+<tr>
+<td>Permission mode</td>
+<td>Controls what Claude can do without asking</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="common-prompts">Common Prompts</h3>
+<div class="section">
+<ul>
+<li><code>what does this project do?</code></li>
+<li><code>find the bug causing the login error</code></li>
+<li><code>write unit tests for the auth module</code></li>
+<li><code>refactor this to use async/await</code></li>
+<li><code>commit my changes with a descriptive message</code></li>
+<li><code>create a PR and describe my changes</code></li>
+<li><code>review my changes for security issues</code></li>
+<li><code>add input validation to the signup form</code></li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="cli-commands">
+<h2 id="cli-commands">CLI Commands</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="session-commands">Session Commands</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude</code></td>
+<td>Start interactive session</td>
+</tr>
+<tr>
+<td><code>claude "task"</code></td>
+<td>Start with initial prompt</td>
+</tr>
+<tr>
+<td><code>claude -p "query"</code></td>
+<td>Print response and exit</td>
+</tr>
+<tr>
+<td><code>claude -c</code></td>
+<td>Continue most recent conversation</td>
+</tr>
+<tr>
+<td><code>claude -r [name]</code></td>
+<td>Resume session by name or ID</td>
+</tr>
+<tr>
+<td><code>claude -n "name"</code></td>
+<td>Name this session</td>
+</tr>
+<tr>
+<td><code>claude -w [name]</code></td>
+<td>Start in isolated git worktree</td>
+</tr>
+<tr>
+<td><code>claude update</code></td>
+<td>Update to latest version</td>
+</tr>
+<tr>
+<td><code>claude -v</code></td>
+<td>Show version number</td>
+</tr>
+<tr>
+<td><code>claude doctor</code></td>
+<td>Check installation health</td>
+</tr>
+<tr>
+<td><code>claude auto-mode defaults</code></td>
+<td>Print auto mode classifier rules</td>
+</tr>
+<tr>
+<td><code>claude agents</code></td>
+<td>List configured subagents</td>
+</tr>
+</tbody>
+</table>
+<h4 id="auth-commands">Auth Commands</h4>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude auth login</code></td>
+<td>Sign in to account</td>
+</tr>
+<tr>
+<td><code>claude auth login --console</code></td>
+<td>Sign in with Anthropic Console</td>
+</tr>
+<tr>
+<td><code>claude auth logout</code></td>
+<td>Sign out</td>
+</tr>
+<tr>
+<td><code>claude auth status</code></td>
+<td>Show auth status</td>
+</tr>
+</tbody>
+</table>
+<h4 id="mcp-commands">MCP Commands</h4>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude mcp list</code></td>
+<td>List configured servers</td>
+</tr>
+<tr>
+<td><code>claude mcp add &lt;n&gt; &lt;cmd&gt;</code></td>
+<td>Add a stdio MCP server</td>
+</tr>
+<tr>
+<td><code>claude mcp get &lt;name&gt;</code></td>
+<td>Show server details</td>
+</tr>
+<tr>
+<td><code>claude mcp remove &lt;name&gt;</code></td>
+<td>Remove a server</td>
+</tr>
+<tr>
+<td><code>claude mcp serve</code></td>
+<td>Start Claude as MCP server</td>
+</tr>
+</tbody>
+</table>
+<h4 id="plugin-commands">Plugin Commands</h4>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>claude plugin install &lt;name&gt;</code></td>
+<td>Install a plugin</td>
+</tr>
+<tr>
+<td><code>claude plugin list</code></td>
+<td>List installed plugins</td>
+</tr>
+<tr>
+<td><code>claude plugin remove &lt;name&gt;</code></td>
+<td>Remove a plugin</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pipe-examples">Pipe Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Explain a build error</span>
+$<span class="w"> </span>cat<span class="w"> </span>error.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;explain the root cause&quot;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Review changed files</span>
+$<span class="w"> </span>git<span class="w"> </span>diff<span class="w"> </span>main<span class="w"> </span>--name-only<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;review for issues&quot;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Analyze logs</span>
+$<span class="w"> </span>tail<span class="w"> </span>-200<span class="w"> </span>app.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;summarize anomalies&quot;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># Save output to file</span>
+$<span class="w"> </span>cat<span class="w"> </span>data.txt<span class="w"> </span><span class="p">|</span><span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;summarize this&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>summary.txt
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="unix-integration">Unix Integration</h3>
+<div class="section">
+<p>Add Claude as a linter in <code>package.json</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">}</span>
+</code></pre></div>
+
+<p>Use <code>--output-format</code> for structured output:</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;analyze for bugs&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="cli-flags">
+<h2 id="cli-flags">CLI Flags</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="session-mode">Session &amp; Mode</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--model &lt;model&gt;</code></td>
+<td>Model alias: <code>sonnet</code>, <code>opus</code>, or full ID</td>
+</tr>
+<tr>
+<td><code>--permission-mode &lt;m&gt;</code></td>
+<td>Set permission mode at startup</td>
+</tr>
+<tr>
+<td><code>-c, --continue</code></td>
+<td>Load most recent conversation</td>
+</tr>
+<tr>
+<td><code>-r, --resume [id]</code></td>
+<td>Resume by session ID or name</td>
+</tr>
+<tr>
+<td><code>-n, --name &lt;name&gt;</code></td>
+<td>Name the current session</td>
+</tr>
+<tr>
+<td><code>-w, --worktree [name]</code></td>
+<td>Create isolated git worktree</td>
+</tr>
+<tr>
+<td><code>-p, --print</code></td>
+<td>Non-interactive print mode</td>
+</tr>
+<tr>
+<td><code>--effort &lt;level&gt;</code></td>
+<td><code>low</code> <code>medium</code> <code>high</code> <code>max</code></td>
+</tr>
+<tr>
+<td><code>--ide</code></td>
+<td>Auto-connect to IDE on startup</td>
+</tr>
+<tr>
+<td><code>--verbose</code></td>
+<td>Show full turn-by-turn output</td>
+</tr>
+<tr>
+<td><code>--debug [filter]</code></td>
+<td>Enable debug (e.g. <code>"api,hooks"</code>)</td>
+</tr>
+<tr>
+<td><code>--fork-session</code></td>
+<td>New ID when resuming</td>
+</tr>
+<tr>
+<td><code>--from-pr [num]</code></td>
+<td>Resume sessions linked to PR</td>
+</tr>
+<tr>
+<td><code>--version, -v</code></td>
+<td>Print version number</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="output-format">Output &amp; Format</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--output-format</code></td>
+<td><code>text</code> / <code>json</code> / <code>stream-json</code></td>
+</tr>
+<tr>
+<td><code>--input-format</code></td>
+<td><code>text</code> or <code>stream-json</code></td>
+</tr>
+<tr>
+<td><code>--max-turns &lt;n&gt;</code></td>
+<td>Limit agentic turns</td>
+</tr>
+<tr>
+<td><code>--max-budget-usd &lt;n&gt;</code></td>
+<td>Spending cap (print mode)</td>
+</tr>
+<tr>
+<td><code>--json-schema &lt;s&gt;</code></td>
+<td>Validate structured output</td>
+</tr>
+<tr>
+<td><code>--include-partial-messages</code></td>
+<td>Stream partial chunks</td>
+</tr>
+<tr>
+<td><code>--no-session-persistence</code></td>
+<td>Don't save session to disk</td>
+</tr>
+<tr>
+<td><code>--fallback-model &lt;m&gt;</code></td>
+<td>Fallback when overloaded</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tools-access">Tools &amp; Access</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--allowedTools &lt;tools&gt;</code></td>
+<td>Pre-approve tools (no prompt)</td>
+</tr>
+<tr>
+<td><code>--disallowedTools &lt;tools&gt;</code></td>
+<td>Deny specific tools</td>
+</tr>
+<tr>
+<td><code>--tools &lt;list&gt;</code></td>
+<td>Restrict available tools</td>
+</tr>
+<tr>
+<td><code>--add-dir &lt;dirs&gt;</code></td>
+<td>Extra directories to access</td>
+</tr>
+<tr>
+<td><code>--dangerously-skip-permissions</code></td>
+<td>Bypass all permission checks</td>
+</tr>
+<tr>
+<td><code>--allow-dangerously-skip-permissions</code></td>
+<td>Add bypass to mode cycle</td>
+</tr>
+<tr>
+<td><code>--enable-auto-mode</code></td>
+<td>Add auto to Shift+Tab cycle</td>
+</tr>
+<tr>
+<td><code>--bare</code></td>
+<td>Minimal mode (no hooks/memory)</td>
+</tr>
+<tr>
+<td><code>--mcp-config &lt;file&gt;</code></td>
+<td>Load MCP config from file</td>
+</tr>
+<tr>
+<td><code>--strict-mcp-config</code></td>
+<td>Only use CLI MCP config</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="system-prompt-flags">System Prompt Flags</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Flag</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--system-prompt &lt;text&gt;</code></td>
+<td>Replace entire default prompt</td>
+</tr>
+<tr>
+<td><code>--system-prompt-file &lt;file&gt;</code></td>
+<td>Replace from file</td>
+</tr>
+<tr>
+<td><code>--append-system-prompt &lt;text&gt;</code></td>
+<td>Append to default prompt</td>
+</tr>
+<tr>
+<td><code>--append-system-prompt-file &lt;f&gt;</code></td>
+<td>Append from file</td>
+</tr>
+</tbody>
+</table>
+<p>Prefer <code>--append-*</code> to preserve Claude's built-in capabilities. Use <code>--system-prompt</code> only when full control is needed.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="slash-commands">
+<h2 id="slash-commands">Slash Commands</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="session-context">Session &amp; Context</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/clear</code></td>
+<td>Clear history (aliases: <code>/new</code>, <code>/reset</code>)</td>
+</tr>
+<tr>
+<td><code>/compact [focus]</code></td>
+<td>Compact context with optional focus</td>
+</tr>
+<tr>
+<td><code>/resume [name]</code></td>
+<td>Resume session (alias: <code>/continue</code>)</td>
+</tr>
+<tr>
+<td><code>/branch [name]</code></td>
+<td>Fork conversation (alias: <code>/fork</code>)</td>
+</tr>
+<tr>
+<td><code>/rewind</code></td>
+<td>Undo to checkpoint (alias: <code>/checkpoint</code>)</td>
+</tr>
+<tr>
+<td><code>/diff</code></td>
+<td>View uncommitted changes interactively</td>
+</tr>
+<tr>
+<td><code>/export [file]</code></td>
+<td>Export conversation as plain text</td>
+</tr>
+<tr>
+<td><code>/copy [N]</code></td>
+<td>Copy Nth-last response to clipboard</td>
+</tr>
+<tr>
+<td><code>/cost</code></td>
+<td>Show token usage stats</td>
+</tr>
+<tr>
+<td><code>/usage</code></td>
+<td>Show plan limits and rate limit status</td>
+</tr>
+<tr>
+<td><code>/context</code></td>
+<td>Visualize context window usage</td>
+</tr>
+<tr>
+<td><code>/btw &lt;q&gt;</code></td>
+<td>Side question without adding to history</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="code-git">Code &amp; Git</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/plan [desc]</code></td>
+<td>Enter plan (read-only) mode</td>
+</tr>
+<tr>
+<td><code>/security-review</code></td>
+<td>Audit branch changes for vulnerabilities</td>
+</tr>
+<tr>
+<td><code>/pr-comments [PR]</code></td>
+<td>Fetch GitHub PR comments</td>
+</tr>
+<tr>
+<td><code>/install-github-app</code></td>
+<td>Set up GitHub Actions integration</td>
+</tr>
+<tr>
+<td><code>/install-slack-app</code></td>
+<td>Install Slack integration</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="settings-config">Settings &amp; Config</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/config</code></td>
+<td>Open settings (alias: <code>/settings</code>)</td>
+</tr>
+<tr>
+<td><code>/model [model]</code></td>
+<td>Change AI model</td>
+</tr>
+<tr>
+<td><code>/effort [level]</code></td>
+<td>Set effort: <code>low</code> <code>medium</code> <code>high</code> <code>max</code></td>
+</tr>
+<tr>
+<td><code>/permissions</code></td>
+<td>Manage allow / ask / deny rules</td>
+</tr>
+<tr>
+<td><code>/hooks</code></td>
+<td>View configured hooks</td>
+</tr>
+<tr>
+<td><code>/memory</code></td>
+<td>Edit CLAUDE.md and auto memory</td>
+</tr>
+<tr>
+<td><code>/mcp</code></td>
+<td>Manage MCP server connections</td>
+</tr>
+<tr>
+<td><code>/agents</code></td>
+<td>Manage subagent configurations</td>
+</tr>
+<tr>
+<td><code>/skills</code></td>
+<td>List available skills</td>
+</tr>
+<tr>
+<td><code>/plugin</code></td>
+<td>Manage installed plugins</td>
+</tr>
+<tr>
+<td><code>/keybindings</code></td>
+<td>Open keybindings config file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="display-ui">Display &amp; UI</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/theme</code></td>
+<td>Change color theme</td>
+</tr>
+<tr>
+<td><code>/vim</code></td>
+<td>Toggle vim editing mode</td>
+</tr>
+<tr>
+<td><code>/color [color]</code></td>
+<td>Set prompt bar color</td>
+</tr>
+<tr>
+<td><code>/statusline</code></td>
+<td>Configure status line display</td>
+</tr>
+<tr>
+<td><code>/stats</code></td>
+<td>View daily usage and streaks</td>
+</tr>
+<tr>
+<td><code>/insights</code></td>
+<td>Analyze session patterns</td>
+</tr>
+<tr>
+<td><code>/fast [on\|off]</code></td>
+<td>Toggle fast mode</td>
+</tr>
+<tr>
+<td><code>/powerup</code></td>
+<td>Interactive feature tour</td>
+</tr>
+<tr>
+<td><code>/tasks</code></td>
+<td>Manage background tasks</td>
+</tr>
+<tr>
+<td><code>/add-dir &lt;path&gt;</code></td>
+<td>Add working directory</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="help-system">Help &amp; System</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/help</code></td>
+<td>Show available commands</td>
+</tr>
+<tr>
+<td><code>/init</code></td>
+<td>Generate CLAUDE.md for project</td>
+</tr>
+<tr>
+<td><code>/doctor</code></td>
+<td>Diagnose installation</td>
+</tr>
+<tr>
+<td><code>/voice</code></td>
+<td>Toggle voice dictation</td>
+</tr>
+<tr>
+<td><code>/schedule [desc]</code></td>
+<td>Create cloud scheduled task</td>
+</tr>
+<tr>
+<td><code>/login</code></td>
+<td>Sign in to account</td>
+</tr>
+<tr>
+<td><code>/logout</code></td>
+<td>Sign out</td>
+</tr>
+<tr>
+<td><code>/feedback</code></td>
+<td>Submit feedback (alias: <code>/bug</code>)</td>
+</tr>
+<tr>
+<td><code>/release-notes</code></td>
+<td>View changelog</td>
+</tr>
+<tr>
+<td><code>/status</code></td>
+<td>Show version, model, account info</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="keyboard-shortcuts">
+<h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="general-controls">General Controls</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+C</code></td>
+<td>Cancel current input or generation</td>
+</tr>
+<tr>
+<td><code>Ctrl+D</code></td>
+<td>Exit Claude Code</td>
+</tr>
+<tr>
+<td><code>Shift+Tab</code></td>
+<td>Cycle permission modes</td>
+</tr>
+<tr>
+<td><code>Ctrl+R</code></td>
+<td>Reverse search command history</td>
+</tr>
+<tr>
+<td><code>Ctrl+G</code></td>
+<td>Open prompt in text editor</td>
+</tr>
+<tr>
+<td><code>Ctrl+L</code></td>
+<td>Redraw the screen</td>
+</tr>
+<tr>
+<td><code>Ctrl+O</code></td>
+<td>Toggle verbose output</td>
+</tr>
+<tr>
+<td><code>Ctrl+V</code></td>
+<td>Paste image from clipboard</td>
+</tr>
+<tr>
+<td><code>Ctrl+B</code></td>
+<td>Background the running command</td>
+</tr>
+<tr>
+<td><code>Ctrl+T</code></td>
+<td>Toggle task list display</td>
+</tr>
+<tr>
+<td><code>Esc Esc</code></td>
+<td>Rewind or summarize conversation</td>
+</tr>
+<tr>
+<td><code>Option+P</code></td>
+<td>Switch model (macOS)</td>
+</tr>
+<tr>
+<td><code>Option+T</code></td>
+<td>Toggle extended thinking (macOS)</td>
+</tr>
+<tr>
+<td><code>Option+O</code></td>
+<td>Toggle fast mode (macOS)</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-editing">Text Editing</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Ctrl+K</code></td>
+<td>Delete to end of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+U</code></td>
+<td>Delete to start of line</td>
+</tr>
+<tr>
+<td><code>Ctrl+Y</code></td>
+<td>Paste deleted text</td>
+</tr>
+<tr>
+<td><code>Alt+Y</code></td>
+<td>Cycle paste history</td>
+</tr>
+<tr>
+<td><code>Alt+B</code></td>
+<td>Move back one word</td>
+</tr>
+<tr>
+<td><code>Alt+F</code></td>
+<td>Move forward one word</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="vim-mode">Vim Mode</h3>
+<div class="section">
+<p>Enable with <code>/vim</code> or in <code>/config</code>. <code>Esc</code> → NORMAL, <code>i</code>/<code>a</code>/<code>o</code> → INSERT.</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>h j k l</code></td>
+<td>Move left / down / up / right</td>
+</tr>
+<tr>
+<td><code>w</code> / <code>b</code></td>
+<td>Next / previous word</td>
+</tr>
+<tr>
+<td><code>0</code> / <code>$</code></td>
+<td>Line start / end</td>
+</tr>
+<tr>
+<td><code>gg</code> / <code>G</code></td>
+<td>Input start / end</td>
+</tr>
+<tr>
+<td><code>dd</code> / <code>yy</code></td>
+<td>Delete / yank line</td>
+</tr>
+<tr>
+<td><code>cc</code> / <code>p</code></td>
+<td>Change line / paste</td>
+</tr>
+<tr>
+<td><code>f</code> / <code>F</code></td>
+<td>Jump to character</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td>Repeat last change</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="multiline-input">Multiline &amp; Input</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>How</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Multiline (all terminals)</td>
+<td><code>\</code> then <code>Enter</code></td>
+</tr>
+<tr>
+<td>Multiline (macOS default)</td>
+<td><code>Option+Enter</code></td>
+</tr>
+<tr>
+<td>Multiline (modern terms)</td>
+<td><code>Shift+Enter</code></td>
+</tr>
+<tr>
+<td>Run bash directly</td>
+<td><code>!</code> prefix</td>
+</tr>
+<tr>
+<td>File path autocomplete</td>
+<td><code>@</code> prefix</td>
+</tr>
+<tr>
+<td>All commands / skills</td>
+<td><code>/</code> prefix</td>
+</tr>
+<tr>
+<td>Session picker shortcut</td>
+<td><code>P</code> preview, <code>R</code> rename</td>
+</tr>
+</tbody>
+</table>
+<p>macOS: set Option as Meta in terminal prefs for <code>Alt+*</code> shortcuts to work.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="permission-modes">
+<h2 id="permission-modes">Permission Modes</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="modes-overview">Modes Overview</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>What Claude does without asking</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>default</code></td>
+<td>Read files only</td>
+<td>Getting started, sensitive work</td>
+</tr>
+<tr>
+<td><code>acceptEdits</code></td>
+<td>Read + edit files</td>
+<td>Active coding, iteration</td>
+</tr>
+<tr>
+<td><code>plan</code></td>
+<td>Read only, writes a plan file</td>
+<td>Exploration, planning before editing</td>
+</tr>
+<tr>
+<td><code>auto</code></td>
+<td>All actions with background classifier</td>
+<td>Long tasks, fewer interruptions</td>
+</tr>
+<tr>
+<td><code>dontAsk</code></td>
+<td>Only pre-approved tools</td>
+<td>Locked CI/CD environments</td>
+</tr>
+<tr>
+<td><code>bypassPermissions</code></td>
+<td>All actions except protected dirs</td>
+<td>Containers and VMs only</td>
+</tr>
+</tbody>
+</table>
+<p>Regardless of mode, writes to <code>.git</code>, <code>.vscode</code>, <code>.idea</code>, <code>.husky</code>, and <code>.claude</code> always prompt (except <code>.claude/commands</code>, <code>.claude/agents</code>, <code>.claude/skills</code>).</p>
+<h4 id="configure-default-mode">Configure Default Mode</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">}</span>
+</code></pre></div>
+
+<h4 id="auto-mode-notes">Auto Mode Notes</h4>
+<p>Requires Team / Enterprise / API plan + Claude Sonnet 4.6 or Opus 4.6. A separate classifier reviews each action before it runs and blocks actions that escalate beyond your intent. Enable at startup:</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>--enable-auto-mode
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="switch-modes">Switch Modes</h3>
+<div class="section">
+<p><strong>During a session:</strong></p>
+<p>Press <code>Shift+Tab</code> to cycle:</p>
+<div class="codehilite"><pre><span></span><code>default → acceptEdits → plan → (auto)
+</code></pre></div>
+
+<p><strong>At startup:</strong></p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>--permission-mode<span class="w"> </span>plan
+$<span class="w"> </span>claude<span class="w"> </span>--permission-mode<span class="w"> </span>acceptEdits
+</code></pre></div>
+
+<p><strong>Bypass all (containers only):</strong> </p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>--dangerously-skip-permissions
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="permission-rules">Permission Rules</h3>
+<div class="section">
+<p>Layer allow / deny rules on top of any mode in <code>.claude/settings.json</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="p">}</span>
+</code></pre></div>
+
+<p>View and edit rules with <code>/permissions</code>.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="memory-claudemd">
+<h2 id="memory-claudemd">Memory &amp; CLAUDE.md</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="claudemd-locations">CLAUDE.md Locations</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Scope</th>
+<th>Location</th>
+<th>Shared with</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Managed policy</td>
+<td>System-level (IT/DevOps deployed)</td>
+<td>All users on machine</td>
+</tr>
+<tr>
+<td>Project</td>
+<td><code>./CLAUDE.md</code> or <code>./.claude/CLAUDE.md</code></td>
+<td>Team via git</td>
+</tr>
+<tr>
+<td>User</td>
+<td><code>~/.claude/CLAUDE.md</code></td>
+<td>Personal, all projects</td>
+</tr>
+<tr>
+<td>Local</td>
+<td><code>./CLAUDE.local.md</code> (add to <code>.gitignore</code>)</td>
+<td>Personal, this project</td>
+</tr>
+</tbody>
+</table>
+<p>Files in parent directories load at launch. Subdirectory files load on demand when Claude reads files there. More specific scope wins on conflict.</p>
+<h4 id="write-effective-instructions">Write Effective Instructions</h4>
+<ul>
+<li><strong>Size</strong>: keep each file under 200 lines — longer files reduce adherence</li>
+<li><strong>Specific</strong>: <code>"Use 2-space indentation"</code> not <code>"format code nicely"</code></li>
+<li><strong>Structured</strong>: use markdown headers to group related rules</li>
+<li><strong>Consistent</strong>: avoid conflicting instructions across files</li>
+</ul>
+<p>Run <code>/init</code> to auto-generate a CLAUDE.md from your codebase. Set <code>CLAUDE_CODE_NEW_INIT=1</code> for an interactive multi-phase flow that also sets up skills and hooks.</p>
+<h4 id="organize-with-clauderules">Organize with <code>.claude/rules/</code></h4>
+<div class="codehilite"><pre><span></span><code>.claude/
+├── CLAUDE.md
+└── rules/
+    ├── code-style.md   # style guidelines
+    ├── testing.md      # test conventions
+    └── security.md     # security requirements
+</code></pre></div>
+
+<h4 id="path-scoped-rules">Path-scoped Rules</h4>
+<div class="codehilite"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">paths</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;src/api/**/*.ts&#39;</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;tests/**/*.test.ts&#39;</span>
+<span class="nn">---</span>
+<span class="c1"># API Rules</span>
+<span class="l l-Scalar l-Scalar-Plain">All endpoints must include input validation.</span>
+</code></pre></div>
+
+<p>Rules without <code>paths</code> load every session. Rules with <code>paths</code> load only when matching files are opened.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="auto-memory">Auto Memory</h3>
+<div class="section">
+<p>Claude saves its own notes in:</p>
+<div class="codehilite"><pre><span></span><code><span class="o">~/.</span><span class="n">claude</span><span class="o">/</span><span class="n">projects</span><span class="o">/&lt;</span><span class="n">project</span><span class="o">&gt;/</span><span class="n">memory</span><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="n">MEMORY</span><span class="o">.</span><span class="n">md</span><span class="w">          </span><span class="c1"># index (first 200 lines loaded)</span>
+<span class="err">├──</span><span class="w"> </span><span class="n">debugging</span><span class="o">.</span><span class="n">md</span><span class="w">       </span><span class="c1"># topic files (loaded on demand)</span>
+<span class="err">└──</span><span class="w"> </span><span class="n">api</span><span class="o">-</span><span class="n">conventions</span><span class="o">.</span><span class="n">md</span>
+</code></pre></div>
+
+<ul>
+<li>On by default; toggle in <code>/memory</code> or set <code>autoMemoryEnabled: false</code></li>
+<li>Persists across sessions and worktrees in the same git repo</li>
+<li>Machine-local — not shared across machines</li>
+</ul>
+<p>Disable via env:</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span><span class="nb">export</span><span class="w"> </span><span class="nv">CLAUDE_CODE_DISABLE_AUTO_MEMORY</span><span class="o">=</span><span class="m">1</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="import-syntax">Import Syntax</h3>
+<div class="section">
+<p>Reference other files from CLAUDE.md:</p>
+<div class="codehilite"><pre><span></span><code>See <span class="ni">@README</span>.md for project overview.
+Build commands: <span class="ni">@package</span>.json
+
+<span class="gh"># Workflows</span>
+
+<span class="ni">@docs/git</span>-workflow.md
+</code></pre></div>
+
+<ul>
+<li>Both relative and absolute paths are supported</li>
+<li>Max import depth: 5 hops</li>
+<li>Imported files are expanded at session start</li>
+<li>HTML comments in CLAUDE.md are stripped from context</li>
+</ul>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="hooks">
+<h2 id="hooks">Hooks</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="hook-events">Hook Events</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>When it fires</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>SessionStart</code></td>
+<td>Session begins, resumes, or clears</td>
+</tr>
+<tr>
+<td><code>UserPromptSubmit</code></td>
+<td>User submits a prompt</td>
+</tr>
+<tr>
+<td><code>PreToolUse</code></td>
+<td>Before a tool executes</td>
+</tr>
+<tr>
+<td><code>PermissionRequest</code></td>
+<td>Before permission dialog shows</td>
+</tr>
+<tr>
+<td><code>PostToolUse</code></td>
+<td>After tool completes successfully</td>
+</tr>
+<tr>
+<td><code>PostToolUseFailure</code></td>
+<td>After tool execution fails</td>
+</tr>
+<tr>
+<td><code>PermissionDenied</code></td>
+<td>Auto mode classifier denies action</td>
+</tr>
+<tr>
+<td><code>Stop</code></td>
+<td>Claude finishes responding</td>
+</tr>
+<tr>
+<td><code>StopFailure</code></td>
+<td>Turn ends due to API error</td>
+</tr>
+<tr>
+<td><code>Notification</code></td>
+<td>Claude needs attention</td>
+</tr>
+<tr>
+<td><code>SubagentStart</code></td>
+<td>Subagent is spawned</td>
+</tr>
+<tr>
+<td><code>SubagentStop</code></td>
+<td>Subagent finishes</td>
+</tr>
+<tr>
+<td><code>FileChanged</code></td>
+<td>Watched file changes on disk</td>
+</tr>
+<tr>
+<td><code>PreCompact</code></td>
+<td>Before context compaction</td>
+</tr>
+<tr>
+<td><code>PostCompact</code></td>
+<td>After context compaction</td>
+</tr>
+<tr>
+<td><code>WorktreeCreate</code></td>
+<td>Worktree being created</td>
+</tr>
+<tr>
+<td><code>WorktreeRemove</code></td>
+<td>Worktree being removed</td>
+</tr>
+<tr>
+<td><code>InstructionsLoaded</code></td>
+<td>CLAUDE.md file loaded</td>
+</tr>
+<tr>
+<td><code>ConfigChange</code></td>
+<td>Settings file changes</td>
+</tr>
+<tr>
+<td><code>TaskCreated</code></td>
+<td>Task created via TaskCreate</td>
+</tr>
+<tr>
+<td><code>TaskCompleted</code></td>
+<td>Task marked complete</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Exit codes</strong>: <code>0</code> = success (JSON decision), <code>2</code> = block action (stderr to model), other = non-blocking error.</p>
+<p>Use <code>$CLAUDE_PROJECT_DIR</code> to reference hook scripts relative to the project root.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hook-types">Hook Types</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>command</code></td>
+<td>Run shell script, reads JSON from stdin</td>
+</tr>
+<tr>
+<td><code>http</code></td>
+<td>POST JSON to an HTTP endpoint</td>
+</tr>
+<tr>
+<td><code>prompt</code></td>
+<td>Ask Claude for a yes/no decision</td>
+</tr>
+<tr>
+<td><code>agent</code></td>
+<td>Spawn subagent with tools to verify</td>
+</tr>
+</tbody>
+</table>
+<h4 id="auto-format-after-file-edits">Auto-format After File Edits</h4>
+<div class="codehilite"><pre><span></span><code><span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="notify-when-claude-needs-you-macos">Notify When Claude Needs You (macOS)</h4>
+<div class="codehilite"><pre><span></span><code><span class="w">        </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>Config in <code>~/.claude/settings.json</code> (user) or <code>.claude/settings.json</code> (project). View hooks with <code>/hooks</code>.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="mcp-servers">
+<h2 id="mcp-servers">MCP Servers</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="add-mcp-server">Add MCP Server</h3>
+<div class="section">
+<h4 id="stdio-server-local-process">Stdio server (local process)</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>my-server<span class="w"> </span>--<span class="w"> </span>npx<span class="w"> </span>my-mcp-server
+</code></pre></div>
+
+<h4 id="with-environment-variables">With environment variables</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>-e<span class="w"> </span><span class="nv">KEY</span><span class="o">=</span>val<span class="w"> </span>my-server<span class="w"> </span>--<span class="w"> </span>npx<span class="w"> </span>server
+</code></pre></div>
+
+<h4 id="http-server">HTTP server</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>--transport<span class="w"> </span>http<span class="w"> </span>sentry<span class="w"> </span>https://mcp.sentry.dev/mcp
+</code></pre></div>
+
+<h4 id="http-with-auth-header">HTTP with auth header</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>add<span class="w"> </span>--transport<span class="w"> </span>http<span class="w"> </span>my-api<span class="w"> </span>https://api.example.com/mcp<span class="w"> </span>--header<span class="w"> </span><span class="s2">&quot;Authorization: Bearer </span><span class="nv">$TOKEN</span><span class="s2">&quot;</span>
+</code></pre></div>
+
+<h4 id="json-format">JSON format</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>add-json<span class="w"> </span>my-server<span class="w"> </span><span class="s1">&#39;&#39;</span>
+</code></pre></div>
+
+<h4 id="import-from-claude-desktop">Import from Claude Desktop</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>add-from-claude-desktop
+</code></pre></div>
+
+<h4 id="manage-servers">Manage servers</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>list<span class="w">           </span><span class="c1"># list all servers</span>
+$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>get<span class="w"> </span>&lt;name&gt;<span class="w">     </span><span class="c1"># show server details</span>
+$<span class="w"> </span>claude<span class="w"> </span>mcp<span class="w"> </span>remove<span class="w"> </span>&lt;name&gt;<span class="w">  </span><span class="c1"># remove a server</span>
+</code></pre></div>
+
+<p>Config stored in <code>~/.claude/settings.json</code> (user) or <code>.claude/settings.json</code> (project).</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="mcp-in-session">MCP in Session</h3>
+<div class="section">
+<p><strong>Reference MCP resources with <code>@</code>:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nv">@github</span><span class="err">:</span><span class="n">repos</span><span class="o">/</span><span class="n">owner</span><span class="o">/</span><span class="n">repo</span><span class="o">/</span><span class="n">issues</span>
+<span class="nv">@memory</span><span class="err">:</span><span class="n">entities</span>
+<span class="nv">@filesystem</span><span class="err">:</span><span class="o">/</span><span class="k">path</span><span class="o">/</span><span class="k">to</span><span class="o">/</span><span class="k">file</span>
+</code></pre></div>
+
+<p><strong>Run MCP prompts as slash commands:</strong></p>
+<div class="codehilite"><pre><span></span><code>/mcp__github__search_repositories
+/mcp__memory__create_entities
+</code></pre></div>
+
+<p>MCP tool pattern: <code>mcp__&lt;server&gt;__&lt;tool&gt;</code></p>
+<p><strong>Manage in session:</strong></p>
+<div class="codehilite"><pre><span></span><code>/mcp
+</code></pre></div>
+
+<p><strong>Hook on MCP tools:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="worktrees-agents">
+<h2 id="worktrees-agents">Worktrees &amp; Agents</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="git-worktrees">Git Worktrees</h3>
+<div class="section">
+<p>Run parallel sessions in isolated branches:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Create worktree and start Claude</span>
+$<span class="w"> </span>claude<span class="w"> </span>--worktree<span class="w"> </span>feature-auth
+$<span class="w"> </span>claude<span class="w"> </span>-w<span class="w"> </span>bugfix-123
+
+<span class="c1"># Auto-generated name</span>
+$<span class="w"> </span>claude<span class="w"> </span>--worktree
+</code></pre></div>
+
+<p>Worktrees are created at <code>.claude/worktrees/&lt;name&gt;/</code> and branch from <code>origin/HEAD</code>.</p>
+<p><strong>Auto-cleanup:</strong> no changes → removed on exit. With changes → Claude prompts to keep or remove.</p>
+<p>Add to <code>.gitignore</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">.claude</span><span class="err">/</span><span class="no">worktrees</span><span class="err">/</span>
+</code></pre></div>
+
+<h4 id="copy-secrets-to-worktrees">Copy secrets to worktrees</h4>
+<p>Create <code>.worktreeinclude</code> in project root:</p>
+<div class="codehilite"><pre><span></span><code><span class="na">.env</span>
+<span class="na">.env.local</span>
+<span class="nf">config</span><span class="err">/</span><span class="no">secrets.json</span>
+</code></pre></div>
+
+<h4 id="manual-worktree-commands">Manual worktree commands</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Create with specific branch</span>
+$<span class="w"> </span>git<span class="w"> </span>worktree<span class="w"> </span>add<span class="w"> </span>../project-feat<span class="w"> </span>-b<span class="w"> </span>feat
+
+<span class="c1"># List all worktrees</span>
+$<span class="w"> </span>git<span class="w"> </span>worktree<span class="w"> </span>list
+
+<span class="c1"># Remove when done</span>
+$<span class="w"> </span>git<span class="w"> </span>worktree<span class="w"> </span>remove<span class="w"> </span>../project-feat
+</code></pre></div>
+
+<p>Re-sync origin HEAD after remote branch change:</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>git<span class="w"> </span>remote<span class="w"> </span>set-head<span class="w"> </span>origin<span class="w"> </span>-a
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="subagents">Subagents</h3>
+<div class="section">
+<p>Create in <code>.claude/agents/&lt;name&gt;.md</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">code-reviewer</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reviews code for bugs and style</span>
+<span class="nt">tools</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Read</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Grep</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Glob</span>
+<span class="nn">---</span>
+<span class="l l-Scalar l-Scalar-Plain">You are an expert code reviewer.</span>
+<span class="l l-Scalar l-Scalar-Plain">Focus on correctness and clarity.</span>
+</code></pre></div>
+
+<p>Use subagents naturally in conversation:</p>
+<ul>
+<li><code>review the auth module for security issues</code></li>
+<li><code>use the code-reviewer agent on api.ts</code></li>
+<li><code>/agents</code> — manage agent configs</li>
+</ul>
+<p><strong>Subagent with worktree isolation:</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="nn">---</span>
+<span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">parallel-worker</span>
+<span class="nt">isolation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">worktree</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Works in isolated branch</span>
+<span class="nn">---</span>
+</code></pre></div>
+
+<p><strong>Shared auto memory for subagents</strong> — add to frontmatter:</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">autoMemoryEnabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="headless-scripting">
+<h2 id="headless-scripting">Headless &amp; Scripting</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="non-interactive-mode">Non-interactive Mode</h3>
+<div class="section">
+<p>Run Claude programmatically with <code>-p</code> / <code>--print</code>:</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Basic one-off query</span>
+$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;what does this file do?&quot;</span>
+
+<span class="c1"># Stream JSON (real-time events)</span>
+$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;query&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>stream-json
+
+<span class="c1"># JSON with full metadata</span>
+$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;query&quot;</span><span class="w"> </span>--output-format<span class="w"> </span>json
+
+<span class="c1"># Limit turns and cost</span>
+$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;query&quot;</span><span class="w"> </span>--max-turns<span class="w"> </span><span class="m">5</span><span class="w"> </span>--max-budget-usd<span class="w"> </span><span class="m">1</span>.00
+
+<span class="c1"># Validated structured output</span>
+$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;query&quot;</span><span class="w"> </span>--json-schema<span class="w"> </span><span class="s1">&#39;&#39;</span>
+</code></pre></div>
+
+<h4 id="resume-in-headless-mode">Resume in headless mode</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Continue most recent session</span>
+$<span class="w"> </span>claude<span class="w"> </span>-c<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;follow-up question&quot;</span>
+
+<span class="c1"># Resume named session</span>
+$<span class="w"> </span>claude<span class="w"> </span>-r<span class="w"> </span>my-session<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;continue the task&quot;</span>
+</code></pre></div>
+
+<h4 id="output-formats">Output formats</h4>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td>Human-readable (default)</td>
+</tr>
+<tr>
+<td><code>json</code></td>
+<td>Full metadata + cost info</td>
+</tr>
+<tr>
+<td><code>stream-json</code></td>
+<td>Real-time per-turn events</td>
+</tr>
+</tbody>
+</table>
+<h4 id="bare-mode-faster-startup">Bare mode (faster startup)</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>claude<span class="w"> </span>--bare<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;query&quot;</span>
+</code></pre></div>
+
+<p>Skips hooks, CLAUDE.md auto-discovery, plugins, MCP, and auto memory. Sets <code>CLAUDE_CODE_SIMPLE=1</code>. Ideal for scripting.</p>
+<h4 id="session-persistence">Session persistence</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Don&#39;t save session to disk</span>
+$<span class="w"> </span>claude<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;query&quot;</span><span class="w"> </span>--no-session-persistence
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="scheduling">Scheduling</h3>
+<div class="section">
+<p><strong>Create a cloud scheduled task:</strong></p>
+<div class="codehilite"><pre><span></span><code>/schedule review open PRs every morning at 9am
+</code></pre></div>
+
+<p><strong>Session-scoped loop (stays open):</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="o">/</span><span class="k">loop</span><span class="w"> </span><span class="mi">5</span><span class="nv">m</span><span class="w"> </span><span class="nv">check</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">new</span><span class="w"> </span><span class="nv">issues</span>
+</code></pre></div>
+
+<h4 id="github-actions">GitHub Actions</h4>
+<div class="codehilite"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">anthropics/claude-code-action@beta</span>
+<span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">anthropic_api_key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$}</span>
+<span class="w">    </span><span class="nt">prompt</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;review</span><span class="nv"> </span><span class="s">this</span><span class="nv"> </span><span class="s">PR</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">issues</span><span class="nv"> </span><span class="s">and</span><span class="nv"> </span><span class="s">comment&#39;</span>
+</code></pre></div>
+
+<h4 id="gitlab-cicd">GitLab CI/CD</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">claude-review</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">claude -p &quot;review changes in this MR&quot;</span>
+<span class="w">      </span><span class="l l-Scalar l-Scalar-Plain">--output-format json</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>Scheduling option</th>
+<th>Runs on</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Cloud scheduled tasks</td>
+<td>Anthropic infrastructure</td>
+</tr>
+<tr>
+<td>Desktop scheduled tasks</td>
+<td>Your local machine</td>
+</tr>
+<tr>
+<td>GitHub Actions</td>
+<td>CI/CD pipeline</td>
+</tr>
+<tr>
+<td><code>/loop</code></td>
+<td>Current CLI session only</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://code.claude.com/docs/en/overview">Claude Code Docs</a> <em>(code.claude.com)</em></li>
+<li><a href="https://code.claude.com/docs/en/cli-reference">CLI Reference</a> <em>(code.claude.com)</em></li>
+<li><a href="https://code.claude.com/docs/en/commands">All Slash Commands</a> <em>(code.claude.com)</em></li>
+<li><a href="https://code.claude.com/docs/en/hooks">Hooks Reference</a> <em>(code.claude.com)</em></li>
+<li><a href="https://code.claude.com/docs/en/mcp">MCP Documentation</a> <em>(code.claude.com)</em></li>
+<li><a href="https://code.claude.com/docs/en/memory">Memory &amp; CLAUDE.md</a> <em>(code.claude.com)</em></li>
+<li><a href="https://code.claude.com/docs/en/permission-modes">Permission Modes</a> <em>(code.claude.com)</em></li>
+<li><a href="https://github.com/anthropics/claude-code">GitHub Repository</a> <em>(github.com)</em></li>
+<li><a href="https://www.anthropic.com/discord">Community Discord</a> <em>(anthropic.com)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

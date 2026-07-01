@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>OCaml Cheat Sheet — FlameTech</title>
+  <meta name="description" content="The [OCaml](https://www.ocaml.org/) cheat sheet is a one-page reference sheet for the OCaml programming language.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#ec670f}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(236,103,15,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>OCaml</span>
+  </div>
+  <div class="post-icon">OC</div>
+  <h1>OCaml <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>The <a href="https://www.ocaml.org/">OCaml</a> cheat sheet is a one-page reference sheet for the OCaml programming language.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">scientific</span> <span class="meta-tag">functional</span> <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="helloml">hello.ml</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>let () =
+  let message = &quot;Hello, World!&quot; in
+  Printf.printf &quot;%s\n&quot; message
+</code></pre></div>
+
+<h4 id="compile-and-run">Compile and Run</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>ocamlc<span class="w"> </span>-o<span class="w"> </span>hello.byte<span class="w"> </span>hello.ml
+$<span class="w"> </span>./hello.byte
+</code></pre></div>
+
+<h4 id="build-and-run-with-dune">Build and Run with Dune</h4>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>dune<span class="w"> </span>build<span class="w"> </span>hello.exe
+$<span class="w"> </span>_build/default/hello.exe
+
+<span class="c1"># you can also just run</span>
+$<span class="w"> </span>dune<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>./hello.exe
+</code></pre></div>
+
+<p>See the <a href="https://dune.build/">dune</a> documentation for more info.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="imports">Imports</h3>
+<div class="section">
+<p>Install modules with opam</p>
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>opam<span class="w"> </span>install<span class="w"> </span>hex
+</code></pre></div>
+
+<h4 id="global-open">Global Open</h4>
+<div class="codehilite"><pre><span></span><code>open Hex
+</code></pre></div>
+
+<h4 id="local-open">Local Open</h4>
+<div class="codehilite"><pre><span></span><code>Hex.of_string &quot;hex string&quot;
+
+let open Hex in
+  of_string &quot;to hex&quot;
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comments">Comments</h3>
+<div class="section">
+<h4 id="line-block-comments">Line &amp; Block Comments</h4>
+<div class="codehilite"><pre><span></span><code>(* A single line comment <span class="gs">*)</span>
+
+<span class="gs">(*</span> A multi-line comment
+<span class="gs">* where we want to explain</span>
+<span class="gs">*</span> something complex <span class="gs">*)</span>
+
+<span class="gs">(*</span> Outer comment
+   (* Nested comment <span class="gs">*)</span>
+<span class="gs">   End of outer comment *</span>)
+</code></pre></div>
+
+<h4 id="documentation-comments">Documentation Comments</h4>
+<div class="codehilite"><pre><span></span><code>val<span class="w"> </span>sum<span class="w"> </span>:<span class="w"> </span>int<span class="w"> </span>-&gt;<span class="w"> </span>int<span class="w"> </span>-&gt;<span class="w"> </span>int
+(**<span class="w"> </span>[sum<span class="w"> </span>x<span class="w"> </span>y]<span class="w"> </span>returns<span class="w"> </span>the<span class="w"> </span>sum
+<span class="w"> </span>of<span class="w"> </span>two<span class="w"> </span>integers<span class="w"> </span>[x]<span class="w"> </span>and<span class="w"> </span>[y]<span class="w"> </span>*)
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="data-types">
+<h2 id="data-types">Data Types</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="predefined-types">Predefined Types</h3>
+<div class="section">
+<h4 id="unit">Unit</h4>
+<p>Note: <code>#</code> Indicates execution at the toplevel followed by the output</p>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> ();; (* equivalent to void in C *)
+<span class="k">-</span> : unit = ()
+</code></pre></div>
+
+<h4 id="basic-types">Basic Types</h4>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> 5 ;; (* integer *)
+<span class="k">-</span> : int = 5
+
+<span class="gh">#</span> 3.14 ;;  (* float *)
+<span class="k">-</span> : float = 3.14
+
+<span class="gh">#</span> true ;; (* bool *)
+<span class="k">-</span> : bool = true
+
+<span class="gh">#</span> false ;;
+<span class="k">-</span> : bool = false
+
+<span class="gh">#</span> &#39;a&#39; ;; (* char *)
+<span class="k">-</span> : char = &#39;a&#39;
+
+<span class="gh">#</span> &quot;a string&quot; ;; (* string *)
+<span class="k">-</span> : string = &quot;a string&quot;
+
+<span class="gh">#</span> String.to_bytes &quot;hello&quot; ;; (* bytes *)
+<span class="k">-</span> : bytes = Bytes.of_string &quot;hello&quot;
+
+<span class="gh">#</span> (3, 5);; (* tuple *)
+<span class="k">-</span> : int * int = (3, 5)
+
+<span class="gh">#</span> ref 0;; (* reference *)
+<span class="k">-</span> : int ref = 
+</code></pre></div>
+
+<h4 id="options-results">Options &amp; Results</h4>
+<div class="codehilite"><pre><span></span><code># Some 42;;
+- : int option = Some 42
+
+# Ok 42;;
+- : (int, &#39;a) result = Ok 42
+
+# Error &quot;404&quot;;;
+- : (&#39;a, int) result = Error 404
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="arrays-lists">Arrays &amp; Lists</h3>
+<div class="section">
+<h4 id="arrays">Arrays</h4>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> [|0; 1; 2; 3|];; (* create an array *)
+<span class="k">-</span> : int array = [|0; 1; 2; 3|]
+
+<span class="gh">#</span> [|&#39;u&#39;; &#39;s&#39;; &#39;c&#39;|].(1);; (* array access *)
+<span class="k">-</span> char = &#39;s&#39;
+</code></pre></div>
+
+<p>Arrays are mutable</p>
+<div class="codehilite"><pre><span></span><code><span class="n">let</span><span class="w"> </span><span class="n">scores</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">|</span><span class="m">97</span><span class="p">;</span><span class="w"> </span><span class="m">85</span><span class="p">;</span><span class="w"> </span><span class="m">99</span><span class="o">|</span><span class="p">];;</span>
+<span class="o">-</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">int</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">|</span><span class="m">97</span><span class="p">;</span><span class="w"> </span><span class="m">85</span><span class="p">;</span><span class="w"> </span><span class="m">99</span><span class="o">|</span><span class="p">]</span>
+
+<span class="c1"># scores.(2) &lt;- 89;; (* update an element *)</span>
+<span class="o">-</span><span class="w"> </span><span class="n">unit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span>
+
+<span class="c1"># scores;;</span>
+<span class="o">-</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">int</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="o">|</span><span class="m">97</span><span class="p">;</span><span class="w"> </span><span class="m">85</span><span class="p">;</span><span class="w"> </span><span class="m">89</span><span class="o">|</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="lists">Lists</h4>
+<div class="codehilite"><pre><span></span><code># [1; 2; 3];;
+- : int list = [1; 2; 3;]
+
+# [&quot;a&quot;; &quot;str&quot;; &quot;lst&quot;];;
+- : string list = [&quot;a&quot;; &quot;str&quot;; &quot;lst&quot;]
+</code></pre></div>
+
+<p>Lists are immutable</p>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> let lst = [1; 2; 3];;
+<span class="k">-</span> : int list = [1; 2; 3]
+
+<span class="gh">#</span> let new_lst =  0 :: lst;; (* prepend to a new list *)
+<span class="k">-</span> : int list = [0; 1; 2; 3]
+
+<span class="gh">#</span> new_lst @ [4;5;6];; (* combine two lists *)
+<span class="k">-</span> : int list = [0; 1; 2; 3; 4; 5; 6]
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-defined-types">User-Defined Types</h3>
+<div class="section">
+<h4 id="records">Records</h4>
+<p>Bundle related data</p>
+<div class="codehilite"><pre><span></span><code>type<span class="w"> </span>person<span class="w"> </span>=<span class="w"> </span>
+
+#<span class="w"> </span>let<span class="w"> </span>zeno<span class="w"> </span>=<span class="w"> </span>;;
+val<span class="w"> </span>zeno<span class="w"> </span>:<span class="w"> </span>person<span class="w"> </span>=<span class="w"> </span>
+</code></pre></div>
+
+<h4 id="variants">Variants</h4>
+<p>Several different, but related types</p>
+<div class="codehilite"><pre><span></span><code><span class="k">type</span><span class="w"> </span><span class="nx">shape</span><span class="w"> </span><span class="p">=</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nx">Circle</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">float</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="nx">Rectangle</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">float</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nx">float</span>
+
+<span class="err">#</span><span class="w"> </span><span class="kd">let</span><span class="w"> </span><span class="nx">my_shape</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">Circle</span><span class="w"> </span><span class="m m-Double">5.0</span><span class="p">;;</span>
+<span class="o">-</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="nx">shape</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">Circle</span><span class="w"> </span><span class="mi">5</span><span class="p">.</span>
+</code></pre></div>
+
+<h4 id="aliases">Aliases</h4>
+<p>Provide meaningful name to complex or commonly used types</p>
+<div class="codehilite"><pre><span></span><code>type<span class="w"> </span>point<span class="w"> </span>=<span class="w"> </span>float<span class="w"> </span>*<span class="w"> </span>float
+
+#<span class="w"> </span>let<span class="w"> </span>origin:<span class="w"> </span>point<span class="w"> </span>=<span class="w"> </span>(0.0,<span class="w"> </span>0.0);;
+val<span class="w"> </span>origin<span class="w"> </span>:<span class="w"> </span>point<span class="w"> </span>=<span class="w"> </span>(0.,<span class="w"> </span>0.)
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="functions">
+<h2 id="functions">Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="functions_1">Functions</h3>
+<div class="section">
+<h4 id="single-parameter">Single parameter</h4>
+<div class="codehilite"><pre><span></span><code>let add_one x =
+  let result = x + 1 in
+  result
+
+<span class="gh">#</span> add_one 1;;
+<span class="k">-</span> : int = 2
+</code></pre></div>
+
+<h4 id="multiple-parameters">Multiple parameters</h4>
+<div class="codehilite"><pre><span></span><code>let sum x y =
+  let result = x + y in
+  result
+
+# sum 1 2;;
+- : int = 3
+</code></pre></div>
+
+<h4 id="tuple-parameter">Tuple parameter</h4>
+<div class="codehilite"><pre><span></span><code>let str_concat (x, y) =
+  x ^ &quot; &quot; ^ y
+
+<span class="gh">#</span> str_concat (&quot;Hello&quot;, &quot;OCaml&quot;) ;;
+<span class="k">-</span> : string = &quot;Hello Ocaml&quot;
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="recursive-functions">Recursive Functions</h3>
+<div class="section">
+<h4 id="rec-keyword">rec keyword</h4>
+<p>All recusive functions use the rec keyword</p>
+<div class="codehilite"><pre><span></span><code>let rec factorial n =
+  if n &lt; 1 then 1 else n * factorial (n - 1)
+</code></pre></div>
+
+<p>The above can cause stackoverflow.</p>
+<h4 id="tail-recursion">Tail Recursion</h4>
+<p>Makes use of a helper function and the acc argument.</p>
+<div class="codehilite"><pre><span></span><code>let rec factorial_helper n acc =
+  if n = 0 then acc
+  else factorial_helper (n - 1) (n * acc)
+</code></pre></div>
+
+<p>Notice the last call is the recursive function.</p>
+<div class="codehilite"><pre><span></span><code>let factorial n = factorial_helper n 1
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="chaining">Chaining</h3>
+<div class="section">
+<h4 id="application-operator">Application Operator</h4>
+<p>Read from right to left, the first operation is <code>sum 2 3</code></p>
+<div class="codehilite"><pre><span></span><code>(* find log(2 + 3) *)
+<span class="gh">#</span> log @@ float_of_int @@ sum 2 3 ;;
+<span class="k">-</span> : float = 1.609...
+</code></pre></div>
+
+<h4 id="pipeline">Pipeline</h4>
+<div class="codehilite"><pre><span></span><code><span class="c">(* find log((x + y)!) *)</span>
+<span class="o">#</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="mi">3</span>
+<span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">factorial</span>
+<span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">float_of_int</span>
+<span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">;;</span>
+<span class="o">-</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="o">.</span><span class="mi">787</span><span class="o">...</span>
+</code></pre></div>
+
+<p><code>|&gt;</code> takes the output of the function and passes it as input to the next function in the pipeline</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="control-flow">
+<h2 id="control-flow">Control Flow</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="if-statements">If Statements</h3>
+<div class="section">
+<h4 id="if-statement">If Statement</h4>
+<div class="codehilite"><pre><span></span><code>let is_pos x =
+  if x &gt; 0 then &quot;positive&quot; else &quot;negative&quot;
+</code></pre></div>
+
+<h4 id="if-else-if">If else if</h4>
+<div class="codehilite"><pre><span></span><code><span class="nv">let</span><span class="w"> </span><span class="nv">f</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s2">&quot;gt 3&quot;</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">x</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="k">then</span><span class="w"> </span><span class="s2">&quot;lt 3&quot;</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;eq 3&quot;</span>
+</code></pre></div>
+
+<h4 id="pattern-matching">Pattern Matching</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">let</span><span class="w"> </span><span class="n">is_pos</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="n">match</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="n">with</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kr">true</span><span class="w">  </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;positive&quot;</span>
+<span class="w">  </span><span class="o">|</span><span class="w"> </span><span class="kr">false</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="s">&quot;negative&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="loops">Loops</h3>
+<div class="section">
+<h4 id="for-loop">For loop</h4>
+<div class="codehilite"><pre><span></span><code>for i = 1 to 5 do
+  print_int i
+done
+</code></pre></div>
+
+<h4 id="while-loop">While loop</h4>
+<p>Notice the <code>ref</code> is needed to have the while condition eventually become false.</p>
+<div class="codehilite"><pre><span></span><code><span class="n">let</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ref</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="k">in</span>
+<span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">!</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="k">do</span>
+<span class="w">    </span><span class="n">print_int</span><span class="w"> </span><span class="p">!</span><span class="n">i</span><span class="p">;</span>
+<span class="w">    </span><span class="n">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="p">!</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="k">done</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="operators">Operators</h3>
+<div class="section">
+<h4 id="comparison-operators">Comparison Operators</h4>
+<div class="codehilite"><pre><span></span><code>=         (* equal to <span class="gs">*)</span>
+<span class="gs">&lt;&gt;        (*</span> not equal to <span class="gs">*)</span>
+<span class="gs">&gt;         (*</span> greater than <span class="gs">*)</span>
+<span class="gs">&lt;         (*</span> less than <span class="gs">*)</span>
+<span class="gs">&gt;=        (*</span> greater than or eq to <span class="gs">*)</span>
+<span class="gs">&lt;=        (*</span> less than or eq to *)
+</code></pre></div>
+
+<h4 id="arithmatic-operators">Arithmatic Operators</h4>
+<div class="codehilite"><pre><span></span><code>(* int operator   float operator <span class="gs">*)</span>
+<span class="gs">+                 +.  (*</span> addition <span class="gs">*)</span>
+<span class="gs">-                 -.  (*</span> subtraction <span class="gs">*)</span>
+<span class="gs">*</span>                 <span class="gs">*.  (*</span> multiplication <span class="gs">*)</span>
+<span class="gs">/                 /.  (*</span> division <span class="gs">*)</span>
+<span class="gs">                  *</span>*  (* power *)
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="useful-tools">
+<h2 id="useful-tools">Useful Tools</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="list">List</h3>
+<div class="section">
+<h4 id="searching-filtering">Searching &amp; Filtering</h4>
+<div class="codehilite"><pre><span></span><code>#<span class="w"> </span>let<span class="w"> </span>lst<span class="w"> </span>=<span class="w"> </span>[1;<span class="w"> </span>2;<span class="w"> </span>3];;
+val<span class="w"> </span>lst<span class="w"> </span>:<span class="w"> </span>int<span class="w"> </span>list<span class="w"> </span>=<span class="w"> </span>[1;<span class="w"> </span>2;<span class="w"> </span>3]
+
+#<span class="w"> </span>List.filter<span class="w"> </span>(fun<span class="w"> </span>x<span class="w"> </span>-&gt;<span class="w"> </span>x<span class="w"> </span>mod<span class="w"> </span>2<span class="w"> </span>=<span class="w"> </span>0)<span class="w"> </span>lst;;
+-<span class="w"> </span>:<span class="w"> </span>int<span class="w"> </span>list<span class="w"> </span>=<span class="w"> </span>[2]
+
+#<span class="w"> </span>List.find<span class="w"> </span>(fun<span class="w"> </span>x<span class="w"> </span>-&gt;<span class="w"> </span>x<span class="w"> </span>=<span class="w"> </span>4)<span class="w"> </span>lst;;
+Exception:<span class="w"> </span>Not_found
+
+#<span class="w"> </span>List.sort<span class="w"> </span>compare<span class="w"> </span>[2;<span class="w"> </span>1;<span class="w"> </span>3];;
+-<span class="w"> </span>:<span class="w"> </span>int<span class="w"> </span>list<span class="w"> </span>=<span class="w"> </span>[1;<span class="w"> </span>2;<span class="w"> </span>3]
+</code></pre></div>
+
+<h4 id="applying-transformations">Applying Transformations</h4>
+<div class="codehilite"><pre><span></span><code>(* Loop over list and apply fun f <span class="gs">*)</span>
+<span class="gs">List.iter f lst</span>
+
+<span class="gs">(*</span> map a function to each elem <span class="gs">*)</span>
+<span class="gs">(*</span> Ex. double each element x in lst <span class="gs">*)</span>
+<span class="gs">List.map (fun x -&gt; x + x) lst</span>
+
+<span class="gs">(*</span> Apply an operator between elements <span class="gs">*)</span>
+<span class="gs">(*</span> Ex. 1 + 2 + 3 *)
+List.fold_left (+) 0 lst
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="associaton-lists">Associaton Lists</h3>
+<div class="section">
+<h4 id="definition-and-access">Definition and Access</h4>
+<div class="codehilite"><pre><span></span><code>let scores =
+  [(&quot;math&quot;, 91); (&quot;phil&quot;, 89); (&quot;stats&quot;, 94)]
+
+<span class="gh">#</span> List.assoc &quot;stats&quot; scores;;
+<span class="k">-</span> : int = 94
+
+<span class="gh">#</span> List.mem_assoc &quot;math&quot; scores;;
+<span class="k">-</span> : bool = true
+</code></pre></div>
+
+<h4 id="split-and-combine">Split and Combine</h4>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> List.split scores;;
+<span class="k">-</span> : string list * int list = ([&quot;math&quot;; &quot;phil&quot;; &quot;stats&quot;], [91; 89; 94])
+
+<span class="gh">#</span> List.combine [1;2;3] [4; 5; 6];;
+<span class="k">-</span> : (int * int) list = [(1, 4); (2, 5); (3, 6)]
+</code></pre></div>
+
+<p>Association lists are similar to dictionaries or hashmaps</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hash-tables">Hash Tables</h3>
+<div class="section">
+<p>Hash Tables are mutable.</p>
+<h4 id="initialize-add-data">Initialize &amp; Add Data</h4>
+<div class="codehilite"><pre><span></span><code>#<span class="w"> </span>let<span class="w"> </span>my_htable<span class="w"> </span>=<span class="w"> </span>Hashtbl.create<span class="w"> </span>3;;
+val<span class="w"> </span>my_htable<span class="w"> </span>:<span class="w"> </span>(&#39;_weak1,<span class="w"> </span>&#39;_weak2)<span class="w"> </span>Hashtbl.t<span class="w"> </span>=<span class="w"> </span><span class="nt">&lt;abstr&gt;</span>
+
+#<span class="w"> </span>Hashtbl.add<span class="w"> </span>my_htable<span class="w"> </span>&quot;A&quot;<span class="w"> </span>&quot;John&quot;;
+<span class="w">  </span>Hashtbl.add<span class="w"> </span>my_htable<span class="w"> </span>&quot;A&quot;<span class="w"> </span>&quot;Jane&quot;;
+<span class="w">  </span>Hashtbl.add<span class="w"> </span>my_htable<span class="w"> </span>&quot;B&quot;<span class="w"> </span>&quot;Max&quot;;;
+</code></pre></div>
+
+<h4 id="find-data">Find Data</h4>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> Hashtbl.find my_htable &quot;A&quot;;;
+<span class="k">-</span> : string = &quot;Jane&quot;
+
+(* find all *)
+<span class="gh">#</span> Hashtbl.find_all my_htable &quot;A&quot;;;
+<span class="k">-</span> : string list = [&quot;Jane&quot;; &quot;John&quot;]
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="maps">Maps</h3>
+<div class="section">
+<p>Maps are immutable key-value association tables.</p>
+<h4 id="initialization-add-data">Initialization &amp; Add Data</h4>
+<div class="codehilite"><pre><span></span><code><span class="c">(* the Map.Make functor creates the custom map module *)</span>
+<span class="o">#</span><span class="w"> </span><span class="k">module</span><span class="w"> </span><span class="nn">StringMap</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">Map</span><span class="p">.</span><span class="n">Make</span><span class="o">(</span><span class="n">String</span><span class="o">);;</span>
+
+<span class="k">let</span><span class="w"> </span><span class="nv">books</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="nn">StringMap</span><span class="p">.</span><span class="n">empty</span>
+<span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nn">StringMap</span><span class="p">.</span><span class="n">add</span><span class="w"> </span><span class="s">&quot;Dune&quot;</span><span class="w"> </span><span class="o">(</span><span class="s">&quot;Herbet&quot;</span><span class="o">,</span><span class="w"> </span><span class="mi">1965</span><span class="o">)</span>
+<span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nn">StringMap</span><span class="p">.</span><span class="n">add</span><span class="w"> </span><span class="s">&quot;Neuromancer&quot;</span><span class="w"> </span><span class="o">(</span><span class="s">&quot;Gibson&quot;</span><span class="o">,</span><span class="w"> </span><span class="mi">1984</span><span class="o">)</span>
+</code></pre></div>
+
+<h4 id="finding-entries">Finding Entries</h4>
+<div class="codehilite"><pre><span></span><code>(* find_opt returns assoc val wrapped in an option else None <span class="gs">*)</span>
+<span class="gs"># StringMap.find_opt &quot;Dune&quot; books;;</span>
+<span class="gs">- : (string *</span> int) option = Some (&quot;Herbet&quot;, 1965)
+
+(* find returns the association else Not_Found <span class="gs">*)</span>
+<span class="gs"># StringMap.find &quot;Dune&quot; books;;</span>
+<span class="gs">- : string *</span> int = (&quot;Herbet&quot;, 1965)
+</code></pre></div>
+
+<h4 id="adding-removing-entries">Adding &amp; Removing Entries</h4>
+<p>Creates a new map since maps are immutable</p>
+<div class="codehilite"><pre><span></span><code><span class="k">let</span><span class="w"> </span><span class="nv">more_books</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">books</span>
+<span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nn">StringMap</span><span class="p">.</span><span class="n">add</span><span class="w"> </span><span class="s">&quot;Foundation&quot;</span><span class="w"> </span><span class="o">(</span><span class="s">&quot;Isaac Asimov&quot;</span><span class="o">,</span><span class="w"> </span><span class="mi">1951</span><span class="o">)</span>
+
+<span class="k">let</span><span class="w"> </span><span class="nv">less_books</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nn">StringMap</span><span class="p">.</span><span class="n">remove</span><span class="w"> </span><span class="s">&quot;Dune&quot;</span>
+</code></pre></div>
+
+<p>Filtering</p>
+<div class="codehilite"><pre><span></span><code><span class="n">let</span><span class="w"> </span><span class="n">eighties_books</span><span class="w"> </span><span class="o">=</span>
+<span class="w">    </span><span class="n">StringMap</span><span class="p">.</span><span class="n">filter</span>
+<span class="w">      </span><span class="p">(</span><span class="n">fun</span><span class="w"> </span><span class="n">_</span><span class="w"> </span><span class="p">(</span><span class="n">_</span><span class="p">,</span><span class="w"> </span><span class="n">year</span><span class="p">)</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">year</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1980</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">number</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">1990</span><span class="p">)</span><span class="w"> </span><span class="n">books</span>
+</code></pre></div>
+
+<h4 id="printing-data">Printing Data</h4>
+<div class="codehilite"><pre><span></span><code><span class="nt">let</span><span class="w"> </span><span class="nt">print_books</span><span class="w"> </span><span class="nt">map</span><span class="w"> </span><span class="o">=</span>
+<span class="w">  </span><span class="nt">StringMap</span><span class="p">.</span><span class="nc">iter</span><span class="w"> </span><span class="o">(</span><span class="nt">fun</span><span class="w"> </span><span class="nt">title</span><span class="w"> </span><span class="o">(</span><span class="nt">author</span><span class="o">,</span><span class="w"> </span><span class="nt">year</span><span class="o">)</span><span class="w"> </span><span class="nt">-</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="nt">Printf</span><span class="p">.</span><span class="nc">printf</span><span class="w"> </span><span class="s2">&quot;Title: %s, Author: %s, Year: %d\n&quot;</span><span class="w"> </span><span class="nt">title</span><span class="w"> </span><span class="nt">author</span><span class="w"> </span><span class="nt">year</span>
+<span class="w">  </span><span class="o">)</span><span class="w"> </span><span class="nt">map</span>
+
+<span class="err">#</span><span class="w"> </span><span class="nt">let</span><span class="w"> </span><span class="o">()</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nt">print_books</span><span class="w"> </span><span class="nt">eighties_books</span><span class="o">;;</span>
+<span class="nt">Title</span><span class="o">:</span><span class="w"> </span><span class="nt">Neuromancer</span><span class="o">,</span><span class="w"> </span><span class="nt">Author</span><span class="o">:</span><span class="w"> </span><span class="nt">Gibson</span><span class="o">,</span><span class="w"> </span><span class="nt">Year</span><span class="o">:</span><span class="w"> </span><span class="nt">1984</span>
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

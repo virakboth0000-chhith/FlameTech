@@ -1,0 +1,3820 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="ft.png" type="image/x-icon">
+    <title>FlameTech | AI </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+ 
+        :root {
+            --primary: #ff2a6d;
+            --secondary: #05d9e8;
+            --dark: #01012b;
+            --darker: #000015;
+            --light: #f0f0f0;
+            --accent: #d1f7ff;
+            --primary-dark: #d1004a;
+            --bg-primary: #0f172a;
+            --bg-secondary: rgba(0, 0, 20, 0.8);
+            --bg-card: rgba(255, 255, 255, 0.05);
+            --bg-card-hover: rgba(255, 255, 255, 0.1);
+            --text-primary: var(--light);
+            --text-secondary: #aaa;
+            --text-accent: var(--accent);
+            --border-primary: rgba(255, 42, 109, 0.3);
+            --border-secondary: rgba(255, 42, 109, 0.2);
+            --shadow-primary: rgba(0, 0, 0, 0.3);
+            --shadow-secondary: rgba(255, 42, 109, 0.5);
+            --sidebar-bg: rgba(0, 0, 30, 0.85);
+            --sidebar-width: 260px;
+        }
+ 
+         .light-mode {
+            --primary: #5f8f3f !important;
+            --secondary: #0f766e !important;
+            --dark: #ffffff !important;
+            --darker: #f8fbf1 !important;
+            --light: #101828 !important;
+            --accent: #475467 !important;
+            --bg-primary: linear-gradient(rgba(95, 143, 63, 0.055) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(15, 118, 110, 0.045) 1px, transparent 1px),
+                          radial-gradient(circle at 12% 2%, rgba(149, 184, 93, 0.16), transparent 28%),
+                          radial-gradient(circle at 88% 8%, rgba(15, 118, 110, 0.12), transparent 27%),
+                          linear-gradient(135deg, #ffffff 0%, #f7fbef 46%, #eef8f2 100%) !important;
+            --bg-secondary: rgba(255, 255, 255, 0.88) !important;
+            --bg-card: rgba(255, 255, 255, 0.92) !important;
+            --bg-card-hover: rgba(255, 255, 255, 0.96) !important;
+            --text-primary: #101828 !important;
+            --text-secondary: #526071 !important;
+            --text-accent: #3f6f2a !important;
+            --border-primary: rgba(95, 143, 63, 0.2) !important;
+            --border-secondary: rgba(15, 118, 110, 0.2) !important;
+            --shadow-primary: rgba(16, 24, 40, 0.075) !important;
+            --shadow-secondary: rgba(95, 143, 63, 0.18) !important;
+            --sidebar-bg: rgba(255, 255, 245, 0.96) !important;
+            --code-purple: #6554c0 !important;
+            --code-amber: #b7791f !important;
+            --code-line: rgba(95, 143, 63, 0.09) !important;
+        }
+ 
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+ 
+        .container {
+            width: 100%;
+            max-width: 100%;
+            padding: 0 20px;
+        }
+ 
+        /* Header */
+        header {
+            background: var(--bg-primary);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border-primary);
+            border-radius: 30px;
+        }
+ 
+        nav {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+ 
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+ 
+        .logo i {
+            color: var(--secondary);
+            animation: pulse 2s infinite;
+        }
+ 
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+ 
+        .nav-links li { margin-left: 25px; }
+ 
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+ 
+        .nav-links a:hover { color: var(--secondary); }
+ 
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 0; height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s ease;
+        }
+ 
+        .nav-links a:hover::after { width: 100%; }
+ 
+        /* ─── LAYOUT WRAPPER ─── */
+        .page-layout {
+            display: flex;
+            padding-top: 80px;
+            min-height: 100vh;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+ 
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            width: var(--sidebar-width);
+            flex-shrink: 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            background: var(--bg-primary);
+            border-right: 1px solid var(--border-primary);
+            padding: 25px 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) transparent;
+            transition: all 0.3s ease;
+        }
+ 
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 4px; }
+        .sidebar::-webkit-scrollbar-track { background: transparent; }
+ 
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border-secondary);
+            margin-bottom: 10px;
+        }
+ 
+        .sidebar-header h3 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+ 
+        .sidebar-header p {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+ 
+        /* Search inside sidebar */
+        .sidebar-search {
+            padding: 12px 16px;
+            margin: 0 12px 10px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border-secondary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+ 
+        .light-mode .sidebar-search {
+            background: rgba(255, 255, 255, 0.9);
+        }
+ 
+        .sidebar-search i {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+ 
+        .sidebar-search input {
+            background: none;
+            border: none;
+            outline: none;
+            color: var(--text-primary);
+            font-size: 0.82rem;
+            width: 100%;
+        }
+ 
+        .sidebar-search input::placeholder { color: var(--text-secondary); }
+ 
+        /* Category sections */
+        .sidebar-section {
+            margin-bottom: 6px;
+        }
+ 
+        .sidebar-section-title {
+            padding: 8px 20px 4px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+ 
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 20px;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            border-left: 3px solid transparent;
+            font-size: 0.88rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-decoration: none;
+            position: relative;
+        }
+ 
+        .sidebar-item:hover {
+            background: rgba(255, 42, 109, 0.08);
+            color: var(--text-primary);
+            border-left-color: var(--primary);
+        }
+ 
+        .sidebar-item.active {
+            background: rgba(255, 42, 109, 0.14);
+            color: var(--primary);
+            border-left-color: var(--primary);
+            font-weight: 600;
+        }
+ 
+        .light-mode .sidebar-item:hover {
+            background: rgba(255, 42, 109, 0.07);
+        }
+ 
+        .light-mode .sidebar-item.active {
+            background: rgba(255, 42, 109, 0.1);
+        }
+ 
+        .sidebar-item i {
+            width: 18px;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+ 
+        .sidebar-item .count {
+            margin-left: auto;
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-weight: 600;
+        }
+ 
+        .light-mode .sidebar-item .count {
+            background: rgba(0,0,0,0.07);
+        }
+ 
+        .sidebar-item.active .count {
+            background: var(--primary);
+            color: white;
+        }
+ 
+        /* Divider */
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border-secondary);
+            margin: 12px 16px;
+            opacity: 0.5;
+        }
+ 
+        /* Sidebar toggle for mobile */
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            bottom: 80px;
+            left: 20px;
+            z-index: 999;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 46px; height: 46px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(255,42,109,0.4);
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+ 
+        .sidebar-toggle:hover { transform: scale(1.08); }
+ 
+        /* ─── MAIN CONTENT ─── */
+        .main-content {
+            flex: 1;
+            padding: 40px 30px 80px;
+            min-width: 0;
+        }
+ 
+        .section-title {
+            text-align: center;
+            margin-bottom: 12px;
+            font-size: 2.3rem;
+            position: relative;
+            color: var(--secondary);
+        }
+ 
+        .light-mode .section-title { color: #057ae8; }
+        .light-mode, .light-mode body {
+            font-family: "Cascadia Code", "JetBrains Mono", "Fira Code", "SFMono-Regular", Consolas, monospace !important;
+        }
+ 
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -12px; left: 50%;
+            transform: translateX(-50%);
+            width: 90px; height: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+ 
+        .section-subtitle {
+            text-align: center;
+            margin: 30px auto 40px;
+            color: var(--text-accent);
+            max-width: 700px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+ 
+        /* Filter bar */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+ 
+        .filter-bar .results-count {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+ 
+        .filter-chip {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            border: 1px solid var(--border-secondary);
+            background: rgba(255,255,255,0.05);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+ 
+        .light-mode .filter-chip {
+            background: rgba(0,0,0,0.04);
+        }
+ 
+        .filter-chip:hover, .filter-chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+ 
+        /* AI Grid */
+        .ai-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+ 
+        .ai-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 20px var(--shadow-primary);
+            position: relative;
+            border: 1px solid var(--border-secondary);
+        }
+ 
+        .ai-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(255, 42, 109, 0.3);
+            border-color: rgba(5, 217, 232, 0.5);
+        }
+ 
+        .ai-card.hidden { display: none; }
+ 
+        .ai-img {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+ 
+        .ai-img img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+ 
+        .ai-card:hover .ai-img img { transform: scale(1.1); }
+ 
+        .ai-badge {
+            position: absolute;
+            top: 12px; right: 12px;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.78rem;
+            
+        }
+ 
+        .ai-info { padding: 18px; }
+ 
+        .ai-info h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: var(--secondary);
+        }
+ 
+        .light-mode .ai-info h3 { color: #057ae8; }
+ 
+        .ai-info p {
+            margin-bottom: 12px;
+            color: var(--text-secondary);
+            line-height: 1.55;
+            font-size: 0.88rem;
+        }
+ 
+        .ai-link {
+            display: inline-block;
+            padding: 8px 18px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+            margin-top: 6px;
+        }
+ 
+        .ai-link:hover {
+            background: var(--secondary);
+            color: var(--dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(5, 217, 232, 0.5);
+        }
+ 
+        .ai-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+ 
+        .ai-category {
+            background: rgba(5, 217, 232, 0.15);
+            color: var(--accent);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+        }
+ 
+        .light-mode .ai-category {
+            background: rgba(5, 217, 232, 0.12);
+            color: #0369a1;
+        }
+ 
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+            display: none;
+            grid-column: 1/-1;
+        }
+ 
+        .no-results i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            display: block;
+            opacity: 0.5;
+        }
+ 
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 60px 0 30px;
+            border-top: 1px solid var(--border-primary);
+            margin-top: 50px;
+        }
+ 
+        .light-mode footer {
+            background: #f1f5f9;
+            border-top: 1px solid #e2e8f0;
+        }
+ 
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+ 
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+            position: relative;
+            padding-bottom: 10px;
+        }
+ 
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 40px; height: 3px;
+            background: var(--primary);
+        }
+ 
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 12px; }
+        .footer-column ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+        .footer-column ul li a:hover { color: var(--primary); padding-left: 4px; }
+ 
+        .social-links { display: flex; gap: 12px; margin-top: 16px; }
+        .social-links a {
+            display: flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        .social-links a:hover { background: var(--primary); transform: translateY(-4px); }
+        .light-mode .social-links a { background: rgba(0,0,0,0.05); color: #475569; }
+ 
+        .copyright {
+            text-align: center;
+            padding: 20px 20px 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #777;
+            font-size: 0.85rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+ 
+        .light-mode .copyright { border-top-color: rgba(0,0,0,0.1); }
+ 
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed;
+            bottom: 10px; right: 75px;
+            z-index: 1000;
+            background: var(--dark);
+            color: var(--light);
+            border: none;
+            border-radius: 50%;
+            width: 46px; height: 46px;
+            font-size: 1.2rem;
+            
+            cursor: pointer;
+            display: flex;
+            align-items: center; justify-content: center;
+            transition: all 0.3s ease;
+        }
+ 
+        .theme-toggle:hover { background: var(--secondary); transform: scale(1.08); }
+ 
+        .light-mode .theme-toggle {
+            background: rgba(255,255,255,0.9);
+            color: #374151;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+ 
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+ 
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+ 
+        .ai-card { animation: fadeInUp 0.4s ease both; }
+ 
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sidebar {
+                position: fixed;
+                left: -280px;
+                top: 0;
+                height: 100vh;
+                z-index: 900;
+                padding-top: 90px;
+                transition: left 0.3s ease;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            }
+ 
+            .sidebar.open { left: 0; }
+ 
+            .sidebar-toggle { display: flex; }
+ 
+            .page-layout { padding-top: 80px; }
+            .main-content { padding: 30px 16px 60px; }
+ 
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                inset: 0;
+                background: rgba(0,0,0,0.5);
+                z-index: 850;
+            }
+            .sidebar-overlay.active { display: block; }
+        }
+ 
+        @media (max-width: 576px) {
+            .nav-links { display: none; }
+            .section-title { font-size: 1.8rem; }
+            .ai-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+    <link rel="stylesheet" href="flametech-light-mode.css">
+    <link rel="stylesheet" href="flametech-dark-mode.css">
+</head>
+<body>
+ 
+<button class="sidebar-toggle" id="sidebarToggle">
+    <i class="fas fa-filter"></i>
+</button>
+ 
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+ 
+<!-- Header -->
+<header>
+    <nav>
+        <a href="Flametech.html" class="logo">
+            <i class="fas fa-laptop-code"></i>
+            FlameTech
+        </a>
+        <ul class="nav-links">
+            <li><a href="h.html">Home</a></li>
+            <li><a href="AI.html">AI</a></li>
+            <li><a href="dev.html">Development</a></li>
+            <li><a href="codeL.html">Code-Language</a></li>
+            <li><a href="TT.html">Train-Typing</a></li>
+            <li><a href="reference.html">Reference</a></li>
+            <li><a href="l-r.html">Login | Register</a></li>
+        </ul>
+        <button class="theme-toggle" id="themeToggle">
+    <i class="fas fa-moon"></i>
+</button>
+    </nav>
+</header>
+ 
+<!-- Page Layout -->
+<div class="page-layout">
+ 
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar" id="sidebar">
+ 
+        <div class="sidebar-header">
+            <h3>AI Tools</h3>
+            <p>Browse by category</p>
+        </div>
+ 
+        <!-- Search -->
+        <div class="sidebar-search">
+            <i class="fas fa-search"></i>
+            <input type="text" id="sidebarSearch" placeholder="Search tools...">
+        </div>
+ 
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Filter</div>
+            <a class="sidebar-item active" data-filter="all">
+                <i class="fas fa-th-large"></i>
+                All Tools
+                <span class="count" id="count-all">31</span>
+            </a>
+        </div>
+ 
+        <div class="sidebar-divider"></div>
+ 
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Category</div>
+ 
+            <a class="sidebar-item" data-filter="chatbot">
+                <i class="fas fa-comments"></i>
+                Chatbots
+                <span class="count" id="count-chatbot"></span>
+            </a>
+            <a class="sidebar-item" data-filter="coding">
+                <i class="fas fa-code"></i>
+                Coding
+                <span class="count" id="count-coding"></span>
+            </a>
+            <a class="sidebar-item" data-filter="image">
+                <i class="fas fa-image"></i>
+                Image & Art
+                <span class="count" id="count-image"></span>
+            </a>
+            <a class="sidebar-item" data-filter="video">
+                <i class="fas fa-video"></i>
+                Video
+                <span class="count" id="count-video"></span>
+            </a>
+            <a class="sidebar-item" data-filter="writing">
+                <i class="fas fa-pen-nib"></i>
+                Writing
+                <span class="count" id="count-writing"></span>
+            </a>
+            <a class="sidebar-item" data-filter="research">
+                <i class="fas fa-flask"></i>
+                Research
+                <span class="count" id="count-research"></span>
+            </a>
+            <a class="sidebar-item" data-filter="productivity">
+                <i class="fas fa-bolt"></i>
+                Productivity
+                <span class="count" id="count-productivity"></span>
+            </a>
+            <a class="sidebar-item" data-filter="audio">
+                <i class="fas fa-microphone"></i>
+                Audio & Voice
+                <span class="count" id="count-audio"></span>
+            </a>
+            <a class="sidebar-item" data-filter="design">
+                <i class="fas fa-palette"></i>
+                Design
+                <span class="count" id="count-design"></span>
+            </a>
+            <a class="sidebar-item" data-filter="music">
+                <i class="fas fa-music"></i>
+                Music
+                <span class="count" id="count-music"></span>
+            </a>
+            <a class="sidebar-item" data-filter="education">
+                <i class="fas fa-graduation-cap"></i>
+                Education
+                <span class="count" id="count-education"></span>
+            </a>
+            <a class="sidebar-item" data-filter="translation">
+                <i class="fas fa-language"></i>
+                Translation
+                <span class="count" id="count-translation"></span>
+            </a>
+            <a class="sidebar-item" data-filter="business">
+                <i class="fas fa-briefcase"></i>
+                Business & Finance
+                <span class="count" id="count-business"></span>
+            </a>
+            <a class="sidebar-item" data-filter="3d">
+                <i class="fas fa-cube"></i>
+                3D & Game Dev
+                <span class="count" id="count-3d"></span>
+            </a>
+            <a class="sidebar-item" data-filter="security">
+                <i class="fas fa-shield-halved"></i>
+                Security & Privacy
+                <span class="count" id="count-security"></span>
+            </a>
+            <a class="sidebar-item" data-filter="legal">
+                <i class="fas fa-scale-balanced"></i>
+                Legal
+                <span class="count" id="count-legal"></span>
+            </a>
+            <a class="sidebar-item" data-filter="health">
+                <i class="fas fa-heart-pulse"></i>
+                Health
+                <span class="count" id="count-health"></span>
+            </a>
+            <a class="sidebar-item" data-filter="social">
+                <i class="fas fa-hashtag"></i>
+                Social Media
+                <span class="count" id="count-social"></span>
+            </a>
+            <a class="sidebar-item" data-filter="hr">
+                <i class="fas fa-users"></i>
+                HR & Recruiting
+                <span class="count" id="count-hr"></span>
+            </a>
+        </div>
+ 
+        <div class="sidebar-divider"></div>
+ 
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">Quick Links</div>
+            <a class="sidebar-item" href="h.html">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+            <a class="sidebar-item" href="dev.html">
+                <i class="fas fa-laptop"></i>
+                Development
+            </a>
+            <a class="sidebar-item" href="codeL.html">
+                <i class="fas fa-terminal"></i>
+                Code Language
+            </a>
+            <a class="sidebar-item" href="TT.html">
+                <i class="fas fa-keyboard"></i>
+                Train Typing
+            </a>
+        </div>
+ 
+    </aside>
+ 
+    <!-- ─── MAIN CONTENT ─── -->
+    <main class="main-content">
+        <h2 class="section-title">Popular AI Tools & Websites</h2>
+        <p class="section-subtitle">
+            Discover the most powerful and innovative AI tools available today. Click on any recommendation to visit the official website.
+        </p>
+ 
+        <!-- Filter bar -->
+        <div class="filter-bar">
+            <span style="font-size:0.82rem; color: var(--text-secondary); font-weight:600;">Sort:</span>
+            <span class="filter-chip active" data-sort="default">Featured</span>
+            <span class="filter-chip" data-sort="az">A–Z</span>
+            <span class="results-count" id="resultsCount">Showing all 31 tools</span>
+        </div>
+ 
+        <div class="ai-grid" id="aiGrid">
+            <!-- ChatGPT -->
+            <div class="ai-card" data-categories="chatbot,writing,productivity">
+                <div class="ai-img">
+                    <img src="https://pixelz.cc/wp-content/uploads/2023/12/open-ai-chat-gpt-logo-uhd-4k-wallpaper.jpg" alt="ChatGPT">
+                    <div class="ai-badge">MOST POPULAR</div>
+                </div>
+                <div class="ai-info">
+                    <h3>ChatGPT</h3>
+                    <p>Advanced AI chatbot developed by OpenAI that can engage in human-like conversations, answer questions, and assist with various tasks.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Productivity</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://chat.openai.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Midjourney -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="https://logomakerr.ai/uploads/output/2023/04/23/a4e29a2256784ff8e31d7f53f7ac7f79.jpg?t=1682261303" alt="Midjourney">
+                    <div class="ai-badge">CREATIVE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Midjourney</h3>
+                    <p>AI-powered image generation tool that creates stunning artwork and visuals from text descriptions through Discord integration.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Art</span>
+                        <span class="ai-category">Design</span>
+                        <span class="ai-category">Image Generation</span>
+                    </div>
+                    <a href="https://www.midjourney.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- GitHub Copilot -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="https://cdn.prod.website-files.com/649d808ba8385965c74d94e8/649d808ba8385965c74d9d8b_Github%20Copilot.svg" alt="GitHub Copilot">
+                    <div class="ai-badge">DEVELOPER TOOL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>GitHub Copilot</h3>
+                    <p>AI pair programmer that helps you write code faster by suggesting whole lines or entire functions right in your editor.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Programming</span>
+                        <span class="ai-category">Development</span>
+                    </div>
+                    <a href="https://github.com/features/copilot" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Claude -->
+            <div class="ai-card" data-categories="writing,chatbot,research">
+                <div class="ai-img">
+                    <img src="https://logowik.com/content/uploads/images/claude-ai9117.logowik.com.webp" alt="Claude AI">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Claude AI</h3>
+                    <p>Anthropic's AI assistant known for safety, nuanced understanding, and handling long documents (up to 200K context).</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Writing</span>
+                        <span class="ai-category">Analysis</span>
+                        <span class="ai-category">Assistant</span>
+                    </div>
+                    <a href="https://claude.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Runway ML -->
+            <div class="ai-card" data-categories="video,image">
+                <div class="ai-img">
+                    <img src="https://appsumo2-cdn.appsumo.com/media/selfsubmissions/images/46075782-bd2c-4596-a9e0-a038292fd0e3.png" alt="Runway ML">
+                    <div class="ai-badge">MULTIMEDIA</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Runway ML</h3>
+                    <p>Creative toolkit that makes AI accessible with tools for video editing, image generation, and other multimedia applications.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Video</span>
+                        <span class="ai-category">Editing</span>
+                        <span class="ai-category">Creative</span>
+                    </div>
+                    <a href="https://runwayml.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Notion AI -->
+            <div class="ai-card" data-categories="productivity,writing">
+                <div class="ai-img">
+                    <img src="https://fahimai.com/wp-content/uploads/2025/01/Fahim-AI-3-68.png" alt="Notion AI">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Notion AI</h3>
+                    <p>AI-powered workspace that helps with writing, brainstorming, summarization, and task management within Notion's platform.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Writing</span>
+                        <span class="ai-category">Organization</span>
+                        <span class="ai-category">Notes</span>
+                    </div>
+                    <a href="https://www.notion.so/product/ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- ElevenLabs -->
+            <div class="ai-card" data-categories="audio">
+                <div class="ai-img">
+                    <img src="https://www.arbaaa.com/content/images/2025/07/fOtGXrA5iunaymKRbutHlaARoXwi7dnMNzRnLan6-2.jpg" alt="ElevenLabs">
+                    <div class="ai-badge">VOICE AI</div>
+                </div>
+                <div class="ai-info">
+                    <h3>ElevenLabs</h3>
+                    <p>Cutting-edge text-to-speech software that produces incredibly realistic and emotive AI voices in multiple languages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Voice</span>
+                        <span class="ai-category">Audio</span>
+                        <span class="ai-category">Synthesis</span>
+                    </div>
+                    <a href="https://elevenlabs.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- DeepSeek -->
+            <div class="ai-card" data-categories="chatbot,coding">
+                <div class="ai-img">
+                    <img src="https://www.viinyx.com/blog-thumbnails/DeepSeek%20V3.jpg" alt="DeepSeek">
+                    <div class="ai-badge">AI-TOOL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>DeepSeek</h3>
+                    <p>Advanced AI assistant that can help with coding, writing, analysis, and general conversation with large context window.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbots</span>
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Assistant</span>
+                    </div>
+                    <a href="https://www.deepseek.com/en" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- BlackBox AI -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="https://logomakerr.ai/uploads/output/2024/03/17/eb4670c2376a91c3aeb110c32c438df5.jpg?t=1710632784" alt="BlackBox AI">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>BlackBox AI</h3>
+                    <p>AI-powered coding assistant designed to enhance developer productivity with code generation, search, and completion.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Programming</span>
+                        <span class="ai-category">Development</span>
+                        <span class="ai-category">Coding</span>
+                    </div>
+                    <a href="https://www.blackbox.ai/" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Perplexity AI -->
+            <div class="ai-card" data-categories="research">
+                <div class="ai-img">
+                    <img src="https://images.seeklogo.com/logo-png/61/1/perplexity-ai-logo-png_seeklogo-611677.png" alt="Perplexity AI">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Perplexity AI</h3>
+                    <p>AI-powered answer engine that provides detailed, cited answers to complex questions by searching the web in real-time.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Research</span>
+                        <span class="ai-category">Search</span>
+                        <span class="ai-category">Answers</span>
+                    </div>
+                    <a href="https://www.perplexity.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Synthesia -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="https://logowik.com/content/uploads/images/synthesia8926.jpg" alt="Synthesia">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Synthesia</h3>
+                    <p>Create professional AI avatar videos from text in minutes, with 140+ avatars and 120+ languages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Video</span>
+                        <span class="ai-category">Avatars</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://www.synthesia.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Copy.ai -->
+            <div class="ai-card" data-categories="writing,productivity">
+                <div class="ai-img">
+                    <img src="https://www.booststash.com/wp-content/uploads/2025/06/copy-ai.png" alt="Copy.ai">
+                    <div class="ai-badge">MARKETING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Copy.ai</h3>
+                    <p>AI-powered marketing copy generator for ads, emails, social media, and websites.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Writing</span>
+                        <span class="ai-category">Marketing</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://www.copy.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Jasper -->
+            <div class="ai-card" data-categories="writing">
+                <div class="ai-img">
+                    <img src="https://logowik.com/content/uploads/images/jasper2487.logowik.com.webp" alt="Jasper">
+                    <div class="ai-badge">CONTENT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Jasper</h3>
+                    <p>AI content creation platform for generating blog posts, reports, scripts, and marketing copy.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Writing</span>
+                        <span class="ai-category">Content</span>
+                        <span class="ai-category">Marketing</span>
+                    </div>
+                    <a href="https://www.jasper.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Descript -->
+            <div class="ai-card" data-categories="audio,video">
+                <div class="ai-img">
+                    <img src="https://cdn.mos.cms.futurecdn.net/Uwt3pufBTJv89JEY42sSUJ.jpg" alt="Descript">
+                    <div class="ai-badge">AUDIO/VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Descript</h3>
+                    <p>Edit audio and video by editing text transcripts, with AI voice cloning and overdub features.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Editing</span>
+                        <span class="ai-category">Audio</span>
+                        <span class="ai-category">Video</span>
+                    </div>
+                    <a href="https://www.descript.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Leonardo.ai -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="https://www.bworldonline.com/wp-content/uploads/2024/07/Leonardo-AI-logo.jpg" alt="Leonardo.ai">
+                    <div class="ai-badge">ART</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Leonardo.ai</h3>
+                    <p>AI art generation platform with fine-tuned models for game assets, product design, and digital art.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Art</span>
+                        <span class="ai-category">Design</span>
+                        <span class="ai-category">Images</span>
+                    </div>
+                    <a href="https://leonardo.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- ChatPDF -->
+            <div class="ai-card" data-categories="research,productivity">
+                <div class="ai-img">
+                    <img src="https://dlsdc.com/wp-content/uploads/2024/02/1685538597643.jpeg" alt="ChatPDF">
+                    <div class="ai-badge">DOCUMENTS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>ChatPDF</h3>
+                    <p>Upload PDFs and chat with them to extract information, summarize content, and answer questions.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Research</span>
+                        <span class="ai-category">Documents</span>
+                        <span class="ai-category">Analysis</span>
+                    </div>
+                    <a href="https://www.chatpdf.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Replit -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="https://cdn.sanity.io/images/bj34pdbp/migration/3c2f2d404a571d2c9fbca934360352698d63433a-1920x900.png" alt="Replit">
+                    <div class="ai-badge">DEVELOPMENT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Replit Ghostwriter</h3>
+                    <p>AI code completion and generation directly in the collaborative browser-based IDE.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Development</span>
+                        <span class="ai-category">IDE</span>
+                    </div>
+                    <a href="https://replit.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Pi AI -->
+            <div class="ai-card" data-categories="chatbot">
+                <div class="ai-img">
+                    <img src="https://piaisolutions.com/wp-content/uploads/2025/08/20250812_1437_Logo-on-Black_remix_01k2f7pkmwedja3j2j8541rf43-1.png" alt="Pi AI">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Pi AI</h3>
+                    <p>A personal AI chatbot focused on conversation and emotional intelligence with a supportive personality.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Assistant</span>
+                        <span class="ai-category">Conversation</span>
+                    </div>
+                    <a href="https://pi.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Gamma -->
+            <div class="ai-card" data-categories="productivity,design">
+                <div class="ai-img">
+                    <img src="https://cdn.dribbble.com/userupload/8299491/file/still-c6ad89962de9948f89c8fd1f936713fd.png" alt="Gamma">
+                    <div class="ai-badge">PRESENTATIONS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Gamma</h3>
+                    <p>Create presentations, documents, and webpages from a text prompt with AI design and formatting.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Presentations</span>
+                        <span class="ai-category">Design</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://gamma.app" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Tome -->
+            <div class="ai-card" data-categories="productivity,writing">
+                <div class="ai-img">
+                    <img src="https://ml.globenewswire.com/Resource/Download/d26394c3-0239-45e0-b89a-9128ddb30c27" alt="Tome">
+                    <div class="ai-badge">STORYTELLING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Tome</h3>
+                    <p>AI storytelling tool that generates narrative-driven presentations and one-pagers from a prompt.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Presentations</span>
+                        <span class="ai-category">Storytelling</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://tome.app" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- You.com -->
+            <div class="ai-card" data-categories="research">
+                <div class="ai-img">
+                    <img src="https://www.jeffbullas.com/wp-content/uploads/2025/06/ydc-og-image-rebrand-1.png" alt="You.com">
+                    <div class="ai-badge">SEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>You.com</h3>
+                    <p>AI search engine with customizable apps for code, writing, and images directly in search results.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Search</span>
+                        <span class="ai-category">Research</span>
+                        <span class="ai-category">Discovery</span>
+                    </div>
+                    <a href="https://you.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Hypefury -->
+            <div class="ai-card" data-categories="productivity,writing">
+                <div class="ai-img">
+                    <img src="https://ph-files.imgix.net/8e09c3a3-fdef-4164-87bc-d8cdc8829fab.png?auto=format&fit=crop" alt="Hypefury">
+                    <div class="ai-badge">SOCIAL MEDIA</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Hypefury</h3>
+                    <p>AI-powered social media management tool for Twitter/X growth and content scheduling.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Social Media</span>
+                        <span class="ai-category">Marketing</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://hypefury.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Suno AI -->
+            <div class="ai-card" data-categories="music,audio">
+                <div class="ai-img">
+                    <img src="https://logowik.com/content/uploads/images/suno-202423211.logowik.com.webp" alt="Suno AI">
+                    <div class="ai-badge">MUSIC</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Suno AI</h3>
+                    <p>Breakthrough AI music generation tool that creates complete songs with lyrics and melody from text.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Music</span>
+                        <span class="ai-category">Creative</span>
+                        <span class="ai-category">Audio</span>
+                    </div>
+                    <a href="https://suno.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Cursor -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="https://ptht05hbb1ssoooe.public.blob.vercel-storage.com/assets/brand/brand-logo-4.svg" alt="Cursor">
+                    <div class="ai-badge">CODE EDITOR</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Cursor</h3>
+                    <p>Modern AI-powered code editor built for pair programming with deep understanding of your codebase.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Development</span>
+                        <span class="ai-category">Editor</span>
+                    </div>
+                    <a href="https://cursor.sh" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Otter.ai -->
+            <div class="ai-card" data-categories="productivity,audio">
+                <div class="ai-img">
+                    <img src="https://images.seeklogo.com/logo-png/61/1/otter-ai-logo-png_seeklogo-616553.png" alt="Otter.ai">
+                    <div class="ai-badge">MEETINGS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Otter.ai</h3>
+                    <p>Meeting assistant that records audio, writes notes in real-time, captures slides, and generates summaries.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Productivity</span>
+                        <span class="ai-category">Meetings</span>
+                        <span class="ai-category">Notes</span>
+                    </div>
+                    <a href="https://otter.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Consensus -->
+            <div class="ai-card" data-categories="research">
+                <div class="ai-img">
+                    <img src="https://schurq.nl/_next/image?url=https%3A%2F%2Fcdn.sanity.io%2Fimages%2F2seoedfh%2Fproduction%2F26211bb572c7b39894e6ddcb99a2a234f638dc3c-1200x630.png&w=3840&q=75" alt="Consensus">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Consensus</h3>
+                    <p>AI search engine that extracts and synthesizes findings directly from scientific research papers.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Research</span>
+                        <span class="ai-category">Academic</span>
+                        <span class="ai-category">Science</span>
+                    </div>
+                    <a href="https://consensus.app" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- GrammarlyGO -->
+            <div class="ai-card" data-categories="writing,productivity">
+                <div class="ai-img">
+                    <img src="https://static-web.grammarly.com/1e6ajr2k4140/59BCuroQxv6HsFY1t0LYx6/964f8dd29e89eb079a2737f7e7254c11/Frame_31613445.png?w=810" alt="GrammarlyGO">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>GrammarlyGO</h3>
+                    <p>AI writing assistant integrated into Grammarly for tone adjustment and rewriting within context.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Writing</span>
+                        <span class="ai-category">Grammar</span>
+                        <span class="ai-category">Productivity</span>
+                    </div>
+                    <a href="https://www.grammarly.com/grammarlygo" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Canva AI -->
+            <div class="ai-card" data-categories="design,image">
+                <div class="ai-img">
+                    <img src="https://bostoninstituteofanalytics.b-cdn.net/wp-content/uploads/2025/05/Untitled-design-1-1024x576.jpg" alt="Canva AI">
+                    <div class="ai-badge">DESIGN</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Canva AI</h3>
+                    <p>Magic Write, Magic Design, and AI image tools built directly into the popular design platform.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Design</span>
+                        <span class="ai-category">Graphics</span>
+                        <span class="ai-category">Marketing</span>
+                    </div>
+                    <a href="https://www.canva.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- DALL-E 3 -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="https://i.pinimg.com/736x/6f/06/5f/6f065fa852e5404f95f4ca4cffe49ed5.jpg" alt="DALL-E 3">
+                    <div class="ai-badge">IMAGES</div>
+                </div>
+                <div class="ai-info">
+                    <h3>DALL-E 3</h3>
+                    <p>OpenAI's advanced image generation model, integrated into ChatGPT, excelling at understanding nuanced prompts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Art</span>
+                        <span class="ai-category">Images</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://openai.com/dall-e-3" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Grok -->
+            <div class="ai-card" data-categories="chatbot">
+                <div class="ai-img">
+                    <img src="https://pbs.twimg.com/media/GfVzNrqWcAAcNMi.jpg" alt="Grok AI">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Grok</h3>
+                    <p>xAI's AI chatbot with real-time knowledge access and a unique personality, designed to answer questions with wit.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Real-time</span>
+                        <span class="ai-category">Conversation</span>
+                    </div>
+                    <a href="https://grok.x.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Emergent -->
+            <div class="ai-card" data-categories="research">
+                <div class="ai-img">
+                    <img src="https://cdn.prod.website-files.com/63994dae1033718bee6949ce/680157d820175842d454c7b2_5zA0InSAl7p8AzFFx9bRkHpTrc.png" alt="Emergent AI">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Emergent</h3>
+                    <p>AI research platform focusing on emergent behavior in large language models and AI safety research.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Research</span>
+                        <span class="ai-category">Safety</span>
+                        <span class="ai-category">Analysis</span>
+                    </div>
+                    <a href="https://www.emergentmind.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Rocket AI -->
+            <div class="ai-card" data-categories="productivity">
+                <div class="ai-img">
+                    <img src="https://aitoolsclub.com/content/images/2025/07/Screenshot-2025-07-25-072456.png" alt="Rocket AI">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Rocket AI</h3>
+                    <p>AI-powered productivity suite that helps automate workflows, generate content, and streamline business processes.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Automation</span>
+                        <span class="ai-category">Productivity</span>
+                        <span class="ai-category">Business</span>
+                    </div>
+                    <a href="https://rocketai.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+ 
+            <!-- Microsoft Copilot -->
+            <div class="ai-card" data-categories="chatbot,productivity">
+                <div class="ai-img">
+                    <img src="images/microsoft-copilot.png" alt="Microsoft Copilot">
+                    <div class="ai-badge">ASSISTANT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Microsoft Copilot</h3>
+                    <p>AI companion built into Windows, Edge, and Microsoft 365 for chat, writing, and task help.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Assistant</span>
+                        <span class="ai-category">Microsoft</span>
+                        <span class="ai-category">Productivity</span>
+                    </div>
+                    <a href="https://copilot.microsoft.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Google Gemini -->
+            <div class="ai-card" data-categories="chatbot,research">
+                <div class="ai-img">
+                    <img src="images/google-gemini.png" alt="Google Gemini">
+                    <div class="ai-badge">ASSISTANT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Google Gemini</h3>
+                    <p>Google's multimodal AI model integrated across Search, Workspace, and Android.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Search</span>
+                        <span class="ai-category">Multimodal</span>
+                    </div>
+                    <a href="https://gemini.google.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Meta AI -->
+            <div class="ai-card" data-categories="chatbot,social">
+                <div class="ai-img">
+                    <img src="images/meta-ai.png" alt="Meta AI">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Meta AI</h3>
+                    <p>Meta's AI assistant available across Instagram, WhatsApp, Facebook, and Messenger.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Social</span>
+                        <span class="ai-category">Assistant</span>
+                    </div>
+                    <a href="https://www.meta.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Character.AI -->
+            <div class="ai-card" data-categories="chatbot">
+                <div class="ai-img">
+                    <img src="images/character-ai.png" alt="Character.AI">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Character.AI</h3>
+                    <p>Create and chat with customizable AI characters for roleplay, practice, and entertainment.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Roleplay</span>
+                        <span class="ai-category">Characters</span>
+                    </div>
+                    <a href="https://character.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Poe -->
+            <div class="ai-card" data-categories="chatbot">
+                <div class="ai-img">
+                    <img src="images/poe.png" alt="Poe">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Poe</h3>
+                    <p>Quora's platform giving access to multiple AI chatbots like GPT, Claude, and Gemini in one place.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Multi-model</span>
+                        <span class="ai-category">Aggregator</span>
+                    </div>
+                    <a href="https://poe.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- HuggingChat -->
+            <div class="ai-card" data-categories="chatbot,coding">
+                <div class="ai-img">
+                    <img src="images/huggingchat.png" alt="HuggingChat">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>HuggingChat</h3>
+                    <p>Open-source chatbot interface powered by Hugging Face's open community models.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Open-source</span>
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Models</span>
+                    </div>
+                    <a href="https://huggingface.co/chat" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Mistral Le Chat -->
+            <div class="ai-card" data-categories="chatbot,coding">
+                <div class="ai-img">
+                    <img src="images/mistral-le-chat.png" alt="Mistral Le Chat">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Mistral Le Chat</h3>
+                    <p>Mistral AI's conversational assistant with strong coding and multilingual capabilities.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">European</span>
+                        <span class="ai-category">Open Weights</span>
+                    </div>
+                    <a href="https://chat.mistral.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Qwen Chat -->
+            <div class="ai-card" data-categories="chatbot,coding">
+                <div class="ai-img">
+                    <img src="images/qwen-chat.png" alt="Qwen Chat">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Qwen Chat</h3>
+                    <p>Alibaba's large language model chatbot for conversation, coding, and reasoning tasks.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Alibaba</span>
+                        <span class="ai-category">Multilingual</span>
+                    </div>
+                    <a href="https://chat.qwen.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Kimi -->
+            <div class="ai-card" data-categories="chatbot,research">
+                <div class="ai-img">
+                    <img src="images/kimi.png" alt="Kimi">
+                    <div class="ai-badge">CHATBOT</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Kimi</h3>
+                    <p>Moonshot AI's assistant known for very long context windows and document analysis.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Long Context</span>
+                        <span class="ai-category">Research</span>
+                    </div>
+                    <a href="https://kimi.moonshot.cn" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Amazon CodeWhisperer -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/amazon-codewhisperer.png" alt="Amazon CodeWhisperer">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Amazon CodeWhisperer</h3>
+                    <p>AI coding companion from AWS offering real-time code suggestions and security scans.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">AWS</span>
+                        <span class="ai-category">Suggestions</span>
+                    </div>
+                    <a href="https://aws.amazon.com/codewhisperer" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Tabnine -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/tabnine.png" alt="Tabnine">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Tabnine</h3>
+                    <p>AI code completion tool that learns your codebase patterns with strong privacy controls.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Autocomplete</span>
+                        <span class="ai-category">Privacy</span>
+                    </div>
+                    <a href="https://www.tabnine.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Codeium -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/codeium.png" alt="Codeium">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Codeium</h3>
+                    <p>Free AI-powered code acceleration toolkit with autocomplete and chat across 70+ languages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Free</span>
+                        <span class="ai-category">Autocomplete</span>
+                    </div>
+                    <a href="https://codeium.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Sourcegraph Cody -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/sourcegraph-cody.png" alt="Sourcegraph Cody">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Sourcegraph Cody</h3>
+                    <p>AI coding assistant with deep codebase context for large engineering teams.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Codebase</span>
+                        <span class="ai-category">Search</span>
+                    </div>
+                    <a href="https://sourcegraph.com/cody" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Windsurf -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/windsurf.png" alt="Windsurf">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Windsurf</h3>
+                    <p>Agentic AI code editor designed for autonomous multi-file coding workflows.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">IDE</span>
+                        <span class="ai-category">Agentic</span>
+                        <span class="ai-category">Coding</span>
+                    </div>
+                    <a href="https://windsurf.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- v0 by Vercel -->
+            <div class="ai-card" data-categories="coding,design">
+                <div class="ai-img">
+                    <img src="images/v0-by-vercel.png" alt="v0 by Vercel">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>v0 by Vercel</h3>
+                    <p>Generates React UI components and full interfaces from natural language prompts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">UI Generation</span>
+                        <span class="ai-category">React</span>
+                        <span class="ai-category">Coding</span>
+                    </div>
+                    <a href="https://v0.dev" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Bolt.new -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/bolt-new.png" alt="Bolt.new">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Bolt.new</h3>
+                    <p>Browser-based AI tool that builds and deploys full-stack web apps from prompts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Full-stack</span>
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Browser</span>
+                    </div>
+                    <a href="https://bolt.new" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Lovable -->
+            <div class="ai-card" data-categories="coding,design">
+                <div class="ai-img">
+                    <img src="images/lovable.png" alt="Lovable">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Lovable</h3>
+                    <p>AI app builder that turns natural language descriptions into working web applications.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">App Builder</span>
+                        <span class="ai-category">No-code</span>
+                        <span class="ai-category">Coding</span>
+                    </div>
+                    <a href="https://lovable.dev" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Aider -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/aider.png" alt="Aider">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Aider</h3>
+                    <p>Open-source AI pair programmer that works in your terminal and edits real code files.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Terminal</span>
+                        <span class="ai-category">Open-source</span>
+                        <span class="ai-category">Coding</span>
+                    </div>
+                    <a href="https://aider.chat" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- CodiumAI -->
+            <div class="ai-card" data-categories="coding">
+                <div class="ai-img">
+                    <img src="images/codiumai.png" alt="CodiumAI">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>CodiumAI</h3>
+                    <p>AI tool that generates meaningful tests and reviews code quality automatically.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Testing</span>
+                        <span class="ai-category">Code Quality</span>
+                        <span class="ai-category">Coding</span>
+                    </div>
+                    <a href="https://www.qodo.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Phind -->
+            <div class="ai-card" data-categories="coding,research">
+                <div class="ai-img">
+                    <img src="images/phind.png" alt="Phind">
+                    <div class="ai-badge">CODING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Phind</h3>
+                    <p>AI search engine built specifically for developers to find coding answers fast.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Search</span>
+                        <span class="ai-category">Coding</span>
+                        <span class="ai-category">Developer</span>
+                    </div>
+                    <a href="https://www.phind.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Stable Diffusion -->
+            <div class="ai-card" data-categories="image">
+                <div class="ai-img">
+                    <img src="images/stable-diffusion.png" alt="Stable Diffusion">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Stable Diffusion</h3>
+                    <p>Open-source text-to-image diffusion model that powers many AI art applications.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Open-source</span>
+                        <span class="ai-category">Art</span>
+                        <span class="ai-category">Images</span>
+                    </div>
+                    <a href="https://stability.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Adobe Firefly -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="images/adobe-firefly.png" alt="Adobe Firefly">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Adobe Firefly</h3>
+                    <p>Adobe's generative AI for images, integrated into Photoshop and Creative Cloud.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Adobe</span>
+                        <span class="ai-category">Generative Fill</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://firefly.adobe.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Ideogram -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="images/ideogram.png" alt="Ideogram">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Ideogram</h3>
+                    <p>AI image generator known for accurately rendering text and typography in images.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Typography</span>
+                        <span class="ai-category">Art</span>
+                        <span class="ai-category">Images</span>
+                    </div>
+                    <a href="https://ideogram.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Playground AI -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="images/playground-ai.png" alt="Playground AI">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Playground AI</h3>
+                    <p>Free-to-use AI image generation and editing platform with a large community gallery.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Art</span>
+                        <span class="ai-category">Editing</span>
+                        <span class="ai-category">Images</span>
+                    </div>
+                    <a href="https://playground.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Krea AI -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="images/krea-ai.png" alt="Krea AI">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Krea AI</h3>
+                    <p>Real-time AI image and video generation tool for rapid creative iteration.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Real-time</span>
+                        <span class="ai-category">Art</span>
+                        <span class="ai-category">Generative</span>
+                    </div>
+                    <a href="https://www.krea.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Flux -->
+            <div class="ai-card" data-categories="image">
+                <div class="ai-img">
+                    <img src="images/flux.png" alt="Flux">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Flux</h3>
+                    <p>High-quality open-weight image generation model from Black Forest Labs.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Open Weights</span>
+                        <span class="ai-category">Images</span>
+                        <span class="ai-category">Art</span>
+                    </div>
+                    <a href="https://blackforestlabs.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Recraft -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="images/recraft.png" alt="Recraft">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Recraft</h3>
+                    <p>AI design tool that generates vector graphics, icons, and brand assets.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Vector</span>
+                        <span class="ai-category">Branding</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://www.recraft.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Remove.bg -->
+            <div class="ai-card" data-categories="image">
+                <div class="ai-img">
+                    <img src="images/remove-bg.png" alt="Remove.bg">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Remove.bg</h3>
+                    <p>Instantly removes image backgrounds using AI in seconds.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Background Removal</span>
+                        <span class="ai-category">Editing</span>
+                        <span class="ai-category">Images</span>
+                    </div>
+                    <a href="https://www.remove.bg" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Clipdrop -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="images/clipdrop.png" alt="Clipdrop">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Clipdrop</h3>
+                    <p>Suite of AI image editing tools including background removal and relighting.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Editing</span>
+                        <span class="ai-category">Stability AI</span>
+                        <span class="ai-category">Images</span>
+                    </div>
+                    <a href="https://clipdrop.co" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- PhotoRoom -->
+            <div class="ai-card" data-categories="image,design">
+                <div class="ai-img">
+                    <img src="images/photoroom.png" alt="PhotoRoom">
+                    <div class="ai-badge">IMAGE</div>
+                </div>
+                <div class="ai-info">
+                    <h3>PhotoRoom</h3>
+                    <p>AI photo editor specialized in creating professional product photography.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Product Photos</span>
+                        <span class="ai-category">E-commerce</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://www.photoroom.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Pika -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="images/pika.png" alt="Pika">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Pika</h3>
+                    <p>AI video generation platform that creates and edits videos from text and images.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Video</span>
+                        <span class="ai-category">Generative</span>
+                        <span class="ai-category">Creative</span>
+                    </div>
+                    <a href="https://pika.art" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Sora -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="images/sora.png" alt="Sora">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Sora</h3>
+                    <p>OpenAI's text-to-video model capable of generating realistic and imaginative scenes.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">OpenAI</span>
+                        <span class="ai-category">Text-to-Video</span>
+                        <span class="ai-category">Video</span>
+                    </div>
+                    <a href="https://openai.com/sora" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Kling AI -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="images/kling-ai.png" alt="Kling AI">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Kling AI</h3>
+                    <p>High-fidelity text-to-video and image-to-video generation model from Kuaishou.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Video</span>
+                        <span class="ai-category">Kuaishou</span>
+                        <span class="ai-category">Generative</span>
+                    </div>
+                    <a href="https://klingai.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- HeyGen -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="images/heygen.png" alt="HeyGen">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>HeyGen</h3>
+                    <p>Creates AI avatar videos with voice cloning and multilingual dubbing.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Avatars</span>
+                        <span class="ai-category">Localization</span>
+                        <span class="ai-category">Video</span>
+                    </div>
+                    <a href="https://www.heygen.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- InVideo AI -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="images/invideo-ai.png" alt="InVideo AI">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>InVideo AI</h3>
+                    <p>AI-powered video creation tool that generates full videos from a script or topic.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Video Editing</span>
+                        <span class="ai-category">Marketing</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://invideo.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Veed.io -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="images/veed-io.png" alt="Veed.io">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Veed.io</h3>
+                    <p>Online video editor with AI subtitles, voice cloning, and auto-editing features.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Editing</span>
+                        <span class="ai-category">Subtitles</span>
+                        <span class="ai-category">Video</span>
+                    </div>
+                    <a href="https://www.veed.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Topaz Video AI -->
+            <div class="ai-card" data-categories="video">
+                <div class="ai-img">
+                    <img src="images/topaz-video-ai.png" alt="Topaz Video AI">
+                    <div class="ai-badge">VIDEO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Topaz Video AI</h3>
+                    <p>AI video upscaling and frame interpolation tool for professional video quality.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Upscaling</span>
+                        <span class="ai-category">Enhancement</span>
+                        <span class="ai-category">Video</span>
+                    </div>
+                    <a href="https://www.topazlabs.com/topaz-video-ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Sudowrite -->
+            <div class="ai-card" data-categories="writing">
+                <div class="ai-img">
+                    <img src="images/sudowrite.png" alt="Sudowrite">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Sudowrite</h3>
+                    <p>AI writing tool designed specifically for fiction writers and novelists.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Fiction</span>
+                        <span class="ai-category">Storytelling</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://www.sudowrite.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Writesonic -->
+            <div class="ai-card" data-categories="writing,productivity">
+                <div class="ai-img">
+                    <img src="images/writesonic.png" alt="Writesonic">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Writesonic</h3>
+                    <p>AI writing platform for SEO content, ads, and marketing copy generation.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">SEO</span>
+                        <span class="ai-category">Marketing</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://writesonic.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Rytr -->
+            <div class="ai-card" data-categories="writing">
+                <div class="ai-img">
+                    <img src="images/rytr.png" alt="Rytr">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Rytr</h3>
+                    <p>Affordable AI writing assistant for generating content in 40+ languages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Copywriting</span>
+                        <span class="ai-category">Content</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://rytr.me" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- QuillBot -->
+            <div class="ai-card" data-categories="writing">
+                <div class="ai-img">
+                    <img src="images/quillbot.png" alt="QuillBot">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>QuillBot</h3>
+                    <p>AI paraphrasing and grammar checking tool to refine written content.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Paraphrasing</span>
+                        <span class="ai-category">Grammar</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://quillbot.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Wordtune -->
+            <div class="ai-card" data-categories="writing">
+                <div class="ai-img">
+                    <img src="images/wordtune.png" alt="Wordtune">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Wordtune</h3>
+                    <p>AI writing companion that rewrites sentences to match the tone you want.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Rewriting</span>
+                        <span class="ai-category">Tone</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://www.wordtune.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Simplified -->
+            <div class="ai-card" data-categories="writing,design">
+                <div class="ai-img">
+                    <img src="images/simplified.png" alt="Simplified">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Simplified</h3>
+                    <p>All-in-one AI content creation platform for writing, design, and social posts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">All-in-one</span>
+                        <span class="ai-category">Content</span>
+                        <span class="ai-category">Marketing</span>
+                    </div>
+                    <a href="https://simplified.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- ProWritingAid -->
+            <div class="ai-card" data-categories="writing">
+                <div class="ai-img">
+                    <img src="images/prowritingaid.png" alt="ProWritingAid">
+                    <div class="ai-badge">WRITING</div>
+                </div>
+                <div class="ai-info">
+                    <h3>ProWritingAid</h3>
+                    <p>Comprehensive AI writing and grammar editing tool for authors and professionals.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Editing</span>
+                        <span class="ai-category">Style</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://prowritingaid.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Elicit -->
+            <div class="ai-card" data-categories="research">
+                <div class="ai-img">
+                    <img src="images/elicit.png" alt="Elicit">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Elicit</h3>
+                    <p>AI research assistant that helps find, summarize, and analyze academic papers.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Academic</span>
+                        <span class="ai-category">Papers</span>
+                        <span class="ai-category">Research</span>
+                    </div>
+                    <a href="https://elicit.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Scite -->
+            <div class="ai-card" data-categories="research">
+                <div class="ai-img">
+                    <img src="images/scite.png" alt="Scite">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Scite</h3>
+                    <p>Shows how research papers have been cited to assess their reliability.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Citations</span>
+                        <span class="ai-category">Academic</span>
+                        <span class="ai-category">Research</span>
+                    </div>
+                    <a href="https://scite.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Semantic Scholar -->
+            <div class="ai-card" data-categories="research">
+                <div class="ai-img">
+                    <img src="images/semantic-scholar.png" alt="Semantic Scholar">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Semantic Scholar</h3>
+                    <p>Free AI-powered research tool for scientific literature search and discovery.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Academic</span>
+                        <span class="ai-category">Search</span>
+                        <span class="ai-category">Free</span>
+                    </div>
+                    <a href="https://www.semanticscholar.org" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Google NotebookLM -->
+            <div class="ai-card" data-categories="research,productivity">
+                <div class="ai-img">
+                    <img src="images/google-notebooklm.png" alt="Google NotebookLM">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Google NotebookLM</h3>
+                    <p>AI-powered research and note-taking tool that grounds answers in your own documents.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Notes</span>
+                        <span class="ai-category">Google</span>
+                        <span class="ai-category">Research</span>
+                    </div>
+                    <a href="https://notebooklm.google.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Genei -->
+            <div class="ai-card" data-categories="research,writing">
+                <div class="ai-img">
+                    <img src="images/genei.png" alt="Genei">
+                    <div class="ai-badge">RESEARCH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Genei</h3>
+                    <p>AI research tool that summarizes documents and helps structure research workflows.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Summarization</span>
+                        <span class="ai-category">Research</span>
+                        <span class="ai-category">Productivity</span>
+                    </div>
+                    <a href="https://www.genei.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Zapier AI -->
+            <div class="ai-card" data-categories="productivity">
+                <div class="ai-img">
+                    <img src="images/zapier-ai.png" alt="Zapier AI">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Zapier AI</h3>
+                    <p>AI-powered automation platform connecting thousands of apps and workflows.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Automation</span>
+                        <span class="ai-category">Workflows</span>
+                        <span class="ai-category">Integration</span>
+                    </div>
+                    <a href="https://zapier.com/ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Make (Integromat) -->
+            <div class="ai-card" data-categories="productivity">
+                <div class="ai-img">
+                    <img src="images/make-integromat.png" alt="Make (Integromat)">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Make (Integromat)</h3>
+                    <p>Visual automation platform for building complex workflows across apps with AI.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Automation</span>
+                        <span class="ai-category">Workflows</span>
+                        <span class="ai-category">Integration</span>
+                    </div>
+                    <a href="https://www.make.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Reclaim.ai -->
+            <div class="ai-card" data-categories="productivity">
+                <div class="ai-img">
+                    <img src="images/reclaim-ai.png" alt="Reclaim.ai">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Reclaim.ai</h3>
+                    <p>AI calendar assistant that automatically schedules tasks and protects focus time.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Calendar</span>
+                        <span class="ai-category">Scheduling</span>
+                        <span class="ai-category">Time</span>
+                    </div>
+                    <a href="https://reclaim.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Clockwise -->
+            <div class="ai-card" data-categories="productivity">
+                <div class="ai-img">
+                    <img src="images/clockwise.png" alt="Clockwise">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Clockwise</h3>
+                    <p>AI scheduling assistant that optimizes team calendars for focus time.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Calendar</span>
+                        <span class="ai-category">Scheduling</span>
+                        <span class="ai-category">Teams</span>
+                    </div>
+                    <a href="https://www.getclockwise.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Motion -->
+            <div class="ai-card" data-categories="productivity">
+                <div class="ai-img">
+                    <img src="images/motion.png" alt="Motion">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Motion</h3>
+                    <p>AI app that automatically plans your daily schedule around tasks and meetings.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Task Management</span>
+                        <span class="ai-category">Calendar</span>
+                        <span class="ai-category">Planning</span>
+                    </div>
+                    <a href="https://www.usemotion.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Fireflies.ai -->
+            <div class="ai-card" data-categories="productivity,audio">
+                <div class="ai-img">
+                    <img src="images/fireflies-ai.png" alt="Fireflies.ai">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Fireflies.ai</h3>
+                    <p>AI meeting assistant that records, transcribes, and summarizes calls automatically.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Meetings</span>
+                        <span class="ai-category">Transcription</span>
+                        <span class="ai-category">Notes</span>
+                    </div>
+                    <a href="https://fireflies.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Krisp -->
+            <div class="ai-card" data-categories="productivity,audio">
+                <div class="ai-img">
+                    <img src="images/krisp.png" alt="Krisp">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Krisp</h3>
+                    <p>AI noise-canceling app that removes background noise from calls in real time.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Noise Cancellation</span>
+                        <span class="ai-category">Calls</span>
+                        <span class="ai-category">Audio</span>
+                    </div>
+                    <a href="https://krisp.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Superhuman -->
+            <div class="ai-card" data-categories="productivity,writing">
+                <div class="ai-img">
+                    <img src="images/superhuman.png" alt="Superhuman">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Superhuman</h3>
+                    <p>AI-powered email client designed for speed with smart triage and writing help.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Email</span>
+                        <span class="ai-category">Productivity</span>
+                        <span class="ai-category">AI</span>
+                    </div>
+                    <a href="https://superhuman.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Mem -->
+            <div class="ai-card" data-categories="productivity,writing">
+                <div class="ai-img">
+                    <img src="images/mem.png" alt="Mem">
+                    <div class="ai-badge">PRODUCTIVITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Mem</h3>
+                    <p>Self-organizing AI note-taking app that connects and surfaces relevant notes.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Notes</span>
+                        <span class="ai-category">Knowledge Base</span>
+                        <span class="ai-category">AI</span>
+                    </div>
+                    <a href="https://get.mem.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Murf AI -->
+            <div class="ai-card" data-categories="audio">
+                <div class="ai-img">
+                    <img src="images/murf-ai.png" alt="Murf AI">
+                    <div class="ai-badge">AUDIO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Murf AI</h3>
+                    <p>Professional AI voice generator for voiceovers, presentations, and videos.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Voiceover</span>
+                        <span class="ai-category">TTS</span>
+                        <span class="ai-category">Audio</span>
+                    </div>
+                    <a href="https://murf.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Play.ht -->
+            <div class="ai-card" data-categories="audio">
+                <div class="ai-img">
+                    <img src="images/play-ht.png" alt="Play.ht">
+                    <div class="ai-badge">AUDIO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Play.ht</h3>
+                    <p>Realistic AI text-to-speech platform with voice cloning capabilities.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">TTS</span>
+                        <span class="ai-category">Voice Cloning</span>
+                        <span class="ai-category">Audio</span>
+                    </div>
+                    <a href="https://play.ht" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Resemble AI -->
+            <div class="ai-card" data-categories="audio">
+                <div class="ai-img">
+                    <img src="images/resemble-ai.png" alt="Resemble AI">
+                    <div class="ai-badge">AUDIO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Resemble AI</h3>
+                    <p>AI voice cloning and generation platform for custom synthetic voices.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Voice Cloning</span>
+                        <span class="ai-category">TTS</span>
+                        <span class="ai-category">Audio</span>
+                    </div>
+                    <a href="https://www.resemble.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- WellSaid Labs -->
+            <div class="ai-card" data-categories="audio">
+                <div class="ai-img">
+                    <img src="images/wellsaid-labs.png" alt="WellSaid Labs">
+                    <div class="ai-badge">AUDIO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>WellSaid Labs</h3>
+                    <p>Enterprise-grade AI voice generation platform for branded content.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Voiceover</span>
+                        <span class="ai-category">Enterprise</span>
+                        <span class="ai-category">TTS</span>
+                    </div>
+                    <a href="https://wellsaidlabs.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- AssemblyAI -->
+            <div class="ai-card" data-categories="audio,coding">
+                <div class="ai-img">
+                    <img src="images/assemblyai.png" alt="AssemblyAI">
+                    <div class="ai-badge">AUDIO</div>
+                </div>
+                <div class="ai-info">
+                    <h3>AssemblyAI</h3>
+                    <p>Speech-to-text and audio intelligence API for developers building voice apps.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Speech-to-Text</span>
+                        <span class="ai-category">API</span>
+                        <span class="ai-category">Developer</span>
+                    </div>
+                    <a href="https://www.assemblyai.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Figma AI -->
+            <div class="ai-card" data-categories="design">
+                <div class="ai-img">
+                    <img src="images/figma-ai.png" alt="Figma AI">
+                    <div class="ai-badge">DESIGN</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Figma AI</h3>
+                    <p>AI features built into Figma for design generation, editing, and prototyping.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Design</span>
+                        <span class="ai-category">Prototyping</span>
+                        <span class="ai-category">UI/UX</span>
+                    </div>
+                    <a href="https://www.figma.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Uizard -->
+            <div class="ai-card" data-categories="design,coding">
+                <div class="ai-img">
+                    <img src="images/uizard.png" alt="Uizard">
+                    <div class="ai-badge">DESIGN</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Uizard</h3>
+                    <p>AI tool that turns sketches and text prompts into UI mockups and prototypes.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">UI Mockups</span>
+                        <span class="ai-category">Prototyping</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://uizard.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Galileo AI -->
+            <div class="ai-card" data-categories="design">
+                <div class="ai-img">
+                    <img src="images/galileo-ai.png" alt="Galileo AI">
+                    <div class="ai-badge">DESIGN</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Galileo AI</h3>
+                    <p>Generates editable UI designs from simple text descriptions.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">UI Design</span>
+                        <span class="ai-category">Generative</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://www.usegalileo.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Looka -->
+            <div class="ai-card" data-categories="design">
+                <div class="ai-img">
+                    <img src="images/looka.png" alt="Looka">
+                    <div class="ai-badge">DESIGN</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Looka</h3>
+                    <p>AI logo and brand identity generator for startups and small businesses.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Logo</span>
+                        <span class="ai-category">Branding</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://looka.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Brandmark -->
+            <div class="ai-card" data-categories="design">
+                <div class="ai-img">
+                    <img src="images/brandmark.png" alt="Brandmark">
+                    <div class="ai-badge">DESIGN</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Brandmark</h3>
+                    <p>AI-powered logo design tool that creates complete brand identity packages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Logo</span>
+                        <span class="ai-category">Branding</span>
+                        <span class="ai-category">Design</span>
+                    </div>
+                    <a href="https://brandmark.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- AIVA -->
+            <div class="ai-card" data-categories="music">
+                <div class="ai-img">
+                    <img src="images/aiva.png" alt="AIVA">
+                    <div class="ai-badge">MUSIC</div>
+                </div>
+                <div class="ai-info">
+                    <h3>AIVA</h3>
+                    <p>AI music composer that creates original soundtracks for films, games, and ads.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Composition</span>
+                        <span class="ai-category">Soundtrack</span>
+                        <span class="ai-category">Music</span>
+                    </div>
+                    <a href="https://www.aiva.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Udio -->
+            <div class="ai-card" data-categories="music">
+                <div class="ai-img">
+                    <img src="images/udio.png" alt="Udio">
+                    <div class="ai-badge">MUSIC</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Udio</h3>
+                    <p>AI music generation tool that creates complete songs from text prompts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Song Generation</span>
+                        <span class="ai-category">Music</span>
+                        <span class="ai-category">Creative</span>
+                    </div>
+                    <a href="https://www.udio.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Soundraw -->
+            <div class="ai-card" data-categories="music">
+                <div class="ai-img">
+                    <img src="images/soundraw.png" alt="Soundraw">
+                    <div class="ai-badge">MUSIC</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Soundraw</h3>
+                    <p>AI music generator for creating royalty-free background music for content.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Royalty-free</span>
+                        <span class="ai-category">Music</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://soundraw.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Boomy -->
+            <div class="ai-card" data-categories="music">
+                <div class="ai-img">
+                    <img src="images/boomy.png" alt="Boomy">
+                    <div class="ai-badge">MUSIC</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Boomy</h3>
+                    <p>AI tool that lets anyone create and release original songs in seconds.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Song Creation</span>
+                        <span class="ai-category">Music</span>
+                        <span class="ai-category">Distribution</span>
+                    </div>
+                    <a href="https://boomy.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- LANDR -->
+            <div class="ai-card" data-categories="music,audio">
+                <div class="ai-img">
+                    <img src="images/landr.png" alt="LANDR">
+                    <div class="ai-badge">MUSIC</div>
+                </div>
+                <div class="ai-info">
+                    <h3>LANDR</h3>
+                    <p>AI-powered music mastering and distribution platform for musicians.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Mastering</span>
+                        <span class="ai-category">Music</span>
+                        <span class="ai-category">Production</span>
+                    </div>
+                    <a href="https://www.landr.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Duolingo Max -->
+            <div class="ai-card" data-categories="education">
+                <div class="ai-img">
+                    <img src="images/duolingo-max.png" alt="Duolingo Max">
+                    <div class="ai-badge">EDUCATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Duolingo Max</h3>
+                    <p>AI-enhanced version of Duolingo with explain-my-answer and roleplay features.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Language Learning</span>
+                        <span class="ai-category">AI Tutor</span>
+                        <span class="ai-category">Education</span>
+                    </div>
+                    <a href="https://www.duolingo.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Khanmigo -->
+            <div class="ai-card" data-categories="education">
+                <div class="ai-img">
+                    <img src="images/khanmigo.png" alt="Khanmigo">
+                    <div class="ai-badge">EDUCATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Khanmigo</h3>
+                    <p>AI tutor from Khan Academy that guides students through learning step by step.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Tutoring</span>
+                        <span class="ai-category">Khan Academy</span>
+                        <span class="ai-category">Education</span>
+                    </div>
+                    <a href="https://www.khanmigo.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Socratic by Google -->
+            <div class="ai-card" data-categories="education">
+                <div class="ai-img">
+                    <img src="images/socratic-by-google.png" alt="Socratic by Google">
+                    <div class="ai-badge">EDUCATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Socratic by Google</h3>
+                    <p>Free AI homework helper that explains concepts across subjects using your camera.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Homework Help</span>
+                        <span class="ai-category">Free</span>
+                        <span class="ai-category">Education</span>
+                    </div>
+                    <a href="https://socratic.org" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Quizlet AI -->
+            <div class="ai-card" data-categories="education">
+                <div class="ai-img">
+                    <img src="images/quizlet-ai.png" alt="Quizlet AI">
+                    <div class="ai-badge">EDUCATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Quizlet AI</h3>
+                    <p>AI study tools including flashcards, practice tests, and tutoring support.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Flashcards</span>
+                        <span class="ai-category">Study</span>
+                        <span class="ai-category">Education</span>
+                    </div>
+                    <a href="https://quizlet.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Coursebox AI -->
+            <div class="ai-card" data-categories="education">
+                <div class="ai-img">
+                    <img src="images/coursebox-ai.png" alt="Coursebox AI">
+                    <div class="ai-badge">EDUCATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Coursebox AI</h3>
+                    <p>AI course creation tool that generates training materials and quizzes.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Course Creation</span>
+                        <span class="ai-category">E-learning</span>
+                        <span class="ai-category">Education</span>
+                    </div>
+                    <a href="https://www.coursebox.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Gradescope -->
+            <div class="ai-card" data-categories="education">
+                <div class="ai-img">
+                    <img src="images/gradescope.png" alt="Gradescope">
+                    <div class="ai-badge">EDUCATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Gradescope</h3>
+                    <p>AI-assisted grading platform helping educators grade assignments faster.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Grading</span>
+                        <span class="ai-category">AI Assisted</span>
+                        <span class="ai-category">Education</span>
+                    </div>
+                    <a href="https://www.gradescope.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- DeepL -->
+            <div class="ai-card" data-categories="translation">
+                <div class="ai-img">
+                    <img src="images/deepl.png" alt="DeepL">
+                    <div class="ai-badge">TRANSLATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>DeepL</h3>
+                    <p>Highly accurate AI translation tool supporting 30+ languages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Translation</span>
+                        <span class="ai-category">Languages</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://www.deepl.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Google Translate -->
+            <div class="ai-card" data-categories="translation">
+                <div class="ai-img">
+                    <img src="images/google-translate.png" alt="Google Translate">
+                    <div class="ai-badge">TRANSLATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Google Translate</h3>
+                    <p>Free AI-powered translation service supporting over 100 languages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Translation</span>
+                        <span class="ai-category">Free</span>
+                        <span class="ai-category">Languages</span>
+                    </div>
+                    <a href="https://translate.google.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Reverso -->
+            <div class="ai-card" data-categories="translation,writing">
+                <div class="ai-img">
+                    <img src="images/reverso.png" alt="Reverso">
+                    <div class="ai-badge">TRANSLATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Reverso</h3>
+                    <p>AI translation tool with contextual examples and grammar correction.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Translation</span>
+                        <span class="ai-category">Context</span>
+                        <span class="ai-category">Languages</span>
+                    </div>
+                    <a href="https://www.reverso.net" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Papago -->
+            <div class="ai-card" data-categories="translation">
+                <div class="ai-img">
+                    <img src="images/papago.png" alt="Papago">
+                    <div class="ai-badge">TRANSLATION</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Papago</h3>
+                    <p>Naver's AI translator specialized for Korean and other Asian languages.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Translation</span>
+                        <span class="ai-category">Asian Languages</span>
+                        <span class="ai-category">Languages</span>
+                    </div>
+                    <a href="https://papago.naver.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Harvey AI -->
+            <div class="ai-card" data-categories="legal">
+                <div class="ai-img">
+                    <img src="images/harvey-ai.png" alt="Harvey AI">
+                    <div class="ai-badge">LEGAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Harvey AI</h3>
+                    <p>AI assistant built specifically for legal professionals and law firms.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Legal Research</span>
+                        <span class="ai-category">Law Firms</span>
+                        <span class="ai-category">Legal</span>
+                    </div>
+                    <a href="https://www.harvey.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- DoNotPay -->
+            <div class="ai-card" data-categories="legal">
+                <div class="ai-img">
+                    <img src="images/donotpay.png" alt="DoNotPay">
+                    <div class="ai-badge">LEGAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>DoNotPay</h3>
+                    <p>AI 'robot lawyer' that helps fight bureaucracy and consumer disputes.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Consumer Rights</span>
+                        <span class="ai-category">Legal Help</span>
+                        <span class="ai-category">Legal</span>
+                    </div>
+                    <a href="https://donotpay.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Spellbook -->
+            <div class="ai-card" data-categories="legal,writing">
+                <div class="ai-img">
+                    <img src="images/spellbook.png" alt="Spellbook">
+                    <div class="ai-badge">LEGAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Spellbook</h3>
+                    <p>AI contract drafting and review tool built for lawyers using Word.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Contracts</span>
+                        <span class="ai-category">Legal Drafting</span>
+                        <span class="ai-category">Legal</span>
+                    </div>
+                    <a href="https://www.spellbook.legal" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Ironclad AI -->
+            <div class="ai-card" data-categories="legal,business">
+                <div class="ai-img">
+                    <img src="images/ironclad-ai.png" alt="Ironclad AI">
+                    <div class="ai-badge">LEGAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Ironclad AI</h3>
+                    <p>AI-powered contract lifecycle management platform for legal teams.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Contract Management</span>
+                        <span class="ai-category">Legal</span>
+                        <span class="ai-category">Business</span>
+                    </div>
+                    <a href="https://ironcladapp.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Hugging Face -->
+            <div class="ai-card" data-categories="coding,business">
+                <div class="ai-img">
+                    <img src="images/hugging-face.png" alt="Hugging Face">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Hugging Face</h3>
+                    <p>Leading platform for hosting, sharing, and deploying open-source AI models.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Open-source</span>
+                        <span class="ai-category">Models</span>
+                        <span class="ai-category">Developer</span>
+                    </div>
+                    <a href="https://huggingface.co" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Zoho Zia -->
+            <div class="ai-card" data-categories="business,productivity">
+                <div class="ai-img">
+                    <img src="images/zoho-zia.png" alt="Zoho Zia">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Zoho Zia</h3>
+                    <p>AI assistant embedded in Zoho's CRM and business apps for sales insights.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">CRM</span>
+                        <span class="ai-category">Sales</span>
+                        <span class="ai-category">Business</span>
+                    </div>
+                    <a href="https://www.zoho.com/zia" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Salesforce Einstein -->
+            <div class="ai-card" data-categories="business,productivity">
+                <div class="ai-img">
+                    <img src="images/salesforce-einstein.png" alt="Salesforce Einstein">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Salesforce Einstein</h3>
+                    <p>AI layer built into Salesforce CRM for predictive sales and service insights.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">CRM</span>
+                        <span class="ai-category">Sales</span>
+                        <span class="ai-category">AI</span>
+                    </div>
+                    <a href="https://www.salesforce.com/products/einstein" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Crystal -->
+            <div class="ai-card" data-categories="business">
+                <div class="ai-img">
+                    <img src="images/crystal.png" alt="Crystal">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Crystal</h3>
+                    <p>AI tool that predicts personality types to improve sales communication.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Personality AI</span>
+                        <span class="ai-category">Sales</span>
+                        <span class="ai-category">Communication</span>
+                    </div>
+                    <a href="https://www.crystalknows.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Bardeen AI -->
+            <div class="ai-card" data-categories="business,productivity">
+                <div class="ai-img">
+                    <img src="images/bardeen-ai.png" alt="Bardeen AI">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Bardeen AI</h3>
+                    <p>AI browser automation tool that scrapes data and automates repetitive tasks.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Automation</span>
+                        <span class="ai-category">Workflows</span>
+                        <span class="ai-category">Browser</span>
+                    </div>
+                    <a href="https://www.bardeen.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Vanta AI -->
+            <div class="ai-card" data-categories="security,business">
+                <div class="ai-img">
+                    <img src="images/vanta-ai.png" alt="Vanta AI">
+                    <div class="ai-badge">SECURITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Vanta AI</h3>
+                    <p>AI-powered security compliance automation platform for SOC 2 and more.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Compliance</span>
+                        <span class="ai-category">Security</span>
+                        <span class="ai-category">Automation</span>
+                    </div>
+                    <a href="https://www.vanta.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Bloomberg GPT -->
+            <div class="ai-card" data-categories="business">
+                <div class="ai-img">
+                    <img src="images/bloomberg-gpt.png" alt="Bloomberg GPT">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Bloomberg GPT</h3>
+                    <p>Large language model trained specifically for financial industry tasks.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Finance</span>
+                        <span class="ai-category">LLM</span>
+                        <span class="ai-category">Analysis</span>
+                    </div>
+                    <a href="https://www.bloomberg.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Kavout -->
+            <div class="ai-card" data-categories="business">
+                <div class="ai-img">
+                    <img src="images/kavout.png" alt="Kavout">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Kavout</h3>
+                    <p>AI-powered stock analysis and investment research platform.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Stock Analysis</span>
+                        <span class="ai-category">Finance</span>
+                        <span class="ai-category">Investing</span>
+                    </div>
+                    <a href="https://www.kavout.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Wealthfront -->
+            <div class="ai-card" data-categories="business">
+                <div class="ai-img">
+                    <img src="images/wealthfront.png" alt="Wealthfront">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Wealthfront</h3>
+                    <p>AI-driven robo-advisor for automated investing and financial planning.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Robo-advisor</span>
+                        <span class="ai-category">Investing</span>
+                        <span class="ai-category">Finance</span>
+                    </div>
+                    <a href="https://www.wealthfront.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Cleo -->
+            <div class="ai-card" data-categories="business,chatbot">
+                <div class="ai-img">
+                    <img src="images/cleo.png" alt="Cleo">
+                    <div class="ai-badge">BUSINESS</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Cleo</h3>
+                    <p>AI chatbot that helps track spending and build better money habits.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Budgeting</span>
+                        <span class="ai-category">Personal Finance</span>
+                        <span class="ai-category">Chatbot</span>
+                    </div>
+                    <a href="https://www.meetcleo.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Luma AI -->
+            <div class="ai-card" data-categories="3d,image">
+                <div class="ai-img">
+                    <img src="images/luma-ai.png" alt="Luma AI">
+                    <div class="ai-badge">3D</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Luma AI</h3>
+                    <p>AI tool for capturing and generating 3D scenes using neural radiance fields.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">3D Capture</span>
+                        <span class="ai-category">NeRF</span>
+                        <span class="ai-category">Creative</span>
+                    </div>
+                    <a href="https://lumalabs.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Spline AI -->
+            <div class="ai-card" data-categories="3d,design">
+                <div class="ai-img">
+                    <img src="images/spline-ai.png" alt="Spline AI">
+                    <div class="ai-badge">3D</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Spline AI</h3>
+                    <p>AI-assisted 3D design tool for creating interactive web graphics.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">3D Design</span>
+                        <span class="ai-category">Web</span>
+                        <span class="ai-category">Creative</span>
+                    </div>
+                    <a href="https://spline.design" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Scenario -->
+            <div class="ai-card" data-categories="3d,image">
+                <div class="ai-img">
+                    <img src="images/scenario.png" alt="Scenario">
+                    <div class="ai-badge">3D</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Scenario</h3>
+                    <p>AI platform that generates game-ready art assets for studios.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Game Assets</span>
+                        <span class="ai-category">Generative</span>
+                        <span class="ai-category">Gaming</span>
+                    </div>
+                    <a href="https://www.scenario.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Promethean AI -->
+            <div class="ai-card" data-categories="3d,design">
+                <div class="ai-img">
+                    <img src="images/promethean-ai.png" alt="Promethean AI">
+                    <div class="ai-badge">3D</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Promethean AI</h3>
+                    <p>AI assistant that helps artists build 3D virtual worlds faster.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">3D Environments</span>
+                        <span class="ai-category">Game Dev</span>
+                        <span class="ai-category">Creative</span>
+                    </div>
+                    <a href="https://www.prometheanai.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Inworld AI -->
+            <div class="ai-card" data-categories="3d,chatbot">
+                <div class="ai-img">
+                    <img src="images/inworld-ai.png" alt="Inworld AI">
+                    <div class="ai-badge">3D</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Inworld AI</h3>
+                    <p>AI platform for creating intelligent, responsive game characters and NPCs.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">NPC Dialogue</span>
+                        <span class="ai-category">Game Dev</span>
+                        <span class="ai-category">Characters</span>
+                    </div>
+                    <a href="https://inworld.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Hume AI -->
+            <div class="ai-card" data-categories="health,chatbot">
+                <div class="ai-img">
+                    <img src="images/hume-ai.png" alt="Hume AI">
+                    <div class="ai-badge">HEALTH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Hume AI</h3>
+                    <p>AI platform focused on understanding and responding to human emotion.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Emotional AI</span>
+                        <span class="ai-category">Voice</span>
+                        <span class="ai-category">Wellness</span>
+                    </div>
+                    <a href="https://www.hume.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Woebot -->
+            <div class="ai-card" data-categories="health,chatbot">
+                <div class="ai-img">
+                    <img src="images/woebot.png" alt="Woebot">
+                    <div class="ai-badge">HEALTH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Woebot</h3>
+                    <p>AI chatbot offering mental health support based on cognitive behavioral therapy.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Mental Health</span>
+                        <span class="ai-category">Chatbot</span>
+                        <span class="ai-category">Wellness</span>
+                    </div>
+                    <a href="https://woebothealth.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Ada Health -->
+            <div class="ai-card" data-categories="health">
+                <div class="ai-img">
+                    <img src="images/ada-health.png" alt="Ada Health">
+                    <div class="ai-badge">HEALTH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Ada Health</h3>
+                    <p>AI-powered symptom assessment and health guidance application.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Symptom Checker</span>
+                        <span class="ai-category">Medical</span>
+                        <span class="ai-category">Health</span>
+                    </div>
+                    <a href="https://ada.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Babylon Health -->
+            <div class="ai-card" data-categories="health">
+                <div class="ai-img">
+                    <img src="images/babylon-health.png" alt="Babylon Health">
+                    <div class="ai-badge">HEALTH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Babylon Health</h3>
+                    <p>AI-driven telehealth platform offering symptom triage and virtual consultations.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Telehealth</span>
+                        <span class="ai-category">AI Triage</span>
+                        <span class="ai-category">Medical</span>
+                    </div>
+                    <a href="https://www.babylonhealth.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- PathAI -->
+            <div class="ai-card" data-categories="health">
+                <div class="ai-img">
+                    <img src="images/pathai.png" alt="PathAI">
+                    <div class="ai-badge">HEALTH</div>
+                </div>
+                <div class="ai-info">
+                    <h3>PathAI</h3>
+                    <p>AI platform assisting pathologists with more accurate disease diagnosis.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Pathology</span>
+                        <span class="ai-category">Diagnostics</span>
+                        <span class="ai-category">Medical</span>
+                    </div>
+                    <a href="https://www.pathai.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Buffer AI Assistant -->
+            <div class="ai-card" data-categories="social,writing">
+                <div class="ai-img">
+                    <img src="images/buffer-ai-assistant.png" alt="Buffer AI Assistant">
+                    <div class="ai-badge">SOCIAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Buffer AI Assistant</h3>
+                    <p>AI writing assistant built into Buffer for crafting social media posts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Social Media</span>
+                        <span class="ai-category">Scheduling</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://buffer.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Lately AI -->
+            <div class="ai-card" data-categories="social,writing">
+                <div class="ai-img">
+                    <img src="images/lately-ai.png" alt="Lately AI">
+                    <div class="ai-badge">SOCIAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Lately AI</h3>
+                    <p>AI tool that repurposes long content into multiple social media posts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Repurposing</span>
+                        <span class="ai-category">Social Media</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://www.lately.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Predis.ai -->
+            <div class="ai-card" data-categories="social,design">
+                <div class="ai-img">
+                    <img src="images/predis-ai.png" alt="Predis.ai">
+                    <div class="ai-badge">SOCIAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Predis.ai</h3>
+                    <p>AI tool that generates social media posts, captions, and creatives.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Social Media</span>
+                        <span class="ai-category">Design</span>
+                        <span class="ai-category">Content</span>
+                    </div>
+                    <a href="https://predis.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Brand24 -->
+            <div class="ai-card" data-categories="social,research">
+                <div class="ai-img">
+                    <img src="images/brand24.png" alt="Brand24">
+                    <div class="ai-badge">SOCIAL</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Brand24</h3>
+                    <p>AI-powered social media monitoring and brand sentiment analysis tool.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Social Listening</span>
+                        <span class="ai-category">Analytics</span>
+                        <span class="ai-category">Monitoring</span>
+                    </div>
+                    <a href="https://brand24.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- HireVue -->
+            <div class="ai-card" data-categories="hr">
+                <div class="ai-img">
+                    <img src="images/hirevue.png" alt="HireVue">
+                    <div class="ai-badge">HR</div>
+                </div>
+                <div class="ai-info">
+                    <h3>HireVue</h3>
+                    <p>AI-driven video interview and candidate assessment platform.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Recruiting</span>
+                        <span class="ai-category">Video Interviews</span>
+                        <span class="ai-category">Hiring</span>
+                    </div>
+                    <a href="https://www.hirevue.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Paradox (Olivia) -->
+            <div class="ai-card" data-categories="hr,chatbot">
+                <div class="ai-img">
+                    <img src="images/paradox-olivia.png" alt="Paradox (Olivia)">
+                    <div class="ai-badge">HR</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Paradox (Olivia)</h3>
+                    <p>AI recruiting assistant that automates candidate screening and scheduling.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Recruiting Chatbot</span>
+                        <span class="ai-category">Hiring</span>
+                        <span class="ai-category">Automation</span>
+                    </div>
+                    <a href="https://www.paradox.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Textio -->
+            <div class="ai-card" data-categories="hr,writing">
+                <div class="ai-img">
+                    <img src="images/textio.png" alt="Textio">
+                    <div class="ai-badge">HR</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Textio</h3>
+                    <p>AI writing tool that improves job postings and reduces biased language.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Job Postings</span>
+                        <span class="ai-category">Bias Detection</span>
+                        <span class="ai-category">Writing</span>
+                    </div>
+                    <a href="https://textio.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Eightfold AI -->
+            <div class="ai-card" data-categories="hr,business">
+                <div class="ai-img">
+                    <img src="images/eightfold-ai.png" alt="Eightfold AI">
+                    <div class="ai-badge">HR</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Eightfold AI</h3>
+                    <p>AI talent intelligence platform for recruiting, hiring, and workforce planning.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Talent Intelligence</span>
+                        <span class="ai-category">Recruiting</span>
+                        <span class="ai-category">AI</span>
+                    </div>
+                    <a href="https://eightfold.ai" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Lattice AI -->
+            <div class="ai-card" data-categories="hr,business">
+                <div class="ai-img">
+                    <img src="images/lattice-ai.png" alt="Lattice AI">
+                    <div class="ai-badge">HR</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Lattice AI</h3>
+                    <p>AI-powered HR platform for performance management and employee engagement.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Performance Reviews</span>
+                        <span class="ai-category">HR</span>
+                        <span class="ai-category">Management</span>
+                    </div>
+                    <a href="https://lattice.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- CrowdStrike Charlotte AI -->
+            <div class="ai-card" data-categories="security">
+                <div class="ai-img">
+                    <img src="images/crowdstrike-charlotte-ai.png" alt="CrowdStrike Charlotte AI">
+                    <div class="ai-badge">SECURITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>CrowdStrike Charlotte AI</h3>
+                    <p>AI-powered cybersecurity assistant for analyzing and responding to threats.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Cybersecurity</span>
+                        <span class="ai-category">Threat Detection</span>
+                        <span class="ai-category">Enterprise</span>
+                    </div>
+                    <a href="https://www.crowdstrike.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Darktrace -->
+            <div class="ai-card" data-categories="security">
+                <div class="ai-img">
+                    <img src="images/darktrace.png" alt="Darktrace">
+                    <div class="ai-badge">SECURITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Darktrace</h3>
+                    <p>Self-learning AI cybersecurity platform that detects and responds to cyber threats.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Cybersecurity</span>
+                        <span class="ai-category">Threat Detection</span>
+                        <span class="ai-category">Enterprise</span>
+                    </div>
+                    <a href="https://darktrace.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- Wiz AI -->
+            <div class="ai-card" data-categories="security,business">
+                <div class="ai-img">
+                    <img src="images/wiz-ai.png" alt="Wiz AI">
+                    <div class="ai-badge">SECURITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>Wiz AI</h3>
+                    <p>AI-driven cloud security platform that identifies and prioritizes risks.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Cloud Security</span>
+                        <span class="ai-category">Compliance</span>
+                        <span class="ai-category">Enterprise</span>
+                    </div>
+                    <a href="https://www.wiz.io" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- 1Password AI -->
+            <div class="ai-card" data-categories="security">
+                <div class="ai-img">
+                    <img src="images/1password-ai.png" alt="1Password AI">
+                    <div class="ai-badge">SECURITY</div>
+                </div>
+                <div class="ai-info">
+                    <h3>1Password AI</h3>
+                    <p>Password manager with AI-assisted security health checks and alerts.</p>
+                    <div class="ai-categories">
+                        <span class="ai-category">Password Manager</span>
+                        <span class="ai-category">Privacy</span>
+                        <span class="ai-category">Security</span>
+                    </div>
+                    <a href="https://1password.com" target="_blank" class="ai-link">Visit Website</a>
+                </div>
+            </div>
+
+            <!-- No results message -->
+            <div class="no-results" id="noResults">
+                <i class="fas fa-search"></i>
+                <h3>No tools found</h3>
+                <p>Try a different search term or category.</p>
+            </div>
+        </div>
+    </main>
+</div>
+ 
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-column">
+            <h3>FlameTech</h3>
+            <p>Your ultimate destination for technology discovery, AI tools, and innovation. Explore the future with us!</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+            </div>
+        </div>
+        <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul>
+                <li><a href="h.html">Home</a></li>
+                <li><a href="ai.html">AI Tools</a></li>
+                <li><a href="#">Social Media</a></li>
+                <li><a href="#">Programming</a></li>
+                <li><a href="#">Typing Practice</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>AI Categories</h3>
+            <ul>
+                <li><a href="#">Chatbots</a></li>
+                <li><a href="#">Image Generation</a></li>
+                <li><a href="#">Coding Assistants</a></li>
+                <li><a href="#">Video Tools</a></li>
+                <li><a href="#">Voice Synthesis</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>Support</h3>
+            <ul>
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">FAQs</a></li>
+                <li><a href="#">Contact Us</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="copyright">
+        <p>&copy; 2025 FlameTech. All rights reserved.</p>
+    </div>
+</footer>
+ 
+<script>
+    // ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+ 
+    // ─── Mobile Sidebar Toggle ───
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+ 
+    sidebarToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+        sidebarOverlay.classList.toggle('active');
+    });
+ 
+    sidebarOverlay.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.remove('active');
+    });
+ 
+    // ─── Filtering ───
+    const cards = Array.from(document.querySelectorAll('.ai-card'));
+    const sidebarItems = document.querySelectorAll('.sidebar-item[data-filter]');
+    const sidebarSearch = document.getElementById('sidebarSearch');
+    const noResults = document.getElementById('noResults');
+    const resultsCount = document.getElementById('resultsCount');
+ 
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let currentSort = 'default';
+ 
+    // Count badges
+    function updateCounts() {
+        const categories = ['chatbot', 'coding', 'image', 'video', 'writing', 'research', 'productivity', 'audio', 'design', 'music', 'education', 'translation', 'business', '3d', 'security', 'legal', 'health', 'social', 'hr'];
+        categories.forEach(cat => {
+            const el = document.getElementById('count-' + cat);
+            if (el) el.textContent = cards.filter(c => c.dataset.categories.includes(cat)).length;
+        });
+        document.getElementById('count-all').textContent = cards.length;
+    }
+ 
+    updateCounts();
+ 
+    function applyFilters() {
+        let visible = 0;
+        const searchLower = currentSearch.toLowerCase();
+ 
+        let filtered = cards.filter(card => {
+            const cats = card.dataset.categories || '';
+            const name = card.querySelector('h3').textContent.toLowerCase();
+            const desc = card.querySelector('p').textContent.toLowerCase();
+ 
+            const matchesCat = currentFilter === 'all' || cats.includes(currentFilter);
+            const matchesSearch = !searchLower || name.includes(searchLower) || desc.includes(searchLower);
+            return matchesCat && matchesSearch;
+        });
+ 
+        if (currentSort === 'az') {
+            filtered.sort((a, b) => a.querySelector('h3').textContent.localeCompare(b.querySelector('h3').textContent));
+        }
+ 
+        // Reset grid order
+        const grid = document.getElementById('aiGrid');
+        cards.forEach(c => { c.classList.add('hidden'); });
+ 
+        filtered.forEach((card, i) => {
+            card.classList.remove('hidden');
+            card.style.animationDelay = (i * 0.04) + 's';
+            grid.appendChild(card);
+            visible++;
+        });
+ 
+        // Move no-results to end
+        grid.appendChild(noResults);
+ 
+        if (visible === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+ 
+        const label = currentFilter === 'all' ? 'all' : currentFilter;
+        resultsCount.textContent = `Showing ${visible} tool${visible !== 1 ? 's' : ''}${currentFilter !== 'all' ? ' in ' + label : ''}`;
+    }
+ 
+    // Sidebar item clicks
+    sidebarItems.forEach(item => {
+        item.addEventListener('click', function (e) {
+            e.preventDefault();
+            sidebarItems.forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            currentFilter = this.dataset.filter;
+            applyFilters();
+ 
+            // Close on mobile
+            if (window.innerWidth <= 900) {
+                sidebar.classList.remove('open');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    });
+ 
+    // Search
+    sidebarSearch.addEventListener('input', function () {
+        currentSearch = this.value;
+        applyFilters();
+    });
+ 
+    // Sort chips
+    document.querySelectorAll('.filter-chip[data-sort]').forEach(chip => {
+        chip.addEventListener('click', function () {
+            document.querySelectorAll('.filter-chip[data-sort]').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            currentSort = this.dataset.sort;
+            applyFilters();
+        });
+    });
+</script>
+</body>
+</html>

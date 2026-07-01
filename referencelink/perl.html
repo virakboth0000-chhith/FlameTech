@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Perl Cheat Sheet — FlameTech</title>
+  <meta name="description" content="The perl quick reference cheat sheet that aims at providing help on writing basic syntax and methods.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#31719d}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(49,113,157,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>Perl</span>
+  </div>
+  <div class="post-icon">PE</div>
+  <h1>Perl <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>The perl quick reference cheat sheet that aims at providing help on writing basic syntax and methods.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span> <span class="meta-tag">runCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="unix-and-linux-installation">Unix and Linux Installation</h3>
+<div class="section">
+<ul>
+<li>
+<p>Open a Web browser and go to https://www.perl.org/get.html.</p>
+</li>
+<li>
+<p>Follow the link to download zipped source code available for Unix/Linux.</p>
+</li>
+<li>
+<p>Download perl-5.x.y.tar.gz file and issue the following commands at $ prompt.</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nv">$tar</span><span class="w"> </span>-xzf<span class="w"> </span>perl-5.x.y.tar.gz
+<span class="nv">$cd</span><span class="w"> </span>perl-5.x.y
+$./Configure<span class="w"> </span>-de
+<span class="nv">$make</span>
+<span class="nv">$make</span><span class="w"> </span><span class="nb">test</span>
+<span class="nv">$make</span><span class="w"> </span>install
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="windows-installation">Windows Installation</h3>
+<div class="section">
+<ul>
+<li>
+<p>Follow the link for the Strawberry Perl installation on Windows http://strawberryperl.com</p>
+</li>
+<li>
+<p>Download either 32bit or 64bit version of installation.</p>
+</li>
+<li>
+<p>Run the downloaded file by double-clicking it in Windows Explorer. This brings up the Perl install wizard, which is
+  really easy to use. Just accept the default settings, wait until the installation is finished, and you're ready to
+  roll!</p>
+</li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="macintosh-installation">Macintosh Installation</h3>
+<div class="section">
+<ul>
+<li>
+<p>Open a Web browser and go to https://www.perl.org/get.html.</p>
+</li>
+<li>
+<p>Follow the link to download zipped source code available for Mac OS X.</p>
+</li>
+<li>
+<p>Download perl-5.x.y.tar.gz file and issue the following commands at $ prompt</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="nv">$tar</span><span class="w"> </span>-xzf<span class="w"> </span>perl-5.x.y.tar.gz
+<span class="nv">$cd</span><span class="w"> </span>perl-5.x.y
+$./Configure<span class="w"> </span>-de
+<span class="nv">$make</span>
+<span class="nv">$make</span><span class="w"> </span><span class="nb">test</span>
+<span class="nv">$make</span><span class="w"> </span>install
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="running-perl">Running Perl</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Unix/Linux</span>
+<span class="nv">$perl</span><span class="w">  </span>-e<span class="w"> </span>&lt;perl<span class="w"> </span>code&gt;
+<span class="c1"># Windows/DOS</span>
+C:&gt;perl<span class="w"> </span>-e<span class="w"> </span>&lt;perl<span class="w"> </span>code&gt;
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="available-command-line-options">Available command line options</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Option</th>
+<th style="text-align: right;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">-d[:debugger]</td>
+<td style="text-align: right;">Runs program under debugger</td>
+</tr>
+<tr>
+<td style="text-align: center;">-Idirectory</td>
+<td style="text-align: right;">Specifies @INC/#include directory</td>
+</tr>
+<tr>
+<td style="text-align: center;">-T</td>
+<td style="text-align: right;">Enables tainting warnings</td>
+</tr>
+<tr>
+<td style="text-align: center;">-U</td>
+<td style="text-align: right;">Allows unsafe operations</td>
+</tr>
+<tr>
+<td style="text-align: center;">-w</td>
+<td style="text-align: right;">Enables many useful warnings</td>
+</tr>
+<tr>
+<td style="text-align: center;">-W</td>
+<td style="text-align: right;">Enables all warnings</td>
+</tr>
+<tr>
+<td style="text-align: center;">-X</td>
+<td style="text-align: right;">Disables all warnings</td>
+</tr>
+<tr>
+<td style="text-align: center;">-e program</td>
+<td style="text-align: right;">Runs Perl script sent in as program</td>
+</tr>
+<tr>
+<td style="text-align: center;">file</td>
+<td style="text-align: right;">Runs Perl script from a given file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="script-from-the-command-line">Script from the Command-line</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Unix/Linux</span>
+<span class="nv">$perl</span><span class="w">  </span>script.pl
+<span class="c1"># Windows/DOS</span>
+C:&gt;perl<span class="w"> </span>script.pl
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="first-perl-program">First Perl Program</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">$perl</span><span class="w"> </span>-e<span class="w"> </span><span class="s1">&#39;print &quot;Hello World\n&quot;&#39;</span>
+
+<span class="c1"># #!/usr/bin/perl</span>
+
+<span class="c1"># This will print &quot;Hello, World&quot;</span>
+print<span class="w"> </span><span class="s2">&quot;Hello, world\n&quot;</span><span class="p">;</span>
+<span class="nv">$chmod</span><span class="w"> </span><span class="m">0755</span><span class="w"> </span>hello.pl
+$./hello.pl
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comments-in-perl">Comments in Perl</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># This is a comment in perl</span>
+<span class="cm">=begin comment</span>
+<span class="cm">This is all part of multiline comment.</span>
+<span class="cm">You can use as many lines as you like</span>
+<span class="cm">These comments will be ignored by the</span>
+<span class="cm">compiler until the next =cut is encountered.</span>
+<span class="cm">=cut</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="whitespaces-in-perl">Whitespaces in Perl</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># This would print with a line break in the middle</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Hello</span>
+<span class="s">          world\n&quot;</span><span class="p">;</span>
+<span class="c1">#output</span>
+<span class="c1">#Hello</span>
+<span class="c1">#         world</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="single-and-double-quotes-in-perl">Single and Double Quotes in Perl</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Hello, world\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&#39;Hello, world\n&#39;</span><span class="p">;</span>
+
+<span class="c1">#Hello, world</span>
+<span class="c1">#Hello, world\n$</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="datatypes">
+<h2 id="datatypes">Datatypes</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="creating-variables">Creating Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">$age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span><span class="w">             </span><span class="c1"># An integer assignment</span>
+<span class="nv">$name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;John Paul&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1"># A string</span>
+<span class="nv">$salary</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1445.50</span><span class="p">;</span><span class="w">     </span><span class="c1"># A floating point</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="scalar-variables">Scalar Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">$age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">25</span><span class="p">;</span><span class="w">             </span><span class="c1"># An integer assignment</span>
+<span class="nv">$name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;John Paul&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1"># A string</span>
+<span class="nv">$salary</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1445.50</span><span class="p">;</span><span class="w">     </span><span class="c1"># A floating point</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Age = $age\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Name = $name\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Salary = $salary\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="array-variables">Array Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@ages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+<span class="nv">@names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;John Paul&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Lisa&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Kumar&quot;</span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$ages[0] = $ages[0]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$ages[1] = $ages[1]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$ages[2] = $ages[2]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$names[0] = $names[0]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$names[1] = $names[1]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$names[2] = $names[2]\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="hash-variables">Hash Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">%data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;John Paul&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Lisa&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Kumar&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$data = $data\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$data = $data\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\$data = $data\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="variable-context">Variable Context</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;John Paul&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Lisa&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Kumar&#39;</span><span class="p">);</span>
+
+<span class="nv">@copy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@names</span><span class="p">;</span>
+<span class="nv">$size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@names</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Given names are : @copy\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Number of names are : $size\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="numeric-scalars">Numeric Scalars</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">$integer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">200</span><span class="p">;</span>
+<span class="nv">$negative</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mi">300</span><span class="p">;</span>
+<span class="nv">$floating</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">200.340</span><span class="p">;</span>
+<span class="nv">$bigfloat</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="mf">1.2E-23</span><span class="p">;</span>
+
+<span class="c1"># 377 octal, same as 255 decimal</span>
+<span class="nv">$octal</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mo">0377</span><span class="p">;</span>
+
+<span class="c1"># FF hex, also 255 decimal</span>
+<span class="nv">$hexa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mh">0xff</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;integer = $integer\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;negative = $negative\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;floating = $floating\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;bigfloat = $bigfloat\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;octal = $octal\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;hexa = $hexa\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-scalars">String Scalars</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">$var</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is string scalar!&quot;</span><span class="p">;</span>
+<span class="nv">$quote</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;I m inside single quote - $var&#39;</span><span class="p">;</span>
+<span class="nv">$double</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This is inside single quote - $var&quot;</span><span class="p">;</span>
+
+<span class="nv">$escape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;This example of escape -\tHello, World!&quot;</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;var = $var\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;quote = $quote\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;double = $double\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;escape = $escape\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="scalar-operations">Scalar Operations</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">$str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;hello&quot;</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">&quot;world&quot;</span><span class="p">;</span><span class="w">       </span><span class="c1"># Concatenates strings.</span>
+<span class="nv">$num</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span><span class="w">                  </span><span class="c1"># adds two numbers.</span>
+<span class="nv">$mul</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span><span class="w">                   </span><span class="c1"># multiplies two numbers.</span>
+<span class="nv">$mix</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$str</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$num</span><span class="p">;</span><span class="w">             </span><span class="c1"># concatenates string and number.</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;str = $str\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;num = $num\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;mul = $mul\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;mix = $mix\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="multiline-strings">Multiline Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">$string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;This is</span>
+<span class="s">a multiline</span>
+<span class="s">string&#39;</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$string\n&quot;</span><span class="p">;</span>
+
+<span class="c1">##########################</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&lt;&lt;</span><span class="dl">EOF</span><span class="s">;</span>
+<span class="s">This is</span>
+<span class="s">a multiline</span>
+<span class="s">string</span>
+<span class="dl">EOF</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="v-strings">V-Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">$smile</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="n">v9786</span><span class="p">;</span>
+<span class="nv">$foo</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="n">v102</span><span class="mf">.111.111</span><span class="p">;</span>
+<span class="nv">$martin</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v77</span><span class="mf">.97.114.116.105.110</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;smile = $smile\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;foo = $foo\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;martin = $martin\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="special-literals">Special Literals</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;File name &quot;</span><span class="o">.</span><span class="w"> </span><span class="n">__FILE__</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Line Number &quot;</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">__LINE__</span><span class="w"> </span><span class="o">.</span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Package &quot;</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="n">__PACKAGE__</span><span class="w"> </span><span class="o">.</span><span class="s">&quot;\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># they can not be interpolated</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;__FILE__ __LINE__ __PACKAGE__\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="sequential-number-arrays">Sequential Number Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@var_10</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">10</span><span class="p">);</span>
+<span class="nv">@var_20</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">10</span><span class="o">..</span><span class="mi">20</span><span class="p">);</span>
+<span class="nv">@var_abc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">a</span><span class="o">..</span><span class="n">z</span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;@var_10\n&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1"># Prints number from 1 to 10</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;@var_20\n&quot;</span><span class="p">;</span><span class="w">   </span><span class="c1"># Prints number from 10 to 20</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;@var_abc\n&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1"># Prints number from a to z</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="array-size">Array Size</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">);</span>
+<span class="nv">$array</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+
+<span class="nv">$size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@array</span><span class="p">;</span>
+<span class="nv">$max_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$#array</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Size:  $size\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Max Index: $max_index\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="array-oparationns">
+<h2 id="array-oparationns">Array oparationns</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="adding-and-removing-elements-in-array">Adding and Removing Elements in Array</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">types</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">push @ARRAY, LIST</td>
+<td style="text-align: center;">Pushes the values of the list onto the end of the array.</td>
+</tr>
+<tr>
+<td style="text-align: left;">pop @ARRAY</td>
+<td style="text-align: center;">Pops off and returns the last value of the array.</td>
+</tr>
+<tr>
+<td style="text-align: left;">shift @ARRAY</td>
+<td style="text-align: center;">Shifts the first value of the array off and returns it, shortening the array by 1 and moving everything down.</td>
+</tr>
+<tr>
+<td style="text-align: left;">unshift @ARRAY, LIST</td>
+<td style="text-align: center;">Prepends list to the front of the array, and returns the number of elements in the new array.</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="array-oparations">Array oparations</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># create a simple array</span>
+
+<span class="nv">@coins</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;Quarter&quot;</span><span class="p">,</span><span class="s">&quot;Dime&quot;</span><span class="p">,</span><span class="s">&quot;Nickel&quot;</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;1. \@coins = @coins\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># add one element at the end of the array</span>
+
+<span class="nb">push</span><span class="p">(</span><span class="nv">@coins</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Penny&quot;</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;2. \@coins = @coins\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># add one element at the beginning of the array</span>
+
+<span class="nb">unshift</span><span class="p">(</span><span class="nv">@coins</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Dollar&quot;</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;3. \@coins = @coins\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># remove one element from the last of the array.</span>
+
+<span class="nb">pop</span><span class="p">(</span><span class="nv">@coins</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;4. \@coins = @coins\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># remove one element from the beginning of the array.</span>
+
+<span class="nb">shift</span><span class="p">(</span><span class="nv">@coins</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;5. \@coins = @coins\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="slicing-array-elements">Slicing Array Elements</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@days</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/Mon Tue Wed Thu Fri Sat Sun/</span><span class="p">;</span>
+
+<span class="nv">@weekdays</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@days</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">];</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;@weekdays\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="replacing-array-elements">Replacing Array Elements</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@nums</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="o">..</span><span class="mi">20</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Before - @nums\n&quot;</span><span class="p">;</span>
+
+<span class="nb">splice</span><span class="p">(</span><span class="nv">@nums</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="mi">21</span><span class="o">..</span><span class="mi">25</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;After - @nums\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="transform-strings-to-arrays">Transform Strings to Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># define Strings</span>
+
+<span class="nv">$var_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Rain-Drops-On-Roses-And-Whiskers-On-Kittens&quot;</span><span class="p">;</span>
+<span class="nv">$var_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Larry,David,Roger,Ken,Michael,Tom&quot;</span><span class="p">;</span>
+
+<span class="c1"># transform above strings into arrays.</span>
+
+<span class="nv">@string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">$var_string</span><span class="p">);</span>
+<span class="nv">@names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">$var_names</span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$string[3]\n&quot;</span><span class="p">;</span><span class="w">  </span><span class="c1"># This will print Roses</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$names[4]\n&quot;</span><span class="p">;</span><span class="w"> </span><span class="c1"># This will print Michael</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="transform-arrays-to-strings">Transform Arrays to Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># define Strings</span>
+<span class="nv">$var_string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Rain-Drops-On-Roses-And-Whiskers-On-Kittens&quot;</span><span class="p">;</span>
+<span class="nv">$var_names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Larry,David,Roger,Ken,Michael,Tom&quot;</span><span class="p">;</span>
+
+<span class="c1"># transform above strings into arrays.</span>
+<span class="nv">@string</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">split</span><span class="p">(</span><span class="s">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">$var_string</span><span class="p">);</span>
+<span class="nv">@names</span><span class="w">  </span><span class="o">=</span><span class="w"> </span><span class="nb">split</span><span class="p">(</span><span class="s">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">$var_names</span><span class="p">);</span>
+
+<span class="nv">$string1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">join</span><span class="p">(</span><span class="w"> </span><span class="s">&#39;-&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">@string</span><span class="w"> </span><span class="p">);</span>
+<span class="nv">$string2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">join</span><span class="p">(</span><span class="w"> </span><span class="s">&#39;,&#39;</span><span class="p">,</span><span class="w"> </span><span class="nv">@names</span><span class="w"> </span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$string1\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$string2\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="sorting-arrays">Sorting Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># define an array</span>
+<span class="nv">@foods</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw(pizza steak chicken burgers)</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Before: @foods\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># sort this array</span>
+<span class="nv">@foods</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">sort</span><span class="p">(</span><span class="nv">@foods</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;After: @foods\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-special-variable">The $[ Special Variable</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># define an array</span>
+<span class="nv">@foods</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw(pizza steak chicken burgers)</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Foods: @foods\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># Let&#39;s reset first index of all the arrays.</span>
+<span class="vg">$[</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Food at \@foods[1]: $foods[1]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Food at \@foods[2]: $foods[2]\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="merging-arrays">Merging Arrays</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@odd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+<span class="nv">@even</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="p">);</span>
+
+<span class="nv">@numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nv">@odd</span><span class="p">,</span><span class="w"> </span><span class="nv">@even</span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;numbers = @numbers\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="selecting-elements-from-lists">Selecting Elements from Lists</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">@list</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)[</span><span class="mi">1</span><span class="o">..</span><span class="mi">3</span><span class="p">];</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Value of list = @list\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="accessing-hash-elements">Accessing Hash Elements</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">%data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;John Paul&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Lisa&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Kumar&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$data\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$data\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$data\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="extracting-slices">Extracting Slices</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/uer/bin/perl</span>
+
+
+<span class="nv">%data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="o">-</span><span class="n">JohnPaul</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">Lisa</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="o">-</span><span class="n">Kumar</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+
+<span class="nv">@array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@data</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Array : @array\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="extracting-keys-and-values">Extracting Keys and Values</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">%data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;John Paul&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Lisa&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Kumar&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+
+<span class="nv">@names</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keys</span><span class="w"> </span><span class="nv">%data</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$names[0]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$names[1]\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$names[2]\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="getting-hash-size">Getting Hash Size</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">%data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;John Paul&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Lisa&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Kumar&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+
+<span class="nv">@keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keys</span><span class="w"> </span><span class="nv">%data</span><span class="p">;</span>
+<span class="nv">$size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@keys</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;1 - Hash size:  is $size\n&quot;</span><span class="p">;</span>
+
+<span class="nv">@values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">values</span><span class="w"> </span><span class="nv">%data</span><span class="p">;</span>
+<span class="nv">$size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@values</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;2 - Hash size:  is $size\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="add-and-remove-elements-in-hashes">Add and Remove Elements in Hashes</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="nv">%data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;John Paul&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">45</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Lisa&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">30</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;Kumar&#39;</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">40</span><span class="p">);</span>
+<span class="nv">@keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keys</span><span class="w"> </span><span class="nv">%data</span><span class="p">;</span>
+<span class="nv">$size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@keys</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;1 - Hash size:  is $size\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># adding an element to the hash;</span>
+<span class="nv">$data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">55</span><span class="p">;</span>
+<span class="nv">@keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keys</span><span class="w"> </span><span class="nv">%data</span><span class="p">;</span>
+<span class="nv">$size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@keys</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;2 - Hash size:  is $size\n&quot;</span><span class="p">;</span>
+
+<span class="c1"># delete the same element from the hash;</span>
+<span class="nb">delete</span><span class="w"> </span><span class="nv">$data</span><span class="p">;</span>
+<span class="nv">@keys</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">keys</span><span class="w"> </span><span class="nv">%data</span><span class="p">;</span>
+<span class="nv">$size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">@keys</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;3 - Hash size:  is $size\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="control-flow">
+<h2 id="control-flow">Control Flow</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="if-else">if-else</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Perl program to illustrate</span>
+<span class="c1"># Decision-Making statements</span>
+
+<span class="nv">$a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="nv">$b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">15</span><span class="p">;</span>
+
+<span class="c1"># if condition to check</span>
+<span class="c1"># for even number</span>
+<span class="k">if</span><span class="p">(</span><span class="nv">$a</span><span class="w"> </span><span class="nv">%</span><span class="w"> </span><span class="nv">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span>
+
+
+<span class="c1"># if-else condition to check</span>
+<span class="c1"># for even number or odd number</span>
+<span class="k">if</span><span class="p">(</span><span class="nv">$b</span><span class="w"> </span><span class="nv">%</span><span class="w"> </span><span class="nv">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="p">)</span>
+
+<span class="k">else</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-operator">The ? : Operator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/local/bin/perl</span>
+
+<span class="nv">$name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Ali&quot;</span><span class="p">;</span>
+<span class="nv">$age</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="nv">$status</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="nv">$age</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="p">)?</span><span class="w"> </span><span class="s">&quot;A senior citizen&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Not a senior citizen&quot;</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$name is  - $status\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="for-loop">for loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Perl program to illustrate</span>
+<span class="c1"># the use of for Loop</span>
+
+<span class="c1"># for loop</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;For Loop:\n&quot;</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="nv">$count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nv">$count</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="p">;</span><span class="w"> </span><span class="nv">$count</span><span class="o">++</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="foreach-loop">foreach loop</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Perl program to illustrate</span>
+<span class="c1"># the use of foreach Loop</span>
+
+<span class="c1"># Array</span>
+<span class="nv">@data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;GEEKS&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;GEEKS&#39;</span><span class="p">);</span>
+
+<span class="c1"># foreach loop</span>
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;For-each Loop:\n&quot;</span><span class="p">);</span>
+<span class="k">foreach</span><span class="w"> </span><span class="nv">$word</span><span class="w"> </span><span class="p">(</span><span class="nv">@data</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="while-and-do-while">while and do-while</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Perl program to illustrate</span>
+<span class="c1"># the use of foreach Loop</span>
+
+<span class="c1"># while loop</span>
+<span class="nv">$count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;While Loop:\n&quot;</span><span class="p">);</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nv">$count</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">print</span><span class="p">(</span><span class="s">&quot;\ndo...while Loop:\n&quot;</span><span class="p">);</span>
+<span class="nv">$a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="c1"># do..While loop</span>
+<span class="k">do</span><span class="w">  </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nv">$a</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="object-oriented-programming">
+<h2 id="object-oriented-programming">Object Oriented Programming</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="class-and-object">Class and object</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Perl Program for creation of a</span>
+<span class="c1"># Class and its object</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">strict</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">warnings</span><span class="p">;</span>
+
+<span class="k">package</span><span class="w"> </span><span class="nn">student</span><span class="p">;</span>
+
+<span class="c1"># constructor</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">student_data</span>
+<span class="p">;</span>
+<span class="w">    </span><span class="c1"># Using bless function</span>
+<span class="w">    </span><span class="nb">bless</span><span class="w"> </span><span class="nv">$self</span><span class="p">,</span><span class="w"> </span><span class="nv">$class_name</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1"># returning object from constructor</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nv">$self</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1"># Object creating and constructor calling</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$Data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">student_data</span><span class="w"> </span><span class="n">student</span><span class="p">(</span><span class="s">&quot;Geeks&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;forGeeks&quot;</span><span class="p">);</span>
+
+<span class="c1"># Printing the data</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$Data-&gt;\n&quot;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$Data-&gt;\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="subroutines">Subroutines</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Perl Program to demonstrate the</span>
+<span class="c1"># subroutine declaration and calling</span>
+
+<span class="c1"># defining subroutine</span>
+<span class="k">sub</span><span class="w"> </span><span class="nf">ask_user</span>
+
+
+<span class="err">#</span><span class="w"> </span><span class="nf">calling</span><span class="w"> </span><span class="nf">subroutine</span>
+<span class="err">#</span><span class="w"> </span><span class="nf">you</span><span class="w"> </span><span class="nf">can</span><span class="w"> </span><span class="nf">also</span><span class="w"> </span><span class="nf">use</span>
+<span class="err">#</span><span class="w"> </span><span class="err">&amp;</span><span class="nf">ask_user</span><span class="p">();</span>
+<span class="n">ask_user</span><span class="p">();</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="modules-and-packages">Modules and Packages</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Using the Package &#39;Calculator&#39;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Calculator</span><span class="p">;</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Enter two numbers to multiply&quot;</span><span class="p">;</span>
+
+<span class="c1"># Defining values to the variables</span>
+<span class="nv">$a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<span class="nv">$b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+
+<span class="c1"># Subroutine call</span>
+<span class="nn">Calculator::</span><span class="n">multiplication</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span><span class="w"> </span><span class="nv">$b</span><span class="p">);</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;\nEnter two numbers to divide&quot;</span><span class="p">;</span>
+
+<span class="c1"># Defining values to the variables</span>
+<span class="nv">$a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">45</span><span class="p">;</span>
+<span class="nv">$b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+
+<span class="c1"># Subroutine call</span>
+<span class="nn">Calculator::</span><span class="n">division</span><span class="p">(</span><span class="nv">$a</span><span class="p">,</span><span class="w"> </span><span class="nv">$b</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="references">References</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Perl program to illustrate the</span>
+<span class="c1"># Referencing and Dereferencing</span>
+<span class="c1"># of an Array</span>
+
+<span class="c1"># defining an array</span>
+<span class="nv">@array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="s">&#39;1&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;2&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;3&#39;</span><span class="p">);</span>
+
+<span class="c1"># making an reference to an array variable</span>
+<span class="nv">$reference_array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">\</span><span class="nv">@array</span><span class="p">;</span>
+
+<span class="c1"># Dereferencing</span>
+<span class="c1"># printing the value stored</span>
+<span class="c1"># at $reference_array by prefixing</span>
+<span class="c1"># @ as it is a array reference</span>
+<span class="k">print</span><span class="w"> </span><span class="nv">@$reference_array</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="regular-expression">Regular Expression</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Perl program to demonstrate</span>
+<span class="c1"># the m// and =~ operators</span>
+
+<span class="c1"># Actual String</span>
+<span class="nv">$a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;GEEKSFORGEEKS&quot;</span><span class="p">;</span>
+
+<span class="c1"># Prints match found if</span>
+<span class="c1"># its found in $a</span>
+<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nv">$a</span><span class="w"> </span><span class="o">=~</span><span class="w"> </span><span class="sr">m[GEEKS]</span><span class="p">)</span>
+
+
+<span class="c1"># Prints match not found</span>
+<span class="c1"># if its not found in $a</span>
+<span class="k">else</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="file-handling">File Handling</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Opening the file</span>
+<span class="nb">open</span><span class="p">(</span><span class="n">fh</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GFG2.txt&quot;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">&quot;File &#39;$filename&#39; can&#39;t be opened&quot;</span><span class="p">;</span>
+
+<span class="c1"># Reading First line from the file</span>
+<span class="nv">$firstline</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">&lt;fh&gt;</span><span class="p">;</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$firstline\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="file-test-operators">File Test Operators</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+
+<span class="c1"># Using predefined modules</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">warnings</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">strict</span><span class="p">;</span>
+
+<span class="c1"># Providing path of file to a variable</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;C:\Users\GeeksForGeeks\GFG.txt&#39;</span><span class="p">;</span>
+
+<span class="c1"># Checking for the file existence</span>
+<span class="k">if</span><span class="p">(</span><span class="o">-</span><span class="n">e</span><span class="w"> </span><span class="nv">$filename</span><span class="p">)</span>
+
+
+<span class="k">else</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="working-with-excel-files">Working with Excel Files</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/perl</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Excel::Writer::XLSX</span><span class="p">;</span>
+
+<span class="k">my</span><span class="w"> </span><span class="nv">$Excelbook</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nn">Excel::Writer::XLSX</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="w"> </span><span class="s">&#39;GFG_Sample.xlsx&#39;</span><span class="w"> </span><span class="p">);</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$Excelsheet</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$Excelbook</span><span class="o">-&gt;</span><span class="n">add_worksheet</span><span class="p">();</span>
+
+<span class="nv">$Excelsheet</span><span class="o">-&gt;</span><span class="nb">write</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;A1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="w"> </span><span class="p">);</span>
+<span class="nv">$Excelsheet</span><span class="o">-&gt;</span><span class="nb">write</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;A2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;GeeksForGeeks&quot;</span><span class="w"> </span><span class="p">);</span>
+<span class="nv">$Excelsheet</span><span class="o">-&gt;</span><span class="nb">write</span><span class="p">(</span><span class="w"> </span><span class="s">&quot;B1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Next_Column&quot;</span><span class="w"> </span><span class="p">);</span>
+
+<span class="nv">$Excelbook</span><span class="o">-&gt;</span><span class="nb">close</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="reading-from-an-excel-file">Reading from an Excel File:</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">use</span><span class="w"> </span><span class="mf">5.016</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Spreadsheet::Read</span><span class="w"> </span><span class="sx">qw(ReadData)</span><span class="p">;</span>
+<span class="k">my</span><span class="w"> </span><span class="nv">$book_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ReadData</span><span class="w"> </span><span class="p">(</span><span class="err">‘</span><span class="n">new_excel</span><span class="o">.</span><span class="n">xlsx</span><span class="s">&#39;);</span>
+<span class="s">say &#39;</span><span class="n">A2:</span><span class="w"> </span><span class="err">&#39;</span><span class="w"> </span><span class="o">.</span><span class="w"> </span><span class="nv">$book_data</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="error-handling">Error Handling</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">if</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">DATA</span><span class="p">,</span><span class="w"> </span><span class="nv">$file</span><span class="p">))</span><span class="w">  </span><span class="k">else</span><span class="w"> </span>
+<span class="c1">#example</span>
+<span class="nb">open</span><span class="p">(</span><span class="n">DATA</span><span class="p">,</span><span class="w"> </span><span class="nv">$file</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">&quot;Error: Couldn&#39;t open the file $!&quot;</span><span class="p">;</span>
+<span class="c1">## example</span>
+<span class="k">unless</span><span class="p">(</span><span class="nb">chdir</span><span class="p">(</span><span class="s">&quot;/etc&quot;</span><span class="p">))</span><span class="w"> </span>
+<span class="c1">##example</span>
+<span class="k">print</span><span class="p">(</span><span class="nb">exists</span><span class="p">(</span><span class="nv">$hash</span><span class="p">)</span><span class="w"> </span><span class="p">?</span><span class="w"> </span><span class="s">&#39;There&#39;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s">&#39;Missing&#39;</span><span class="p">,</span><span class="s">&quot;\n&quot;</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-warn-function">The warn Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">chdir</span><span class="p">(</span><span class="s">&#39;/etc&#39;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nb">warn</span><span class="w"> </span><span class="s">&quot;Can&#39;t change directory&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-die-function">The die function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nb">chdir</span><span class="p">(</span><span class="s">&#39;/etc&#39;</span><span class="p">)</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="nb">die</span><span class="w"> </span><span class="s">&quot;Can&#39;t change directory&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="errors-within-modules">Errors within Modules</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="nn">T</span><span class="p">;</span>
+
+<span class="k">require</span><span class="w"> </span><span class="nn">Exporter</span><span class="p">;</span>
+<span class="nv">@ISA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/Exporter/</span><span class="p">;</span>
+<span class="nv">@EXPORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/function/</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Carp</span><span class="p">;</span>
+
+<span class="k">sub</span><span class="w"> </span><span class="nf">function</span><span class="w"> </span>
+<span class="err">1</span><span class="p">;</span>
+<span class="c1">#use T;</span>
+<span class="c1">#function();</span>
+<span class="c1"># all below code call the funtion</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-carp-function">The carp Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="nn">T</span><span class="p">;</span>
+
+<span class="k">require</span><span class="w"> </span><span class="nn">Exporter</span><span class="p">;</span>
+<span class="nv">@ISA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/Exporter/</span><span class="p">;</span>
+<span class="nv">@EXPORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/function/</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Carp</span><span class="p">;</span>
+
+<span class="k">sub</span><span class="w"> </span><span class="nf">function</span><span class="w"> </span>
+<span class="err">1</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-cluck-function">The cluck Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="nn">T</span><span class="p">;</span>
+
+<span class="k">require</span><span class="w"> </span><span class="nn">Exporter</span><span class="p">;</span>
+<span class="nv">@ISA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/Exporter/</span><span class="p">;</span>
+<span class="nv">@EXPORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/function/</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Carp</span><span class="w"> </span><span class="sx">qw(cluck)</span><span class="p">;</span>
+
+<span class="k">sub</span><span class="w"> </span><span class="nf">function</span><span class="w"> </span>
+<span class="err">1</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-croak-function">The croak Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="nn">T</span><span class="p">;</span>
+
+<span class="k">require</span><span class="w"> </span><span class="nn">Exporter</span><span class="p">;</span>
+<span class="nv">@ISA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/Exporter/</span><span class="p">;</span>
+<span class="nv">@EXPORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/function/</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Carp</span><span class="p">;</span>
+
+<span class="k">sub</span><span class="w"> </span><span class="nf">function</span><span class="w"> </span>
+<span class="err">1</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="the-confess-function">The confess Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">package</span><span class="w"> </span><span class="nn">T</span><span class="p">;</span>
+
+<span class="k">require</span><span class="w"> </span><span class="nn">Exporter</span><span class="p">;</span>
+<span class="nv">@ISA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/Exporter/</span><span class="p">;</span>
+<span class="nv">@EXPORT</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw/function/</span><span class="p">;</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">Carp</span><span class="p">;</span>
+
+<span class="k">sub</span><span class="w"> </span><span class="nf">function</span><span class="w"> </span>
+<span class="err">1</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="date-and-time">
+<h2 id="date-and-time">Date and Time</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="current-date-and-time">Current Date and Time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/local/bin/perl</span>
+
+<span class="nv">@months</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw( Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec )</span><span class="p">;</span>
+<span class="nv">@days</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sx">qw(Sun Mon Tue Wed Thu Fri Sat Sun)</span><span class="p">;</span>
+
+<span class="p">(</span><span class="nv">$sec</span><span class="p">,</span><span class="nv">$min</span><span class="p">,</span><span class="nv">$hour</span><span class="p">,</span><span class="nv">$mday</span><span class="p">,</span><span class="nv">$mon</span><span class="p">,</span><span class="nv">$year</span><span class="p">,</span><span class="nv">$wday</span><span class="p">,</span><span class="nv">$yday</span><span class="p">,</span><span class="nv">$isdst</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">localtime</span><span class="p">();</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;$mday $months[$mon] $days[$wday]\n&quot;</span><span class="p">;</span>
+<span class="c1">#or</span>
+<span class="c1">#!/usr/local/bin/perl</span>
+
+<span class="nv">$datestring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">localtime</span><span class="p">();</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Local date and time $datestring\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="gmt-time">GMT Time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/local/bin/perl</span>
+
+<span class="nv">$datestring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">gmtime</span><span class="p">();</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;GMT date and time $datestring\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="format-date-and-time">Format Date and Time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/local/bin/perl</span>
+
+<span class="p">(</span><span class="nv">$sec</span><span class="p">,</span><span class="nv">$min</span><span class="p">,</span><span class="nv">$hour</span><span class="p">,</span><span class="nv">$mday</span><span class="p">,</span><span class="nv">$mon</span><span class="p">,</span><span class="nv">$year</span><span class="p">,</span><span class="nv">$wday</span><span class="p">,</span><span class="nv">$yday</span><span class="p">,</span><span class="nv">$isdst</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">localtime</span><span class="p">();</span>
+
+<span class="nb">printf</span><span class="p">(</span><span class="s">&quot;Time Format - HH:MM:SS\n&quot;</span><span class="p">);</span>
+<span class="nb">printf</span><span class="p">(</span><span class="s">&quot;%02d:%02d:%02d&quot;</span><span class="p">,</span><span class="w"> </span><span class="nv">$hour</span><span class="p">,</span><span class="w"> </span><span class="nv">$min</span><span class="p">,</span><span class="w"> </span><span class="nv">$sec</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="epoch-time">Epoch time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/local/bin/perl</span>
+
+<span class="nv">$epoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">time</span><span class="p">();</span>
+
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Number of seconds since Jan 1, 1970 - $epoc\n&quot;</span><span class="p">;</span>
+<span class="c1">#or</span>
+<span class="c1">#!/usr/local/bin/perl</span>
+
+<span class="nv">$datestring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">localtime</span><span class="p">();</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Current date and time $datestring\n&quot;</span><span class="p">;</span>
+
+<span class="nv">$epoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">time</span><span class="p">();</span>
+<span class="nv">$epoc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$epoc</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">24</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">60</span><span class="p">;</span><span class="w">   </span><span class="c1"># one day before of current date.</span>
+
+<span class="nv">$datestring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">localtime</span><span class="p">(</span><span class="nv">$epoc</span><span class="p">);</span>
+<span class="k">print</span><span class="w"> </span><span class="s">&quot;Yesterday&#39;s date and time $datestring\n&quot;</span><span class="p">;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="posix-function-strftime">POSIX Function strftime()</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Specifier</th>
+<th style="text-align: left;">Replaced by</th>
+<th style="text-align: center;">Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">%a</td>
+<td style="text-align: left;">Abbreviated weekday name</td>
+<td style="text-align: center;">Thu</td>
+</tr>
+<tr>
+<td style="text-align: left;">%A</td>
+<td style="text-align: left;">Full weekday name</td>
+<td style="text-align: center;">Thursday</td>
+</tr>
+<tr>
+<td style="text-align: left;">%b</td>
+<td style="text-align: left;">Abbreviated month name</td>
+<td style="text-align: center;">Aug</td>
+</tr>
+<tr>
+<td style="text-align: left;">%B</td>
+<td style="text-align: left;">Full month name</td>
+<td style="text-align: center;">August</td>
+</tr>
+<tr>
+<td style="text-align: left;">%c</td>
+<td style="text-align: left;">Date and time representation</td>
+<td style="text-align: center;">Thu Aug 23 14:55:02 2001</td>
+</tr>
+<tr>
+<td style="text-align: left;">%C</td>
+<td style="text-align: left;">Year divided by 100 and truncated to integer (00-99)</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr>
+<td style="text-align: left;">%d</td>
+<td style="text-align: left;">Day of the month, zero-padded (01-31)</td>
+<td style="text-align: center;">23</td>
+</tr>
+<tr>
+<td style="text-align: left;">%D</td>
+<td style="text-align: left;">Short MM/DD/YY date, equivalent to %m/%d/%y</td>
+<td style="text-align: center;">08/23/01</td>
+</tr>
+<tr>
+<td style="text-align: left;">%e</td>
+<td style="text-align: left;">Day of the month, space-padded ( 1-31)</td>
+<td style="text-align: center;">23</td>
+</tr>
+<tr>
+<td style="text-align: left;">%F</td>
+<td style="text-align: left;">Short YYYY-MM-DD date, equivalent to %Y-%m-%d</td>
+<td style="text-align: center;">2001-08-23</td>
+</tr>
+<tr>
+<td style="text-align: left;">%g</td>
+<td style="text-align: left;">Week-based year, last two digits (00-99)</td>
+<td style="text-align: center;">01</td>
+</tr>
+<tr>
+<td style="text-align: left;">%G</td>
+<td style="text-align: left;">Week-based year</td>
+<td style="text-align: center;">2001</td>
+</tr>
+<tr>
+<td style="text-align: left;">%h</td>
+<td style="text-align: left;">Abbreviated month name (same as %b)</td>
+<td style="text-align: center;">Aug</td>
+</tr>
+<tr>
+<td style="text-align: left;">%H</td>
+<td style="text-align: left;">Hour in 24h format (00-23)</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr>
+<td style="text-align: left;">%I</td>
+<td style="text-align: left;">Hour in 12h format (01-12)</td>
+<td style="text-align: center;">02</td>
+</tr>
+<tr>
+<td style="text-align: left;">%j</td>
+<td style="text-align: left;">Day of the year (001-366)</td>
+<td style="text-align: center;">235</td>
+</tr>
+<tr>
+<td style="text-align: left;">%m</td>
+<td style="text-align: left;">Month as a decimal number (01-12)</td>
+<td style="text-align: center;">08</td>
+</tr>
+<tr>
+<td style="text-align: left;">%M</td>
+<td style="text-align: left;">Minute (00-59)</td>
+<td style="text-align: center;">55</td>
+</tr>
+<tr>
+<td style="text-align: left;">%n</td>
+<td style="text-align: left;">New-line character ('\n')</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">%p</td>
+<td style="text-align: left;">AM or PM designation</td>
+<td style="text-align: center;">PM</td>
+</tr>
+<tr>
+<td style="text-align: left;">%r</td>
+<td style="text-align: left;">12-hour clock time</td>
+<td style="text-align: center;">02:55:02 pm</td>
+</tr>
+<tr>
+<td style="text-align: left;">%R</td>
+<td style="text-align: left;">24-hour HH:MM time, equivalent to %H:%M</td>
+<td style="text-align: center;">14:55</td>
+</tr>
+<tr>
+<td style="text-align: left;">%S</td>
+<td style="text-align: left;">Second (00-61)</td>
+<td style="text-align: center;">02</td>
+</tr>
+<tr>
+<td style="text-align: left;">%t</td>
+<td style="text-align: left;">Horizontal-tab character ('\t')</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;">%T</td>
+<td style="text-align: left;">ISO 8601 time format (HH:MM:SS), equivalent to %H:%M:%S</td>
+<td style="text-align: center;">14:55</td>
+</tr>
+<tr>
+<td style="text-align: left;">%u</td>
+<td style="text-align: left;">ISO 8601 weekday as number with Monday as 1 (1-7)</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">%U</td>
+<td style="text-align: left;">Week number with the first Sunday as the first day of week one (00-53)</td>
+<td style="text-align: center;">33</td>
+</tr>
+<tr>
+<td style="text-align: left;">%V</td>
+<td style="text-align: left;">ISO 8601 week number (00-53)</td>
+<td style="text-align: center;">34</td>
+</tr>
+<tr>
+<td style="text-align: left;">%w</td>
+<td style="text-align: left;">Weekday as a decimal number with Sunday as 0 (0-6)</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: left;">%W</td>
+<td style="text-align: left;">Week number with the first Monday as the first day of week one (00-53)</td>
+<td style="text-align: center;">34</td>
+</tr>
+<tr>
+<td style="text-align: left;">%x</td>
+<td style="text-align: left;">Date representation</td>
+<td style="text-align: center;">08/23/01</td>
+</tr>
+<tr>
+<td style="text-align: left;">%X</td>
+<td style="text-align: left;">Time representation</td>
+<td style="text-align: center;">14:55:02</td>
+</tr>
+<tr>
+<td style="text-align: left;">%y</td>
+<td style="text-align: left;">Year, last two digits (00-99)</td>
+<td style="text-align: center;">01</td>
+</tr>
+<tr>
+<td style="text-align: left;">%Y</td>
+<td style="text-align: left;">Year</td>
+<td style="text-align: center;">2001</td>
+</tr>
+<tr>
+<td style="text-align: left;">%z</td>
+<td style="text-align: left;">ISO 8601 offset from UTC in timezone (1 minute = 1, 1 hour = 100)If timezone cannot be termined, no characters</td>
+<td style="text-align: center;">+100</td>
+</tr>
+<tr>
+<td style="text-align: left;">%Z</td>
+<td style="text-align: left;">Timezone name or abbreviation If timezone cannot be termined, no characters</td>
+<td style="text-align: center;">CDT</td>
+</tr>
+<tr>
+<td style="text-align: left;">%%</td>
+<td style="text-align: left;">A % sign</td>
+<td style="text-align: center;">%</td>
+</tr>
+</tbody>
+</table>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/local/bin/perl</span>
+<span class="k">use</span><span class="w"> </span><span class="nn">POSIX</span><span class="w"> </span><span class="sx">qw(strftime)</span><span class="p">;</span>
+
+<span class="nv">$datestring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strftime</span><span class="w"> </span><span class="s">&quot;%a %b %e %H:%M:%S %Y&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">localtime</span><span class="p">;</span>
+<span class="nb">printf</span><span class="p">(</span><span class="s">&quot;date and time - $datestring\n&quot;</span><span class="p">);</span>
+
+<span class="c1"># or for GMT formatted appropriately for your locale:</span>
+<span class="nv">$datestring</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">strftime</span><span class="w"> </span><span class="s">&quot;%a %b %e %H:%M:%S %Y&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">gmtime</span><span class="p">;</span>
+<span class="nb">printf</span><span class="p">(</span><span class="s">&quot;date and time - $datestring\n&quot;</span><span class="p">);</span>
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

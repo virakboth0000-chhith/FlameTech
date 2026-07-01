@@ -1,0 +1,3644 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Redis Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This is a [redis](https://redis.io/) quick reference cheat sheet that lists examples of redis commands">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#c13b2c}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(193,59,44,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Database</span>
+    <span>›</span>
+    <span>Redis</span>
+  </div>
+  <div class="post-icon">RE</div>
+  <h1>Redis <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This is a <a href="https://redis.io/">redis</a> quick reference cheat sheet that lists examples of redis commands</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Database</span>
+    <span class="meta-tag">cache</span> <span class="meta-tag">Database</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="getting-started_1">Getting started</h3>
+<div class="section">
+<p>Start Redis</p>
+<p>```shell script
+$ redis-server</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Connect</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">redis</span><span class="w"> </span><span class="ss">(</span><span class="nv">Redis</span><span class="w"> </span><span class="nv">CLI</span><span class="w"> </span><span class="nv">client</span><span class="ss">)</span>
+
+```<span class="nv">shell</span><span class="w"> </span><span class="nv">script</span>
+$<span class="w"> </span><span class="nv">redis</span><span class="o">-</span><span class="nv">cli</span>
+</code></pre></div>
+
+<p>Connect to redis (telnet)</p>
+<p>```shell script
+$ telnet 127.0.0.1 6379</p>
+<div class="codehilite"><pre><span></span><code>### Hello World
+
+#### Ping
+
+```shell script
+redis&gt; PING
+PONG
+</code></pre></div>
+
+<h4 id="hello-world">Hello World</h4>
+<p>```shell script
+redis&gt; SET mykey "Hello world"
+OK
+redis&gt; GET mykey
+"Hello world"</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">### Basic Data types</span>
+
+<span class="o">-</span><span class="w"> </span><span class="p">[</span><span class="n">Strings</span><span class="p">](</span><span class="err">#</span><span class="n">redis</span><span class="o">-</span><span class="n">string</span><span class="o">-</span><span class="n">command</span><span class="p">)</span>
+<span class="o">-</span><span class="w"> </span><span class="p">[</span><span class="n">Lists</span><span class="p">](</span><span class="err">#</span><span class="n">redis</span><span class="o">-</span><span class="n">list</span><span class="o">-</span><span class="n">command</span><span class="p">)</span>
+<span class="o">-</span><span class="w"> </span><span class="p">[</span><span class="n">Hashes</span><span class="p">](</span><span class="err">#</span><span class="n">redis</span><span class="o">-</span><span class="n">hash</span><span class="o">-</span><span class="n">command</span><span class="p">)</span>
+<span class="o">-</span><span class="w"> </span><span class="p">[</span><span class="n">Sets</span><span class="p">](</span><span class="err">#</span><span class="n">redis</span><span class="o">-</span><span class="n">set</span><span class="o">-</span><span class="n">command</span><span class="p">)</span>
+<span class="o">-</span><span class="w"> </span><span class="p">[</span><span class="n">Sorted</span><span class="w"> </span><span class="n">Sets</span><span class="p">](</span><span class="err">#</span><span class="n">redis</span><span class="o">-</span><span class="n">sorted</span><span class="o">-</span><span class="n">set</span><span class="o">-</span><span class="n">command</span><span class="p">)</span>
+
+<span class="n">Redis</span><span class="w"> </span><span class="n">supports</span><span class="w"> </span><span class="mi">5</span><span class="w"> </span><span class="n">basic</span><span class="w"> </span><span class="n">data</span><span class="w"> </span><span class="n">types</span>
+
+<span class="cp">## Redis String command</span>
+
+<span class="cp">### APPEND</span>
+</code></pre></div>
+
+<p>APPEND key value</p>
+<div class="codehilite"><pre><span></span><code><span class="o">####</span> <span class="n">Example</span>
+
+<span class="err">```</span><span class="n">shell</span> <span class="n">script</span>
+<span class="n">redis</span><span class="o">&gt;</span> <span class="n">EXISTS</span> <span class="n">mykey</span>
+<span class="p">(</span><span class="n">integer</span><span class="p">)</span> <span class="mi">0</span>
+<span class="n">redis</span><span class="o">&gt;</span> <span class="n">APPEND</span> <span class="n">mykey</span> <span class="s">&quot;Hello&quot;</span>
+<span class="p">(</span><span class="n">integer</span><span class="p">)</span> <span class="mi">5</span>
+<span class="n">redis</span><span class="o">&gt;</span> <span class="n">APPEND</span> <span class="n">mykey</span> <span class="s">&quot; World&quot;</span>
+<span class="p">(</span><span class="n">integer</span><span class="p">)</span> <span class="mi">11</span>
+<span class="n">redis</span><span class="o">&gt;</span> <span class="n">GET</span> <span class="n">mykey</span>
+<span class="s">&quot;Hello World&quot;</span>
+</code></pre></div>
+
+<p>Append a value to a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bitcount">BITCOUNT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">BITCOUNT</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="p">[</span><span class="n">start</span><span class="w"> </span><span class="n">end</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="example">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "foobar"
+"OK"
+redis&gt; BITCOUNT mykey
+(integer) 26
+redis&gt; BITCOUNT mykey 0 0
+(integer) 4
+redis&gt; BITCOUNT mykey 1 1
+(integer) 6</p>
+<div class="codehilite"><pre><span></span><code>Count set bits in a string
+
+### BITFIELD
+</code></pre></div>
+
+<p>BITFIELD key [GET type offset] [SET type offset value] [INCRBY type offset increment] [OVERFLOW WRAP|SAT|FAIL]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; BITFIELD mykey INCRBY i5 100 1 GET u4 0
+1) (integer) 1
+2) (integer) 0
+</code></pre></div>
+
+<p>Perform arbitrary bitfield integer operations on strings</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bitop">BITOP</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>BITOP operation destkey key [key ...]
+</code></pre></div>
+
+<h4 id="example_1">Example</h4>
+<p><code>``shell script
+redis&gt; SET key1 "foobar"
+"OK"
+redis&gt; SET key2 "abcdef"
+"OK"
+redis&gt; BITOP AND dest key1 key2
+(integer) 6
+redis&gt; GET dest
+"</code>bc`ab"</p>
+<div class="codehilite"><pre><span></span><code>Perform bitwise operations between strings
+
+### BITPOS
+</code></pre></div>
+
+<p>BITPOS key bit [start] [end]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;\xff\xf0\x00&quot;
+&quot;OK&quot;
+redis&gt; BITPOS mykey 0
+(integer) 12
+redis&gt; SET mykey &quot;\x00\xff\xf0&quot;
+&quot;OK&quot;
+redis&gt; BITPOS mykey 1 0
+(integer) 8
+redis&gt; BITPOS mykey 1 2
+(integer) 16
+redis&gt; set mykey &quot;\x00\x00\x00&quot;
+&quot;OK&quot;
+redis&gt; BITPOS mykey 1
+(integer) -1
+</code></pre></div>
+
+<p>Find first bit set or clear in a string</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="decr">DECR</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>DECR key
+</code></pre></div>
+
+<h4 id="example_2">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "10"
+"OK"
+redis&gt; DECR mykey
+(integer) 9
+redis&gt; SET mykey "234293482390480948029348230948"
+"OK"
+redis&gt; DECR mykey
+ERR ERR value is not an integer or out of range</p>
+<div class="codehilite"><pre><span></span><code>Decrement the integer value of a key by one
+
+### DECRBY
+</code></pre></div>
+
+<p>DECRBY key decrement</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;10&quot;
+&quot;OK&quot;
+redis&gt; DECRBY mykey 3
+(integer) 7
+</code></pre></div>
+
+<p>Decrement the integer value of a key by the given number</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="get">GET</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GET key
+</code></pre></div>
+
+<h4 id="example_3">Example</h4>
+<p>```shell script
+redis&gt; GET nonexisting
+(nil)
+redis&gt; SET mykey "Hello"
+"OK"
+redis&gt; GET mykey
+"Hello"</p>
+<div class="codehilite"><pre><span></span><code>Get the value of a key
+
+### GETBIT
+</code></pre></div>
+
+<p>GETBIT key offset</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SETBIT mykey 7 1
+(integer) 0
+redis&gt; GETBIT mykey 0
+(integer) 0
+redis&gt; GETBIT mykey 7
+(integer) 1
+redis&gt; GETBIT mykey 100
+(integer) 0
+</code></pre></div>
+
+<p>Returns the bit value at offset in the string value stored at key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="getrange">GETRANGE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nv">GETRANGE</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">start</span><span class="w"> </span><span class="k">end</span>
+</code></pre></div>
+
+<h4 id="example_4">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "This is a string"
+"OK"
+redis&gt; GETRANGE mykey 0 3
+"This"
+redis&gt; GETRANGE mykey -3 -1
+"ing"
+redis&gt; GETRANGE mykey 0 -1
+"This is a string"
+redis&gt; GETRANGE mykey 10 100
+"string"</p>
+<div class="codehilite"><pre><span></span><code>Get a substring of the string stored at a key
+
+### GETSET
+</code></pre></div>
+
+<p>GETSET key value</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; INCR mycounter
+(integer) 1
+redis&gt; GETSET mycounter &quot;0&quot;
+&quot;1&quot;
+redis&gt; GET mycounter
+&quot;0&quot;
+</code></pre></div>
+
+<p>Set the string value of a key and return its old value</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="incr">INCR</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>INCR key
+</code></pre></div>
+
+<h4 id="example_5">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "10"
+"OK"
+redis&gt; INCR mykey
+(integer) 11
+redis&gt; GET mykey
+"11"</p>
+<div class="codehilite"><pre><span></span><code>Increment the integer value of a key by one
+
+### MSETNX
+</code></pre></div>
+
+<p>MSETNX key value [key value ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; MSETNX key1 &quot;Hello&quot; key2 &quot;there&quot;
+(integer) 1
+redis&gt; MSETNX key2 &quot;new&quot; key3 &quot;world&quot;
+(integer) 0
+redis&gt; MGET key1 key2 key3
+1) &quot;Hello&quot;
+2) &quot;there&quot;
+3) (nil)
+</code></pre></div>
+
+<p>Set multiple keys to multiple values, only if none of the keys exist</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="incrbyfloat">INCRBYFLOAT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>INCRBYFLOAT key increment
+</code></pre></div>
+
+<h4 id="example_6">Example</h4>
+<p>```shell script
+redis&gt; SET mykey 10.50
+"OK"
+redis&gt; INCRBYFLOAT mykey 0.1
+"10.6"
+redis&gt; INCRBYFLOAT mykey -5
+"5.6"
+redis&gt; SET mykey 5.0e3
+"OK"
+redis&gt; INCRBYFLOAT mykey 2.0e2
+"5200"</p>
+<div class="codehilite"><pre><span></span><code>Increment the float value of a key by the given amount
+
+### MGET
+</code></pre></div>
+
+<p>MGET key [key ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET key1 &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; SET key2 &quot;World&quot;
+&quot;OK&quot;
+redis&gt; MGET key1 key2 nonexisting
+1) &quot;Hello&quot;
+2) &quot;World&quot;
+3) (nil)
+</code></pre></div>
+
+<p>Get the values of all the given keys</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="mset">MSET</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>MSET key value [key value ...]
+</code></pre></div>
+
+<h4 id="example_7">Example</h4>
+<p>```shell script
+redis&gt; MSET key1 "Hello" key2 "World"
+"OK"
+redis&gt; GET key1
+"Hello"
+redis&gt; GET key2
+"World"</p>
+<div class="codehilite"><pre><span></span><code>Set multiple keys to multiple values
+
+### INCRBY
+</code></pre></div>
+
+<p>INCRBY key increment</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;10&quot;
+&quot;OK&quot;
+redis&gt; INCRBY mykey 5
+(integer) 15
+</code></pre></div>
+
+<p>Increment the integer value of a key by the given amount</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="psetex">PSETEX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>PSETEX key milliseconds value
+</code></pre></div>
+
+<h4 id="example_8">Example</h4>
+<p>```shell script
+redis&gt; PSETEX mykey 1000 "Hello"
+"OK"
+redis&gt; PTTL mykey
+(integer) 1000
+redis&gt; GET mykey
+"Hello"</p>
+<div class="codehilite"><pre><span></span><code>Set the value and expiration in milliseconds of a key
+
+### SET
+</code></pre></div>
+
+<p>SET key value [EX seconds|PX milliseconds|KEEPTTL] [NX|XX] [GET]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; GET mykey
+&quot;Hello&quot;
+redis&gt; SET anotherkey &quot;will expire in a minute&quot; EX 60
+&quot;OK&quot;
+</code></pre></div>
+
+<p>Set the string value of a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="setbit">SETBIT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SETBIT key offset value
+</code></pre></div>
+
+<h4 id="example_9">Example</h4>
+<p>```shell script
+redis&gt; SETBIT mykey 7 1
+(integer) 0
+redis&gt; SETBIT mykey 7 0
+(integer) 1
+redis&gt; GET mykey
+"\u0000"</p>
+<div class="codehilite"><pre><span></span><code>Sets or clears the bit at offset in the string value stored at key
+
+### SETEX
+</code></pre></div>
+
+<p>SETEX key seconds value</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SETEX mykey 10 &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; TTL mykey
+(integer) 10
+redis&gt; GET mykey
+&quot;Hello&quot;
+</code></pre></div>
+
+<p>Set the value and expiration of a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="setnx">SETNX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SETNX key value
+</code></pre></div>
+
+<h4 id="example_10">Example</h4>
+<p>```shell script
+redis&gt; SETNX mykey "Hello"
+(integer) 1
+redis&gt; SETNX mykey "World"
+(integer) 0
+redis&gt; GET mykey
+"Hello"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Set</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span>,<span class="w"> </span><span class="nv">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">does</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">exist</span>
+
+###<span class="w"> </span><span class="nv">SETRANGE</span>
+</code></pre></div>
+
+<p>SETRANGE key offset value</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET key1 &quot;Hello World&quot;
+&quot;OK&quot;
+redis&gt; SETRANGE key1 6 &quot;Redis&quot;
+(integer) 11
+redis&gt; GET key1
+&quot;Hello Redis&quot;
+</code></pre></div>
+
+<p>Overwrite part of a string at key starting at the specified offset</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="strlen">STRLEN</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">STRLEN</span><span class="w"> </span><span class="nv">key</span>
+</code></pre></div>
+
+<h4 id="example_11">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "Hello world"
+"OK"
+redis&gt; STRLEN mykey
+(integer) 11
+redis&gt; STRLEN nonexisting
+(integer) 0</p>
+<div class="codehilite"><pre><span></span><code>Get the length of the value stored in a key
+
+### STRALGO
+</code></pre></div>
+
+<p>STRALGO LCS algo-specific-argument [algo-specific-argument ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; STRALGO LCS KEYS key1 key2 IDX
+1) &quot;matches&quot;
+2) 1) 1) 1) (integer) 4
+         2) (integer) 7
+      2) 1) (integer) 5
+         2) (integer) 8
+   2) 1) 1) (integer) 2
+         2) (integer) 3
+      2) 1) (integer) 0
+         2) (integer) 1
+3) &quot;len&quot;
+4) (integer) 6
+</code></pre></div>
+
+<p>Run algorithms (currently LCS) against strings</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="redis-set-command">
+<h2 id="redis-set-command">Redis Set command</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="sadd">SADD</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SADD key member [member ...]
+</code></pre></div>
+
+<h4 id="example_12">Example</h4>
+<p>```shell script
+redis&gt; SADD myset "Hello"
+(integer) 1
+redis&gt; SADD myset "World"
+(integer) 1
+redis&gt; SADD myset "World"
+(integer) 0
+redis&gt; SMEMBERS myset
+1) "Hello"
+2) "World"</p>
+<div class="codehilite"><pre><span></span><code>Add one or more members to a set
+
+### SCARD
+</code></pre></div>
+
+<p>SCARD key</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SADD myset &quot;Hello&quot;
+(integer) 1
+redis&gt; SADD myset &quot;World&quot;
+(integer) 1
+redis&gt; SCARD myset
+(integer) 2
+</code></pre></div>
+
+<p>Get the number of members in a set</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sdiff">SDIFF</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SDIFF key [key ...]
+</code></pre></div>
+
+<h4 id="example_13">Example</h4>
+<p>```shell script
+redis&gt; SADD key1 "a"
+(integer) 1
+redis&gt; SADD key1 "b"
+(integer) 1
+redis&gt; SADD key1 "c"
+(integer) 1
+redis&gt; SADD key2 "c"
+(integer) 1
+redis&gt; SADD key2 "d"
+(integer) 1
+redis&gt; SADD key2 "e"
+(integer) 1
+redis&gt; SDIFF key1 key2
+1) "a"
+2) "b"</p>
+<div class="codehilite"><pre><span></span><code>Subtract multiple sets
+
+### SDIFFSTORE
+</code></pre></div>
+
+<p>SDIFFSTORE destination key [key ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SADD key1 &quot;a&quot;
+(integer) 1
+redis&gt; SADD key1 &quot;b&quot;
+(integer) 1
+redis&gt; SADD key1 &quot;c&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;c&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;d&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;e&quot;
+(integer) 1
+redis&gt; SDIFFSTORE key key1 key2
+(integer) 2
+redis&gt; SMEMBERS key
+1) &quot;a&quot;
+2) &quot;b&quot;
+</code></pre></div>
+
+<p>Subtract multiple sets and store the resulting set in a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sinter">SINTER</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SINTER key [key ...]
+</code></pre></div>
+
+<h4 id="example_14">Example</h4>
+<p>```shell script
+redis&gt; SADD key1 "a"
+(integer) 1
+redis&gt; SADD key1 "b"
+(integer) 1
+redis&gt; SADD key1 "c"
+(integer) 1
+redis&gt; SADD key2 "c"
+(integer) 1
+redis&gt; SADD key2 "d"
+(integer) 1
+redis&gt; SADD key2 "e"
+(integer) 1
+redis&gt; SINTER key1 key2
+1) "c"</p>
+<div class="codehilite"><pre><span></span><code>Intersect multiple sets
+
+### SINTERSTORE
+</code></pre></div>
+
+<p>SINTERSTORE destination key [key ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SADD key1 &quot;a&quot;
+(integer) 1
+redis&gt; SADD key1 &quot;b&quot;
+(integer) 1
+redis&gt; SADD key1 &quot;c&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;c&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;d&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;e&quot;
+(integer) 1
+redis&gt; SINTERSTORE key key1 key2
+(integer) 1
+redis&gt; SMEMBERS key
+1) &quot;c&quot;
+</code></pre></div>
+
+<p>Intersect multiple sets and store the resulting set in a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sismember">SISMEMBER</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SISMEMBER key member
+</code></pre></div>
+
+<h4 id="example_15">Example</h4>
+<p>```shell script
+redis&gt; SADD myset "one"
+(integer) 1
+redis&gt; SISMEMBER myset "one"
+(integer) 1
+redis&gt; SISMEMBER myset "two"
+(integer) 0</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Determine</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">given</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">member</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">set</span>
+
+###<span class="w"> </span><span class="nv">SMISMEMBER</span>
+</code></pre></div>
+
+<p>SMISMEMBER key member [member ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SADD myset &quot;one&quot;
+(integer) 1
+redis&gt; SADD myset &quot;one&quot;
+(integer) 0
+redis&gt; SMISMEMBER myset &quot;one&quot; &quot;notamember&quot;
+1) (integer) 1
+2) (integer) 0
+</code></pre></div>
+
+<p>Returns the membership associated with the given elements for a set</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="smembers">SMEMBERS</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SMEMBERS key
+</code></pre></div>
+
+<h4 id="example_16">Example</h4>
+<p>```shell script
+redis&gt; SADD myset "Hello"
+(integer) 1
+redis&gt; SADD myset "World"
+(integer) 1
+redis&gt; SMEMBERS myset
+1) "Hello"
+2) "World"</p>
+<div class="codehilite"><pre><span></span><code>Get all the members in a set
+
+### SMOVE
+</code></pre></div>
+
+<p>SMOVE source destination member</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SADD myset &quot;one&quot;
+(integer) 1
+redis&gt; SADD myset &quot;two&quot;
+(integer) 1
+redis&gt; SADD myotherset &quot;three&quot;
+(integer) 1
+redis&gt; SMOVE myset myotherset &quot;two&quot;
+(integer) 1
+redis&gt; SMEMBERS myset
+1) &quot;one&quot;
+redis&gt; SMEMBERS myotherset
+1) &quot;two&quot;
+2) &quot;three&quot;
+</code></pre></div>
+
+<p>Move a member from one set to another</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="spop">SPOP</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">SPOP</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">[</span><span class="n">count</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_17">Example</h4>
+<p>```shell script
+redis&gt; SADD myset "one"
+(integer) 1
+redis&gt; SADD myset "two"
+(integer) 1
+redis&gt; SADD myset "three"
+(integer) 1
+redis&gt; SPOP myset
+"two"
+redis&gt; SMEMBERS myset
+1) "one"
+2) "three"
+redis&gt; SADD myset "four"
+(integer) 1
+redis&gt; SADD myset "five"
+(integer) 1
+redis&gt; SPOP myset 3
+1) "four"
+2) "five"
+3) "three"
+redis&gt; SMEMBERS myset
+1) "one"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Remove</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">multiple</span><span class="w"> </span><span class="k">random</span><span class="w"> </span><span class="nv">members</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">set</span>
+
+###<span class="w"> </span><span class="nv">SRANDMEMBER</span>
+</code></pre></div>
+
+<p>SRANDMEMBER key [count]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SADD myset one two three
+(integer) 3
+redis&gt; SRANDMEMBER myset
+&quot;three&quot;
+redis&gt; SRANDMEMBER myset 2
+1) &quot;two&quot;
+2) &quot;three&quot;
+redis&gt; SRANDMEMBER myset -5
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;three&quot;
+4) &quot;three&quot;
+5) &quot;one&quot;
+</code></pre></div>
+
+<p>Get one or multiple random members from a set</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="srem">SREM</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SREM key member [member ...]
+</code></pre></div>
+
+<h4 id="example_18">Example</h4>
+<p>```shell script
+redis&gt; SADD myset "one"
+(integer) 1
+redis&gt; SADD myset "two"
+(integer) 1
+redis&gt; SADD myset "three"
+(integer) 1
+redis&gt; SREM myset "one"
+(integer) 1
+redis&gt; SREM myset "four"
+(integer) 0
+redis&gt; SMEMBERS myset
+1) "two"
+2) "three"</p>
+<div class="codehilite"><pre><span></span><code>Remove one or more members from a set
+
+### SUNION
+</code></pre></div>
+
+<p>SUNION key [key ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SADD key1 &quot;a&quot;
+(integer) 1
+redis&gt; SADD key1 &quot;b&quot;
+(integer) 1
+redis&gt; SADD key1 &quot;c&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;c&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;d&quot;
+(integer) 1
+redis&gt; SADD key2 &quot;e&quot;
+(integer) 1
+redis&gt; SUNION key1 key2
+1) &quot;a&quot;
+2) &quot;c&quot;
+3) &quot;e&quot;
+4) &quot;b&quot;
+5) &quot;d&quot;
+</code></pre></div>
+
+<p>Add multiple sets</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="sunionstore">SUNIONSTORE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>SUNIONSTORE destination key [key ...]
+</code></pre></div>
+
+<h4 id="example_19">Example</h4>
+<p>```shell script
+redis&gt; SADD key1 "a"
+(integer) 1
+redis&gt; SADD key1 "b"
+(integer) 1
+redis&gt; SADD key1 "c"
+(integer) 1
+redis&gt; SADD key2 "c"
+(integer) 1
+redis&gt; SADD key2 "d"
+(integer) 1
+redis&gt; SADD key2 "e"
+(integer) 1
+redis&gt; SUNIONSTORE key key1 key2
+(integer) 5
+redis&gt; SMEMBERS key
+1) "a"
+2) "c"
+3) "e"
+4) "b"
+5) "d"</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">Add</span><span class="w"> </span><span class="nt">multiple</span><span class="w"> </span><span class="nt">sets</span><span class="w"> </span><span class="nt">and</span><span class="w"> </span><span class="nt">store</span><span class="w"> </span><span class="nt">the</span><span class="w"> </span><span class="nt">resulting</span><span class="w"> </span><span class="nt">set</span><span class="w"> </span><span class="nt">in</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="nt">key</span>
+
+<span class="err">##</span><span class="w"> </span><span class="nt">Redis</span><span class="w"> </span><span class="nt">List</span><span class="w"> </span><span class="nt">command</span>
+
+<span class="err">###</span><span class="w"> </span><span class="nt">Misc</span>
+
+<span class="o">|</span><span class="w"> </span><span class="nt">-</span><span class="w">                                                   </span><span class="o">|</span><span class="w"> </span><span class="nt">-</span><span class="w">                                                                                                  </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="nt">---------------------------------------------------</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nt">--------------------------------------------------------------------------------------------------</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="cp">[</span><span class="nx">BRPOPLPUSH</span><span class="w"> </span><span class="cp">]</span><span class="o">(</span><span class="nt">https</span><span class="o">://</span><span class="nt">redis</span><span class="p">.</span><span class="nc">io</span><span class="o">/</span><span class="nt">commands</span><span class="o">/</span><span class="nt">brpoplpush</span><span class="o">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nt">Pop</span><span class="w"> </span><span class="nt">an</span><span class="w"> </span><span class="nt">element</span><span class="w"> </span><span class="nt">from</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="nt">list</span><span class="o">,</span><span class="w"> </span><span class="nt">push</span><span class="w"> </span><span class="nt">it</span><span class="w"> </span><span class="nt">to</span><span class="w"> </span><span class="nt">another</span><span class="w"> </span><span class="nt">list</span><span class="w"> </span><span class="nt">and</span><span class="w"> </span><span class="nt">return</span><span class="w"> </span><span class="nt">it</span><span class="o">;</span><span class="w"> </span><span class="nt">or</span><span class="w"> </span><span class="nt">block</span><span class="w"> </span><span class="nt">until</span><span class="w"> </span><span class="nt">one</span><span class="w"> </span><span class="nt">is</span><span class="w"> </span><span class="nt">available</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="cp">[</span><span class="nx">BLMOVE</span><span class="w"> </span><span class="cp">]</span><span class="o">(</span><span class="nt">https</span><span class="o">://</span><span class="nt">redis</span><span class="p">.</span><span class="nc">io</span><span class="o">/</span><span class="nt">commands</span><span class="o">/</span><span class="nt">blmove</span><span class="o">)</span><span class="w">         </span><span class="o">|</span><span class="w"> </span><span class="nt">Pop</span><span class="w"> </span><span class="nt">an</span><span class="w"> </span><span class="nt">element</span><span class="w"> </span><span class="nt">from</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="nt">list</span><span class="o">,</span><span class="w"> </span><span class="nt">push</span><span class="w"> </span><span class="nt">it</span><span class="w"> </span><span class="nt">to</span><span class="w"> </span><span class="nt">another</span><span class="w"> </span><span class="nt">list</span><span class="w"> </span><span class="nt">and</span><span class="w"> </span><span class="nt">return</span><span class="w"> </span><span class="nt">it</span><span class="o">;</span><span class="w"> </span><span class="nt">or</span><span class="w"> </span><span class="nt">block</span><span class="w"> </span><span class="nt">until</span><span class="w"> </span><span class="nt">one</span><span class="w"> </span><span class="nt">is</span><span class="w"> </span><span class="nt">available</span><span class="w"> </span><span class="o">|</span>
+
+<span class="err">###</span><span class="w"> </span><span class="nt">BLPOP</span>
+</code></pre></div>
+
+<p>BLPOP key [key ...] timeout</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; DEL list1 list2
+(integer) 0
+redis&gt; RPUSH list1 a b c
+(integer) 3
+redis&gt; BLPOP list1 list2 0
+1) &quot;list1&quot;
+2) &quot;a&quot;
+</code></pre></div>
+
+<p>Remove and get the first element in a list, or block until one is available |</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="brpop">BRPOP</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>BRPOP key [key ...] timeout
+</code></pre></div>
+
+<h4 id="example_20">Example</h4>
+<p>```shell script
+redis&gt; DEL list1 list2
+(integer) 0
+redis&gt; RPUSH list1 a b c
+(integer) 3
+redis&gt; BRPOP list1 list2 0
+1) "list1"
+2) "c"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Remove</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="nv">get</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">last</span><span class="w"> </span><span class="nv">element</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">list</span>,<span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">block</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">available</span><span class="w"> </span><span class="o">|</span>
+
+###<span class="w"> </span><span class="nv">LINDEX</span>
+</code></pre></div>
+
+<p>LINDEX key index</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; LPUSH mylist &quot;World&quot;
+(integer) 1
+redis&gt; LPUSH mylist &quot;Hello&quot;
+(integer) 2
+redis&gt; LINDEX mylist 0
+&quot;Hello&quot;
+redis&gt; LINDEX mylist -1
+&quot;World&quot;
+redis&gt; LINDEX mylist 3
+(nil)
+</code></pre></div>
+
+<p>Get an element from a list by its index</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="linsert">LINSERT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>LINSERT key BEFORE|AFTER pivot element
+</code></pre></div>
+
+<h4 id="example_21">Example</h4>
+<p>```shell script
+redis&gt; RPUSH mylist "Hello"
+(integer) 1
+redis&gt; RPUSH mylist "World"
+(integer) 2
+redis&gt; LINSERT mylist BEFORE "World" "There"
+(integer) 3
+redis&gt; LRANGE mylist 0 -1
+1) "Hello"
+2) "There"
+3) "World"</p>
+<div class="codehilite"><pre><span></span><code>Insert an element before or after another element in a list
+
+### LLEN
+</code></pre></div>
+
+<p>LLEN key</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; LPUSH mylist &quot;World&quot;
+(integer) 1
+redis&gt; LPUSH mylist &quot;Hello&quot;
+(integer) 2
+redis&gt; LLEN mylist
+(integer) 2
+</code></pre></div>
+
+<p>Get the length of a list</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lpop">LPOP</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">LPOP</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">[</span><span class="n">count</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_22">Example</h4>
+<p>```shell script
+redis&gt; RPUSH mylist "one"
+(integer) 1
+redis&gt; RPUSH mylist "two"
+(integer) 2
+redis&gt; RPUSH mylist "three"
+(integer) 3
+redis&gt; LPOP mylist
+"one"
+redis&gt; LRANGE mylist 0 -1
+1) "two"
+2) "three"</p>
+<div class="codehilite"><pre><span></span><code>Remove and get the first elements in a list
+
+### LPOS
+</code></pre></div>
+
+<p>LPOS key element [RANK rank] [COUNT num-matches] [MAXLEN len]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; RPUSH mylist a b c d 1 2 3 4 3 3 3
+(integer) 11
+redis&gt; LPOS mylist 3
+(integer) 6
+redis&gt; LPOS mylist 3 COUNT 0 RANK 2
+1) (integer) 8
+2) (integer) 9
+3) (integer) 10
+</code></pre></div>
+
+<p>Return the index of matching elements on a list</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lpush">LPUSH</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>LPUSH key element [element ...]
+</code></pre></div>
+
+<h4 id="example_23">Example</h4>
+<p>```shell script
+redis&gt; LPUSH mylist "world"
+(integer) 1
+redis&gt; LPUSH mylist "hello"
+(integer) 2
+redis&gt; LRANGE mylist 0 -1
+1) "hello"
+2) "world"</p>
+<div class="codehilite"><pre><span></span><code>Prepend one or multiple elements to a list
+
+### LPUSHX
+</code></pre></div>
+
+<p>LPUSHX key element [element ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; LPUSH mylist &quot;World&quot;
+(integer) 1
+redis&gt; LPUSHX mylist &quot;Hello&quot;
+(integer) 2
+redis&gt; LPUSHX myotherlist &quot;Hello&quot;
+(integer) 0
+redis&gt; LRANGE mylist 0 -1
+1) &quot;Hello&quot;
+2) &quot;World&quot;
+redis&gt; LRANGE myotherlist 0 -1
+(empty list or set)
+</code></pre></div>
+
+<p>Prepend an element to a list, only if the list exists</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lrange">LRANGE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>LRANGE key start stop
+</code></pre></div>
+
+<h4 id="example_24">Example</h4>
+<p>```shell script
+redis&gt; RPUSH mylist "one"
+(integer) 1
+redis&gt; RPUSH mylist "two"
+(integer) 2
+redis&gt; RPUSH mylist "three"
+(integer) 3
+redis&gt; LRANGE mylist 0 0
+1) "one"
+redis&gt; LRANGE mylist -3 2
+1) "one"
+2) "two"
+3) "three"
+redis&gt; LRANGE mylist -100 100
+1) "one"
+2) "two"
+3) "three"
+redis&gt; LRANGE mylist 5 10
+(empty list or set)</p>
+<div class="codehilite"><pre><span></span><code>Get a range of elements from a list
+
+### LREM
+</code></pre></div>
+
+<p>LREM key count element</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; RPUSH mylist &quot;hello&quot;
+(integer) 1
+redis&gt; RPUSH mylist &quot;hello&quot;
+(integer) 2
+redis&gt; RPUSH mylist &quot;foo&quot;
+(integer) 3
+redis&gt; RPUSH mylist &quot;hello&quot;
+(integer) 4
+redis&gt; LREM mylist -2 &quot;hello&quot;
+(integer) 2
+redis&gt; LRANGE mylist 0 -1
+1) &quot;hello&quot;
+2) &quot;foo&quot;
+</code></pre></div>
+
+<p>Remove elements from a list</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lset">LSET</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>LSET key index element
+</code></pre></div>
+
+<h4 id="example_25">Example</h4>
+<p>```shell script
+redis&gt; RPUSH mylist "one"
+(integer) 1
+redis&gt; RPUSH mylist "two"
+(integer) 2
+redis&gt; RPUSH mylist "three"
+(integer) 3
+redis&gt; LSET mylist 0 "four"
+"OK"
+redis&gt; LSET mylist -2 "five"
+"OK"
+redis&gt; LRANGE mylist 0 -1
+1) "four"
+2) "five"
+3) "three"</p>
+<div class="codehilite"><pre><span></span><code>Set the value of an element in a list by its index
+
+### LTRIM
+</code></pre></div>
+
+<p>LTRIM key start stop</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; RPUSH mylist &quot;one&quot;
+(integer) 1
+redis&gt; RPUSH mylist &quot;two&quot;
+(integer) 2
+redis&gt; RPUSH mylist &quot;three&quot;
+(integer) 3
+redis&gt; LTRIM mylist 1 -1
+&quot;OK&quot;
+redis&gt; LRANGE mylist 0 -1
+1) &quot;two&quot;
+2) &quot;three&quot;
+</code></pre></div>
+
+<p>Trim a list to the specified range</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="rpop">RPOP</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">RPOP</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">[</span><span class="n">count</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_26">Example</h4>
+<p>```shell script
+redis&gt; RPUSH mylist "one"
+(integer) 1
+redis&gt; RPUSH mylist "two"
+(integer) 2
+redis&gt; RPUSH mylist "three"
+(integer) 3
+redis&gt; RPOP mylist
+"three"
+redis&gt; LRANGE mylist 0 -1
+1) "one"
+2) "two"</p>
+<div class="codehilite"><pre><span></span><code>Remove and get the last elements in a list
+
+### RPOPLPUSH
+</code></pre></div>
+
+<p>RPOPLPUSH source destination</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; RPUSH mylist &quot;one&quot;
+(integer) 1
+redis&gt; RPUSH mylist &quot;two&quot;
+(integer) 2
+redis&gt; RPUSH mylist &quot;three&quot;
+(integer) 3
+redis&gt; RPOPLPUSH mylist myotherlist
+&quot;three&quot;
+redis&gt; LRANGE mylist 0 -1
+1) &quot;one&quot;
+2) &quot;two&quot;
+redis&gt; LRANGE myotherlist 0 -1
+1) &quot;three&quot;
+</code></pre></div>
+
+<p>Remove the last element in a list, prepend it to another list and return it</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lmove">LMOVE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>LMOVE source destination LEFT|RIGHT LEFT|RIGHT
+</code></pre></div>
+
+<h4 id="example_27">Example</h4>
+<p>```shell script
+redis&gt; RPUSH mylist "one"
+(integer) 1
+redis&gt; RPUSH mylist "two"
+(integer) 2
+redis&gt; RPUSH mylist "three"
+(integer) 3
+redis&gt; LMOVE mylist myotherlist RIGHT LEFT
+"three"
+redis&gt; LMOVE mylist myotherlist LEFT RIGHT
+"one"
+redis&gt; LRANGE mylist 0 -1
+1) "two"
+redis&gt; LRANGE myotherlist 0 -1
+1) "three"
+2) "one"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Pop</span><span class="w"> </span><span class="nv">an</span><span class="w"> </span><span class="nv">element</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">list</span>,<span class="w"> </span><span class="nv">push</span><span class="w"> </span><span class="nv">it</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">another</span><span class="w"> </span><span class="nv">list</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">it</span>
+
+###<span class="w"> </span><span class="nv">RPUSH</span>
+</code></pre></div>
+
+<p>RPUSH key element [element ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; RPUSH mylist &quot;hello&quot;
+(integer) 1
+redis&gt; RPUSH mylist &quot;world&quot;
+(integer) 2
+redis&gt; LRANGE mylist 0 -1
+1) &quot;hello&quot;
+2) &quot;world&quot;
+</code></pre></div>
+
+<p>Append one or multiple elements to a list</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="rpushx">RPUSHX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>RPUSHX key element [element ...]
+</code></pre></div>
+
+<h4 id="example_28">Example</h4>
+<p>```shell script
+redis&gt; RPUSH mylist "Hello"
+(integer) 1
+redis&gt; RPUSHX mylist "World"
+(integer) 2
+redis&gt; RPUSHX myotherlist "World"
+(integer) 0
+redis&gt; LRANGE mylist 0 -1
+1) "Hello"
+2) "World"
+redis&gt; LRANGE myotherlist 0 -1
+(empty list or set)</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Append</span><span class="w"> </span><span class="nv">an</span><span class="w"> </span><span class="nv">element</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">list</span>,<span class="w"> </span><span class="nv">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">list</span><span class="w"> </span><span class="nv">exists</span>
+
+##<span class="w"> </span><span class="nv">Redis</span><span class="w"> </span><span class="nv">Hash</span><span class="w"> </span><span class="nv">command</span>
+
+###<span class="w"> </span><span class="nv">HDEL</span>
+</code></pre></div>
+
+<p>HDEL key field [field ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; HSET myhash field1 &quot;foo&quot;
+(integer) 1
+redis&gt; HDEL myhash field1
+(integer) 1
+redis&gt; HDEL myhash field2
+(integer) 0
+</code></pre></div>
+
+<p>Delete one or more hash fields</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hexists">HEXISTS</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>HEXISTS key field
+</code></pre></div>
+
+<h4 id="example_29">Example</h4>
+<p>```shell script
+redis&gt; HSET myhash field1 "foo"
+(integer) 1
+redis&gt; HEXISTS myhash field1
+(integer) 1
+redis&gt; HEXISTS myhash field2
+(integer) 0</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Determine</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">hash</span><span class="w"> </span><span class="nv">field</span><span class="w"> </span><span class="nv">exists</span>
+
+###<span class="w"> </span><span class="nv">HGET</span>
+</code></pre></div>
+
+<p>HGET key field</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; HSET myhash field1 &quot;foo&quot;
+(integer) 1
+redis&gt; HGET myhash field1
+&quot;foo&quot;
+redis&gt; HGET myhash field2
+(nil)
+</code></pre></div>
+
+<p>Get the value of a hash field</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hgetall">HGETALL</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>HGETALL key
+</code></pre></div>
+
+<h4 id="example_30">Example</h4>
+<p>```shell script
+redis&gt; HSET myhash field1 "Hello"
+(integer) 1
+redis&gt; HSET myhash field2 "World"
+(integer) 1
+redis&gt; HGETALL myhash
+1) "field1"
+2) "Hello"
+3) "field2"
+4) "World"</p>
+<div class="codehilite"><pre><span></span><code>Get all the fields and values in a hash
+
+### HINCRBY
+</code></pre></div>
+
+<p>HINCRBY key field increment</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; HSET myhash field 5
+(integer) 1
+redis&gt; HINCRBY myhash field 1
+(integer) 6
+redis&gt; HINCRBY myhash field -1
+(integer) 5
+redis&gt; HINCRBY myhash field -10
+(integer) -5
+</code></pre></div>
+
+<p>Increment the integer value of a hash field by the given number</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hincrbyfloat">HINCRBYFLOAT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>HINCRBYFLOAT key field increment
+</code></pre></div>
+
+<h4 id="example_31">Example</h4>
+<p>```shell script
+redis&gt; HSET mykey field 10.50
+(integer) 1
+redis&gt; HINCRBYFLOAT mykey field 0.1
+"10.6"
+redis&gt; HINCRBYFLOAT mykey field -5
+"5.6"
+redis&gt; HSET mykey field 5.0e3
+(integer) 0
+redis&gt; HINCRBYFLOAT mykey field 2.0e2
+"5200"</p>
+<div class="codehilite"><pre><span></span><code>Increment the float value of a hash field by the given amount
+
+### HKEYS
+</code></pre></div>
+
+<p>HKEYS key</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; HSET myhash field1 &quot;Hello&quot;
+(integer) 1
+redis&gt; HSET myhash field2 &quot;World&quot;
+(integer) 1
+redis&gt; HKEYS myhash
+1) &quot;field1&quot;
+2) &quot;field2&quot;
+</code></pre></div>
+
+<p>Get all the fields in a hash</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hlen">HLEN</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>HLEN key
+</code></pre></div>
+
+<h4 id="example_32">Example</h4>
+<p>```shell script
+redis&gt; HSET myhash field1 "Hello"
+(integer) 1
+redis&gt; HSET myhash field2 "World"
+(integer) 1
+redis&gt; HLEN myhash
+(integer) 2</p>
+<div class="codehilite"><pre><span></span><code>Get the number of fields in a hash
+
+### HMGET
+</code></pre></div>
+
+<p>HMGET key field [field ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; HSET myhash field1 &quot;Hello&quot;
+(integer) 1
+redis&gt; HSET myhash field2 &quot;World&quot;
+(integer) 1
+redis&gt; HMGET myhash field1 field2 nofield
+1) &quot;Hello&quot;
+2) &quot;World&quot;
+3) (nil)
+</code></pre></div>
+
+<p>Get the values of all the given hash fields</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hmset">HMSET</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>HMSET key field value [field value ...]
+</code></pre></div>
+
+<h4 id="example_33">Example</h4>
+<p>```shell script
+redis&gt; HMSET myhash field1 "Hello" field2 "World"
+"OK"
+redis&gt; HGET myhash field1
+"Hello"
+redis&gt; HGET myhash field2
+"World"</p>
+<div class="codehilite"><pre><span></span><code>Set multiple hash fields to multiple values
+
+### HSET
+</code></pre></div>
+
+<p>HSET key field value [field value ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; HSET myhash field1 &quot;Hello&quot;
+(integer) 1
+redis&gt; HGET myhash field1
+&quot;Hello&quot;
+</code></pre></div>
+
+<p>Set the string value of a hash field</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hsetnx">HSETNX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>HSETNX key field value
+</code></pre></div>
+
+<h4 id="example_34">Example</h4>
+<p>```shell script
+redis&gt; HSETNX myhash field "Hello"
+(integer) 1
+redis&gt; HSETNX myhash field "World"
+(integer) 0
+redis&gt; HGET myhash field
+"Hello"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Set</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">hash</span><span class="w"> </span><span class="nv">field</span>,<span class="w"> </span><span class="nv">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">field</span><span class="w"> </span><span class="nv">does</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">exist</span>
+
+###<span class="w"> </span><span class="nv">HSTRLEN</span>
+</code></pre></div>
+
+<p>HSTRLEN key field</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; HMSET myhash f1 HelloWorld f2 99 f3 -256
+&quot;OK&quot;
+redis&gt; HSTRLEN myhash f1
+(integer) 10
+redis&gt; HSTRLEN myhash f2
+(integer) 2
+redis&gt; HSTRLEN myhash f3
+(integer) 4
+</code></pre></div>
+
+<p>Get the length of the value of a hash field</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hvals">HVALS</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>HVALS key
+</code></pre></div>
+
+<h4 id="example_35">Example</h4>
+<p>```shell script
+redis&gt; HSET myhash field1 "Hello"
+(integer) 1
+redis&gt; HSET myhash field2 "World"
+(integer) 1
+redis&gt; HVALS myhash
+1) "Hello"
+2) "World"</p>
+<div class="codehilite"><pre><span></span><code>Get all the values in a hash
+
+## Redis Sorted set command
+
+### BZPOPMIN
+</code></pre></div>
+
+<p>BZPOPMIN key [key ...] timeout</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; DEL zset1 zset2
+(integer) 0
+redis&gt; ZADD zset1 0 a 1 b 2 c
+(integer) 3
+redis&gt; BZPOPMIN zset1 zset2 0
+1) &quot;zset1&quot;
+2) &quot;a&quot;
+3) &quot;0&quot;
+</code></pre></div>
+
+<p>Remove and return the member with the lowest score from one or more sorted sets, or block until one is available</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="bzpopmax">BZPOPMAX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>BZPOPMAX key [key ...] timeout
+</code></pre></div>
+
+<h4 id="example_36">Example</h4>
+<p>```shell script
+redis&gt; DEL zset1 zset2
+(integer) 0
+redis&gt; ZADD zset1 0 a 1 b 2 c
+(integer) 3
+redis&gt; BZPOPMAX zset1 zset2 0
+1) "zset1"
+2) "c"
+3) "2"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Remove</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">member</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">highest</span><span class="w"> </span><span class="nv">score</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">more</span><span class="w"> </span><span class="nv">sorted</span><span class="w"> </span><span class="nv">sets</span>,<span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">block</span><span class="w"> </span><span class="k">until</span><span class="w"> </span><span class="nv">one</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">available</span>
+
+###<span class="w"> </span><span class="nv">ZADD</span><span class="w"> </span>
+</code></pre></div>
+
+<p>ZADD key [NX|XX] [GT|LT] [CH] [INCR] score member [score member ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD myzset 1 &quot;uno&quot;
+(integer) 1
+redis&gt; ZADD myzset 2 &quot;two&quot; 3 &quot;three&quot;
+(integer) 2
+redis&gt; ZRANGE myzset 0 -1 WITHSCORES
+1) &quot;one&quot;
+2) &quot;1&quot;
+3) &quot;uno&quot;
+4) &quot;1&quot;
+5) &quot;two&quot;
+6) &quot;2&quot;
+7) &quot;three&quot;
+8) &quot;3&quot;
+</code></pre></div>
+
+<p>Add one or more members to a sorted set, or update its score if it already exists</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zcard">ZCARD</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZCARD key
+</code></pre></div>
+
+<h4 id="example_37">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZCARD myzset
+(integer) 2</p>
+<div class="codehilite"><pre><span></span><code>Get the number of members in a sorted set
+
+### ZSCORE
+</code></pre></div>
+
+<p>ZSCORE key member</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZSCORE myzset &quot;one&quot;
+&quot;1&quot;
+</code></pre></div>
+
+<p>Get the score associated with the given member in a sorted set</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zcount">ZCOUNT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZCOUNT key min max
+</code></pre></div>
+
+<h4 id="example_38">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZADD myzset 3 "three"
+(integer) 1
+redis&gt; ZCOUNT myzset -inf +inf
+(integer) 3
+redis&gt; ZCOUNT myzset (1 3
+(integer) 2</p>
+<div class="codehilite"><pre><span></span><code>Count the members in a sorted set with scores within the given values
+
+### ZDIFF
+</code></pre></div>
+
+<p>ZDIFF numkeys key [key ...] [WITHSCORES]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD zset1 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset1 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD zset1 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZADD zset2 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset2 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZDIFF 2 zset1 zset2
+1) &quot;three&quot;
+redis&gt; ZDIFF 2 zset1 zset2 WITHSCORES
+1) &quot;three&quot;
+2) &quot;3&quot;
+</code></pre></div>
+
+<p>Subtract multiple sorted sets</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zdiffstore">ZDIFFSTORE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZDIFFSTORE destination numkeys key [key ...]
+</code></pre></div>
+
+<h4 id="example_39">Example</h4>
+<p>```shell script
+redis&gt; ZADD zset1 1 "one"
+(integer) 1
+redis&gt; ZADD zset1 2 "two"
+(integer) 1
+redis&gt; ZADD zset1 3 "three"
+(integer) 1
+redis&gt; ZADD zset2 1 "one"
+(integer) 1
+redis&gt; ZADD zset2 2 "two"
+(integer) 1
+redis&gt; ZDIFFSTORE out 2 zset1 zset2
+(integer) 1
+redis&gt; ZRANGE out 0 -1 WITHSCORES
+1) "three"
+2) "3"</p>
+<div class="codehilite"><pre><span></span><code>Subtract multiple sorted sets and store the resulting sorted set in a new key
+
+### ZINCRBY
+</code></pre></div>
+
+<p>ZINCRBY key increment member</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD myzset 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZINCRBY myzset 2 &quot;one&quot;
+&quot;3&quot;
+redis&gt; ZRANGE myzset 0 -1 WITHSCORES
+1) &quot;two&quot;
+2) &quot;2&quot;
+3) &quot;one&quot;
+4) &quot;3&quot;
+</code></pre></div>
+
+<p>Increment the score of a member in a sorted set</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zinter">ZINTER</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">ZINTER</span><span class="w"> </span><span class="n">numkeys</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">[</span><span class="n">key ...</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">WEIGHTS weight [weight ...</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="o">[</span><span class="n">AGGREGATE SUM|MIN|MAX</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">WITHSCORES</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_40">Example</h4>
+<p>```shell script
+redis&gt; ZADD zset1 1 "one"
+(integer) 1
+redis&gt; ZADD zset1 2 "two"
+(integer) 1
+redis&gt; ZADD zset2 1 "one"
+(integer) 1
+redis&gt; ZADD zset2 2 "two"
+(integer) 1
+redis&gt; ZADD zset2 3 "three"
+(integer) 1
+redis&gt; ZINTER 2 zset1 zset2
+1) "one"
+2) "two"
+redis&gt; ZINTER 2 zset1 zset2 WITHSCORES
+1) "one"
+2) "2"
+3) "two"
+4) "4"</p>
+<div class="codehilite"><pre><span></span><code>Intersect multiple sorted sets
+
+### ZINTERSTORE
+</code></pre></div>
+
+<p>ZINTERSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD zset1 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset1 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD zset2 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset2 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD zset2 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZINTERSTORE out 2 zset1 zset2 WEIGHTS 2 3
+(integer) 2
+redis&gt; ZRANGE out 0 -1 WITHSCORES
+1) &quot;one&quot;
+2) &quot;5&quot;
+3) &quot;two&quot;
+4) &quot;10&quot;
+</code></pre></div>
+
+<p>Intersect multiple sorted sets and store the resulting sorted set in a new key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zlexcount">ZLEXCOUNT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZLEXCOUNT key min max
+</code></pre></div>
+
+<h4 id="example_41">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 0 a 0 b 0 c 0 d 0 e
+(integer) 5
+redis&gt; ZADD myzset 0 f 0 g
+(integer) 2
+redis&gt; ZLEXCOUNT myzset - +
+(integer) 7
+redis&gt; ZLEXCOUNT myzset [b [f
+(integer) 5</p>
+<div class="codehilite"><pre><span></span><code>Count the number of members in a sorted set between a given lexicographical range
+
+### ZPOPMAX
+</code></pre></div>
+
+<p>ZPOPMAX key [count]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD myzset 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD myzset 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZPOPMAX myzset
+1) &quot;three&quot;
+2) &quot;3&quot;
+</code></pre></div>
+
+<p>Remove and return members with the highest scores in a sorted set</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zpopmin">ZPOPMIN</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">ZPOPMIN</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="o">[</span><span class="n">count</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_42">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZADD myzset 3 "three"
+(integer) 1
+redis&gt; ZPOPMIN myzset
+1) "one"
+2) "1"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Remove</span><span class="w"> </span><span class="nv">and</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nv">members</span><span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">lowest</span><span class="w"> </span><span class="nv">scores</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">sorted</span><span class="w"> </span><span class="nv">set</span>
+
+###<span class="w"> </span><span class="nv">ZRANGE</span>
+</code></pre></div>
+
+<p>ZRANGE key start stop [WITHSCORES]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD myzset 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD myzset 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZRANGE myzset 0 -1
+1) &quot;one&quot;
+2) &quot;two&quot;
+3) &quot;three&quot;
+redis&gt; ZRANGE myzset 2 3
+1) &quot;three&quot;
+redis&gt; ZRANGE myzset -2 -1
+1) &quot;two&quot;
+2) &quot;three&quot;
+</code></pre></div>
+
+<p>Return a range of members in a sorted set, by index</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zrangebylex">ZRANGEBYLEX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZRANGEBYLEX key min max [LIMIT offset count]
+</code></pre></div>
+
+<h4 id="example_43">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 0 a 0 b 0 c 0 d 0 e 0 f 0 g
+(integer) 7
+redis&gt; ZRANGEBYLEX myzset - [c
+1) "a"
+2) "b"
+3) "c"
+redis&gt; ZRANGEBYLEX myzset - (c
+1) "a"
+2) "b"
+redis&gt; ZRANGEBYLEX myzset [aaa (g
+1) "b"
+2) "c"
+3) "d"
+4) "e"
+5) "f"</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Return</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">range</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">members</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">sorted</span><span class="w"> </span><span class="nv">set</span>,<span class="w"> </span><span class="nv">by</span><span class="w"> </span><span class="nv">lexicographical</span><span class="w"> </span><span class="nv">range</span>
+
+###<span class="w"> </span><span class="nv">ZREVRANGEBYLEX</span>
+</code></pre></div>
+
+<p>ZREVRANGEBYLEX key max min [LIMIT offset count]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 0 a 0 b 0 c 0 d 0 e 0 f 0 g
+(integer) 7
+redis&gt; ZREVRANGEBYLEX myzset [c -
+1) &quot;c&quot;
+2) &quot;b&quot;
+3) &quot;a&quot;
+redis&gt; ZREVRANGEBYLEX myzset (c -
+1) &quot;b&quot;
+2) &quot;a&quot;
+redis&gt; ZREVRANGEBYLEX myzset (g [aaa
+1) &quot;f&quot;
+2) &quot;e&quot;
+3) &quot;d&quot;
+4) &quot;c&quot;
+5) &quot;b&quot;
+</code></pre></div>
+
+<p>Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zrangebyscore">ZRANGEBYSCORE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">ZRANGEBYSCORE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="nf">min</span><span class="w"> </span><span class="nf">max</span><span class="w"> </span><span class="o">[</span><span class="n">WITHSCORES</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">LIMIT offset count</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_44">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZADD myzset 3 "three"
+(integer) 1
+redis&gt; ZRANGEBYSCORE myzset -inf +inf
+1) "one"
+2) "two"
+3) "three"
+redis&gt; ZRANGEBYSCORE myzset 1 2
+1) "one"
+2) "two"
+redis&gt; ZRANGEBYSCORE myzset (1 2
+1) "two"
+redis&gt; ZRANGEBYSCORE myzset (1 (2
+(empty list or set)</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Return</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">range</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">members</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">sorted</span><span class="w"> </span><span class="nv">set</span>,<span class="w"> </span><span class="nv">by</span><span class="w"> </span><span class="nv">score</span>
+
+###<span class="w"> </span><span class="nv">ZRANK</span>
+</code></pre></div>
+
+<p>ZRANK key member</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD myzset 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD myzset 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZRANK myzset &quot;three&quot;
+(integer) 2
+redis&gt; ZRANK myzset &quot;four&quot;
+(nil)
+</code></pre></div>
+
+<p>Determine the index of a member in a sorted set</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zrem">ZREM</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZREM key member [member ...]
+</code></pre></div>
+
+<h4 id="example_45">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZADD myzset 3 "three"
+(integer) 1
+redis&gt; ZREM myzset "two"
+(integer) 1
+redis&gt; ZRANGE myzset 0 -1 WITHSCORES
+1) "one"
+2) "1"
+3) "three"
+4) "3"</p>
+<div class="codehilite"><pre><span></span><code>Remove one or more members from a sorted set
+
+### ZREMRANGEBYLEX
+</code></pre></div>
+
+<p>ZREMRANGEBYLEX key min max</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 0 aaaa 0 b 0 c 0 d 0 e
+(integer) 5
+redis&gt; ZADD myzset 0 foo 0 zap 0 zip 0 ALPHA 0 alpha
+(integer) 5
+redis&gt; ZRANGE myzset 0 -1
+1) &quot;ALPHA&quot;
+ 2) &quot;aaaa&quot;
+ 3) &quot;alpha&quot;
+ 4) &quot;b&quot;
+ 5) &quot;c&quot;
+ 6) &quot;d&quot;
+ 7) &quot;e&quot;
+ 8) &quot;foo&quot;
+ 9) &quot;zap&quot;
+10) &quot;zip&quot;
+redis&gt; ZREMRANGEBYLEX myzset [alpha [omega
+(integer) 6
+redis&gt; ZRANGE myzset 0 -1
+1) &quot;ALPHA&quot;
+2) &quot;aaaa&quot;
+3) &quot;zap&quot;
+4) &quot;zip&quot;
+</code></pre></div>
+
+<p>Remove all members in a sorted set between the given lexicographical range</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zremrangebyrank">ZREMRANGEBYRANK</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZREMRANGEBYRANK key start stop
+</code></pre></div>
+
+<h4 id="example_46">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZADD myzset 3 "three"
+(integer) 1
+redis&gt; ZREMRANGEBYRANK myzset 0 1
+(integer) 2
+redis&gt; ZRANGE myzset 0 -1 WITHSCORES
+1) "three"
+2) "3"</p>
+<div class="codehilite"><pre><span></span><code>Remove all members in a sorted set within the given indexes
+
+### ZREMRANGEBYSCORE
+</code></pre></div>
+
+<p>ZREMRANGEBYSCORE key min max</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD myzset 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD myzset 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZREMRANGEBYSCORE myzset -inf (2
+(integer) 1
+redis&gt; ZRANGE myzset 0 -1 WITHSCORES
+1) &quot;two&quot;
+2) &quot;2&quot;
+3) &quot;three&quot;
+4) &quot;3&quot;
+</code></pre></div>
+
+<p>Remove all members in a sorted set within the given scores</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zrevrange">ZREVRANGE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">ZREVRANGE</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="k">start</span><span class="w"> </span><span class="n">stop</span><span class="w"> </span><span class="o">[</span><span class="n">WITHSCORES</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_47">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZADD myzset 3 "three"
+(integer) 1
+redis&gt; ZREVRANGE myzset 0 -1
+1) "three"
+2) "two"
+3) "one"
+redis&gt; ZREVRANGE myzset 2 3
+1) "one"
+redis&gt; ZREVRANGE myzset -2 -1
+1) "two"
+2) "one"</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Return</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">range</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">members</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">sorted</span><span class="w"> </span><span class="nv">set</span>,<span class="w"> </span><span class="nv">by</span><span class="w"> </span><span class="nv">index</span>,<span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">scores</span><span class="w"> </span><span class="nv">ordered</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">high</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">low</span>
+
+###<span class="w"> </span><span class="nv">ZREVRANGEBYSCORE</span>
+</code></pre></div>
+
+<p>ZREVRANGEBYSCORE key max min [WITHSCORES] [LIMIT offset count]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD myzset 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD myzset 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD myzset 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZREVRANGEBYSCORE myzset +inf -inf
+1) &quot;three&quot;
+2) &quot;two&quot;
+3) &quot;one&quot;
+redis&gt; ZREVRANGEBYSCORE myzset 2 1
+1) &quot;two&quot;
+2) &quot;one&quot;
+redis&gt; ZREVRANGEBYSCORE myzset 2 (1
+1) &quot;two&quot;
+redis&gt; ZREVRANGEBYSCORE myzset (2 (1
+(empty list or set)
+</code></pre></div>
+
+<p>Return a range of members in a sorted set, by score, with scores ordered from high to low</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zrevrank">ZREVRANK</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZREVRANK key member
+</code></pre></div>
+
+<h4 id="example_48">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZADD myzset 3 "three"
+(integer) 1
+redis&gt; ZREVRANK myzset "one"
+(integer) 2
+redis&gt; ZREVRANK myzset "four"
+(nil)</p>
+<div class="codehilite"><pre><span></span><code>Determine the index of a member in a sorted set, with scores ordered from high to low
+
+### ZUNION
+</code></pre></div>
+
+<p>ZUNION numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX] [WITHSCORES]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD zset1 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset1 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD zset2 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset2 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD zset2 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZUNION 2 zset1 zset2
+1) &quot;one&quot;
+2) &quot;three&quot;
+3) &quot;two&quot;
+redis&gt; ZUNION 2 zset1 zset2 WITHSCORES
+1) &quot;one&quot;
+2) &quot;2&quot;
+3) &quot;three&quot;
+4) &quot;3&quot;
+5) &quot;two&quot;
+6) &quot;4&quot;
+</code></pre></div>
+
+<p>Add multiple sorted sets</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="zmscore">ZMSCORE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>ZMSCORE key member [member ...]
+</code></pre></div>
+
+<h4 id="example_49">Example</h4>
+<p>```shell script
+redis&gt; ZADD myzset 1 "one"
+(integer) 1
+redis&gt; ZADD myzset 2 "two"
+(integer) 1
+redis&gt; ZMSCORE myzset "one" "two" "nofield"
+1) "1"
+2) "2"
+3) (nil)</p>
+<div class="codehilite"><pre><span></span><code>Get the score associated with the given members in a sorted set
+
+### ZUNIONSTORE
+</code></pre></div>
+
+<p>ZUNIONSTORE destination numkeys key [key ...] [WEIGHTS weight [weight ...]] [AGGREGATE SUM|MIN|MAX]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ZADD zset1 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset1 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD zset2 1 &quot;one&quot;
+(integer) 1
+redis&gt; ZADD zset2 2 &quot;two&quot;
+(integer) 1
+redis&gt; ZADD zset2 3 &quot;three&quot;
+(integer) 1
+redis&gt; ZUNIONSTORE out 2 zset1 zset2 WEIGHTS 2 3
+(integer) 3
+redis&gt; ZRANGE out 0 -1 WITHSCORES
+1) &quot;one&quot;
+2) &quot;5&quot;
+3) &quot;three&quot;
+4) &quot;9&quot;
+5) &quot;two&quot;
+6) &quot;10&quot;
+</code></pre></div>
+
+<p>Add multiple sorted sets and store the resulting sorted set in a new key</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="redis-geo-command">
+<h2 id="redis-geo-command">Redis Geo command</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="geoadd">GEOADD</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GEOADD key longitude latitude member [longitude latitude member ...]
+</code></pre></div>
+
+<h4 id="example_50">Example</h4>
+<p>```shell script
+redis&gt; GEOADD Sicily 13.361389 38.115556 "Palermo" 15.087269 37.502669 "Catania"
+(integer) 2
+redis&gt; GEODIST Sicily Palermo Catania
+"166274.1516"
+redis&gt; GEORADIUS Sicily 15 37 100 km
+1) "Catania"
+redis&gt; GEORADIUS Sicily 15 37 200 km
+1) "Palermo"
+2) "Catania"</p>
+<div class="codehilite"><pre><span></span><code>Add one or more geospatial items in the geospatial index represented using a sorted set
+
+### GEOHASH
+</code></pre></div>
+
+<p>GEOHASH key member [member ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; GEOADD Sicily 13.361389 38.115556 &quot;Palermo&quot; 15.087269 37.502669 &quot;Catania&quot;
+(integer) 2
+redis&gt; GEOHASH Sicily Palermo Catania
+1) &quot;sqc8b49rny0&quot;
+2) &quot;sqdtr74hyu0&quot;
+</code></pre></div>
+
+<p>Returns members of a geospatial index as standard geohash strings</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="geopos">GEOPOS</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>GEOPOS key member [member ...]
+</code></pre></div>
+
+<h4 id="example_51">Example</h4>
+<p>```shell script
+redis&gt; GEOADD Sicily 13.361389 38.115556 "Palermo" 15.087269 37.502669 "Catania"
+(integer) 2
+redis&gt; GEOPOS Sicily Palermo Catania NonExisting
+1) 1) "13.36138933897018433"
+   2) "38.11555639549629859"
+2) 1) "15.08726745843887329"
+   2) "37.50266842333162032"
+3) (nil)</p>
+<div class="codehilite"><pre><span></span><code>Returns longitude and latitude of members of a geospatial index
+
+### GEODIST
+</code></pre></div>
+
+<p>GEODIST key member1 member2 [m|km|ft|mi]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; GEOADD Sicily 13.361389 38.115556 &quot;Palermo&quot; 15.087269 37.502669 &quot;Catania&quot;
+(integer) 2
+redis&gt; GEODIST Sicily Palermo Catania
+&quot;166274.1516&quot;
+redis&gt; GEODIST Sicily Palermo Catania km
+&quot;166.2742&quot;
+redis&gt; GEODIST Sicily Palermo Catania mi
+&quot;103.3182&quot;
+redis&gt; GEODIST Sicily Foo Bar
+(nil)
+</code></pre></div>
+
+<p>Returns the distance between two members of a geospatial index</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="georadius">GEORADIUS</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">GEORADIUS</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="n">latitude</span><span class="w"> </span><span class="n">radius</span><span class="w"> </span><span class="n">m</span><span class="o">|</span><span class="n">km</span><span class="o">|</span><span class="n">ft</span><span class="o">|</span><span class="n">mi</span><span class="w"> </span><span class="p">[</span><span class="n">WITHCOORD</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">WITHDIST</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">WITHHASH</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">COUNT</span><span class="w"> </span><span class="n">count</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">ASC</span><span class="o">|</span><span class="n">DESC</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">STORE</span><span class="w"> </span><span class="n">key</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">STOREDIST</span><span class="w"> </span><span class="n">key</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="example_52">Example</h4>
+<p>```shell script
+redis&gt; GEOADD Sicily 13.361389 38.115556 "Palermo" 15.087269 37.502669 "Catania"
+(integer) 2
+redis&gt; GEORADIUS Sicily 15 37 200 km WITHDIST
+1) 1) "Palermo"
+   2) "190.4424"
+2) 1) "Catania"
+   2) "56.4413"
+redis&gt; GEORADIUS Sicily 15 37 200 km WITHCOORD
+1) 1) "Palermo"
+   2) 1) "13.36138933897018433"
+      2) "38.11555639549629859"
+2) 1) "Catania"
+   2) 1) "15.08726745843887329"
+      2) "37.50266842333162032"
+redis&gt; GEORADIUS Sicily 15 37 200 km WITHDIST WITHCOORD
+1) 1) "Palermo"
+   2) "190.4424"
+   3) 1) "13.36138933897018433"
+      2) "38.11555639549629859"
+2) 1) "Catania"
+   2) "56.4413"
+   3) 1) "15.08726745843887329"
+      2) "37.50266842333162032"</p>
+<div class="codehilite"><pre><span></span><code>Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point
+
+### GEORADIUSBYMEMBER
+</code></pre></div>
+
+<p>GEORADIUSBYMEMBER key member radius m|km|ft|mi [WITHCOORD] [WITHDIST] [WITHHASH] [COUNT count] [ASC|DESC] [STORE key] [STOREDIST key]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; GEOADD Sicily 13.583333 37.316667 &quot;Agrigento&quot;
+(integer) 1
+redis&gt; GEOADD Sicily 13.361389 38.115556 &quot;Palermo&quot; 15.087269 37.502669 &quot;Catania&quot;
+(integer) 2
+redis&gt; GEORADIUSBYMEMBER Sicily Agrigento 100 km
+1) &quot;Agrigento&quot;
+2) &quot;Palermo&quot;
+</code></pre></div>
+
+<p>Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="geosearch">GEOSEARCH</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">GEOSEARCH</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="p">[</span><span class="n">FROMMEMBER</span><span class="w"> </span><span class="n">member</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">FROMLONLAT</span><span class="w"> </span><span class="n">longitude</span><span class="w"> </span><span class="n">latitude</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">BYRADIUS</span><span class="w"> </span><span class="n">radius</span><span class="w"> </span><span class="n">m</span><span class="o">|</span><span class="n">km</span><span class="o">|</span><span class="n">ft</span><span class="o">|</span><span class="n">mi</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">BYBOX</span><span class="w"> </span><span class="n">width</span><span class="w"> </span><span class="n">height</span><span class="w"> </span><span class="n">m</span><span class="o">|</span><span class="n">km</span><span class="o">|</span><span class="n">ft</span><span class="o">|</span><span class="n">mi</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">ASC</span><span class="o">|</span><span class="n">DESC</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">COUNT</span><span class="w"> </span><span class="n">count</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">WITHCOORD</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">WITHDIST</span><span class="p">]</span><span class="w"> </span><span class="p">[</span><span class="n">WITHHASH</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="example_53">Example</h4>
+<p>```shell script
+redis&gt; GEOADD Sicily 13.361389 38.115556 "Palermo" 15.087269 37.502669 "Catania"
+(integer) 2
+redis&gt; GEOADD Sicily 12.758489 38.788135 "edge1"   17.241510 38.788135 "edge2"
+(integer) 2
+redis&gt; GEOSEARCH Sicily FROMLONLAT 15 37 BYRADIUS 200 km ASC
+1) "Catania"
+2) "Palermo"
+redis&gt; GEOSEARCH Sicily FROMLONLAT 15 37 BYBOX 400 400 km ASC
+1) "Catania"
+2) "Palermo"
+3) "edge2"
+4) "edge1"</p>
+<div class="codehilite"><pre><span></span><code><span class="c">Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle</span><span class="nt">.</span>
+
+<span class="c">### Misc</span>
+
+<span class="c">| </span><span class="nb">-</span><span class="c">                                                           | </span><span class="nb">-</span><span class="c">                                                                                                                                             |</span>
+<span class="c">| </span><span class="nb">-----------------------------------------------------------</span><span class="c"> | </span><span class="nb">---------------------------------------------------------------------------------------------------------------------------------------------</span><span class="c"> |</span>
+<span class="c">| </span><span class="k">[</span><span class="c">GEOSEARCHSTORE </span><span class="k">]</span><span class="c">(https://redis</span><span class="nt">.</span><span class="c">io/commands/geosearchstore) | Query a sorted set representing a geospatial index to fetch members inside an area of a box or a circle</span><span class="nt">,</span><span class="c"> and store the result in another key</span><span class="nt">.</span><span class="c"> |</span>
+
+<span class="c">## Redis Hyperloglog command</span>
+
+<span class="c">### PFADD</span>
+</code></pre></div>
+
+<p>PFADD key element [element ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; PFADD hll a b c d e f g
+(integer) 1
+redis&gt; PFCOUNT hll
+(integer) 7
+</code></pre></div>
+
+<p>Adds the specified elements to the specified HyperLogLog.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pfcount">PFCOUNT</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>PFCOUNT key [key ...]
+</code></pre></div>
+
+<h4 id="example_54">Example</h4>
+<p>```shell script
+redis&gt; PFADD hll foo bar zap
+(integer) 1
+redis&gt; PFADD hll zap zap zap
+(integer) 0
+redis&gt; PFADD hll foo bar
+(integer) 0
+redis&gt; PFCOUNT hll
+(integer) 3
+redis&gt; PFADD some-other-hll 1 2 3
+(integer) 1
+redis&gt; PFCOUNT hll some-other-hll
+(integer) 6</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">Return</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">approximated</span><span class="w"> </span><span class="nx">cardinality</span><span class="w"> </span><span class="nx">of</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">set</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span><span class="w"> </span><span class="nx">observed</span><span class="w"> </span><span class="nx">by</span><span class="w"> </span><span class="nx">the</span><span class="w"> </span><span class="nx">HyperLogLog</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="nx">key</span><span class="p">(</span><span class="nx">s</span><span class="p">).</span>
+
+<span class="err">###</span><span class="w"> </span><span class="nx">PFMERGE</span>
+</code></pre></div>
+
+<p>PFMERGE destkey sourcekey [sourcekey ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; PFADD hll1 foo bar zap a
+(integer) 1
+redis&gt; PFADD hll2 a b c foo
+(integer) 1
+redis&gt; PFMERGE hll3 hll1 hll2
+&quot;OK&quot;
+redis&gt; PFCOUNT hll3
+(integer) 6
+</code></pre></div>
+
+<p>Merge N different HyperLogLogs into a single one.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="redis-server-command">
+<h2 id="redis-server-command">Redis Server command</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="command">COMMAND</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>COMMAND
+</code></pre></div>
+
+<h4 id="example_55">Example</h4>
+<p>```shell script
+redis&gt; COMMAND
+1) 1) "georadius_ro"
+     2) (integer) -6
+     3) 1) "readonly"
+        2) "movablekeys"
+     4) (integer) 1
+     5) (integer) 1
+     6) (integer) 1
+     7) 1) "@read"
+        2) "@geo"
+        3) "@slow"
+  2) 1) "zpopmin"
+     2) (integer) -2
+     3) 1) "write"
+        2) "fast"
+  ........</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Get</span><span class="w"> </span><span class="n">array</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">Redis</span><span class="w"> </span><span class="n">command</span><span class="w"> </span><span class="n">details</span>
+
+<span class="cp">### Misc </span>
+
+<span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">                                                                    </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">                                                                                                                                </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="o">--------------------------------------------------------------------</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">--------------------------------------------------------------------------------------------------------------------------------</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">LOAD</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-load)                       | Reload the ACLs from the configured ACL file                                                                                     |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">SAVE</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-save)                       | Save the current ACL rules in the configured ACL file                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">LIST</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-list)                       | List the current ACL rules in ACL config file format                                                                             |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">USERS</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-users)                     | List the username of all the configured ACL rules                                                                                |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">GETUSER</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-getuser)                | Get the rules for a specific ACL user                                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">SETUSER</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-setuser)                | Modify or create the rules for a specific ACL user                                                                               |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">DELUSER</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-deluser)                | Remove the specified ACL users and the associated rules                                                                          |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">CAT</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-cat)                        | List the ACL categories or the commands inside a category                                                                        |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">GENPASS</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-genpass)                | Generate a pseudorandom secure password to use for ACL users                                                                     |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">WHOAMI</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-whoami)                   | Return the name of the user associated to the current connection                                                                 |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">LOG</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-log)                        | List latest events denied because of ACLs in place                                                                               |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">ACL</span><span class="w"> </span><span class="n">HELP</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/acl-help)                       | Show helpful text about the different subcommands                                                                                |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">BGREWRITEAOF</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/bgrewriteaof)               | Asynchronously rewrite the append-only file                                                                                      |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">BGSAVE</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/bgsave)                          | Asynchronously save the dataset to disk                                                                                          |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CONFIG</span><span class="w"> </span><span class="n">GET</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/config-get)                  | Get the value of a configuration parameter                                                                                       |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CONFIG</span><span class="w"> </span><span class="n">REWRITE</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/config-rewrite)           | Rewrite the configuration file with the in memory configuration                                                                  |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CONFIG</span><span class="w"> </span><span class="n">SET</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/config-set)                  | Set a configuration parameter to the given value                                                                                 |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CONFIG</span><span class="w"> </span><span class="n">RESETSTAT</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/config-resetstat)       | Reset the stats returned by INFO                                                                                                 |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">DBSIZE</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/dbsize)                           | Return the number of keys in the selected database                                                                               |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">DEBUG</span><span class="w"> </span><span class="n">OBJECT</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/debug-object)              | Get debugging information about a key                                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">DEBUG</span><span class="w"> </span><span class="n">SEGFAULT</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/debug-segfault)           | Make the server crash                                                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">FLUSHALL</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/flushall)                      | Remove all keys from all databases                                                                                               |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">FLUSHDB</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/flushdb)                        | Remove all keys from the current database                                                                                        |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LOLWUT</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/lolwut)                          | Display some computer art and the Redis version                                                                                  |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LASTSAVE</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/lastsave)                       | Get the UNIX time stamp of the last successful save to disk                                                                      |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MEMORY</span><span class="w"> </span><span class="n">DOCTOR</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/memory-doctor)             | Outputs memory problems report                                                                                                   |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MEMORY</span><span class="w"> </span><span class="n">HELP</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/memory-help)                 | Show helpful text about the different subcommands                                                                                |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MEMORY</span><span class="w"> </span><span class="n">MALLOC</span><span class="o">-</span><span class="n">STATS</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/memory-malloc-stats) | Show allocator internal stats                                                                                                    |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MEMORY</span><span class="w"> </span><span class="n">PURGE</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/memory-purge)               | Ask the allocator to release memory                                                                                              |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MEMORY</span><span class="w"> </span><span class="n">STATS</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/memory-stats)               | Show memory usage details                                                                                                        |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MEMORY</span><span class="w"> </span><span class="n">USAGE</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/memory-usage)              | Estimate the memory usage of a key                                                                                               |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MODULE</span><span class="w"> </span><span class="n">LIST</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/module-list)                 | List all modules loaded by the server                                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MODULE</span><span class="w"> </span><span class="n">LOAD</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/module-load)                | Load a module                                                                                                                    |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MODULE</span><span class="w"> </span><span class="n">UNLOAD</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/module-unload)            | Unload a module                                                                                                                  |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">MONITOR</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/monitor)                         | Listen for all requests received by the server in real time                                                                      |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">SAVE</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/save)                               | Synchronously save the dataset to disk                                                                                           |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">SHUTDOWN</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/shutdown)                      | Synchronously save the dataset to disk and then shut down the server                                                             |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">SLAVEOF</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/slaveof)                        | Make the server a replica of another instance, or promote it as master. Deprecated starting with Redis 5. Use REPLICAOF instead. |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">REPLICAOF</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/replicaof)                    | Make the server a replica of another instance, or promote it as master.                                                          |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">SLOWLOG</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/slowlog)                        | Manages the Redis slow queries log                                                                                               |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">SWAPDB</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/swapdb)                          | Swaps two Redis databases                                                                                                        |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">SYNC</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/sync)                               | Internal command used for replication                                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">PSYNC</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/psync)                            | Internal command used for replication                                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LATENCY</span><span class="w"> </span><span class="n">DOCTOR</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/latency-doctor)           | Return a human readable latency analysis report.                                                                                 |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LATENCY</span><span class="w"> </span><span class="n">GRAPH</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/latency-graph)            | Return a latency graph for the event.                                                                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LATENCY</span><span class="w"> </span><span class="n">HISTORY</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/latency-history)        | Return timestamp-latency samples for the event.                                                                                  |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LATENCY</span><span class="w"> </span><span class="n">LATEST</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/latency-latest)           | Return the latest latency samples for all events.                                                                                |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LATENCY</span><span class="w"> </span><span class="n">RESET</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/latency-reset)            | Reset latency data for one or more events.                                                                                       |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">LATENCY</span><span class="w"> </span><span class="n">HELP</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/latency-help)               | Show helpful text about the different subcommands.                                                                               |</span>
+
+<span class="cp">### COMMAND COUNT</span>
+</code></pre></div>
+
+<p>COMMAND COUNT</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; COMMAND COUNT
+(integer) 217
+</code></pre></div>
+
+<p>Get total number of Redis commands</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="command-getkeys">COMMAND GETKEYS</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>COMMAND GETKEYS
+</code></pre></div>
+
+<h4 id="example_56">Example</h4>
+<p>```shell script
+redis&gt; COMMAND GETKEYS MSET a b c d e f
+1) "a"
+2) "c"
+3) "e"
+redis&gt; COMMAND GETKEYS EVAL "not consulted" 3 key1 key2 key3 arg1 arg2 arg3 argN
+1) "key1"
+2) "key2"
+3) "key3"
+redis&gt; COMMAND GETKEYS SORT mylist ALPHA STORE outlist
+1) "mylist"
+2) "outlist"</p>
+<div class="codehilite"><pre><span></span><code>Extract keys given a full Redis command
+
+### COMMAND INFO
+</code></pre></div>
+
+<p>COMMAND INFO command-name [command-name ...]</p>
+<div class="codehilite"><pre><span></span><code><span class="err">####</span><span class="w"> </span><span class="n">Example</span>
+
+<span class="err">```</span><span class="n">shell</span><span class="w"> </span><span class="n">script</span>
+<span class="n">redis</span><span class="o">&gt;</span><span class="w"> </span><span class="n">COMMAND</span><span class="w"> </span><span class="n">INFO</span><span class="w"> </span><span class="k">get</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">eval</span>
+<span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;get&quot;</span>
+<span class="w">   </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">2</span>
+<span class="w">   </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;readonly&quot;</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;fast&quot;</span>
+<span class="w">   </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@read&quot;</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@string&quot;</span>
+<span class="w">      </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@fast&quot;</span>
+<span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;set&quot;</span>
+<span class="w">   </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span>
+<span class="w">   </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;write&quot;</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;denyoom&quot;</span>
+<span class="w">   </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">   </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@write&quot;</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@string&quot;</span>
+<span class="w">      </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@slow&quot;</span>
+<span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;eval&quot;</span>
+<span class="w">   </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="o">-</span><span class="mi">3</span>
+<span class="w">   </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;noscript&quot;</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;movablekeys&quot;</span>
+<span class="w">   </span><span class="mi">4</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">   </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">   </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="p">(</span><span class="k">integer</span><span class="p">)</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">   </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@slow&quot;</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="ss">&quot;@scripting&quot;</span>
+</code></pre></div>
+
+<p>Get array of specific Redis command details</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="info">INFO</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">INFO</span><span class="w"> </span><span class="o">[</span><span class="n">section</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_57">Example</h4>
+<p>```shell script
+redis&gt; INFO</p>
+<h1 id="server">Server</h1>
+<p>redis_version:6.1.240
+redis_git_sha1:00000000
+redis_git_dirty:0
+redis_build_id:a26db646ea64a07c
+redis_mode:standalone
+os:Linux 5.4.0-1017-aws x86_64
+......</p>
+<div class="codehilite"><pre><span></span><code>Get information and statistics about the server
+
+### ROLE
+</code></pre></div>
+
+<p>ROLE</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ROLE
+1) &quot;master&quot;
+2) (integer) 0
+3) (empty list or set)
+</code></pre></div>
+
+<p>Return the role of the instance in the context of replication</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="time">TIME</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>TIME
+</code></pre></div>
+
+<h4 id="example_58">Example</h4>
+<p>```shell script
+redis&gt; TIME
+1) "1609040690"
+2) "558952"
+redis&gt; TIME
+1) "1609040690"
+2) "559206"</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Return</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">current</span><span class="w"> </span><span class="nv">server</span><span class="w"> </span><span class="nv">time</span>
+
+##<span class="w"> </span><span class="nv">Redis</span><span class="w"> </span><span class="nv">Generic</span><span class="w"> </span><span class="nv">command</span>
+
+###<span class="w"> </span><span class="nv">Misc</span>
+
+<span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">                                             </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">                                                                                                            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="o">---------------------------------------------</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">------------------------------------------------------------------------------------------------------------</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="nv">COPY</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="nv">copy</span><span class="ss">)</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nv">Copy</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span><span class="w">                                                                                                   </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="nv">MIGRATE</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="nv">migrate</span><span class="ss">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nv">Atomically</span><span class="w"> </span><span class="nv">transfer</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">from</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">Redis</span><span class="w"> </span><span class="nv">instance</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">another</span><span class="w"> </span><span class="nv">one</span>.<span class="w">                                              </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="nv">MOVE</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="nv">move</span><span class="ss">)</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nv">Move</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">another</span><span class="w"> </span><span class="nv">database</span><span class="w">                                                                               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="nv">OBJECT</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="nv">object</span><span class="ss">)</span><span class="w">   </span><span class="o">|</span><span class="w"> </span><span class="nv">Inspect</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">internals</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">Redis</span><span class="w"> </span><span class="nv">objects</span><span class="w">                                                                       </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="nv">RESTORE</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="nv">restore</span><span class="ss">)</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nv">Create</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">using</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">provided</span><span class="w"> </span><span class="nv">serialized</span><span class="w"> </span><span class="nv">value</span>,<span class="w"> </span><span class="nv">previously</span><span class="w"> </span><span class="nv">obtained</span><span class="w"> </span><span class="nv">using</span><span class="w"> </span><span class="nv">DUMP</span>.<span class="w">                            </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="nv">SORT</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="nv">sort</span><span class="ss">)</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nv">Sort</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">elements</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">list</span>,<span class="w"> </span><span class="nv">set</span><span class="w"> </span><span class="nv">or</span><span class="w"> </span><span class="nv">sorted</span><span class="w"> </span><span class="nv">set</span><span class="w">                                                               </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="k">WAIT</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="k">wait</span><span class="ss">)</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="k">Wait</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">synchronous</span><span class="w"> </span><span class="nv">replication</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">all</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">write</span><span class="w"> </span><span class="nv">commands</span><span class="w"> </span><span class="nv">sent</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">context</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">current</span><span class="w"> </span><span class="nv">connection</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span>[<span class="nv">SCAN</span><span class="w"> </span>]<span class="ss">(</span><span class="nv">https</span>:<span class="o">//</span><span class="nv">redis</span>.<span class="nv">io</span><span class="o">/</span><span class="nv">commands</span><span class="o">/</span><span class="nv">scan</span><span class="ss">)</span><span class="w">       </span><span class="o">|</span><span class="w"> </span><span class="nv">Incrementally</span><span class="w"> </span><span class="nv">iterate</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">keys</span><span class="w"> </span><span class="nv">space</span><span class="w">                                                                         </span><span class="o">|</span>
+
+###<span class="w"> </span><span class="nv">DEL</span>
+</code></pre></div>
+
+<p>DEL key [key ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET key1 &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; SET key2 &quot;World&quot;
+&quot;OK&quot;
+redis&gt; DEL key1 key2 key3
+(integer) 2
+</code></pre></div>
+
+<p>Delete a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dump">DUMP</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>DUMP key
+</code></pre></div>
+
+<h4 id="example_59">Example</h4>
+<p>```shell script
+redis&gt; SET mykey 10
+"OK"
+redis&gt; DUMP mykey
+"\u0000\xC0\n\t\u0000\xBEm\u0006\x89Z(\u0000\n"</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Return</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">serialized</span><span class="w"> </span><span class="nv">version</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">value</span><span class="w"> </span><span class="nv">stored</span><span class="w"> </span><span class="nv">at</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">specified</span><span class="w"> </span><span class="nv">key</span>.
+
+###<span class="w"> </span><span class="nv">EXISTS</span>
+</code></pre></div>
+
+<p>EXISTS key [key ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET key1 &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; EXISTS key1
+(integer) 1
+redis&gt; EXISTS nosuchkey
+(integer) 0
+redis&gt; SET key2 &quot;World&quot;
+&quot;OK&quot;
+redis&gt; EXISTS key1 key2 nosuchkey
+(integer) 2
+</code></pre></div>
+
+<p>Determine if a key exists</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="expire">EXPIRE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>EXPIRE key seconds
+</code></pre></div>
+
+<h4 id="example_60">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "Hello"
+"OK"
+redis&gt; EXPIRE mykey 10
+(integer) 1
+redis&gt; TTL mykey
+(integer) 10
+redis&gt; SET mykey "Hello World"
+"OK"
+redis&gt; TTL mykey
+(integer) -1</p>
+<div class="codehilite"><pre><span></span><code>Set a key&#39;s time to live in seconds
+
+### EXPIREAT
+</code></pre></div>
+
+<p>EXPIREAT key timestamp</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; EXISTS mykey
+(integer) 1
+redis&gt; EXPIREAT mykey 1293840000
+(integer) 1
+redis&gt; EXISTS mykey
+(integer) 0
+</code></pre></div>
+
+<p>Set the expiration for a key as a UNIX timestamp</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="keys">KEYS</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>KEYS pattern
+</code></pre></div>
+
+<h4 id="example_61">Example</h4>
+<p>```shell script
+redis&gt; MSET firstname Jack lastname Stuntman age 35
+"OK"
+redis&gt; KEYS <em>name</em>
+1) "firstname"
+2) "lastname"
+redis&gt; KEYS a??
+1) "age"
+redis&gt; KEYS *
+1) "firstname"
+2) "age"
+3) "lastname"</p>
+<div class="codehilite"><pre><span></span><code>Find all keys matching the given pattern
+
+### PERSIST
+</code></pre></div>
+
+<p>PERSIST key</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; EXPIRE mykey 10
+(integer) 1
+redis&gt; TTL mykey
+(integer) 10
+redis&gt; PERSIST mykey
+(integer) 1
+redis&gt; TTL mykey
+(integer) -1
+</code></pre></div>
+
+<p>Remove the expiration from a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pexpire">PEXPIRE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>PEXPIRE key milliseconds
+</code></pre></div>
+
+<h4 id="example_62">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "Hello"
+"OK"
+redis&gt; PEXPIRE mykey 1500
+(integer) 1
+redis&gt; TTL mykey
+(integer) 1
+redis&gt; PTTL mykey
+(integer) 1499</p>
+<div class="codehilite"><pre><span></span><code>Set a key&#39;s time to live in milliseconds
+
+### PEXPIREAT
+</code></pre></div>
+
+<p>PEXPIREAT key milliseconds-timestamp</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; PEXPIREAT mykey 1555555555005
+(integer) 1
+redis&gt; TTL mykey
+(integer) -2
+redis&gt; PTTL mykey
+(integer) -2
+</code></pre></div>
+
+<p>Set the expiration for a key as a UNIX timestamp specified in milliseconds</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pttl">PTTL</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>PTTL key
+</code></pre></div>
+
+<h4 id="example_63">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "Hello"
+"OK"
+redis&gt; EXPIRE mykey 1
+(integer) 1
+redis&gt; PTTL mykey
+(integer) 1000</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Get</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">time</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">live</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">milliseconds</span>
+
+###<span class="w"> </span><span class="nv">RENAME</span>
+</code></pre></div>
+
+<p>RENAME key newkey</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET mykey &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; RENAME mykey myotherkey
+&quot;OK&quot;
+redis&gt; GET myotherkey
+&quot;Hello&quot;
+</code></pre></div>
+
+<p>Rename a key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="renamenx">RENAMENX</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>RENAMENX key newkey
+</code></pre></div>
+
+<h4 id="example_64">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "Hello"
+"OK"
+redis&gt; SET myotherkey "World"
+"OK"
+redis&gt; RENAMENX mykey myotherkey
+(integer) 0
+redis&gt; GET myotherkey
+"World"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Rename</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span>,<span class="w"> </span><span class="nv">only</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">new</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span><span class="nv">does</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">exist</span>
+
+###<span class="w"> </span><span class="nv">TOUCH</span>
+</code></pre></div>
+
+<p>TOUCH key [key ...]</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET key1 &quot;Hello&quot;
+&quot;OK&quot;
+redis&gt; SET key2 &quot;World&quot;
+&quot;OK&quot;
+redis&gt; TOUCH key1 key2
+(integer) 2
+</code></pre></div>
+
+<p>Alters the last access time of a key(s). Returns the number of existing keys specified.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ttl">TTL</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>TTL key
+</code></pre></div>
+
+<h4 id="example_65">Example</h4>
+<p>```shell script
+redis&gt; SET mykey "Hello"
+"OK"
+redis&gt; EXPIRE mykey 10
+(integer) 1
+redis&gt; TTL mykey
+(integer) 10</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Get</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">time</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">live</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">key</span>
+
+###<span class="w"> </span><span class="nv">TYPE</span>
+</code></pre></div>
+
+<p>TYPE key</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; SET key1 &quot;value&quot;
+&quot;OK&quot;
+redis&gt; LPUSH key2 &quot;value&quot;
+(integer) 1
+redis&gt; SADD key3 &quot;value&quot;
+(integer) 1
+redis&gt; TYPE key1
+&quot;string&quot;
+redis&gt; TYPE key2
+&quot;list&quot;
+redis&gt; TYPE key3
+&quot;set&quot;
+</code></pre></div>
+
+<p>Determine the type stored at key</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="unlink">UNLINK</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">UNLINK</span><span class="w"> </span><span class="nv">key</span><span class="w"> </span>[<span class="nv">key</span><span class="w"> </span>...]
+</code></pre></div>
+
+<h4 id="example_66">Example</h4>
+<p>```shell script
+redis&gt; SET key1 "Hello"
+"OK"
+redis&gt; SET key2 "World"
+"OK"
+redis&gt; UNLINK key1 key2 key3
+(integer) 2</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Delete</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">asynchronously</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">another</span><span class="w"> </span><span class="kr">thread</span><span class="p">.</span><span class="w"> </span><span class="n">Otherwise</span><span class="w"> </span><span class="n">it</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">just</span><span class="w"> </span><span class="n">as</span><span class="w"> </span><span class="n">DEL</span><span class="p">,</span><span class="w"> </span><span class="n">but</span><span class="w"> </span><span class="n">non</span><span class="w"> </span><span class="n">blocking</span><span class="p">.</span>
+
+<span class="cp">## Redis Connection command</span>
+
+<span class="cp">### Misc</span>
+
+<span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">                                                             </span><span class="o">|</span><span class="w"> </span><span class="o">-</span><span class="w">                                                                          </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="o">-------------------------------------------------------------</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="o">--------------------------------------------------------------------------</span><span class="w"> </span><span class="o">|</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">AUTH</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/auth)                       | Authenticate to the server                                                 |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">CACHING</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-caching)   | Instruct the server about tracking or not keys in the next request         |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">KILL</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-kill)         | Kill the connection of a client                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">LIST</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-list)         | Get the list of client connections                                         |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">GETNAME</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-getname)    | Get the current connection name                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">GETREDIR</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-getredir)  | Get tracking notifications redirection client ID if any                    |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">PAUSE</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-pause)       | Stop processing commands from clients for some time                        |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">REPLY</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-reply)       | Instruct the server whether to reply to commands                           |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">SETNAME</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-setname)   | Set the current connection name                                            |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">TRACKING</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-tracking) | Enable or disable server assisted client side caching support              |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">CLIENT</span><span class="w"> </span><span class="n">UNBLOCK</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/client-unblock)   | Unblock a client blocked in a blocking command from a different connection |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">HELLO</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/hello)                     | switch Redis protocol                                                      |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">QUIT</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/quit)                        | Close the connection                                                       |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">RESET</span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/reset)                      | Reset the connection                                                       |</span>
+<span class="o">|</span><span class="w"> </span><span class="p">[</span><span class="n">SELECT</span><span class="w"> </span><span class="p">](</span><span class="n">https</span><span class="o">:</span><span class="c1">//redis.io/commands/select)                   | Change the selected database for the current connection                    |</span>
+
+<span class="cp">### CLIENT ID</span>
+</code></pre></div>
+
+<p>CLIENT ID</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; CLIENT ID
+ERR Unknown or disabled command &#39;CLIENT&#39;
+</code></pre></div>
+
+<p>Returns the client ID for the current connection</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="client-info">CLIENT INFO</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>CLIENT INFO
+</code></pre></div>
+
+<h4 id="example_67">Example</h4>
+<p>```shell script
+redis&gt; CLIENT INFO
+"id=55542 addr=127.0.0.1:58710 laddr=127.0.0.1:6379 fd=8 name= age=114920 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=26 qbuf-free=40928 argv-mem=10 obl=0 oll=0 omem=0 tot-mem=61466 events=r cmd=client user=default redir=-1\n"</p>
+<div class="codehilite"><pre><span></span><code>Returns information about the current client connection.
+
+### ECHO
+</code></pre></div>
+
+<p>ECHO message</p>
+<div class="codehilite"><pre><span></span><code>#### Example
+
+```shell script
+redis&gt; ECHO &quot;Hello World!&quot;
+&quot;Hello World!&quot;
+</code></pre></div>
+
+<p>Echo the given string</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ping">PING</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">PING</span><span class="w"> </span><span class="o">[</span><span class="n">message</span><span class="o">]</span>
+</code></pre></div>
+
+<h4 id="example_68">Example</h4>
+<p>```shell script
+redis&gt; PING
+"PONG"
+redis&gt; PING "hello world"
+"hello world"</p>
+<div class="codehilite"><pre><span></span><code><span class="n">Ping</span> <span class="n">the</span> <span class="n">server</span>
+
+<span class="o">##</span> <span class="n">Redis</span> <span class="n">Stream</span> <span class="n">command</span>
+
+<span class="o">###</span> <span class="n">Misc</span>
+
+<span class="p">|</span> <span class="o">-</span>                                                   <span class="p">|</span> <span class="o">-</span>                                                                                                                                                                                  <span class="p">|</span>
+<span class="p">|</span> <span class="o">---------------------------------------------------</span> <span class="p">|</span> <span class="o">----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="p">[</span><span class="n">XINFO</span> <span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">redis</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">xinfo</span><span class="p">)</span>           <span class="p">|</span> <span class="n">Get</span> <span class="n">information</span> <span class="n">on</span> <span class="n">streams</span> <span class="n">and</span> <span class="n">consumer</span> <span class="n">groups</span>                                                                                                                                     <span class="p">|</span>
+<span class="p">|</span> <span class="p">[</span><span class="n">XDEL</span> <span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">redis</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">xdel</span><span class="p">)</span>             <span class="p">|</span> <span class="n">Removes</span> <span class="n">the</span> <span class="n">specified</span> <span class="n">entries</span> <span class="n">from</span> <span class="n">the</span> <span class="n">stream</span><span class="p">.</span> <span class="n">Returns</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">items</span> <span class="n">actually</span> <span class="n">deleted</span><span class="p">,</span> <span class="n">that</span> <span class="n">may</span> <span class="n">be</span> <span class="n">different</span> <span class="n">from</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">IDs</span> <span class="n">passed</span> <span class="n">in</span> <span class="n">case</span> <span class="n">certain</span> <span class="n">IDs</span> <span class="n">do</span> <span class="n">not</span> <span class="n">exist</span><span class="p">.</span> <span class="p">|</span>
+<span class="p">|</span> <span class="p">[</span><span class="n">XREAD</span> <span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">redis</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">xread</span><span class="p">)</span>           <span class="p">|</span> <span class="n">Return</span> <span class="n">never</span> <span class="n">seen</span> <span class="n">elements</span> <span class="n">in</span> <span class="n">multiple</span> <span class="n">streams</span><span class="p">,</span> <span class="n">with</span> <span class="n">IDs</span> <span class="n">greater</span> <span class="n">than</span> <span class="n">the</span> <span class="n">ones</span> <span class="n">reported</span> <span class="n">by</span> <span class="n">the</span> <span class="n">caller</span> <span class="n">for</span> <span class="n">each</span> <span class="n">stream</span><span class="p">.</span> <span class="n">Can</span> <span class="n">block</span><span class="p">.</span>                                                  <span class="p">|</span>
+<span class="p">|</span> <span class="p">[</span><span class="n">XGROUP</span> <span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">redis</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">xgroup</span><span class="p">)</span>         <span class="p">|</span> <span class="n">Create</span><span class="p">,</span> <span class="n">destroy</span><span class="p">,</span> <span class="n">and</span> <span class="n">manage</span> <span class="n">consumer</span> <span class="n">groups</span><span class="p">.</span>                                                                                                                                       <span class="p">|</span>
+<span class="p">|</span> <span class="p">[</span><span class="n">XREADGROUP</span> <span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">redis</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">xreadgroup</span><span class="p">)</span> <span class="p">|</span> <span class="n">Return</span> <span class="n">new</span> <span class="n">entries</span> <span class="n">from</span> <span class="n">a</span> <span class="n">stream</span> <span class="n">using</span> <span class="n">a</span> <span class="n">consumer</span> <span class="n">group</span><span class="p">,</span> <span class="n">or</span> <span class="n">access</span> <span class="n">the</span> <span class="n">history</span> <span class="n">of</span> <span class="n">the</span> <span class="n">pending</span> <span class="n">entries</span> <span class="n">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">consumer</span><span class="p">.</span> <span class="n">Can</span> <span class="n">block</span><span class="p">.</span>                                             <span class="p">|</span>
+<span class="p">|</span> <span class="p">[</span><span class="n">XCLAIM</span> <span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">redis</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">xclaim</span><span class="p">)</span>         <span class="p">|</span> <span class="n">Changes</span> <span class="p">(</span><span class="n">or</span> <span class="n">acquires</span><span class="p">)</span> <span class="n">ownership</span> <span class="n">of</span> <span class="n">a</span> <span class="n">message</span> <span class="n">in</span> <span class="n">a</span> <span class="n">consumer</span> <span class="n">group</span><span class="p">,</span> <span class="n">as</span> <span class="n">if</span> <span class="n">the</span> <span class="n">message</span> <span class="n">was</span> <span class="n">delivered</span> <span class="n">to</span> <span class="n">the</span> <span class="n">specified</span> <span class="n">consumer</span><span class="p">.</span>                                                       <span class="p">|</span>
+<span class="p">|</span> <span class="p">[</span><span class="n">XPENDING</span> <span class="p">](</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">redis</span><span class="p">.</span><span class="n">io</span><span class="o">/</span><span class="n">commands</span><span class="o">/</span><span class="n">xpending</span><span class="p">)</span>     <span class="p">|</span> <span class="n">Return</span> <span class="n">information</span> <span class="n">and</span> <span class="n">entries</span> <span class="n">from</span> <span class="n">a</span> <span class="n">stream</span> <span class="n">consumer</span> <span class="n">group</span> <span class="n">pending</span> <span class="n">entries</span> <span class="n">list</span><span class="p">,</span> <span class="n">that</span> <span class="n">are</span> <span class="n">messages</span> <span class="n">fetched</span> <span class="n">but</span> <span class="n">never</span> <span class="n">acknowledged</span><span class="p">.</span>                                                <span class="p">|</span>
+
+<span class="o">###</span> <span class="n">XADD</span>
+</code></pre></div>
+
+<p>XADD key [MAXLEN [=|~] length] [NOMKSTREAM] *|ID field value [field value ...]</p>
+<div class="codehilite"><pre><span></span><code><span class="gu">##</span>## Example
+
+```shell script
+redis&gt; XADD mystream <span class="gs">* name Sara surname OConnor</span>
+<span class="gs">&quot;1609040574632-0&quot;</span>
+<span class="gs">redis&gt; XADD mystream *</span> field1 value1 field2 value2 field3 value3
+&quot;1609040574632-1&quot;
+redis&gt; XLEN mystream
+(integer) 2
+redis&gt; XRANGE mystream - +
+1) 1) &quot;1609040574632-0&quot;
+   2) 1) &quot;name&quot;
+      2) &quot;Sara&quot;
+      3) &quot;surname&quot;
+      4) &quot;OConnor&quot;
+2) 1) &quot;1609040574632-1&quot;
+   2) 1) &quot;field1&quot;
+      2) &quot;value1&quot;
+      3) &quot;field2&quot;
+      4) &quot;value2&quot;
+      5) &quot;field3&quot;
+      6) &quot;value3&quot;
+</code></pre></div>
+
+<p>Appends a new entry to a stream</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="xtrim">XTRIM</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>XTRIM key MAXLEN [=|~] length
+</code></pre></div>
+
+<h4 id="example_69">Example</h4>
+<p>```shell script
+redis&gt; XADD mystream * field1 A field2 B field3 C field4 D
+"1609040575750-0"
+redis&gt; XTRIM mystream MAXLEN 2
+(integer) 0
+redis&gt; XRANGE mystream - +
+1) 1) "1609040575750-0"
+   2) 1) "field1"
+      2) "A"
+      3) "field2"
+      4) "B"
+      5) "field3"
+      6) "C"
+      7) "field4"
+      8) "D"</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">Trims</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">stream</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="ss">(</span><span class="nv">approximately</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="s1">&#39;~&#39;</span><span class="w"> </span><span class="nv">is</span><span class="w"> </span><span class="nv">passed</span><span class="ss">)</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">certain</span><span class="w"> </span><span class="nv">size</span>
+
+###<span class="w"> </span><span class="nv">XRANGE</span>
+</code></pre></div>
+
+<p>XRANGE key start end [COUNT count]</p>
+<div class="codehilite"><pre><span></span><code><span class="gu">##</span>## Example
+
+```shell script
+redis&gt; XADD writers <span class="gs">* name Virginia surname Woolf</span>
+<span class="gs">&quot;1609040578002-0&quot;</span>
+<span class="gs">redis&gt; XADD writers *</span> name Jane surname Austen
+&quot;1609040578002-1&quot;
+redis&gt; XADD writers <span class="gs">* name Toni surname Morrison</span>
+<span class="gs">&quot;1609040578003-0&quot;</span>
+<span class="gs">redis&gt; XADD writers *</span> name Agatha surname Christie
+&quot;1609040578003-1&quot;
+redis&gt; XADD writers * name Ngozi surname Adichie
+&quot;1609040578003-2&quot;
+redis&gt; XLEN writers
+(integer) 5
+redis&gt; XRANGE writers - + COUNT 2
+1) 1) &quot;1609040578002-0&quot;
+   2) 1) &quot;name&quot;
+      2) &quot;Virginia&quot;
+      3) &quot;surname&quot;
+      4) &quot;Woolf&quot;
+2) 1) &quot;1609040578002-1&quot;
+   2) 1) &quot;name&quot;
+      2) &quot;Jane&quot;
+      3) &quot;surname&quot;
+      4) &quot;Austen&quot;
+</code></pre></div>
+
+<p>Return a range of elements in a stream, with IDs matching the specified IDs interval</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="xrevrange">XREVRANGE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">XREVRANGE</span><span class="w"> </span><span class="n">key</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="p">[</span><span class="n">COUNT</span><span class="w"> </span><span class="n">count</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="example_70">Example</h4>
+<p>```shell script
+redis&gt; XADD writers * name Virginia surname Woolf
+"1609040579130-0"
+redis&gt; XADD writers * name Jane surname Austen
+"1609040579130-1"
+redis&gt; XADD writers * name Toni surname Morrison
+"1609040579130-2"
+redis&gt; XADD writers * name Agatha surname Christie
+"1609040579131-0"
+redis&gt; XADD writers * name Ngozi surname Adichie
+"1609040579131-1"
+redis&gt; XLEN writers
+(integer) 5
+redis&gt; XREVRANGE writers + - COUNT 1
+1) 1) "1609040579131-1"
+   2) 1) "name"
+      2) "Ngozi"
+      3) "surname"
+      4) "Adichie"</p>
+<div class="codehilite"><pre><span></span><code><span class="k">Return</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">range</span><span class="w"> </span><span class="nv">of</span><span class="w"> </span><span class="nv">elements</span><span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">a</span><span class="w"> </span><span class="nv">stream</span>,<span class="w"> </span><span class="nv">with</span><span class="w"> </span><span class="nv">IDs</span><span class="w"> </span><span class="nv">matching</span><span class="w"> </span><span class="nv">the</span><span class="w"> </span><span class="nv">specified</span><span class="w"> </span><span class="nv">IDs</span><span class="w"> </span><span class="nv">interval</span>,<span class="w"> </span><span class="nv">in</span><span class="w"> </span><span class="nv">reverse</span><span class="w"> </span><span class="nv">order</span><span class="w"> </span><span class="ss">(</span><span class="nv">from</span><span class="w"> </span><span class="nv">greater</span><span class="w"> </span><span class="nv">to</span>
+<span class="nv">smaller</span><span class="w"> </span><span class="nv">IDs</span><span class="ss">)</span><span class="w"> </span><span class="nv">compared</span><span class="w"> </span><span class="nv">to</span><span class="w"> </span><span class="nv">XRANGE</span>
+
+###<span class="w"> </span><span class="nv">XLEN</span>
+</code></pre></div>
+
+<p>XLEN key</p>
+<div class="codehilite"><pre><span></span><code><span class="gu">##</span>## Example
+
+```shell script
+redis&gt; XADD mystream <span class="gs">* item 1</span>
+<span class="gs">&quot;1609040580250-0&quot;</span>
+<span class="gs">redis&gt; XADD mystream *</span> item 2
+&quot;1609040580250-1&quot;
+redis&gt; XADD mystream * item 3
+&quot;1609040580251-0&quot;
+redis&gt; XLEN mystream
+(integer) 3
+</code></pre></div>
+
+<p>Return the number of entries in a stream</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="xack">XACK</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>XACK key group ID [ID ...]
+</code></pre></div>
+
+<h4 id="example_71">Example</h4>
+<p><code>shell script
+redis&gt; XACK mystream mygroup 1526569495631-0
+ERR Unknown or disabled command 'XACK'</code></p>
+<p>Marks a pending message as correctly processed, effectively removing it from the pending entries list of the consumer
+group. Return value of the command is the number of messages successfully acknowledged, that is, the IDs we were
+actually able to resolve in the PEL.</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="miscellaneous">
+<h2 id="miscellaneous">Miscellaneous</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="cluster">Cluster</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://redis.io/commands/cluster-addslots">CLUSTER ADDSLOTS </a></td>
+<td>Assign new hash slots to receiving node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-bumpepoch">CLUSTER BUMPEPOCH</a></td>
+<td>Advance the cluster config epoch</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-count-failure-reports">CLUSTER COUNT-FAILURE-REPORTS </a></td>
+<td>Return the number of failure reports active for a given node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-countkeysinslot">CLUSTER COUNTKEYSINSLOT </a></td>
+<td>Return the number of local keys in the specified hash slot</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-delslots">CLUSTER DELSLOTS </a></td>
+<td>Set hash slots as unbound in receiving node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-failover">CLUSTER FAILOVER </a></td>
+<td>Forces a replica to perform a manual failover of its master.</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-flushslots">CLUSTER FLUSHSLOTS</a></td>
+<td>Delete a node's own slots information</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-forget">CLUSTER FORGET </a></td>
+<td>Remove a node from the nodes table</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-getkeysinslot">CLUSTER GETKEYSINSLOT </a></td>
+<td>Return local key names in the specified hash slot</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-info">CLUSTER INFO</a></td>
+<td>Provides info about Redis Cluster node state</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-keyslot">CLUSTER KEYSLOT </a></td>
+<td>Returns the hash slot of the specified key</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-meet">CLUSTER MEET </a></td>
+<td>Force a node cluster to handshake with another node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-myid">CLUSTER MYID</a></td>
+<td>Return the node id</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-nodes">CLUSTER NODES</a></td>
+<td>Get Cluster config for the node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-replicate">CLUSTER REPLICATE </a></td>
+<td>Reconfigure a node as a replica of the specified master node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-reset">CLUSTER RESET </a></td>
+<td>Reset a Redis Cluster node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-saveconfig">CLUSTER SAVECONFIG</a></td>
+<td>Forces the node to save cluster state on disk</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-set-config-epoch">CLUSTER SET-CONFIG-EPOCH </a></td>
+<td>Set the configuration epoch in a new node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-setslot">CLUSTER SETSLOT </a></td>
+<td>Bind a hash slot to a specific node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-slaves">CLUSTER SLAVES </a></td>
+<td>List replica nodes of the specified master node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-replicas">CLUSTER REPLICAS </a></td>
+<td>List replica nodes of the specified master node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/cluster-slots">CLUSTER SLOTS</a></td>
+<td>Get array of Cluster slot to node mappings</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/readonly">READONLY</a></td>
+<td>Enables read queries for a connection to a cluster replica node</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/readwrite">READWRITE</a></td>
+<td>Disables read queries for a connection to a cluster replica node</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="transactions">Transactions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://redis.io/commands/discard">DISCARD</a></td>
+<td>Discard all commands issued after MULTI</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/exec">EXEC</a></td>
+<td>Execute all commands issued after MULTI</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/multi">MULTI</a></td>
+<td>Mark the start of a transaction block</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/unwatch">UNWATCH</a></td>
+<td>Forget about all watched keys</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/watch">WATCH </a></td>
+<td>Watch the given keys to determine execution of the MULTI/EXEC block</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="scripting">Scripting</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://redis.io/commands/eval">EVAL </a></td>
+<td>Execute a Lua script server side</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/evalsha">EVALSHA </a></td>
+<td>Execute a Lua script server side</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/script-debug">SCRIPT DEBUG </a></td>
+<td>Set the debug mode for executed scripts.</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/script-exists">SCRIPT EXISTS </a></td>
+<td>Check existence of scripts in the script cache.</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/script-flush">SCRIPT FLUSH</a></td>
+<td>Remove all the scripts from the script cache.</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/script-kill">SCRIPT KILL</a></td>
+<td>Kill the script currently in execution.</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/script-load">SCRIPT LOAD </a></td>
+<td>Load the specified Lua script into the script cache.</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="pubsub">Pubsub</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://redis.io/commands/psubscribe">PSUBSCRIBE </a></td>
+<td>Listen for messages published to channels matching the given patterns</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/pubsub">PUBSUB </a></td>
+<td>Inspect the state of the Pub/Sub subsystem</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/publish">PUBLISH </a></td>
+<td>Post a message to a channel</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/punsubscribe">PUNSUBSCRIBE </a></td>
+<td>Stop listening for messages posted to channels matching the given patterns</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/subscribe">SUBSCRIBE </a></td>
+<td>Listen for messages published to the given channels</td>
+</tr>
+<tr>
+<td><a href="https://redis.io/commands/unsubscribe">UNSUBSCRIBE </a></td>
+<td>Stop listening for messages posted to the given channels</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

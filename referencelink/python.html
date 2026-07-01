@@ -1,0 +1,2175 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Python Cheat Sheet — FlameTech</title>
+  <meta name="description" content="The [Python](https://www.python.org/) cheat sheet is a one-page reference sheet for the Python 3 programming language.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#436b97}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(67,107,151,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Programming</span>
+    <span>›</span>
+    <span>Python</span>
+  </div>
+  <div class="post-icon">PY</div>
+  <h1>Python <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>The <a href="https://www.python.org/">Python</a> cheat sheet is a one-page reference sheet for the Python 3 programming language.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Programming</span>
+    <span class="meta-tag">script</span> <span class="meta-tag">interpret</span> <span class="meta-tag">Programming</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<ul>
+<li><a href="https://www.python.org/">Python</a> <em>(python.org)</em></li>
+<li><a href="https://docs.python.org/3/index.html">Python Document</a> <em>(docs.python.org)</em></li>
+<li><a href="https://learnxinyminutes.com/docs/python/">Learn X in Y minutes</a> <em>(learnxinyminutes.com)</em></li>
+<li><a href="regex.html#regex-in-python">Regex in python</a> <em>(cheatsheets.zip)</em></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="hello-world">Hello World</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, World!&quot;</span><span class="p">)</span>
+<span class="n">Hello</span><span class="p">,</span> <span class="n">World</span><span class="err">!</span>
+</code></pre></div>
+
+<p>The famous "Hello World" program in Python</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="variables">Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">age</span> <span class="o">=</span> <span class="mi">18</span>      <span class="c1"># age is of type int</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span> <span class="c1"># name is now of type str</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Python can't declare a variable without assignment.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="data-types">Data Types</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>str</code></td>
+<td>Text</td>
+</tr>
+<tr>
+<td><code>int</code>, <code>float</code>, <code>complex</code></td>
+<td>Numeric</td>
+</tr>
+<tr>
+<td><code>list</code>, <code>tuple</code>, <code>range</code></td>
+<td>Sequence</td>
+</tr>
+<tr>
+<td><code>dict</code></td>
+<td>Mapping</td>
+</tr>
+<tr>
+<td><code>set</code>, <code>frozenset</code></td>
+<td>Set</td>
+</tr>
+<tr>
+<td><code>bool</code></td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td><code>bytes</code>, <code>bytearray</code>, <code>memoryview</code></td>
+<td>Binary</td>
+</tr>
+</tbody>
+</table>
+<p>See: <a href="#python-built-in-data-types">Data Types</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="slicing-string">Slicing String</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Hello, World!&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">llo</span>
+</code></pre></div>
+
+<p>See: <a href="#python-strings">Strings</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lists">Lists</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">mylist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">mylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">mylist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">mylist</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span> <span class="c1"># prints out 1,2</span>
+</code></pre></div>
+
+<p>See: <a href="#python-lists">Lists</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="if-else">If Else</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">num</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is greater than 0&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is not greater than 0&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>See: <a href="#python-flow-control">Flow control</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="loops">Loops</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">6</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span> <span class="k">break</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Finally finished!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>See: <a href="#python-loops">Loops</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions">Functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">def</span><span class="w"> </span><span class="nf">my_function</span><span class="p">():</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello from a function&quot;</span><span class="p">)</span>
+<span class="o">...</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">my_function</span><span class="p">()</span>
+<span class="n">Hello</span> <span class="kn">from</span><span class="w"> </span><span class="nn">a</span> <span class="n">function</span>
+</code></pre></div>
+
+<p>See: <a href="#python-functions">Functions</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="file-handling">File Handling</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myfile.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</code></pre></div>
+
+<p>See: <a href="#python-file-handling">File Handling</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="arithmetic">Arithmetic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">result</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">+</span> <span class="mi">30</span> <span class="c1"># =&gt; 40</span>
+<span class="n">result</span> <span class="o">=</span> <span class="mi">40</span> <span class="o">-</span> <span class="mi">10</span> <span class="c1"># =&gt; 30</span>
+<span class="n">result</span> <span class="o">=</span> <span class="mi">50</span> <span class="o">*</span> <span class="mi">5</span>  <span class="c1"># =&gt; 250</span>
+<span class="n">result</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">/</span> <span class="mi">4</span>  <span class="c1"># =&gt; 4.0 (Float Division)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="mi">16</span> <span class="o">//</span> <span class="mi">4</span> <span class="c1"># =&gt; 4 (Integer Division)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">%</span> <span class="mi">2</span>  <span class="c1"># =&gt; 1</span>
+<span class="n">result</span> <span class="o">=</span> <span class="mi">5</span> <span class="o">**</span> <span class="mi">3</span>  <span class="c1"># =&gt; 125</span>
+</code></pre></div>
+
+<p>The <code>/</code> means quotient of x and y, and the <code>//</code> means floored quotient of x and y, also see
+<a href="https://stackoverflow.com/a/183870/13192320">StackOverflow</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="plus-equals">Plus-Equals</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">counter</span> <span class="o">+=</span> <span class="mi">10</span>           <span class="c1"># =&gt; 10</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span> <span class="o">+</span> <span class="mi">10</span>  <span class="c1"># =&gt; 10</span>
+
+<span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;Part 1.&quot;</span>
+
+<span class="c1"># =&gt; Part 1.Part 2.</span>
+<span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot;Part 2.&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="f-strings-python-36">f-Strings (Python 3.6+)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">website</span> <span class="o">=</span> <span class="s1">&#39;cheatsheets.zip&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s2">&quot;Hello, &quot;</span>
+<span class="s2">&quot;Hello, cheatsheets.zip&quot;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39; + 10 = &#39;</span>
+<span class="s1">&#39;10 + 10 = 20&#39;</span>
+</code></pre></div>
+
+<p>See: <a href="#python-f-strings-since-python-3-6">Python F-Strings</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-built-in-data-types">
+<h2 id="python-built-in-data-types">Python Built-in Data Types</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="strings">Strings</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">hello</span> <span class="o">=</span> <span class="s2">&quot;Hello World&quot;</span>
+<span class="n">hello</span> <span class="o">=</span> <span class="s1">&#39;Hello World&#39;</span>
+
+<span class="n">multi_string</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Multiline Strings</span>
+<span class="s2">Lorem ipsum dolor sit amet,</span>
+<span class="s2">consectetur adipiscing elit &quot;&quot;&quot;</span>
+</code></pre></div>
+
+<p>See: <a href="#python-strings">Strings</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="numbers">Numbers</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>    <span class="c1"># int</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mf">2.8</span>  <span class="c1"># float</span>
+<span class="n">z</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span>   <span class="c1"># complex</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="err">&#39;</span><span class="nc">int</span><span class="s1">&#39;&gt;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="booleans">Booleans</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">my_bool</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">my_bool</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="nb">bool</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>     <span class="c1"># =&gt; False</span>
+<span class="nb">bool</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># =&gt; True</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="lists_1">Lists</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">list1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;apple&quot;</span><span class="p">,</span> <span class="s2">&quot;banana&quot;</span><span class="p">,</span> <span class="s2">&quot;cherry&quot;</span><span class="p">]</span>
+<span class="n">list2</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">]</span>
+<span class="n">list3</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="n">list4</span> <span class="o">=</span> <span class="nb">list</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+</code></pre></div>
+
+<p>See: <a href="#python-lists">Lists</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tuple">Tuple</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">my_tuple</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">my_tuple</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">tupla</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">tupla</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>       <span class="c1"># Output: 1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tupla</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> <span class="c1"># Count occurrences</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tupla</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span> <span class="c1"># Find index</span>
+
+<span class="n">tupla1</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">tupla2</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+
+<span class="nb">len</span><span class="p">(</span><span class="nb">tuple</span><span class="p">)</span> <span class="err">→</span> <span class="n">Returns</span> <span class="n">the</span> <span class="n">number</span> <span class="n">of</span> <span class="n">elements</span><span class="o">.</span>
+<span class="ow">in</span> <span class="err">→</span> <span class="n">Checks</span> <span class="k">if</span> <span class="n">an</span> <span class="n">element</span> <span class="n">exists</span> <span class="ow">in</span> <span class="n">the</span> <span class="nb">tuple</span><span class="o">.</span>
+<span class="n">Concatenation</span> <span class="p">(</span><span class="o">+</span><span class="p">)</span> <span class="err">→</span> <span class="n">Combines</span> <span class="n">two</span> <span class="n">tuples</span><span class="o">.</span>
+<span class="n">Repetition</span> <span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="err">→</span> <span class="n">Repeats</span> <span class="n">a</span> <span class="nb">tuple</span><span class="o">.</span>
+<span class="n">Slicing</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">])</span> <span class="err">→</span> <span class="n">Extracts</span> <span class="n">a</span> <span class="n">subtuple</span><span class="o">.</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tupla1</span><span class="p">))</span>       <span class="c1"># Output: 3</span>
+<span class="nb">print</span><span class="p">(</span><span class="mi">2</span> <span class="ow">in</span> <span class="n">tupla1</span><span class="p">)</span>       <span class="c1"># Output: True</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tupla1</span> <span class="o">+</span> <span class="n">tupla2</span><span class="p">)</span>   <span class="c1"># Output: (1, 2, 3, &#39;a&#39;, &#39;b&#39;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">tupla1</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>        <span class="c1"># Output: (2, 3)</span>
+
+<span class="c1"># unpacking</span>
+<span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">tupla</span>   <span class="c1"># Each value goes into a variable</span>
+</code></pre></div>
+
+<p>Similar to List but immutable</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="set">Set</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">set1</span> <span class="o">=</span> 
+<span class="n">set2</span> <span class="o">=</span> <span class="nb">set</span><span class="p">((</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Set of unique items/objects</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="dictionary">Dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">empty_dict</span> <span class="o">=</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">]</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">dict_keys</span><span class="p">([</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+<span class="n">dict_values</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="n">dict_keys</span><span class="p">([</span><span class="s1">&#39;one&#39;</span><span class="p">,</span> <span class="s1">&#39;two&#39;</span><span class="p">,</span> <span class="s1">&#39;three&#39;</span><span class="p">,</span> <span class="s1">&#39;four&#39;</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="s1">&#39;four&#39;</span><span class="p">]</span>
+<span class="mi">4</span>
+</code></pre></div>
+
+<p>Key: Value pair, JSON like object</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="casting">Casting</h3>
+<div class="section">
+<h4 id="integers">Integers</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># x will be 1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">2.8</span><span class="p">)</span> <span class="c1"># y will be 2</span>
+<span class="n">z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">)</span> <span class="c1"># z will be 3</span>
+</code></pre></div>
+
+<h4 id="floats">Floats</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># x will be 1.0</span>
+<span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="mf">2.8</span><span class="p">)</span>   <span class="c1"># y will be 2.8</span>
+<span class="n">z</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;3&quot;</span><span class="p">)</span>   <span class="c1"># z will be 3.0</span>
+<span class="n">w</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;4.2&quot;</span><span class="p">)</span> <span class="c1"># w will be 4.2</span>
+</code></pre></div>
+
+<h4 id="strings_1">Strings</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;s1&quot;</span><span class="p">)</span> <span class="c1"># x will be &#39;s1&#39;</span>
+<span class="n">y</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>    <span class="c1"># y will be &#39;2&#39;</span>
+<span class="n">z</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>  <span class="c1"># z will be &#39;3.0&#39;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-advanced-data-types">
+<h2 id="python-advanced-data-types">Python Advanced Data Types</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="heaps">Heaps</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">heapq</span>
+
+<span class="n">myList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">myList</span><span class="p">)</span> <span class="c1"># turn myList into a Min Heap</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">myList</span><span class="p">)</span>    <span class="c1"># =&gt; [1, 3, 2, 5, 9, 4]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">myList</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># first value is always the smallest in the heap</span>
+
+<span class="n">heapq</span><span class="o">.</span><span class="n">heappush</span><span class="p">(</span><span class="n">myList</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># insert 10</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">myList</span><span class="p">)</span>  <span class="c1"># pop and return smallest item</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>                   <span class="c1"># =&gt; 1</span>
+</code></pre></div>
+
+<h4 id="negate-all-values-to-use-min-heap-as-max-heap">Negate all values to use Min Heap as Max Heap</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">myList</span> <span class="o">=</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">myList</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">val</span> <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">myList</span><span class="p">]</span> <span class="c1"># multiply by -1 to negate</span>
+<span class="n">heapq</span><span class="o">.</span><span class="n">heapify</span><span class="p">(</span><span class="n">myList</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">heapq</span><span class="o">.</span><span class="n">heappop</span><span class="p">(</span><span class="n">myList</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span> <span class="c1"># =&gt; 9 (making sure to multiply by -1 again)</span>
+</code></pre></div>
+
+<p>Heaps are binary trees for which every parent node has a value less than or equal to any of its children. Useful for
+accessing min/max value quickly. Time complexity: O(n) for heapify, O(log n) push and pop. See:
+<a href="https://docs.python.org/3/library/heapq.html">Heapq</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="stacks-and-queues">Stacks and Queues</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">deque</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">()</span>          <span class="c1"># empty</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">deque</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span> <span class="c1"># with values</span>
+
+<span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>     <span class="c1"># append to right side</span>
+<span class="n">q</span><span class="o">.</span><span class="n">appendleft</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># append to left side</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>    <span class="c1"># =&gt; deque([0, 1, 2, 3, 4])</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span> <span class="c1"># remove &amp; return from right</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="o">.</span><span class="n">popleft</span><span class="p">()</span> <span class="c1"># remove &amp; return from left</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>    <span class="c1"># =&gt; 4</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>    <span class="c1"># =&gt; 0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>    <span class="c1"># =&gt; deque([1, 2, 3])</span>
+
+<span class="n">q</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># rotate 1 step to the right</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">)</span>    <span class="c1"># =&gt; deque([3, 1, 2])</span>
+</code></pre></div>
+
+<p>Deque is a double-ended queue with O(1) time for append/pop operations from both sides. Used as stacks and queues. See:
+<a href="https://docs.python.org/3/library/collections.html#collections.deque">Deque</a></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-strings">
+<h2 id="python-strings">Python Strings</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="array-like">Array-like</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">hello</span> <span class="o">=</span> <span class="s2">&quot;Hello, World&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">hello</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">e</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">hello</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">d</span>
+</code></pre></div>
+
+<p>Get the character at position 1 or last</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="looping">Looping</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="k">for</span> <span class="n">char</span> <span class="ow">in</span> <span class="s2">&quot;foo&quot;</span><span class="p">:</span>
+<span class="o">...</span>     <span class="nb">print</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+<span class="n">f</span>
+<span class="n">o</span>
+<span class="n">o</span>
+</code></pre></div>
+
+<p>Loop through the letters in the word "foo"</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="slicing-string_1">Slicing string</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="w"> </span><span class="err">┌───┬───┬───┬───┬───┬───┬───┐</span>
+<span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">o</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">|</span>
+<span class="w"> </span><span class="err">└───┴───┴───┴───┴───┴───┴───┘</span>
+<span class="w"> </span><span class="mi">0</span><span class="w">   </span><span class="mi">1</span><span class="w">   </span><span class="mi">2</span><span class="w">   </span><span class="mi">3</span><span class="w">   </span><span class="mi">4</span><span class="w">   </span><span class="mi">5</span><span class="w">   </span><span class="mi">6</span><span class="w">   </span><span class="mi">7</span>
+<span class="o">-</span><span class="mi">7</span><span class="w">  </span><span class="o">-</span><span class="mi">6</span><span class="w">  </span><span class="o">-</span><span class="mi">5</span><span class="w">  </span><span class="o">-</span><span class="mi">4</span><span class="w">  </span><span class="o">-</span><span class="mi">3</span><span class="w">  </span><span class="o">-</span><span class="mi">2</span><span class="w">  </span><span class="o">-</span><span class="mi">1</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;mybacon&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+<span class="s1">&#39;bac&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="s1">&#39;my&#39;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;mybacon&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+<span class="s1">&#39;my&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+<span class="s1">&#39;bacon&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+<span class="s1">&#39;mybacon&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[:]</span>
+<span class="s1">&#39;mybacon&#39;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;mybacon&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="s1">&#39;baco&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+<span class="s1">&#39;baco&#39;</span>
+</code></pre></div>
+
+<h4 id="with-a-stride">With a stride</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;12345&#39;</span> <span class="o">*</span> <span class="mi">5</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span>
+<span class="s1">&#39;1234512345123451234512345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[::</span><span class="mi">5</span><span class="p">]</span>
+<span class="s1">&#39;11111&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[</span><span class="mi">4</span><span class="p">::</span><span class="mi">5</span><span class="p">]</span>
+<span class="s1">&#39;55555&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[::</span><span class="o">-</span><span class="mi">5</span><span class="p">]</span>
+<span class="s1">&#39;55555&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="s1">&#39;5432154321543215432154321&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="string-length">String Length</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">hello</span> <span class="o">=</span> <span class="s2">&quot;Hello, World!&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">hello</span><span class="p">))</span>
+<span class="mi">13</span>
+</code></pre></div>
+
+<p>The len() function returns the length of a string</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="multiple-copies">Multiple copies</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;===+&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">8</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">*</span> <span class="n">n</span>
+<span class="s1">&#39;===+===+===+===+===+===+===+===+&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="check-string">Check String</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;spam&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="ow">in</span> <span class="s1">&#39;I saw spamalot!&#39;</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s1">&#39;I saw The Holy Grail!&#39;</span>
+<span class="kc">True</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="concatenates">Concatenates</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;spam&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">t</span> <span class="o">=</span> <span class="s1">&#39;egg&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">s</span> <span class="o">+</span> <span class="n">t</span>
+<span class="s1">&#39;spamegg&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="s1">&#39;spam&#39;</span> <span class="s1">&#39;egg&#39;</span>
+<span class="s1">&#39;spamegg&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="formatting">Formatting</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello, </span><span class="si">%s</span><span class="s2">!&quot;</span> <span class="o">%</span> <span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;John&quot;</span>
+<span class="n">age</span> <span class="o">=</span> <span class="mi">23</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> is </span><span class="si">%d</span><span class="s2"> years old.&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">))</span>
+</code></pre></div>
+
+<h4 id="format-method">format() Method</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">txt1</span> <span class="o">=</span> <span class="s2">&quot;My name is , I&#39;m &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">fname</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">36</span><span class="p">)</span>
+<span class="n">txt2</span> <span class="o">=</span> <span class="s2">&quot;My name is , I&#39;m &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+<span class="n">txt3</span> <span class="o">=</span> <span class="s2">&quot;My name is , I&#39;m &quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="mi">36</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="input">Input</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">name</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter your name: &quot;</span><span class="p">)</span>
+<span class="n">Enter</span> <span class="n">your</span> <span class="n">name</span><span class="p">:</span> <span class="n">Tom</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">name</span>
+<span class="s1">&#39;Tom&#39;</span>
+</code></pre></div>
+
+<p>Get input data from console</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="join">Join</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;#&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="s2">&quot;Peter&quot;</span><span class="p">,</span> <span class="s2">&quot;Vicky&quot;</span><span class="p">])</span>
+<span class="s1">&#39;John#Peter#Vicky&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="endswith">Endswith</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="s2">&quot;Hello, world!&quot;</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;!&quot;</span><span class="p">)</span>
+<span class="kc">True</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-f-strings-since-python-36">
+<h2 id="python-f-strings-since-python-36">Python F-Strings (Since Python 3.6+)</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="f-strings-usage">f-Strings usage</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">website</span> <span class="o">=</span> <span class="s1">&#39;cheatsheets.zip&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s2">&quot;Hello, &quot;</span>
+<span class="s2">&quot;Hello, cheatsheets.zip&quot;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">num</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39; + 10 = &#39;</span>
+<span class="s1">&#39;10 + 10 = 20&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;He said &quot;&quot;&quot;</span>
+<span class="s2">&quot;He said I&#39;m John&quot;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;5 &quot;</span><span class="si">}</span><span class="s1">&#39;</span>
+<span class="s1">&#39;5 &#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">}</span><span class="s1"> &#39;</span>
+<span class="s1">&#39; stars&#39;</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Eric&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">27</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;Hello!</span>
+<span class="s2">...     I&#39;m .</span>
+<span class="s2">...     I&#39;m .&quot;&quot;&quot;</span>
+<span class="s2">&quot;Hello!</span><span class="se">\n</span><span class="s2">    I&#39;m Eric.</span><span class="se">\n</span><span class="s2">    I&#39;m 27.&quot;</span>
+</code></pre></div>
+
+<p>it is available since Python 3.6, also see:
+<a href="https://docs.python.org/3/reference/lexical_analysis.html#f-strings">Formatted string literals</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="f-strings-fill-align">f-Strings Fill Align</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>     <span class="c1"># [width]</span>
+<span class="s1">&#39;text      &#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>   <span class="c1"># fill left</span>
+<span class="s1">&#39;******test&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>   <span class="c1"># fill right</span>
+<span class="s1">&#39;test******&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>   <span class="c1"># fill center</span>
+<span class="s1">&#39;***test***&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>    <span class="c1"># fill with numbers</span>
+<span class="s1">&#39;0000012345&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="f-strings-type">f-Strings Type</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>        <span class="c1"># binary type</span>
+<span class="s1">&#39;1010&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>        <span class="c1"># octal type</span>
+<span class="s1">&#39;12&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>       <span class="c1"># hexadecimal type</span>
+<span class="s1">&#39;c8&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;C8&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span> <span class="c1"># scientific notation</span>
+<span class="s1">&#39;3.456000e+11&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>       <span class="c1"># character type</span>
+<span class="s1">&#39;A&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>      <span class="c1"># [type] with notation (base)</span>
+<span class="s1">&#39;0b1010&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;0o12&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;0xa&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="f-strings-others">F-Strings Others</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>  <span class="c1"># negative numbers</span>
+<span class="s1">&#39;-000012345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>    <span class="c1"># [0] shortcut (no align)</span>
+<span class="s1">&#39;0000012345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;-000012345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>       <span class="c1"># [.precision]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>
+<span class="mf">3.141592653589793</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;3.14&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span> <span class="c1"># [grouping_option]</span>
+<span class="s1">&#39;1,000,000.00&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;1_000_000.00&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>      <span class="c1"># percentage</span>
+<span class="s1">&#39;25.000000%&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;25%&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="f-strings-sign">F-Strings Sign</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>      <span class="c1"># [sign] (+/-)</span>
+<span class="s1">&#39;+12345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;-12345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;    -12345&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="sa">f</span><span class="s1">&#39;&#39;</span>
+<span class="s1">&#39;-000012345&#39;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-lists">
+<h2 id="python-lists">Python Lists</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="defining">Defining</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">li1</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li1</span>
+<span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li2</span>
+<span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li3</span> <span class="o">=</span> <span class="nb">list</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li3</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li4</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li4</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="generate">Generate</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">)))</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">19</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)</span> <span class="k">if</span>  <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">81</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">list</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]))</span>
+<span class="p">[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="append">Append</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">li</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="list-slicing">List Slicing</h3>
+<div class="section">
+<p>Syntax of list slicing:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">a_list</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">]</span>
+<span class="n">a_list</span><span class="p">[</span><span class="n">start</span><span class="p">:</span><span class="n">end</span><span class="p">:</span><span class="n">step</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="slicing">Slicing</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="omitting-index">Omitting index</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[:</span><span class="mi">4</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>
+<span class="p">[</span><span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)]</span>
+<span class="p">[</span><span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[:]</span>
+<span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="with-a-stride_1">With a stride</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[</span><span class="mi">6</span><span class="p">:</span><span class="mi">0</span><span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;lobster&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span>
+<span class="p">[</span><span class="s1">&#39;spam&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;lobster&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">a</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;lobster&#39;</span><span class="p">,</span> <span class="s1">&#39;ham&#39;</span><span class="p">,</span> <span class="s1">&#39;tomato&#39;</span><span class="p">,</span> <span class="s1">&#39;bacon&#39;</span><span class="p">,</span> <span class="s1">&#39;egg&#39;</span><span class="p">,</span> <span class="s1">&#39;spam&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="remove">Remove</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">li</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;butter&#39;</span><span class="p">,</span> <span class="s1">&#39;milk&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+<span class="s1">&#39;milk&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="s1">&#39;bread&#39;</span><span class="p">,</span> <span class="s1">&#39;butter&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="k">del</span> <span class="n">li</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="s1">&#39;butter&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="access">Access</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">li</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="s1">&#39;a&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="s1">&#39;d&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s2">&quot;&lt;stdin&gt;&quot;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">,</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">IndexError</span><span class="p">:</span> <span class="nb">list</span> <span class="n">index</span> <span class="n">out</span> <span class="n">of</span> <span class="nb">range</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="concatenating">Concatenating</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">odd</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">odd</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">])</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">odd</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">odd</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">odd</span> <span class="o">+</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">13</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="sort-reverse">Sort &amp; Reverse</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">li</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="count">Count</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">li</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="mi">2</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="repeating">Repeating</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">li</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;re&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">li</span>
+<span class="p">[</span><span class="s1">&#39;re&#39;</span><span class="p">,</span> <span class="s1">&#39;re&#39;</span><span class="p">,</span> <span class="s1">&#39;re&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-flow-control">
+<h2 id="python-flow-control">Python Flow control</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basic">Basic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">num</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="k">if</span> <span class="n">num</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is totally bigger than 10.&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">num</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is smaller than 10.&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;num is indeed 10.&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="one-line-ternary-operator">One line (ternary operator)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">330</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="mi">200</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">r</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span> <span class="k">if</span> <span class="n">a</span> <span class="o">&gt;</span> <span class="n">b</span> <span class="k">else</span> <span class="s2">&quot;b&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+<span class="n">a</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="else-if">else if</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">value</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">value</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value is False&quot;</span><span class="p">)</span>
+<span class="k">elif</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value is None&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Value is True&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="match-case">match case</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">match</span> <span class="n">x</span><span class="p">:</span>
+  <span class="k">case</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;zero&quot;</span><span class="p">)</span>
+  <span class="k">case</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;one&quot;</span><span class="p">)</span>
+  <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;multiple&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-loops">
+<h2 id="python-loops">Python Loops</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basic_1">Basic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">primes</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">primes</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">prime</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Prints: 2 3 5 7</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="with-index">With index</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">animals</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dog&quot;</span><span class="p">,</span> <span class="s2">&quot;cat&quot;</span><span class="p">,</span> <span class="s2">&quot;mouse&quot;</span><span class="p">]</span>
+<span class="c1"># enumerate() adds counter to an iterable</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">animals</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Prints: 0 dog 1 cat 2 mouse</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="while">While</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">while</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># Shorthand for x = x + 1</span>
+</code></pre></div>
+
+<p>Prints: 0 1 2 3</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="break">Break</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">index</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">break</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Prints: 0 10 20 30 40</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue">Continue</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">index</span> <span class="o">*</span> <span class="mi">10</span>
+    <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Prints: 30 40 60 70</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="range">Range</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># Prints: 0 1 2 3</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># Prints: 4 5 6 7</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="c1"># Prints: 4 6 8</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="with-zip">With zip()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">words</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Mon&#39;</span><span class="p">,</span> <span class="s1">&#39;Tue&#39;</span><span class="p">,</span> <span class="s1">&#39;Wed&#39;</span><span class="p">]</span>
+<span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<span class="c1"># Use zip to pack into a tuple list</span>
+<span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">nums</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">:</span><span class="si">%s</span><span class="s1">, &#39;</span> <span class="o">%</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+</code></pre></div>
+
+<p>Prints: 1:Mon, 2:Tue, 3:Wed,</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="forelse">for/else</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">60</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">90</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">nums</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">100</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> is bigger than 100&quot;</span> <span class="o">%</span><span class="n">n</span><span class="p">)</span>
+        <span class="k">break</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Not found!&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Also see: <a href="https://book.pythontips.com/en/latest/for_-_else.html">Python Tips</a></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="over-dictionary">Over Dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">johndict</span> <span class="o">=</span> 
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">johndict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="c1"># Output: dict_items([(&#39;firstname&#39;, &#39;John&#39;),</span>
+<span class="c1">#                     (&#39;lastname&#39;, &#39;Doe&#39;),</span>
+<span class="c1">#                     (&#39;age&#39;, 30)])</span>
+
+<span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">johndict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; : : &quot;</span><span class="p">)</span>
+
+<span class="c1"># Output: firstname : : John</span>
+<span class="c1"># Output: lastname : : Doe</span>
+<span class="c1"># Output: age : : 30</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-comprehensions">
+<h2 id="python-comprehensions">Python Comprehensions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="comprehension-list">Comprehension List</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">languages</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;go&quot;</span><span class="p">,</span> <span class="s2">&quot;rust&quot;</span><span class="p">,</span> <span class="s2">&quot;javascript&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">]</span>
+
+<span class="n">newlist</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">languages</span> <span class="k">if</span> <span class="s2">&quot;l&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+<span class="c1"># add language for language in languages if &quot;l&quot; not in language</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">newlist</span><span class="p">)</span> <span class="c1">#Output : [ &#39;go&#39;, &#39;rust&#39;, &#39;javascript&#39;, &#39;python&#39;]</span>
+
+<span class="c1"># List comprehension avoid this :</span>
+<span class="n">oldlist</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">:</span>
+    <span class="k">if</span>  <span class="s2">&quot;l&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+        <span class="n">oldlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">oldlist</span><span class="p">)</span> <span class="c1">#Output :  [ &#39;go&#39;, &#39;rust&#39;, &#39;javascript&#39;, &#39;python&#39;]</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="comprehension-dictionary">Comprehension Dictionary</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">languages</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;html&quot;</span><span class="p">,</span> <span class="s2">&quot;go&quot;</span><span class="p">,</span> <span class="s2">&quot;rust&quot;</span><span class="p">,</span> <span class="s2">&quot;javascript&quot;</span><span class="p">,</span> <span class="s2">&quot;python&quot;</span><span class="p">]</span>
+
+<span class="n">language_dict</span> <span class="o">=</span> 
+<span class="c1"># Key is the language &amp; bool is Value (no offense for html..)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">language_dict</span><span class="p">)</span>
+<span class="c1"># Output: </span>
+
+
+<span class="c1"># Dictionary comprehension avoid this :</span>
+
+<span class="n">language_dict2</span> <span class="o">=</span> 
+
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">languages</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s2">&quot;l&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">language_dict2</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">language_dict2</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">language_dict2</span><span class="p">)</span>
+<span class="c1"># Output: </span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-functions">
+<h2 id="python-functions">Python Functions</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="basic_2">Basic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">hello_world</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Hello, World!&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="return">Return</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;x is </span><span class="si">%s</span><span class="s2">, y is </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>    <span class="c1"># =&gt; 11</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="positional-arguments">Positional arguments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">varargs</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">args</span>
+
+<span class="n">varargs</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># =&gt; (1, 2, 3)</span>
+</code></pre></div>
+
+<p>Type of "args" is tuple.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="keyword-arguments">Keyword arguments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">keyword_args</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">kwargs</span>
+
+<span class="c1"># =&gt; </span>
+<span class="n">keyword_args</span><span class="p">(</span><span class="n">big</span><span class="o">=</span><span class="s2">&quot;foot&quot;</span><span class="p">,</span> <span class="n">loch</span><span class="o">=</span><span class="s2">&quot;ness&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Type of "kwargs" is dict.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="returning-multiple">Returning multiple</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">swap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">swap</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># =&gt; x = 2, y = 1</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="default-value">Default Value</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>      <span class="c1"># =&gt; 15</span>
+<span class="n">add</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>  <span class="c1"># =&gt; 25</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="anonymous-functions">Anonymous functions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># =&gt; True</span>
+<span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)(</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># =&gt; 5</span>
+<span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="decorator">@decorator</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Modify or extend behavior of function or class method,</span>
+<span class="c1"># without changing their actual code.</span>
+
+<span class="c1"># Define decorator that will wrap function or method</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_errors</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error :  &quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="c1"># Decorate function or method</span>
+<span class="nd">@handle_errors</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+
+<span class="n">divide</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1"># Output : Error : division by zero</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-modules">
+<h2 id="python-modules">Python Modules</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="import-modules">Import modules</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">16</span><span class="p">))</span>  <span class="c1"># =&gt; 4.0</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="from-a-module">From a module</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">floor</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="mf">3.7</span><span class="p">))</span>   <span class="c1"># =&gt; 4.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="mf">3.7</span><span class="p">))</span>  <span class="c1"># =&gt; 3.0</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="import-all">Import all</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="shorten-module">Shorten module</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">m</span>
+
+<span class="c1"># =&gt; True</span>
+<span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span> <span class="o">==</span> <span class="n">m</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions-and-attributes">Functions and attributes</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="nb">dir</span><span class="p">(</span><span class="n">math</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-file-handling">
+<h2 id="python-file-handling">Python File Handling</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="read-file">Read file</h3>
+<div class="section">
+<h4 id="line-by-line">Line by line</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myfile.txt&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</code></pre></div>
+
+<h4 id="with-line-number">With line number</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;myfile.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number </span><span class="si">%s</span><span class="s2">: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">line</span><span class="p">))</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="string">String</h3>
+<div class="section">
+<h4 id="write-a-string">Write a string</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">contents</span> <span class="o">=</span> 
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myfile1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">contents</span><span class="p">))</span>
+</code></pre></div>
+
+<h4 id="read-a-string">Read a string</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;myfile1.txt&#39;</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="object">Object</h3>
+<div class="section">
+<h4 id="write-an-object">Write an object</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">contents</span> <span class="o">=</span> 
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;myfile2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">contents</span><span class="p">))</span>
+</code></pre></div>
+
+<h4 id="read-an-object">Read an object</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;myfile2.txt&#39;</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="n">contents</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">contents</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="delete-a-file">Delete a File</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;myfile.txt&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="check-and-delete">Check and Delete</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s2">&quot;myfile.txt&quot;</span><span class="p">):</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;myfile.txt&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The file does not exist&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="delete-folder">Delete Folder</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">rmdir</span><span class="p">(</span><span class="s2">&quot;myfolder&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-classes-inheritance">
+<h2 id="python-classes-inheritance">Python Classes &amp; Inheritance</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="defining_1">Defining</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyNewClass</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="c1"># Class Instantiation</span>
+<span class="n">my</span> <span class="o">=</span> <span class="n">MyNewClass</span><span class="p">()</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="constructors">Constructors</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">voice</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">voice</span> <span class="o">=</span> <span class="n">voice</span>
+
+<span class="n">cat</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s1">&#39;Meow&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cat</span><span class="o">.</span><span class="n">voice</span><span class="p">)</span>    <span class="c1"># =&gt; Meow</span>
+
+<span class="n">dog</span> <span class="o">=</span> <span class="n">Animal</span><span class="p">(</span><span class="s1">&#39;Woof&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dog</span><span class="o">.</span><span class="n">voice</span><span class="p">)</span>    <span class="c1"># =&gt; Woof</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="method">Method</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Dog</span><span class="p">:</span>
+
+    <span class="c1"># Method of the class</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">bark</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Ham-Ham&quot;</span><span class="p">)</span>
+
+<span class="n">charlie</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">()</span>
+<span class="n">charlie</span><span class="o">.</span><span class="n">bark</span><span class="p">()</span>   <span class="c1"># =&gt; &quot;Ham-Ham&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="class-variables">Class Variables</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">:</span>
+    <span class="n">class_variable</span> <span class="o">=</span> <span class="s2">&quot;A class variable!&quot;</span>
+
+<span class="c1"># =&gt; A class variable!</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">MyClass</span><span class="o">.</span><span class="n">class_variable</span><span class="p">)</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+
+<span class="c1"># =&gt; A class variable!</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">class_variable</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="super-function">Super() Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParentClass</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parent Method&quot;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ChildClass</span><span class="p">(</span><span class="n">ParentClass</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_test</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Child Method&quot;</span><span class="p">)</span>
+        <span class="c1"># Calls the parent&#39;s print_test()</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">print_test</span><span class="p">()</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">child_instance</span> <span class="o">=</span> <span class="n">ChildClass</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">child_instance</span><span class="o">.</span><span class="n">print_test</span><span class="p">()</span>
+<span class="n">Child</span> <span class="n">Method</span>
+<span class="n">Parent</span> <span class="n">Method</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="repr-method">repr() method</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Employee</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+<span class="n">john</span> <span class="o">=</span> <span class="n">Employee</span><span class="p">(</span><span class="s1">&#39;John&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">john</span><span class="p">)</span>  <span class="c1"># =&gt; John</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="user-defined-exceptions">User-defined exceptions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CustomError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="polymorphism">Polymorphism</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParentClass</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ChildClass</span><span class="p">(</span><span class="n">ParentClass</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">)</span>
+
+<span class="n">obj_A</span> <span class="o">=</span> <span class="n">ParentClass</span><span class="p">()</span>
+<span class="n">obj_B</span> <span class="o">=</span> <span class="n">ChildClass</span><span class="p">()</span>
+
+<span class="n">obj_A</span><span class="o">.</span><span class="n">print_self</span><span class="p">()</span> <span class="c1"># =&gt; A</span>
+<span class="n">obj_B</span><span class="o">.</span><span class="n">print_self</span><span class="p">()</span> <span class="c1"># =&gt; B</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="overriding">Overriding</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParentClass</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Parent&quot;</span><span class="p">)</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ChildClass</span><span class="p">(</span><span class="n">ParentClass</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">print_self</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Child&quot;</span><span class="p">)</span>
+
+<span class="n">child_instance</span> <span class="o">=</span> <span class="n">ChildClass</span><span class="p">()</span>
+<span class="n">child_instance</span><span class="o">.</span><span class="n">print_self</span><span class="p">()</span> <span class="c1"># =&gt; Child</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="inheritance">Inheritance</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Animal</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">legs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">legs</span> <span class="o">=</span> <span class="n">legs</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Dog</span><span class="p">(</span><span class="n">Animal</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">sound</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Woof!&quot;</span><span class="p">)</span>
+
+<span class="n">Yoki</span> <span class="o">=</span> <span class="n">Dog</span><span class="p">(</span><span class="s2">&quot;Yoki&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Yoki</span><span class="o">.</span><span class="n">name</span><span class="p">)</span> <span class="c1"># =&gt; YOKI</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Yoki</span><span class="o">.</span><span class="n">legs</span><span class="p">)</span> <span class="c1"># =&gt; 4</span>
+<span class="n">Yoki</span><span class="o">.</span><span class="n">sound</span><span class="p">()</span>     <span class="c1"># =&gt; Woof!</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="staticmethod">@staticmethod</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MyClass</span><span class="p">:</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">greet</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Hello, !&quot;</span>
+
+<span class="c1"># No instantiation nedded</span>
+
+<span class="c1"># Call via class</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">MyClass</span><span class="o">.</span><span class="n">greet</span><span class="p">(</span><span class="s2">&quot;Alice&quot;</span><span class="p">))</span>  <span class="c1"># =&gt; Hello, Alice!</span>
+
+<span class="c1"># Can still call via instance</span>
+<span class="n">obj</span> <span class="o">=</span> <span class="n">MyClass</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">greet</span><span class="p">(</span><span class="s2">&quot;Bob&quot;</span><span class="p">))</span>        <span class="c1"># =&gt; Hello, Bob!</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-type-hints-since-python-35">
+<h2 id="python-type-hints-since-python-35">Python Type Hints (Since Python 3.5)</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="variable-parameter">Variable &amp; Parameter</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">string</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;ha&quot;</span>
+<span class="n">times</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
+
+
+<span class="c1"># wrong hit, but run correctly</span>
+<span class="n">result</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>  <span class="c1"># =&gt; 3</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">say</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">start</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;Hi&quot;</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">start</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">name</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">say</span><span class="p">(</span><span class="s2">&quot;Python&quot;</span><span class="p">))</span>  <span class="c1"># =&gt; Hi, Python</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="built-in-date-type">Built-in date type</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="n">bill</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> 
+<span class="n">completed</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;DONE&quot;</span><span class="p">,)</span>
+<span class="n">succeeded</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
+<span class="n">statuses</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;DONE&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span> <span class="s2">&quot;FAILED&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">codes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="built-in-date-type-310">Built-in date type (3.10+)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">bill</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> 
+<span class="n">completed</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;DONE&quot;</span><span class="p">,)</span>
+<span class="n">succeeded</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">)</span>
+<span class="n">statuses</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="s2">&quot;DONE&quot;</span><span class="p">,</span> <span class="s2">&quot;SUCCESS&quot;</span><span class="p">,</span> <span class="s2">&quot;FAILED&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">codes</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="positional-argument">Positional argument</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc_summary</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">calc_summary</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>  <span class="c1"># =&gt; 8</span>
+</code></pre></div>
+
+<p>Indicate all arguments' type is int.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="returned">Returned</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">say_hello</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="n">name</span>
+
+<span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;Python&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">say_hello</span><span class="p">(</span><span class="n">var</span><span class="p">))</span>  <span class="c1"># =&gt; Hello, Python</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="union-returned">Union returned</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">resp200</span><span class="p">(</span><span class="n">meaningful</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="k">return</span> <span class="s2">&quot;OK&quot;</span> <span class="k">if</span> <span class="n">meaningful</span> <span class="k">else</span> <span class="mi">200</span>
+</code></pre></div>
+
+<p>Means returned value type may be int or str.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="keyword-argument">Keyword argument</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calc_summary</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">calc_summary</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>  <span class="c1"># =&gt; 3</span>
+</code></pre></div>
+
+<p>Indicate all parameters' value type is int.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="multiple-returns">Multiple returns</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">resp200</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;OK&quot;</span>
+
+<span class="n">returns</span> <span class="o">=</span> <span class="n">resp200</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">returns</span><span class="p">)</span>  <span class="c1"># =&gt; (200, &#39;OK&#39;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">returns</span><span class="p">))</span>  <span class="c1"># tuple</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="union-returned-310">Union returned (3.10+)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">resp200</span><span class="p">(</span><span class="n">meaningful</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">return</span> <span class="s2">&quot;OK&quot;</span> <span class="k">if</span> <span class="n">meaningful</span> <span class="k">else</span> <span class="mi">200</span>
+</code></pre></div>
+
+<p>Since Python 3.10</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="property">Property</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Employee</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graduated</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="self-instance">Self instance</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Employee</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Employee&quot;</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;Employee&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="self-instance-311">Self instance (3.11+)</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Self</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">Employee</span><span class="p">:</span>
+    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">age</span><span class="p">:</span> <span class="nb">int</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">set_name</span><span class="p">(</span><span class="bp">self</span><span class="p">:</span> <span class="n">Self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="k">return</span> <span class="bp">self</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="type-generic">Type &amp; Generic</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+<span class="c1"># &quot;mapper&quot; is a type, like int, str, MyClass and so on.</span>
+<span class="c1"># &quot;default&quot; is an instance of type T, such as 314, &quot;string&quot;, MyClass() and so on.</span>
+<span class="c1"># returned is an instance of type T too.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">converter</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">T</span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mapper</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+
+<span class="n">raw</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Enter an integer: &quot;</span><span class="p">)</span>
+<span class="n">result</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">mapper</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="function">Function</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypeVar</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+
+<span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">converter</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="n">mapper</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">Any</span><span class="p">],</span> <span class="n">T</span><span class="p">],</span> <span class="n">default</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">T</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mapper</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">default</span>
+
+<span class="c1"># Callable[[Any], ReturnType] means a function declare like:</span>
+<span class="c1"># def func(arg: Any) -&gt; ReturnType:</span>
+<span class="c1">#     pass</span>
+
+<span class="c1"># Callable[[str, int], ReturnType] means a function declare like:</span>
+<span class="c1"># def func(string: str, times: int) -&gt; ReturnType:</span>
+<span class="c1">#     pass</span>
+
+<span class="c1"># Callable[..., ReturnType] means a function declare like:</span>
+<span class="c1"># def func(*args, **kwargs) -&gt; ReturnType:</span>
+<span class="c1">#     pass</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">is_success</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;OK&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;success&quot;</span><span class="p">)</span>
+
+<span class="n">resp</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">code</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">message</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">[])</span>
+<span class="n">successed</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="n">converter</span><span class="p">(</span><span class="n">resp</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">],</span> <span class="n">mapper</span><span class="o">=</span><span class="n">is_success</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="python-operators">
+<h2 id="python-operators">Python Operators</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="walrus">Walrus</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># It assigns a value to a variable and compares it in a boolean expression</span>
+<span class="k">while</span> <span class="p">(</span><span class="n">data</span> <span class="o">:=</span> <span class="n">values</span><span class="p">[</span><span class="n">i</span><span class="p">]):</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+<span class="c1"># Expected result: 1, &quot;text&quot;, True</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="date-time-handling">
+<h2 id="date-time-handling">Date &amp; Time Handling</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="current-date-and-time">Current date and time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">now</span><span class="p">)</span>  <span class="c1"># e.g., 2024-04-27 14:35:22.123456</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="creating-specific-datetime-objects">Creating specific date/time objects</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="c1"># Create a date object</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>  <span class="c1"># 2024-04-27</span>
+
+<span class="c1"># Create a time object</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">time</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>  <span class="c1"># 15:30:45</span>
+
+<span class="c1"># Create a datetime object</span>
+<span class="n">dt</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>  <span class="c1"># 2024-04-27 15:30:45</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="converting-between-date-formats">Converting between date formats</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="c1"># Convert a string to a datetime object</span>
+<span class="n">date_str</span> <span class="o">=</span> <span class="s2">&quot;2024-04-27 14:00&quot;</span>
+<span class="n">dt_obj</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_str</span><span class="p">,</span> <span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt_obj</span><span class="p">)</span>  <span class="c1"># 2024-04-27 14:00:00</span>
+
+<span class="c1"># Convert a datetime object to a string</span>
+<span class="n">formatted_str</span> <span class="o">=</span> <span class="n">dt_obj</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">formatted_str</span><span class="p">)</span>  <span class="c1"># 27/04/2024 14:00</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="timestamps-and-unix-time">Timestamps and Unix time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="c1"># Get current timestamp</span>
+<span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">timestamp</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>  <span class="c1"># e.g., 1714188922.123456</span>
+
+<span class="c1"># Convert timestamp back to datetime</span>
+<span class="n">dt_from_timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dt_from_timestamp</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="date-difference-and-timedelta">Date difference and timedelta</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span>
+
+<span class="n">date1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">27</span><span class="p">)</span>
+<span class="n">date2</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">delta</span> <span class="o">=</span> <span class="n">date2</span> <span class="o">-</span> <span class="n">date1</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">delta</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>  <span class="c1"># 4</span>
+
+<span class="c1"># Using timedelta for date arithmetic</span>
+<span class="n">new_date</span> <span class="o">=</span> <span class="n">date1</span> <span class="o">+</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">new_date</span><span class="p">)</span>  <span class="c1"># 2024-05-07</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="miscellaneous">
+<h2 id="miscellaneous">Miscellaneous</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="comments">Comments</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># This is a single line comments.</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="sd">&quot;&quot;&quot; Multiline strings can be written</span>
+<span class="sd">    using three &quot;s, and are often used</span>
+<span class="sd">    as documentation.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="sd">&#39;&#39;&#39; Multiline strings can be written</span>
+<span class="sd">    using three &#39;s, and are often used</span>
+<span class="sd">    as documentation.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="generators">Generators</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">double_numbers</span><span class="p">(</span><span class="n">iterable</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">iterable</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">i</span> <span class="o">+</span> <span class="n">i</span>
+</code></pre></div>
+
+<p>Generators help you make lazy code.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="generator-to-list">Generator to list</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">values</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">gen_to_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+
+<span class="c1"># =&gt; [-1, -2, -3, -4, -5]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gen_to_list</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="handle-exceptions">Handle exceptions</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="k">try</span><span class="p">:</span>
+    <span class="c1"># Use &quot;raise&quot; to raise an error</span>
+    <span class="k">raise</span> <span class="ne">IndexError</span><span class="p">(</span><span class="s2">&quot;This is an index error&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="ne">IndexError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+    <span class="k">pass</span>                 <span class="c1"># Pass is just a no-op. Usually you would do recovery here.</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">NameError</span><span class="p">):</span>
+    <span class="k">pass</span>                 <span class="c1"># Multiple exceptions can be handled together, if required.</span>
+<span class="k">else</span><span class="p">:</span>                    <span class="c1"># Optional clause to the try/except block. Must follow all except blocks</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;All good!&quot;</span><span class="p">)</span>   <span class="c1"># Runs only if the code in try raises no exceptions</span>
+<span class="k">finally</span><span class="p">:</span>                 <span class="c1"># Execute under all circumstances</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;We can clean up resources here&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="dispatcher-pattern">Dispatcher Pattern</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># Dispatcher allows dynamic selection and execution of functions based on user input or other runtime conditions</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">subtract</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">y</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;Error: Division by zero&#39;</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="n">y</span>
+
+<span class="c1"># Dispatcher dictionary: maps operation names to their corresponding functions</span>
+<span class="n">operations</span> <span class="o">=</span> 
+
+<span class="c1"># Function to dispatch operation based on operation name</span>
+<span class="c1"># Common use cases include executing different functions dynamically, such as in calculators, command interpreters, or event handling</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">dispatcher</span><span class="p">(</span><span class="n">operation_name</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">operations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">operation_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Unknown operation: &quot;</span>
+
+<span class="c1"># Usage examples</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">(</span><span class="s1">&#39;add&#39;</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>        <span class="c1"># Output: 8</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">(</span><span class="s1">&#39;multiply&#39;</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>   <span class="c1"># Output: 8</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">(</span><span class="s1">&#39;divide&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>    <span class="c1"># Output: Error: Division by zero</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">(</span><span class="s1">&#39;mod&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>       <span class="c1"># Output: Unknown operation: mod</span>
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

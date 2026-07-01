@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Curl Cheat Sheet — FlameTech</title>
+  <meta name="description" content="This [Curl](https://github.com/curl/curl) cheat sheet contains commands and examples of some common Curl tricks.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#475569}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(71,85,105,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Linux Command</span>
+    <span>›</span>
+    <span>Curl</span>
+  </div>
+  <div class="post-icon">CU</div>
+  <h1>Curl <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>This <a href="https://github.com/curl/curl">Curl</a> cheat sheet contains commands and examples of some common Curl tricks.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Linux Command</span>
+    <span class="meta-tag">url</span> <span class="meta-tag">request</span> <span class="meta-tag">Linux Command</span> <span class="meta-tag">copyCode</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<p><code>Curl</code> is a tool for transferring data between servers, supporting protocols, including:</p>
+<ul>
+<li>HTTP</li>
+<li>HTTPS</li>
+<li>FTP</li>
+<li>IMAP</li>
+<li>LDAP</li>
+<li>POP3</li>
+<li>SCP</li>
+<li>SFTP</li>
+<li>SMB</li>
+<li>SMTP</li>
+<li>etc...</li>
+</ul>
+<hr />
+<ul>
+<li><a href="https://github.com/curl/curl">Curl GitHub source repository</a> <em>(github.com)</em></li>
+<li><a href="https://curl.se/">Curl Official Website</a> <em>(curl.se)</em></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="options">Options</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>-o<span class="w"> </span>&lt;file&gt;<span class="w">    </span><span class="c1"># --output: write to file</span>
+-u<span class="w"> </span>user:pass<span class="w"> </span><span class="c1"># --user: authentication</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>-v<span class="w">   </span><span class="c1"># --verbose: Make curl verbose during operation</span>
+-vv<span class="w">  </span><span class="c1"># more verbose</span>
+-s<span class="w">   </span><span class="c1"># --silent: don&#39;t show progress meter or errors</span>
+-S<span class="w">   </span><span class="c1"># --show-error: When used with --silent (-sS), show errors but no progress meter</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre><span></span><code>-i<span class="w">  </span><span class="c1"># --include: include HTTP headers in the output</span>
+-I<span class="w">  </span><span class="c1"># --head: header only</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="request">Request</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>-X<span class="w"> </span>POST<span class="w"> </span><span class="c1"># --request</span>
+-L<span class="w"> </span><span class="c1"># If the page redirects, follow the link</span>
+-F<span class="w"> </span><span class="c1"># --form: HTTP POST data for multipart/form-data</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="data">data</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="c1"># --data: HTTP post data</span>
+<span class="c1"># URL encoding (eg, status=&quot;Hello&quot;)</span>
+-d<span class="w"> </span><span class="s1">&#39;data&#39;</span>
+
+<span class="c1"># --data pass file</span>
+-d<span class="w"> </span>@file
+
+<span class="c1"># --get: send -d data via get</span>
+-G
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="header-information-headers">Header information Headers</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>-A<span class="w"> </span>&lt;str&gt;<span class="w">      </span><span class="c1"># --user-agent</span>
+
+-b<span class="w"> </span><span class="nv">name</span><span class="o">=</span>val<span class="w">   </span><span class="c1"># --cookie</span>
+
+-b,<span class="w"> </span>--cookie<span class="w"> </span>FILE<span class="w">           </span><span class="c1"># Load cookies from the specified file for the URL</span>
+-c,<span class="w"> </span>--cookie-jar<span class="w"> </span>FILE<span class="w">       </span><span class="c1"># Save cookies to the specified file from the URL</span>
+
+-H<span class="w"> </span><span class="s2">&quot;X-Foo: y&quot;</span><span class="w"> </span><span class="c1"># --header</span>
+
+--compressed<span class="w">  </span><span class="c1"># use deflate/gzip</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="ssl">SSL</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="w">    </span>--cacert<span class="w"> </span>&lt;file&gt;
+<span class="w">    </span>--capath<span class="w"> </span>&lt;dir&gt;
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>-E,<span class="w"> </span>--cert<span class="w"> </span>&lt;cert&gt;<span class="w"> </span><span class="c1"># --cert: client certificate file</span>
+<span class="w">    </span>--cert-type<span class="w"> </span><span class="c1"># der/pem/eng</span>
+-k,<span class="w"> </span>--insecure<span class="w"> </span><span class="c1"># For self-signed certificates</span>
+</code></pre></div>
+
+<h4 id="install">Install</h4>
+<div class="codehilite"><pre><span></span><code>apk<span class="w"> </span>add<span class="w"> </span>--update<span class="w"> </span>curl<span class="w"> </span><span class="c1"># install in alpine linux</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="example">
+<h2 id="example">Example</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="curl-gethead">CURL GET/HEAD</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">command</th>
+<th style="text-align: left;">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>curl -I https://cheatsheets.zip</code></td>
+<td style="text-align: left;"><code>curl</code> sends a request</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -v -I https://cheatsheets.zip</code></td>
+<td style="text-align: left;"><code>curl</code> request with details</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -X GET https://cheatsheets.zip</code></td>
+<td style="text-align: left;">use explicit http method for <code>curl</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl --noproxy 127.0.0.1 http://www.stackoverflow.com</code></td>
+<td style="text-align: left;"><code>curl</code> without http proxy</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl --connect-timeout 10 -I -k https://cheatsheets.zip</code></td>
+<td style="text-align: left;"><code>curl</code> has no timeout by default</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl --verbose --header "Host: www.mytest.com:8182" cheatsheets.zip</code></td>
+<td style="text-align: left;"><code>curl</code> get extra header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -k -v https://www.google.com</code></td>
+<td style="text-align: left;"><code>curl</code> get response with headers</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="multiple-file-upload">Multiple file upload</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-v<span class="w"> </span>--include<span class="w"> </span><span class="se">\</span>
+--form<span class="w"> </span><span class="nv">key1</span><span class="o">=</span>value1<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--form<span class="w"> </span><span class="nv">upload</span><span class="o">=</span>@localfilename<span class="w"> </span>URL
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="prettify-json-output-for-curl-response">Prettify json output for curl response</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-XGET<span class="w"> </span>http://$:9200/_cluster/nodes<span class="w"> </span><span class="p">|</span><span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>json.tool
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="curl-post">CURL POST</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">command</th>
+<th style="text-align: left;">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>curl -d "name=username&amp;password=123456" &lt;URL&gt;</code></td>
+<td style="text-align: left;"><code>curl</code> send request</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl &lt;URL&gt; -H "content-type: application/json" -d ""</code></td>
+<td style="text-align: left;"><code>curl</code> sends json</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="curl-script-install-rvm">CURL script install rvm</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-sSL<span class="w"> </span>https://get.rvm.io<span class="w"> </span><span class="p">|</span><span class="w"> </span>bash
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="curl-advanced">CURL Advanced</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">command</th>
+<th style="text-align: left;">description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>curl -L -s http://ipecho.net/plain, curl -L -s http://whatismijnip.nl</code></td>
+<td style="text-align: left;">get my public <code>IP</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -u $username:$password http://repo.dennyzhang.com/README.txt</code></td>
+<td style="text-align: left;"><code>curl</code> with credentials</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -v -F key1=value1 -F upload=@localfilename &lt;URL&gt;</code></td>
+<td style="text-align: left;"><code>curl</code> upload</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -k -v --http2 https://www.google.com/</code></td>
+<td style="text-align: left;">use http2 curl</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -T cryptopp552.zip -u test:test ftp://10.32.99.187/</code></td>
+<td style="text-align: left;">curl <code>ftp</code> upload</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -u test:test ftp://10.32.99.187/cryptopp552.zip -o cryptopp552.zip</code></td>
+<td style="text-align: left;">curl <code>ftp</code> download</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>curl -v -u admin:admin123 --upload-file package1.zip http://mysever:8081/dir/package1.zip</code></td>
+<td style="text-align: left;">upload with credentials <code>curl</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="check-website-response-time">Check website response time</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-s<span class="w"> </span>-w<span class="w"> </span><span class="se">\</span>
+<span class="s1">&#39;\nLookup time:\t%\nConnect time:\t%\nAppCon time:\t%\nRedirect time:\t%\nPreXfer time:\t%\nStartXfer time:\t%\n\nTotal time:\t%\n&#39;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">     </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>https://www.google.com
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="use-curl-to-check-if-a-remote-resource-is-available">Use Curl to check if a remote resource is available</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>--silent<span class="w"> </span>-Iw<span class="w"> </span><span class="s2">&quot;%&quot;</span><span class="w"> </span>https://example.com/my.remote.tarball.gz
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="downloading-file">Downloading file</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>https://example.com<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+grep<span class="w"> </span>--only-matching<span class="w"> </span><span class="s1">&#39;src=&quot;[^&quot;]*.[png]&quot;&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+cut<span class="w"> </span>-d<span class="w"> </span><span class="se">\&quot;</span><span class="w"> </span>-f2<span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+<span class="k">while</span><span class="w"> </span><span class="nb">read</span><span class="w"> </span>i<span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>curl<span class="w"> </span>https://example.com/<span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+-o<span class="w"> </span><span class="s2">&quot;</span>$<span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</code></pre></div>
+
+<p>Download all PNG files from the site (using GNU grep)</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="download-the-file-save-the-file-without-changing-its-name">Download the file, save the file without changing its name</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>--remote-name<span class="w"> </span><span class="s2">&quot;https://example.com/linux-distro.iso&quot;</span>
+</code></pre></div>
+
+<p>Rename file</p>
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>--remote-name<span class="w"> </span><span class="s2">&quot;http://example.com/index.html&quot;</span><span class="w"> </span>--output<span class="w"> </span>foo.html
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="continue-partial-download">continue partial download</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>--remote-name<span class="w"> </span>--continue-at<span class="w"> </span>-<span class="s2">&quot;https://example.com/linux-distro.iso&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="download-files-from-multiple-domains">Download files from multiple domains</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span><span class="s2">&quot;https://www..org/index.html&quot;</span><span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;file_#1.html&quot;</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="download-a-series-of-files">Download a series of files</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span><span class="s2">&quot;https://.com/file_[1-4].webp&quot;</span><span class="w"> </span>--output<span class="w"> </span><span class="s2">&quot;#1_#2.webp&quot;</span>
+</code></pre></div>
+
+<p>Download a series of files (output <code>foo_file1.webp</code>, <code>foo_file2.webp...bar_file1_webp</code>, etc.)</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="redirect-output-to-file">Redirect output to file</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>http://url/file<span class="w"> </span>&gt;<span class="w"> </span>file
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="basic-authentication">Basic Authentication</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>--user<span class="w"> </span>username:password<span class="w"> </span>http://example.com/
+$<span class="w"> </span>curl<span class="w"> </span>-u<span class="w"> </span>username:password<span class="w"> </span>http://example.com/
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="write-to-file-instead-of-stdout">Write to file instead of stdout</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-o<span class="w"> </span>file<span class="w"> </span>http://url/file
+$<span class="w"> </span>curl<span class="w"> </span>--output<span class="w"> </span>file<span class="w"> </span>http://url/file
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="download-header-information">Download header information</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-I<span class="w"> </span>url
+<span class="c1"># display header information</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="write-output-to-a-file-named-remote_file">Write output to a file named remote_file</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-o<span class="w"> </span>file<span class="w"> </span>http://url/file
+$<span class="w"> </span>curl<span class="w"> </span>--output<span class="w"> </span>file<span class="w"> </span>http://url/file
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="execute-remote-script">Execute remote script</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>$<span class="w"> </span>curl<span class="w"> </span>-s<span class="w"> </span>http://url/myscript.sh
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="configuration-file">Configuration file</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>curl<span class="w"> </span>-K<span class="w"> </span>file
+<span class="c1"># read configuration from file</span>
+curl<span class="w"> </span>--config<span class="w"> </span>file
+<span class="nv">$HOME</span>/.curlrc<span class="w"> </span><span class="c1"># default configuration file on UNIX-like systems</span>
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

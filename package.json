@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "dev": "concurrently -n cinder,web -c yellow,cyan \"npm run dev:cinder\" \"npm run dev:web\"",
+    "dev:web": "vite --host 127.0.0.1",
+    "dev:cinder": "npm --prefix cinder-proxy run start",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 127.0.0.1"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "typescript": "latest",
+    "vite": "^8.0.16"
+  },
+  "devDependencies": {
+    "@types/react": "latest",
+    "@types/react-dom": "latest",
+    "concurrently": "^10.0.3"
+  }
+}

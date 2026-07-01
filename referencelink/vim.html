@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>Vim Cheat Sheet — FlameTech</title>
+  <meta name="description" content="A useful collection of [Vim](http://www.vim.org/) 8.2 quick reference cheat sheets to help you learn vim editor faster.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#46933f}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(70,147,63,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Toolkit</span>
+    <span>›</span>
+    <span>Vim</span>
+  </div>
+  <div class="post-icon">VI</div>
+  <h1>Vim <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>A useful collection of <a href="http://www.vim.org/">Vim</a> 8.2 quick reference cheat sheets to help you learn vim editor faster.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Toolkit</span>
+    <span class="meta-tag">vi</span> <span class="meta-tag">text</span> <span class="meta-tag">editor</span> <span class="meta-tag">terminal</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="motion-diagrams">Motion Diagrams</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code>▼/▶<span class="w"> </span>Cursor<span class="w">   </span>▽/▷<span class="w"> </span>Target
+</code></pre></div>
+
+<h4 id="left-right-motions">Left-right motions</h4>
+<div class="codehilite"><pre><span></span><code>┌─────────────<span class="w"> </span><span class="p">|</span>
+├─────────────<span class="w"> </span><span class="m">0</span><span class="w">      </span>$<span class="w"> </span>──────────────┐
+│<span class="w">  </span>┌──────────<span class="w"> </span>^<span class="w">      </span>fe<span class="w"> </span>────────┐<span class="w">    </span>│
+│<span class="w">  </span>│<span class="w">  </span>┌───────<span class="w"> </span>Fo<span class="w">     </span>te<span class="w"> </span>───────┐│<span class="w">    </span>│
+│<span class="w">  </span>│<span class="w">  </span>│┌──────<span class="w"> </span>To<span class="w">     </span><span class="m">30</span><span class="p">|</span><span class="w"> </span>───┐<span class="w">  </span>││<span class="w">    </span>│
+│<span class="w">  </span>│<span class="w">  </span>││<span class="w"> </span>┌────<span class="w"> </span>ge<span class="w">     </span>w<span class="w"> </span>───┐<span class="w"> </span>│<span class="w">  </span>││<span class="w">    </span>│
+│<span class="w">  </span>│<span class="w">  </span>││<span class="w"> </span>│<span class="w"> </span>┌──<span class="w"> </span>b<span class="w">      </span>e<span class="w"> </span>─┐<span class="w"> </span>│<span class="w"> </span>│<span class="w">  </span>││<span class="w">    </span>│
+│<span class="w">  </span>│<span class="w">  </span>││<span class="w"> </span>│<span class="w"> </span>│<span class="w">  </span>┌h<span class="w">      </span>l┐<span class="w"> </span>│<span class="w"> </span>│<span class="w"> </span>│<span class="w">  </span>││<span class="w">    </span>│
+▽<span class="w">  </span>▽<span class="w">  </span>▽▽<span class="w"> </span>▽<span class="w"> </span>▽<span class="w">  </span>▽▼<span class="w">      </span>▼▽<span class="w"> </span>▽<span class="w"> </span>▽<span class="w"> </span>▽<span class="w">  </span>▽▽<span class="w">    </span>▽
+<span class="w">   </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;A cheatsheet from quickref.me&quot;</span>
+</code></pre></div>
+
+<h4 id="up-down-motions">Up-down motions</h4>
+<div class="codehilite"><pre><span></span><code><span class="w">                 </span>-<span class="w"> </span>SCREEN<span class="w"> </span><span class="m">1</span><span class="w"> </span>START
+<span class="w">   </span>┌─┬─────────▷<span class="w"> </span><span class="c1">#!/usr/bin/python</span>
+<span class="w">   </span>│<span class="w"> </span>│<span class="w">     </span>┌───▷
+<span class="w">   </span>│<span class="w"> </span>│<span class="w">     </span>│<span class="w">     </span>print<span class="o">(</span><span class="s2">&quot;Hello&quot;</span><span class="o">)</span>
+<span class="w">   </span>│<span class="w"> </span>│<span class="w">      </span>▶<span class="w"> </span>print<span class="o">(</span><span class="s2">&quot;Vim&quot;</span><span class="o">)</span>
+<span class="w">   </span>│<span class="w"> </span>│<span class="w">       </span>│<span class="w">   </span>print<span class="o">(</span><span class="s2">&quot;!&quot;</span><span class="o">)</span>
+<span class="w">   </span>│<span class="w"> </span>│<span class="w">       </span>└─▷
+<span class="w">   </span>│<span class="w"> </span>│<span class="w"> </span>┌───┬───▷<span class="w"> </span>print<span class="o">(</span><span class="s2">&quot;Welcome&quot;</span><span class="o">)</span>
+G<span class="w"> </span>gg<span class="w"> </span>H<span class="w"> </span>M<span class="w"> </span>L<span class="w"> </span>k<span class="w"> </span>j<span class="w"> </span>▶<span class="w"> </span>print<span class="o">(</span><span class="s2">&quot;to&quot;</span><span class="o">)</span>
+│<span class="w">        </span>│<span class="w">   </span>└─▷<span class="w"> </span>print<span class="o">(</span><span class="s2">&quot;cheatsheets.zip&quot;</span><span class="o">)</span>
+│<span class="w">        </span>│<span class="w">       </span>print<span class="o">(</span><span class="s2">&quot;/vim&quot;</span><span class="o">)</span>
+│<span class="w">        </span>│
+│<span class="w">        </span>└─────▷
+│<span class="w">                </span>-<span class="w"> </span>SCREEN<span class="w"> </span><span class="m">1</span><span class="w"> </span>END
+└──────────────▷<span class="w"> </span>print<span class="o">(</span><span class="s2">&quot;SCREEN 2&quot;</span><span class="o">)</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="motions">Motions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>h</code> <em>|</em> <code>j</code> <em>|</em> <code>k</code> <em>|</em> <code>l</code></td>
+<td style="text-align: left;">Arrow keys</td>
+</tr>
+<tr>
+<td><code>&lt;C-u&gt;</code> <em>/</em> <code>&lt;C-d&gt;</code></td>
+<td style="text-align: left;">Half-page up/down</td>
+</tr>
+<tr>
+<td><code>&lt;C-b&gt;</code> <em>/</em> <code>&lt;C-f&gt;</code></td>
+<td style="text-align: left;">Page up/down</td>
+</tr>
+</tbody>
+</table>
+<h4 id="words">Words</h4>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>b</code> <em>/</em> <code>w</code></td>
+<td style="text-align: left;">Previous/Next word</td>
+</tr>
+<tr>
+<td><code>ge</code> <em>/</em> <code>e</code></td>
+<td style="text-align: left;">Previous/Next end of word</td>
+</tr>
+</tbody>
+</table>
+<h4 id="line">Line</h4>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code> <em>(zero)</em> <em>/</em> <code>$</code></td>
+<td style="text-align: left;">Start/End of line</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td style="text-align: left;">Start of line <em>(non-blank)</em></td>
+</tr>
+</tbody>
+</table>
+<h4 id="character">Character</h4>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Fe</code> <em>/</em> <code>fe</code></td>
+<td style="text-align: left;">Move to previous/next <code>e</code></td>
+</tr>
+<tr>
+<td><code>To</code> <em>/</em> <code>to</code></td>
+<td style="text-align: left;">Move before/after previous/next <code>o</code></td>
+</tr>
+<tr>
+<td><code>|</code><em>/</em> <code>n|</code></td>
+<td style="text-align: left;">Go to first/<code>n</code>th column</td>
+</tr>
+</tbody>
+</table>
+<h4 id="document">Document</h4>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gg</code> <em>/</em> <code>G</code></td>
+<td style="text-align: left;">First/Last line</td>
+</tr>
+<tr>
+<td><code>:n</code> <em>|</em> <code>nG</code></td>
+<td style="text-align: left;">Go to line <code>n</code></td>
+</tr>
+<tr>
+<td><code>}</code> <em>/</em> `</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<h4 id="window">Window</h4>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>H</code> <em>/</em> <code>M</code> <em>/</em> <code>L</code></td>
+<td style="text-align: left;">Top/Middle/Bottom screen</td>
+</tr>
+<tr>
+<td><code>zt</code> <em>/</em> <code>zz</code> <em>/</em> <code>zb</code></td>
+<td style="text-align: left;">Top/Center/Bottom this line</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="insert-mode">Insert Mode</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>i</code> <em>/</em> <code>a</code></td>
+<td style="text-align: left;">Insert before/after cursor</td>
+</tr>
+<tr>
+<td><code>I</code> <em>/</em> <code>A</code></td>
+<td style="text-align: left;">Insert start/end of line</td>
+</tr>
+<tr>
+<td><code>o</code> <em>/</em> <code>O</code> <em>(letter)</em></td>
+<td style="text-align: left;">Insert new line below/above</td>
+</tr>
+<tr>
+<td><code>s</code> <em>/</em> <code>S</code></td>
+<td style="text-align: left;">Delete char/line and insert</td>
+</tr>
+<tr>
+<td><code>C</code> <em>/</em> <code>cc</code></td>
+<td style="text-align: left;">Change to end of/current line</td>
+</tr>
+<tr>
+<td><code>gi</code></td>
+<td style="text-align: left;">Insert at last insert point</td>
+</tr>
+<tr>
+<td><code>Esc</code> <em>|</em> <code>&lt;C-[&gt;</code></td>
+<td style="text-align: left;">Exit insert mode</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="saving-and-exiting">Saving and Exiting</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:w</code></td>
+<td style="text-align: left;">Save</td>
+</tr>
+<tr>
+<td><code>:q</code></td>
+<td style="text-align: left;">Close file</td>
+</tr>
+<tr>
+<td><code>:wq</code> <em>|</em> <code>:x</code> <em>|</em> <code>ZZ</code></td>
+<td style="text-align: left;">Save and quit</td>
+</tr>
+<tr>
+<td><code>:wqa</code></td>
+<td style="text-align: left;">Save and quit all files</td>
+</tr>
+<tr>
+<td><code>:q!</code> <em>|</em> <code>ZQ</code></td>
+<td style="text-align: left;">Force quit</td>
+</tr>
+<tr>
+<td><code>:qa</code></td>
+<td style="text-align: left;">Close all files</td>
+</tr>
+<tr>
+<td><code>:qa!</code></td>
+<td style="text-align: left;">Force quit all files</td>
+</tr>
+<tr>
+<td><code>:w</code> now.txt</td>
+<td style="text-align: left;">Write to <code>now.txt</code></td>
+</tr>
+<tr>
+<td><code>:sav</code> new.txt</td>
+<td style="text-align: left;">Save and edit <code>new.txt</code></td>
+</tr>
+<tr>
+<td><code>:w</code> !sudo tee %</td>
+<td style="text-align: left;">Write to readonly file</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="normal-mode">Normal Mode</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>r</code></td>
+<td style="text-align: left;">Replace one character</td>
+</tr>
+<tr>
+<td><code>R</code></td>
+<td style="text-align: left;">Enter Replace mode</td>
+</tr>
+<tr>
+<td><code>u</code> <em>/</em> <code>3u</code></td>
+<td style="text-align: left;">Undo changes <code>1</code> / <code>3</code> times</td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td style="text-align: left;">Undo changes on one line</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td style="text-align: left;">Join with next line</td>
+</tr>
+<tr>
+<td><code>&lt;C-r&gt;</code> <em>/</em> 5 <code>&lt;C-r&gt;</code></td>
+<td style="text-align: left;">Redo changes <code>1</code> / <code>5</code> times</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="cut-and-paste">Cut and paste</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x</code></td>
+<td style="text-align: left;">Delete character <em>(Cut)</em></td>
+</tr>
+<tr>
+<td><code>p</code> <em>/</em> <code>P</code></td>
+<td style="text-align: left;">Paste after/before</td>
+</tr>
+<tr>
+<td><code>xp</code></td>
+<td style="text-align: left;">Swap two characters</td>
+</tr>
+<tr>
+<td><code>D</code></td>
+<td style="text-align: left;">Delete to end of line <em>(Cut)</em></td>
+</tr>
+<tr>
+<td><code>dw</code></td>
+<td style="text-align: left;">Delete word <em>(Cut)</em></td>
+</tr>
+<tr>
+<td><code>dd</code></td>
+<td style="text-align: left;">Delete line <em>(Cut)</em></td>
+</tr>
+<tr>
+<td><code>ddp</code></td>
+<td style="text-align: left;">Swap two lines</td>
+</tr>
+<tr>
+<td><code>yy</code></td>
+<td style="text-align: left;">Yank line <em>(Copy)</em></td>
+</tr>
+<tr>
+<td><code>"*p</code> <em>|</em> <code>"+p</code></td>
+<td style="text-align: left;">Paste from system clipboard</td>
+</tr>
+<tr>
+<td><code>"*y</code> <em>|</em> <code>"+y</code></td>
+<td style="text-align: left;">Paste to system clipboard</td>
+</tr>
+</tbody>
+</table>
+<h4 id="in-visual-mode">In visual mode</h4>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>d</code> <em>|</em> <code>x</code></td>
+<td style="text-align: left;">Delete selection <em>(Cut)</em></td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td style="text-align: left;">Replace selection</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td style="text-align: left;">Yank selection <em>(Copy)</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="repeating">Repeating</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td style="text-align: left;">Repeat last command</td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td style="text-align: left;">Repeat latest <code>f</code>, <code>t</code>, <code>F</code> or <code>T</code></td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td style="text-align: left;">Repeat latest <code>f</code>, <code>t</code>, <code>F</code> or <code>T</code> reversed</td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td style="text-align: left;">Repeat last <code>:s</code></td>
+</tr>
+<tr>
+<td><code>@:</code></td>
+<td style="text-align: left;">Repeat a command-line command</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="visual-mode">Visual mode</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v</code></td>
+<td style="text-align: left;">Enter visual mode</td>
+</tr>
+<tr>
+<td><code>V</code></td>
+<td style="text-align: left;">Enter visual line mode</td>
+</tr>
+<tr>
+<td><code>&lt;C-v&gt;</code></td>
+<td style="text-align: left;">Enter visual block mode</td>
+</tr>
+<tr>
+<td><code>ggVG</code></td>
+<td style="text-align: left;">Select all text</td>
+</tr>
+<tr>
+<td><code>&gt;</code> <em>/</em> <code>&lt;</code></td>
+<td style="text-align: left;">Shift text right/left</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="macros">Macros</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>qi</code></td>
+<td style="text-align: left;">Record macro <code>i</code></td>
+</tr>
+<tr>
+<td><code>q</code></td>
+<td style="text-align: left;">Stop recording macro</td>
+</tr>
+<tr>
+<td><code>@i</code></td>
+<td style="text-align: left;">Run macro <code>i</code></td>
+</tr>
+<tr>
+<td><code>7@i</code></td>
+<td style="text-align: left;">Run macro <code>i</code> 7 times</td>
+</tr>
+<tr>
+<td><code>@@</code></td>
+<td style="text-align: left;">Repeat last macro</td>
+</tr>
+</tbody>
+</table>
+<p>You can save macro for any letters not just <code>i</code></p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="vim-operators">
+<h2 id="vim-operators">Vim Operators</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="usage">Usage</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>d</code></td>
+<td style="text-align: left;"><yel>w</yel></td>
+</tr>
+<tr>
+<td>Operator</td>
+<td style="text-align: left;">Motion</td>
+</tr>
+</tbody>
+</table>
+<p>Combine <a href="#available-operators">operators</a> with <a href="#motions">motions</a> to use them</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="available-operators">Available Operators</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>d</code></td>
+<td style="text-align: left;">Delete</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td style="text-align: left;">Yank <em>(copy)</em></td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td style="text-align: left;">Change <em>(delete then insert)</em></td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td style="text-align: left;">Paste</td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td style="text-align: left;">Formats code</td>
+</tr>
+<tr>
+<td><code>g~</code></td>
+<td style="text-align: left;">Toggle case</td>
+</tr>
+<tr>
+<td><code>gU</code></td>
+<td style="text-align: left;">Uppercase</td>
+</tr>
+<tr>
+<td><code>gu</code></td>
+<td style="text-align: left;">Lowercase</td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td style="text-align: left;">Indent right</td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td style="text-align: left;">Indent left</td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td style="text-align: left;">Filter through external program</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples">Examples</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Combination</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>d</code><yel>d</yel></td>
+<td style="text-align: left;">Delete current line</td>
+</tr>
+<tr>
+<td><code>d</code><yel>j</yel></td>
+<td style="text-align: left;">Delete two lines</td>
+</tr>
+<tr>
+<td><code>d</code><yel>w</yel></td>
+<td style="text-align: left;">Delete to next word</td>
+</tr>
+<tr>
+<td><code>d</code><yel>b</yel></td>
+<td style="text-align: left;">Delete to beginning of word</td>
+</tr>
+<tr>
+<td><code>d</code><yel>fa</yel></td>
+<td style="text-align: left;">Delete until <code>a</code> char</td>
+</tr>
+<tr>
+<td><code>d</code><yel>/hello</yel></td>
+<td style="text-align: left;">Delete until <code>hello</code></td>
+</tr>
+<tr>
+<td><code>c</code><yel>c</yel></td>
+<td style="text-align: left;">Change current line, synonym with <code>S</code></td>
+</tr>
+<tr>
+<td><code>y</code><yel>y</yel></td>
+<td style="text-align: left;">Copy current line</td>
+</tr>
+<tr>
+<td><code>&gt;</code><yel>j</yel></td>
+<td style="text-align: left;">Indent 2 lines</td>
+</tr>
+<tr>
+<td>gg<code>d</code><yel>G</yel></td>
+<td style="text-align: left;">Delete a complete document</td>
+</tr>
+<tr>
+<td>gg<code>=</code><yel>G</yel></td>
+<td style="text-align: left;">Indent a complete document</td>
+</tr>
+<tr>
+<td>gg<code>y</code><yel>G</yel></td>
+<td style="text-align: left;">Copy a whole document</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="counts">Counts</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">[</span><span class="n">count</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">operator</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">motion</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">operator</span><span class="o">&gt;</span><span class="w"> </span><span class="o">[</span><span class="n">count</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;</span><span class="n">motion</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th>Combination</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2<code>d</code><yel>d</yel></td>
+<td style="text-align: left;">Delete <code>2</code> lines</td>
+</tr>
+<tr>
+<td>6<code>y</code><yel>y</yel></td>
+<td style="text-align: left;">Copy <code>6</code> lines</td>
+</tr>
+<tr>
+<td><code>d</code>3<yel>w</yel></td>
+<td style="text-align: left;">Delete <code>3</code> words</td>
+</tr>
+<tr>
+<td><code>d</code>5<yel>j</yel></td>
+<td style="text-align: left;">Delete <code>5</code> lines downwards</td>
+</tr>
+<tr>
+<td><code>&gt;</code>4<yel>k</yel></td>
+<td style="text-align: left;">Indent <code>4</code> lines upwards</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="vim-text-objects">
+<h2 id="vim-text-objects">Vim Text objects</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="usage_1">Usage</h3>
+<div class="section">
+<!-- Confusing and should be fixed -->
+
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: center;">Description</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>v</code></td>
+<td style="text-align: center;"><pur>i</pur> <em>/</em> <pur>a</pur></td>
+<td style="text-align: left;"><yel>p</yel></td>
+</tr>
+<tr>
+<td>Operator</td>
+<td style="text-align: center;"><pur>i</pur>nner <em>/</em> <pur>a</pur>round</td>
+<td style="text-align: left;">Text object</td>
+</tr>
+</tbody>
+</table>
+<p>Operate with an <a href="#available-operators">operator</a> inner or around text blocks</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="text-objects">Text objects</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><yel>p</yel></td>
+<td style="text-align: left;">Paragraph</td>
+</tr>
+<tr>
+<td><yel>w</yel></td>
+<td style="text-align: left;">Word</td>
+</tr>
+<tr>
+<td><yel>W</yel></td>
+<td style="text-align: left;">WORD <br/><em>(surrounded by whitespace)</em></td>
+</tr>
+<tr>
+<td><yel>s</yel></td>
+<td style="text-align: left;">Sentence</td>
+</tr>
+<tr>
+<td><yel>[</yel> <yel>(</yel> <yel> block</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr>
+<td><yel>]</yel> <yel>)</yel> <yel>}</yel> <yel>&gt;</yel></td>
+<td style="text-align: left;">A [], (), or  block</td>
+</tr>
+<tr>
+<td><yel>'</yel> <yel>"</yel> <yel>`</yel></td>
+<td style="text-align: left;">A quoted string</td>
+</tr>
+<tr>
+<td><yel>b</yel></td>
+<td style="text-align: left;">A block [(</td>
+</tr>
+<tr>
+<td><yel>B</yel></td>
+<td style="text-align: left;">A block in ["</td>
+</tr>
+<tr>
+<td><code>v</code><pur>a</pur><yel>"</yel></td>
+<td style="text-align: left;">Select quotes <code>"..."</code></td>
+</tr>
+<tr>
+<td><code>v</code><pur>i</pur><yel>[</yel></td>
+<td style="text-align: left;">Select inner brackets [<code>...</code>]</td>
+</tr>
+<tr>
+<td><code>v</code><pur>a</pur><yel>[</yel></td>
+<td style="text-align: left;">Select brackets <code>[...]</code></td>
+</tr>
+<tr>
+<td><code>v</code><pur>i</pur><yel>w</yel></td>
+<td style="text-align: left;">Select inner word</td>
+</tr>
+<tr>
+<td><code>v</code><pur>i</pur><yel>p</yel></td>
+<td style="text-align: left;">Select inner paragraph</td>
+</tr>
+<tr>
+<td><code>v</code><pur>i</pur><yel>p</yel><pur>i</pur><yel>p</yel></td>
+<td style="text-align: left;">Select more paragraph</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="misc">Misc</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>c</code><pur>i</pur><yel>w</yel></td>
+<td style="text-align: left;">Change inner word</td>
+</tr>
+<tr>
+<td><code>c</code><pur>i</pur><yel>"</yel></td>
+<td style="text-align: left;">Change inner quotes</td>
+</tr>
+<tr>
+<td><code>c</code><pur>i</pur><yel>t</yel></td>
+<td style="text-align: left;">Change inner tags (HTML)</td>
+</tr>
+<tr>
+<td><code>c</code><pur>i</pur><yel>p</yel></td>
+<td style="text-align: left;">Change inner paragraph</td>
+</tr>
+<tr>
+<td><code>y</code><pur>i</pur><yel>p</yel></td>
+<td style="text-align: left;">Yank inner paragraph</td>
+</tr>
+<tr>
+<td><code>y</code><pur>a</pur><yel>p</yel></td>
+<td style="text-align: left;">Yank paragraph <em>(including newline)</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="vim-multiple-files">
+<h2 id="vim-multiple-files">Vim Multiple files</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="buffers">Buffers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:e file</code></td>
+<td style="text-align: left;">Edit a file in a new buffer</td>
+</tr>
+<tr>
+<td><code>:bn</code></td>
+<td style="text-align: left;">Go to the next buffer</td>
+</tr>
+<tr>
+<td><code>:bp</code></td>
+<td style="text-align: left;">Go to the previous buffer</td>
+</tr>
+<tr>
+<td><code>:bd</code></td>
+<td style="text-align: left;">Remove file from buffer list</td>
+</tr>
+<tr>
+<td><code>:b 5</code></td>
+<td style="text-align: left;">Open buffer #5</td>
+</tr>
+<tr>
+<td><code>:b file</code></td>
+<td style="text-align: left;">Go to a buffer by file</td>
+</tr>
+<tr>
+<td><code>:ls</code></td>
+<td style="text-align: left;">List all open buffers</td>
+</tr>
+<tr>
+<td><code>:sp file</code></td>
+<td style="text-align: left;">Open and split window</td>
+</tr>
+<tr>
+<td><code>:vs file</code></td>
+<td style="text-align: left;">Open and vertically split window</td>
+</tr>
+<tr>
+<td><code>:hid</code></td>
+<td style="text-align: left;">Hide this buffer</td>
+</tr>
+<tr>
+<td><code>:wn</code></td>
+<td style="text-align: left;">Write file and move to next</td>
+</tr>
+<tr>
+<td><code>:tab ba</code></td>
+<td style="text-align: left;">Edit all buffers as tabs</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="windows">Windows</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>s</code></td>
+<td style="text-align: left;">Split window</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>v</code></td>
+<td style="text-align: left;">Split window vertically</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>w</code></td>
+<td style="text-align: left;">Switch windows</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>q</code></td>
+<td style="text-align: left;">Quit a window</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>T</code></td>
+<td style="text-align: left;">Break out into a new tab</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>x</code></td>
+<td style="text-align: left;">Swap current with next</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>-</code> <em>/</em> <code>+</code></td>
+<td style="text-align: left;">Decrease/Increase height</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>&lt;</code> <em>/</em> <code>&gt;</code></td>
+<td style="text-align: left;">Decrease/Increase width</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>|</code></td>
+<td style="text-align: left;">Max out the width</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>_</code></td>
+<td style="text-align: left;">Max out the height</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>=</code></td>
+<td style="text-align: left;">Equally high and wide</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>h</code> <em>/</em> <code>l</code></td>
+<td style="text-align: left;">Go to the left/right window</td>
+</tr>
+<tr>
+<td><code>&lt;C-w&gt;</code> <code>j</code> <em>/</em> <code>k</code></td>
+<td style="text-align: left;">Go to the up/down window</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="tabs">Tabs</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:tabe [file]</code></td>
+<td style="text-align: left;"><yel>E</yel>dit file in a new tab</td>
+</tr>
+<tr>
+<td><code>:tabf [file]</code></td>
+<td style="text-align: left;">Open if exists in new tab</td>
+</tr>
+<tr>
+<td><code>:tabc</code></td>
+<td style="text-align: left;"><yel>C</yel>lose current tab</td>
+</tr>
+<tr>
+<td><code>:tabo</code></td>
+<td style="text-align: left;">Close <yel>o</yel>ther tabs</td>
+</tr>
+<tr>
+<td><code>:tabs</code></td>
+<td style="text-align: left;">List all <yel>tabs</yel></td>
+</tr>
+<tr>
+<td><code>:tabr</code></td>
+<td style="text-align: left;">Go to fi<yel>r</yel>st tab</td>
+</tr>
+<tr>
+<td><code>:tabl</code></td>
+<td style="text-align: left;">Go to <yel>l</yel>ast tab</td>
+</tr>
+<tr>
+<td><code>:tabm 0</code></td>
+<td style="text-align: left;"><yel>M</yel>ove to position <code>0</code></td>
+</tr>
+<tr>
+<td><code>:tabn</code></td>
+<td style="text-align: left;">Go to <yel>n</yel>ext tab</td>
+</tr>
+<tr>
+<td><code>:tabp</code></td>
+<td style="text-align: left;">Go to <yel>p</yel>revious tab</td>
+</tr>
+</tbody>
+</table>
+<h4 id="normal-mode_1">Normal mode</h4>
+<table>
+<thead>
+<tr>
+<th>Shortcut</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>gt</code></td>
+<td style="text-align: left;">Go to <yel>n</yel>ext tab</td>
+</tr>
+<tr>
+<td><code>gT</code></td>
+<td style="text-align: left;">Go to <yel>p</yel>revious tab</td>
+</tr>
+<tr>
+<td><code>2gt</code></td>
+<td style="text-align: left;">Go to tab number <code>2</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="vim-search-and-replace">
+<h2 id="vim-search-and-replace">Vim Search and Replace</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="search">Search</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/foo</code></td>
+<td style="text-align: left;">Search forward</td>
+</tr>
+<tr>
+<td><code>/foo\c</code></td>
+<td style="text-align: left;">Search forward <em>(case insensitive)</em></td>
+</tr>
+<tr>
+<td><code>?foo</code></td>
+<td style="text-align: left;">Search backward</td>
+</tr>
+<tr>
+<td><code>/\v\d+</code></td>
+<td style="text-align: left;">Search with <a href="regex.html">regex</a></td>
+</tr>
+<tr>
+<td><code>n</code></td>
+<td style="text-align: left;">Next matching search pattern</td>
+</tr>
+<tr>
+<td><code>N</code></td>
+<td style="text-align: left;">Previous match</td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td style="text-align: left;">Search for current word forward</td>
+</tr>
+<tr>
+<td><code>#</code></td>
+<td style="text-align: left;">Search for current word backward</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="replace-line">Replace LINE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>[range]s<span class="sr">//</span>/[flags]
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:s/old/new</code></td>
+<td style="text-align: left;">Replace first</td>
+</tr>
+<tr>
+<td><code>:s/old/new/g</code></td>
+<td style="text-align: left;">Replace all</td>
+</tr>
+<tr>
+<td><code>:s/\vold/new/g</code></td>
+<td style="text-align: left;">Replace all with <a href="regex.html">regex</a></td>
+</tr>
+<tr>
+<td><code>:s/old/new/gc</code></td>
+<td style="text-align: left;">replace all <em>(Confirm)</em></td>
+</tr>
+<tr>
+<td><code>:s/old/new/i</code></td>
+<td style="text-align: left;">Ignore case replace first</td>
+</tr>
+<tr>
+<td><code>:2,6s/old/new/g</code></td>
+<td style="text-align: left;">Replace between lines <code>2</code>-<code>6</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="replace-file">Replace FILE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>%s<span class="sr">//</span>/[flags]
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:%s/old/new</code></td>
+<td style="text-align: left;">Replace first</td>
+</tr>
+<tr>
+<td><code>:%s/old/new/g</code></td>
+<td style="text-align: left;">Replace all</td>
+</tr>
+<tr>
+<td><code>:%s/old/new/gc</code></td>
+<td style="text-align: left;">Replace all <em>(Confirm)</em></td>
+</tr>
+<tr>
+<td><code>:%s/old/new/gi</code></td>
+<td style="text-align: left;">Replace all <em>(ignore case)</em></td>
+</tr>
+<tr>
+<td><code>:%s/\vold/new/g</code></td>
+<td style="text-align: left;">Replace all with <a href="regex.html">regex</a></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="ranges">Ranges</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>%</code></td>
+<td style="text-align: left;">Entire file</td>
+</tr>
+<tr>
+<td><code>’&lt;,’&gt;</code></td>
+<td style="text-align: left;">Current selection</td>
+</tr>
+<tr>
+<td><code>5</code></td>
+<td style="text-align: left;">Line <code>5</code></td>
+</tr>
+<tr>
+<td><code>5,10</code></td>
+<td style="text-align: left;">Lines <code>5</code> to <code>10</code></td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td style="text-align: left;">Last line</td>
+</tr>
+<tr>
+<td><code>2,$</code></td>
+<td style="text-align: left;">Lines <code>2</code> to Last</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td style="text-align: left;">Current line</td>
+</tr>
+<tr>
+<td><code>,3</code></td>
+<td style="text-align: left;">Next <code>3</code> lines</td>
+</tr>
+<tr>
+<td><code>-3,</code></td>
+<td style="text-align: left;">Forward <code>3</code> lines</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="global-command">Global command</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>[range]<span class="k">g</span><span class="sr">//</span>[command]
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:g/foo/d</code></td>
+<td style="text-align: left;">Delete lines containing <code>foo</code></td>
+</tr>
+<tr>
+<td><code>:g!/foo/d</code></td>
+<td style="text-align: left;">Delete lines not containing <code>foo</code></td>
+</tr>
+<tr>
+<td><code>:g/^\s*$/d</code></td>
+<td style="text-align: left;">Delete all blank lines</td>
+</tr>
+<tr>
+<td><code>:g/foo/t$</code></td>
+<td style="text-align: left;">Copy lines containing <code>foo</code> to EOF</td>
+</tr>
+<tr>
+<td><code>:g/foo/m$</code></td>
+<td style="text-align: left;">Move lines containing <code>foo</code> to EOF</td>
+</tr>
+<tr>
+<td><code>:g/^/m0</code></td>
+<td style="text-align: left;">Reverse a file</td>
+</tr>
+<tr>
+<td><code>:g/^/t.</code></td>
+<td style="text-align: left;">Duplicate every line</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="inverse-g">Inverse :g</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="p">:</span>[range]<span class="k">v</span><span class="sr">//</span>[command]
+</code></pre></div>
+
+<hr />
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: left;"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:v/foo/d</code></td>
+<td style="text-align: left;">Delete lines not containing <code>foo</code><br/><em>(also <code>:g!/foo/d</code>)</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="flags">Flags</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>g</code></td>
+<td style="text-align: left;">Replace all occurrences</td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td style="text-align: left;">Ignore case</td>
+</tr>
+<tr>
+<td><code>I</code></td>
+<td style="text-align: left;">Don't ignore case</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td style="text-align: left;">Confirm each substitution</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="substitute-expression-magic">Substitute expression (magic)</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;</code> <em>|</em> <code>\0</code></td>
+<td style="text-align: left;">Replace with the whole matched</td>
+</tr>
+<tr>
+<td><code>\1</code>...<code>\9</code></td>
+<td style="text-align: left;">Replace with the group 0-9</td>
+</tr>
+<tr>
+<td><code>\u</code></td>
+<td style="text-align: left;">Uppercase next letter</td>
+</tr>
+<tr>
+<td><code>\U</code></td>
+<td style="text-align: left;">Uppercase following characters</td>
+</tr>
+<tr>
+<td><code>\l</code></td>
+<td style="text-align: left;">Lowercase next letter</td>
+</tr>
+<tr>
+<td><code>\L</code></td>
+<td style="text-align: left;">Lowercase following characters</td>
+</tr>
+<tr>
+<td><code>\e</code></td>
+<td style="text-align: left;">End of <code>\u</code>, <code>\U</code>, <code>\l</code> and <code>\L</code></td>
+</tr>
+<tr>
+<td><code>\E</code></td>
+<td style="text-align: left;">End of <code>\u</code>, <code>\U</code>, <code>\l</code> and <code>\L</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples_1">Examples</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="o">:</span><span class="n">s</span><span class="o">/</span><span class="n">a</span><span class="err">\</span><span class="o">|</span><span class="n">b</span><span class="o">/</span><span class="n">xxx</span><span class="err">\</span><span class="mi">0</span><span class="n">xxx</span><span class="o">/</span><span class="n">g</span><span class="w">               </span><span class="err">#</span><span class="w"> </span><span class="n">Modifies</span><span class="w"> </span><span class="s">&quot;a b&quot;</span><span class="w">      </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;xxxaxxx xxxbxxx&quot;</span>
+<span class="o">:</span><span class="n">s</span><span class="o">/</span><span class="n">test</span><span class="o">/</span><span class="err">\</span><span class="n">U</span><span class="o">&amp;</span><span class="w"> </span><span class="n">file</span><span class="o">/</span><span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="n">Modifies</span><span class="w"> </span><span class="s">&quot;test&quot;</span><span class="w">     </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;TEST FILE&quot;</span>
+<span class="o">:</span><span class="n">s</span><span class="o">/</span><span class="err">\</span><span class="p">(</span><span class="n">test</span><span class="err">\</span><span class="p">)</span><span class="o">/</span><span class="err">\</span><span class="n">U</span><span class="err">\</span><span class="mi">1</span><span class="err">\</span><span class="n">e</span><span class="w"> </span><span class="n">file</span><span class="o">/</span><span class="w">         </span><span class="err">#</span><span class="w"> </span><span class="n">Modifies</span><span class="w"> </span><span class="s">&quot;test&quot;</span><span class="w">     </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;TEST file&quot;</span>
+<span class="o">:</span><span class="n">s</span><span class="o">/</span><span class="err">\</span><span class="n">v</span><span class="p">([</span><span class="n">abc</span><span class="p">])([</span><span class="n">efg</span><span class="p">])</span><span class="o">/</span><span class="err">\</span><span class="mi">2</span><span class="err">\</span><span class="mi">1</span><span class="o">/</span><span class="n">g</span><span class="w">       </span><span class="err">#</span><span class="w"> </span><span class="n">Modifies</span><span class="w"> </span><span class="s">&quot;af fa bg&quot;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;fa fa gb&quot;</span>
+<span class="o">:</span><span class="n">s</span><span class="o">/</span><span class="err">\</span><span class="n">v</span><span class="err">\</span><span class="n">w</span><span class="o">+/</span><span class="err">\</span><span class="n">u</span><span class="err">\</span><span class="mi">0</span><span class="o">/</span><span class="n">g</span><span class="w">                  </span><span class="err">#</span><span class="w"> </span><span class="n">Modifies</span><span class="w"> </span><span class="s">&quot;bla bla&quot;</span><span class="w">  </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;Bla Bla&quot;</span>
+<span class="o">:</span><span class="n">s</span><span class="o">/</span><span class="err">\</span><span class="n">v</span><span class="p">([</span><span class="n">ab</span><span class="p">])</span><span class="o">|</span><span class="p">([</span><span class="n">cd</span><span class="p">])</span><span class="o">/</span><span class="err">\</span><span class="mi">1</span><span class="n">x</span><span class="o">/</span><span class="n">g</span><span class="w">         </span><span class="err">#</span><span class="w"> </span><span class="n">Modifies</span><span class="w"> </span><span class="s">&quot;a b c d&quot;</span><span class="w">  </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;ax bx x x&quot;</span>
+<span class="o">:%</span><span class="n">s</span><span class="o">/</span><span class="p">.</span><span class="o">*/</span><span class="err">\</span><span class="n">L</span><span class="o">&amp;/</span><span class="w">                      </span><span class="err">#</span><span class="w"> </span><span class="n">Modifies</span><span class="w"> </span><span class="s">&quot;HTML&quot;</span><span class="w">     </span><span class="n">to</span><span class="w"> </span><span class="s">&quot;html&quot;</span>
+<span class="o">:</span><span class="n">s</span><span class="o">/</span><span class="err">\</span><span class="n">v</span><span class="o">&lt;</span><span class="p">(.)(</span><span class="err">\</span><span class="n">w</span><span class="o">*</span><span class="p">)</span><span class="o">/</span><span class="err">\</span><span class="n">u</span><span class="err">\</span><span class="mi">1</span><span class="err">\</span><span class="n">L</span><span class="err">\</span><span class="mi">2</span><span class="o">/</span><span class="n">g</span><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">Make</span><span class="w"> </span><span class="n">every</span><span class="w"> </span><span class="n">first</span><span class="w"> </span><span class="n">letter</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">word</span><span class="w"> </span><span class="n">uppercase</span>
+<span class="o">:%</span><span class="n">s</span><span class="o">/^</span><span class="err">\</span><span class="p">(.</span><span class="o">*</span><span class="err">\</span><span class="p">)</span><span class="err">\</span><span class="n">n</span><span class="err">\</span><span class="mi">1</span><span class="o">/</span><span class="err">\</span><span class="mi">1</span><span class="o">/</span><span class="w">              </span><span class="err">#</span><span class="w"> </span><span class="n">Remove</span><span class="w"> </span><span class="n">duplicate</span><span class="w"> </span><span class="n">lines</span>
+<span class="o">:%</span><span class="n">s</span><span class="o">/&lt;</span><span class="err">\</span><span class="o">/</span><span class="err">\</span><span class="o">=</span><span class="err">\</span><span class="p">(</span><span class="err">\</span><span class="n">w</span><span class="err">\</span><span class="o">+</span><span class="err">\</span><span class="p">)</span><span class="err">\</span><span class="o">&gt;/</span><span class="err">\</span><span class="n">U</span><span class="o">&amp;/</span><span class="n">g</span><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">Convert</span><span class="w"> </span><span class="n">HTML</span><span class="o">-</span><span class="n">Tags</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">uppercase</span>
+<span class="o">:</span><span class="n">g</span><span class="o">/^</span><span class="n">pattern</span><span class="o">/</span><span class="n">s</span><span class="o">/</span><span class="n">$</span><span class="o">/</span><span class="n">mytext</span><span class="w">           </span><span class="err">#</span><span class="w"> </span><span class="n">Find</span><span class="w"> </span><span class="n">and</span><span class="w"> </span><span class="n">append</span><span class="w"> </span><span class="n">text</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">end</span>
+<span class="o">:</span><span class="n">g</span><span class="o">/</span><span class="n">pattern</span><span class="o">/</span><span class="n">norm</span><span class="o">!</span><span class="w"> </span><span class="err">@</span><span class="n">i</span><span class="w">              </span><span class="err">#</span><span class="w"> </span><span class="n">Run</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">macro</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">matching</span><span class="w"> </span><span class="n">lines</span>
+<span class="o">/^</span><span class="err">\</span><span class="p">(.</span><span class="o">*</span><span class="err">\</span><span class="p">)</span><span class="err">\</span><span class="p">(</span><span class="err">\</span><span class="n">r</span><span class="err">\</span><span class="o">?</span><span class="err">\</span><span class="n">n</span><span class="err">\</span><span class="mi">1</span><span class="err">\</span><span class="p">)</span><span class="err">\</span><span class="o">+</span><span class="n">$</span><span class="w">          </span><span class="err">#</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">duplicates</span><span class="w"> </span><span class="n">lines</span>
+<span class="o">/</span><span class="err">\</span><span class="n">v</span><span class="o">^</span><span class="p">(.</span><span class="o">*</span><span class="p">)(</span><span class="err">\</span><span class="n">r</span><span class="o">?</span><span class="err">\</span><span class="n">n</span><span class="err">\</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="n">$</span><span class="w">              </span><span class="err">#</span><span class="w"> </span><span class="n">View</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">duplicates</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="p">(</span><span class="n">very</span><span class="w"> </span><span class="n">magic</span><span class="p">)</span>
+<span class="o">:</span><span class="n">v</span><span class="o">/</span><span class="p">.</span><span class="o">/</span><span class="p">,</span><span class="o">/</span><span class="p">.</span><span class="o">/-</span><span class="n">j</span><span class="w">                      </span><span class="err">#</span><span class="w"> </span><span class="n">Compress</span><span class="w"> </span><span class="n">blank</span><span class="w"> </span><span class="n">lines</span><span class="w"> </span><span class="n">into</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">blank</span><span class="w"> </span><span class="n">line</span>
+<span class="o">:</span><span class="n">g</span><span class="o">/&lt;</span><span class="n">p1</span><span class="o">&gt;/</span><span class="p">,</span><span class="o">/&lt;</span><span class="n">p2</span><span class="o">&gt;/</span><span class="n">d</span><span class="w">                 </span><span class="err">#</span><span class="w"> </span><span class="n">Delete</span><span class="w"> </span><span class="n">inclusively</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="o">&lt;</span><span class="n">p1</span><span class="o">&gt;</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="o">&lt;</span><span class="n">p2</span><span class="o">&gt;</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="vimdiff">
+<h2 id="vimdiff">Vimdiff</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="usage_2">Usage</h3>
+<div class="section">
+<p>```shell script</p>
+<p>$ vimdiff file1 file2 [file3]
+$ vim -d file1 file2 [file3]</p>
+<div class="codehilite"><pre><span></span><code>### Editing 
+</code></pre></div>
+
+<p>:[range]diffget [bufspec]
+:[range]diffput [bufspec]</p>
+<div class="codehilite"><pre><span></span><code><span class="s s-Atom">---</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span>            <span class="p">|</span> <span class="nv">Description</span>             <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">-------------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">---------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">do</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">diffget</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Obtain</span> <span class="p">(</span><span class="s s-Atom">get</span><span class="p">)</span> <span class="s s-Atom">difference</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">dp</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">diffput</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Put</span> <span class="s s-Atom">difference</span>          <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">dif</span><span class="err">`</span>              <span class="p">|</span> <span class="nv">Re</span><span class="o">-</span><span class="s s-Atom">scan</span> <span class="s s-Atom">differences</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">diffo</span><span class="err">`</span>            <span class="p">|</span> <span class="nv">Switch</span> <span class="s s-Atom">off</span> <span class="s s-Atom">diff</span> <span class="s s-Atom">mode</span>    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="mi">1</span><span class="p">,</span><span class="err">$</span><span class="o">+</span><span class="mi">1</span><span class="s s-Atom">diffget</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Get</span> <span class="s s-Atom">all</span> <span class="s s-Atom">differences</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="nv">ZQ</span><span class="err">`</span>                <span class="p">|</span> <span class="nv">Quit</span> <span class="s s-Atom">without</span> <span class="s s-Atom">changes</span>    <span class="p">|</span>
+
+
+
+<span class="nv">See</span><span class="o">:</span> <span class="p">[</span><span class="nv">Ranges</span><span class="p">](</span><span class="s s-Atom">#ranges</span><span class="p">)</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Folds</span> 
+
+<span class="p">|</span> <span class="nv">Shortcut</span>      <span class="p">|</span> <span class="nv">Description</span>                  <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">-------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">--------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zo</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="s s-Atom">zO</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Open</span>                         <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zc</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="s s-Atom">zC</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Close</span>                        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">za</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="s s-Atom">zA</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Toggle</span>                       <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zv</span><span class="err">`</span>          <span class="p">|</span> <span class="nv">Open</span> <span class="s s-Atom">folds</span> <span class="s s-Atom">for</span> <span class="s s-Atom">this</span> <span class="s s-Atom">line</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zM</span><span class="err">`</span>          <span class="p">|</span> <span class="nv">Close</span> <span class="s s-Atom">all</span>                    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zR</span><span class="err">`</span>          <span class="p">|</span> <span class="nv">Open</span> <span class="s s-Atom">all</span>                     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zm</span><span class="err">`</span>          <span class="p">|</span> <span class="nv">Fold</span> <span class="s s-Atom">more</span> <span class="k">_</span><span class="p">(</span><span class="s s-Atom">foldlevel</span> <span class="s s-Atom">+=</span> <span class="mi">1</span><span class="p">)</span><span class="k">_</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zr</span><span class="err">`</span>          <span class="p">|</span> <span class="nv">Fold</span> <span class="s s-Atom">less</span> <span class="k">_</span><span class="p">(</span><span class="s s-Atom">foldlevel</span> <span class="s s-Atom">-=</span> <span class="mi">1</span><span class="p">)</span><span class="k">_</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">zx</span><span class="err">`</span>          <span class="p">|</span> <span class="nv">Update</span> <span class="s s-Atom">folds</span>                 <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Jumping</span>
+
+<span class="o">&lt;</span><span class="s s-Atom">br</span><span class="o">&gt;</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span> <span class="p">|</span> <span class="nv">Description</span>         <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">--------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">-----------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="p">]</span><span class="s s-Atom">c</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Next</span> <span class="s s-Atom">difference</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="p">[</span><span class="s s-Atom">c</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Previous</span> <span class="s s-Atom">difference</span> <span class="p">|</span>
+
+
+
+<span class="s s-Atom">##</span> <span class="nv">Quickfix</span> <span class="nv">List</span> <span class="p">(</span><span class="nv">Advanced</span><span class="p">)</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Usage</span>
+
+<span class="nv">The</span> <span class="nv">Quickfix</span> <span class="nv">List</span> <span class="o">is</span> <span class="s s-Atom">primarily</span> <span class="s s-Atom">used</span> <span class="s s-Atom">to</span> <span class="s s-Atom">navigate</span> <span class="s s-Atom">a</span> <span class="s s-Atom">list</span> <span class="s s-Atom">of</span> <span class="s s-Atom">errors</span><span class="o">/</span><span class="nf">warnings</span> <span class="p">(</span><span class="s s-Atom">or</span> <span class="s s-Atom">file</span> <span class="s s-Atom">locations</span><span class="p">)</span> <span class="s s-Atom">generated</span> <span class="s s-Atom">by</span> <span class="s s-Atom">a</span> <span class="s s-Atom">compiler</span> <span class="s s-Atom">or</span> <span class="s s-Atom">linter</span><span class="p">.</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span>     <span class="p">|</span> <span class="nv">Description</span>                                                      <span class="p">|</span>
+<span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">----------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">--------------------------------------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">copen</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Open</span> <span class="s s-Atom">the</span> <span class="s s-Atom">quickfix</span> <span class="s s-Atom">window</span>                                         <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cclose</span><span class="err">`</span>    <span class="p">|</span> <span class="nv">Close</span> <span class="s s-Atom">the</span> <span class="s s-Atom">quickfix</span> <span class="s s-Atom">window</span>                                        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cnext</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Go</span> <span class="s s-Atom">to</span> <span class="s s-Atom">the</span> <span class="s s-Atom">**next**</span> <span class="s s-Atom">error</span><span class="o">/</span><span class="nf">location</span> <span class="p">(</span><span class="err">`</span><span class="o">:</span><span class="s s-Atom">cn</span><span class="err">`</span> <span class="s s-Atom">also</span> <span class="s s-Atom">works</span><span class="p">)</span>             <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cprevious</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Go</span> <span class="s s-Atom">to</span> <span class="s s-Atom">the</span> <span class="s s-Atom">**previous**</span> <span class="s s-Atom">error</span><span class="o">/</span><span class="nf">location</span> <span class="p">(</span><span class="err">`</span><span class="o">:</span><span class="s s-Atom">cp</span><span class="err">`</span> <span class="s s-Atom">also</span> <span class="s s-Atom">works</span><span class="p">)</span>         <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">clist</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">List</span> <span class="s s-Atom">all</span> <span class="s s-Atom">errors</span><span class="o">/</span><span class="s s-Atom">locations</span> <span class="s s-Atom">in</span> <span class="s s-Atom">the</span> <span class="s s-Atom">list</span>                            <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cf</span> <span class="p">[</span><span class="s s-Atom">file</span><span class="p">]</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Populate</span> <span class="s s-Atom">the</span> <span class="s s-Atom">list</span> <span class="s s-Atom">with</span> <span class="s s-Atom">errors</span> <span class="s s-Atom">from</span> <span class="s s-Atom">a</span> <span class="nf">file</span> <span class="p">(</span><span class="s s-Atom">e</span><span class="p">.</span><span class="s s-Atom">g</span><span class="p">.,</span> <span class="s s-Atom">a</span> <span class="s s-Atom">compiler</span> <span class="s s-Atom">log</span><span class="p">)</span> <span class="p">|</span>
+
+<span class="s s-Atom">---</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Quickfix</span> <span class="nv">Do</span> <span class="p">(</span><span class="err">`</span><span class="o">:</span><span class="s s-Atom">cdo</span><span class="err">`</span> <span class="s s-Atom">and</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cfdo</span><span class="err">`</span><span class="p">)</span>
+
+<span class="nv">The</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cdo</span><span class="err">`</span> <span class="p">(</span><span class="s s-Atom">quickfix</span> <span class="s s-Atom">do</span><span class="p">)</span> <span class="s s-Atom">and</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cfdo</span><span class="err">`</span> <span class="p">(</span><span class="s s-Atom">quickfix</span> <span class="s s-Atom">file</span> <span class="s s-Atom">do</span><span class="p">)</span> <span class="s s-Atom">commands</span> <span class="s s-Atom">execute</span> <span class="s s-Atom">a</span> <span class="s s-Atom">command</span> <span class="s s-Atom">in</span> <span class="s s-Atom">every</span> <span class="s s-Atom">file</span> <span class="s s-Atom">listed</span> <span class="s s-Atom">in</span> <span class="s s-Atom">the</span> <span class="s s-Atom">quickfix</span> <span class="s s-Atom">list</span><span class="p">.</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cdo</span><span class="err">`</span> <span class="s s-Atom">iterates</span> <span class="s s-Atom">over</span> <span class="s s-Atom">every</span> <span class="k">_</span><span class="s s-Atom">location_</span> <span class="s s-Atom">in</span> <span class="s s-Atom">the</span> <span class="s s-Atom">list</span><span class="p">,</span> <span class="s s-Atom">while</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cfdo</span><span class="err">`</span> <span class="s s-Atom">iterates</span> <span class="s s-Atom">over</span> <span class="s s-Atom">every</span> <span class="k">_</span><span class="s s-Atom">unique</span> <span class="s s-Atom">file_</span> <span class="s s-Atom">in</span> <span class="s s-Atom">the</span> <span class="s s-Atom">list</span><span class="p">.</span>
+
+<span class="p">|</span> <span class="nv">Command</span>       <span class="p">|</span> <span class="nv">Description</span>                                                     <span class="p">|</span>
+<span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">-----------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">-------------------------------------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cdo</span> <span class="p">[</span><span class="s s-Atom">cmd</span><span class="p">]</span><span class="err">`</span>  <span class="p">|</span> <span class="nv">Execute</span> <span class="err">`</span><span class="p">[</span><span class="s s-Atom">cmd</span><span class="p">]</span><span class="err">`</span> <span class="s s-Atom">for</span> <span class="s s-Atom">every</span> <span class="s s-Atom">**location**</span> <span class="s s-Atom">in</span> <span class="s s-Atom">the</span> <span class="s s-Atom">quickfix</span> <span class="s s-Atom">list</span><span class="p">.</span>    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cfdo</span> <span class="p">[</span><span class="s s-Atom">cmd</span><span class="p">]</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Execute</span> <span class="err">`</span><span class="p">[</span><span class="s s-Atom">cmd</span><span class="p">]</span><span class="err">`</span> <span class="s s-Atom">for</span> <span class="s s-Atom">every</span> <span class="s s-Atom">**unique</span> <span class="s s-Atom">file**</span> <span class="s s-Atom">in</span> <span class="s s-Atom">the</span> <span class="s s-Atom">quickfix</span> <span class="s s-Atom">list</span><span class="p">.</span> <span class="p">|</span>
+
+<span class="s s-Atom">---</span>
+
+<span class="s s-Atom">##</span> <span class="nv">Miscellaneous</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Case</span> 
+
+<span class="p">|</span> <span class="nv">Shortcut</span>       <span class="p">|</span> <span class="nv">Description</span>             <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">--------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">---------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">vU</span><span class="err">`</span>           <span class="p">|</span> <span class="k">_</span><span class="nv">Uppercase_</span> <span class="s s-Atom">character</span>   <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">vu</span><span class="err">`</span>           <span class="p">|</span> <span class="k">_</span><span class="nv">Lowercase_</span> <span class="s s-Atom">character</span>   <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">~</span><span class="err">`</span>            <span class="p">|</span> <span class="k">_</span><span class="nv">Toggle</span> <span class="s s-Atom">case_</span> <span class="s s-Atom">character</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">viw</span><span class="err">`</span> <span class="err">`</span><span class="nv">U</span><span class="err">`</span>      <span class="p">|</span> <span class="k">_</span><span class="nv">Uppercase_</span> <span class="s s-Atom">word</span>        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">viw</span><span class="err">`</span> <span class="err">`</span><span class="s s-Atom">u</span><span class="err">`</span>      <span class="p">|</span> <span class="k">_</span><span class="nv">Lowercase_</span> <span class="s s-Atom">word</span>        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">viw</span><span class="err">`</span> <span class="err">`</span><span class="o">~</span><span class="err">`</span>      <span class="p">|</span> <span class="k">_</span><span class="nv">Toggle</span> <span class="s s-Atom">case_</span> <span class="s s-Atom">word</span>      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="nv">VU</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="s s-Atom">gUU</span><span class="err">`</span> <span class="p">|</span> <span class="k">_</span><span class="nv">Uppercase_</span> <span class="s s-Atom">line</span>        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="nv">Vu</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="s s-Atom">guu</span><span class="err">`</span> <span class="p">|</span> <span class="k">_</span><span class="nv">Lowercase_</span> <span class="s s-Atom">line</span>        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="nv">V</span><span class="o">~</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">/</span><span class="k">_</span> <span class="err">`</span><span class="s s-Atom">g</span><span class="o">~~</span><span class="err">`</span> <span class="p">|</span> <span class="k">_</span><span class="nv">Toggle</span> <span class="s s-Atom">case_</span> <span class="s s-Atom">line</span>      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">gggUG</span><span class="err">`</span>        <span class="p">|</span> <span class="k">_</span><span class="nv">Uppercase_</span> <span class="s s-Atom">all</span> <span class="s s-Atom">text</span>    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">ggguG</span><span class="err">`</span>        <span class="p">|</span> <span class="k">_</span><span class="nv">Lowercase_</span> <span class="s s-Atom">all</span> <span class="s s-Atom">text</span>    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">ggg</span><span class="o">~</span><span class="nv">G</span><span class="err">`</span>        <span class="p">|</span> <span class="k">_</span><span class="nv">Toggle</span> <span class="s s-Atom">case_</span> <span class="s s-Atom">all</span> <span class="s s-Atom">text</span>  <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Jumping</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span> <span class="p">|</span> <span class="nv">Description</span>              <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">--------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">----------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">o&gt;</span><span class="err">`</span>  <span class="p">|</span> <span class="nv">Go</span> <span class="s s-Atom">back</span> <span class="s s-Atom">to</span> <span class="s s-Atom">previous</span>      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">i&gt;</span><span class="err">`</span>  <span class="p">|</span> <span class="nv">Go</span> <span class="s s-Atom">forward</span>               <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">gf</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Go</span> <span class="s s-Atom">to</span> <span class="s s-Atom">file</span> <span class="s s-Atom">in</span> <span class="s s-Atom">cursor</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">ga</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Display</span> <span class="s s-Atom">hex</span><span class="p">,</span> <span class="s s-Atom">ascii</span> <span class="nb">val</span><span class="s s-Atom">ue</span> <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Misc</span> <span class="s s-Atom">command</span><span class="o">-</span><span class="s s-Atom">lines</span> 
+
+<span class="p">|</span> <span class="o">-</span>              <span class="p">|</span> <span class="o">-</span>                                          <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">--------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">----------------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">h</span><span class="err">`</span>           <span class="p">|</span> <span class="nv">Help</span> <span class="s s-Atom">open</span> <span class="s s-Atom">help</span> <span class="s s-Atom">view</span>                        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">edit</span><span class="p">!</span><span class="err">`</span>       <span class="p">|</span> <span class="nv">Reload</span> <span class="s s-Atom">current</span> <span class="s s-Atom">file</span>                        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="mi">2</span><span class="p">,</span><span class="mi">8</span><span class="s s-Atom">m0</span><span class="err">`</span>       <span class="p">|</span> <span class="nv">Move</span> <span class="s s-Atom">lines</span> <span class="err">`</span><span class="mi">2</span><span class="err">`</span><span class="s s-Atom">-</span><span class="err">`</span><span class="mi">8</span><span class="err">`</span> <span class="s s-Atom">to</span> <span class="err">`</span><span class="mi">0</span><span class="err">`</span>                  <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">noh</span><span class="err">`</span>         <span class="p">|</span> <span class="nv">Clear</span> <span class="s s-Atom">search</span> <span class="s s-Atom">highlights</span>                    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">sort</span><span class="err">`</span>        <span class="p">|</span> <span class="nv">Sort</span> <span class="s s-Atom">lines</span>                                 <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">ter</span><span class="err">`</span>         <span class="p">|</span> <span class="nv">Open</span> <span class="s s-Atom">a</span> <span class="s s-Atom">terminal</span> <span class="s s-Atom">window</span>                     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">set</span> <span class="s s-Atom">paste</span><span class="err">`</span>   <span class="p">|</span> <span class="nv">Enable</span> <span class="nv">Insert</span> <span class="nv">Paste</span> <span class="s s-Atom">sub</span><span class="o">-</span><span class="s s-Atom">mode</span>               <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">set</span> <span class="s s-Atom">nopaste</span><span class="err">`</span> <span class="p">|</span> <span class="s s-Atom">disable</span> <span class="nv">Insert</span> <span class="nv">Paste</span> <span class="s s-Atom">sub</span><span class="o">-</span><span class="s s-Atom">mode</span>              <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">cq</span><span class="err">`</span>          <span class="p">|</span> <span class="nv">Exiting</span> <span class="s s-Atom">with</span> <span class="s s-Atom">an</span> <span class="s s-Atom">error</span><span class="o">&lt;</span><span class="s s-Atom">br/&gt;</span><span class="k">_</span><span class="p">(</span><span class="s s-Atom">aborting</span> <span class="nv">Git</span><span class="p">)</span><span class="k">_</span> <span class="p">|</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Navigating</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span>       <span class="p">|</span> <span class="nv">Description</span>               <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">--------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">-----------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="c1">%`            | Nearest/matching `` |</span>
+<span class="p">|</span> <span class="err">`</span><span class="p">[(</span><span class="err">`</span> <span class="k">_</span><span class="s s-Atom">\</span><span class="p">|</span><span class="k">_</span> <span class="err">`</span><span class="p">[</span><span class="err">`</span>           <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="p">[</span><span class="s s-Atom">m</span><span class="err">`</span>           <span class="p">|</span> <span class="nv">Previous</span> <span class="s s-Atom">method</span> <span class="s s-Atom">start</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="p">[</span><span class="nv">M</span><span class="err">`</span>           <span class="p">|</span> <span class="nv">Previous</span> <span class="s s-Atom">method</span> <span class="s s-Atom">end</span>       <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Counters</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span> <span class="p">|</span> <span class="nv">Description</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">--------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">-------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">a&gt;</span><span class="err">`</span>  <span class="p">|</span> <span class="nv">Increase</span> <span class="s s-Atom">number</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">x&gt;</span><span class="err">`</span>  <span class="p">|</span> <span class="nv">Decrease</span> <span class="s s-Atom">number</span> <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Tags</span> 
+
+<span class="p">|</span> <span class="nv">Shortcut</span>             <span class="p">|</span> <span class="nv">Description</span>                                     <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">--------------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">---------------------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">tag</span> <span class="nv">Classname</span><span class="err">`</span>     <span class="p">|</span> <span class="nv">Jump</span> <span class="s s-Atom">to</span> <span class="s s-Atom">first</span> <span class="s s-Atom">definition</span> <span class="s s-Atom">of</span> <span class="nv">Classname</span>           <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="s s-Atom">-</span><span class="p">]</span><span class="s s-Atom">&gt;</span><span class="err">`</span>              <span class="p">|</span> <span class="nv">Jump</span> <span class="s s-Atom">to</span> <span class="s s-Atom">definition</span>                              <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">g</span><span class="p">]</span><span class="err">`</span>                 <span class="p">|</span> <span class="nv">See</span> <span class="s s-Atom">all</span> <span class="s s-Atom">definitions</span>                             <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">t&gt;</span><span class="err">`</span>              <span class="p">|</span> <span class="nv">Go</span> <span class="s s-Atom">back</span> <span class="s s-Atom">to</span> <span class="s s-Atom">last</span> <span class="s s-Atom">tag</span>                             <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">o</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">i&gt;</span><span class="err">`</span>        <span class="p">|</span> <span class="nv">Back</span><span class="o">/</span><span class="s s-Atom">forward</span>                                    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">tselect</span> <span class="nv">Classname</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Find</span> <span class="s s-Atom">definitions</span> <span class="s s-Atom">of</span> <span class="nv">Classname</span>                   <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">tjump</span> <span class="nv">Classname</span><span class="err">`</span>   <span class="p">|</span> <span class="nv">Find</span> <span class="s s-Atom">definitions</span> <span class="s s-Atom">of</span> <span class="nv">Classname</span> <span class="p">(</span><span class="s s-Atom">auto</span><span class="o">-</span><span class="s s-Atom">select</span> <span class="mi">1</span><span class="s s-Atom">st</span><span class="p">)</span> <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Formatting</span>
+
+<span class="p">|</span> <span class="o">-</span>       <span class="p">|</span> <span class="o">-</span>                                <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">-------</span> <span class="p">|</span> <span class="s s-Atom">--------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">ce</span> <span class="mi">8</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Center</span> <span class="s s-Atom">lines</span> <span class="s s-Atom">between</span> <span class="err">`</span><span class="mi">8</span><span class="err">`</span> <span class="s s-Atom">columns</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">ri</span> <span class="mi">4</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Right</span><span class="o">-</span><span class="s s-Atom">align</span> <span class="s s-Atom">lines</span> <span class="s s-Atom">at</span> <span class="err">`</span><span class="mi">4</span><span class="err">`</span> <span class="s s-Atom">columns</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">le</span><span class="err">`</span>   <span class="p">|</span> <span class="nv">Left</span><span class="o">-</span><span class="s s-Atom">align</span> <span class="s s-Atom">lines</span>                 <span class="p">|</span>
+
+<span class="nv">See</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">help</span> <span class="s s-Atom">formatting</span><span class="err">`</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Marks</span> 
+
+<span class="p">|</span> <span class="nv">Shortcut</span>            <span class="p">|</span> <span class="nv">Description</span>                                          <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">-------------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">--------------------------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="s s-Atom">^&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">Last</span> <span class="s s-Atom">position</span> <span class="s s-Atom">of</span> <span class="s s-Atom">cursor</span> <span class="s s-Atom">in</span> <span class="s s-Atom">insert</span> <span class="s s-Atom">mode</span>               <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="p">.</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">Last</span> <span class="s s-Atom">change</span> <span class="s s-Atom">in</span> <span class="s s-Atom">current</span> <span class="s s-Atom">buffer</span>                        <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`&quot;</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">Last</span> <span class="s s-Atom">exited</span> <span class="s s-Atom">current</span> <span class="s s-Atom">buffer</span>                           <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="mi">0</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">In</span> <span class="s s-Atom">last</span> <span class="s s-Atom">file</span> <span class="s s-Atom">edited</span>                                  <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;&#39;&#39;&lt;/code</span><span class="o">&gt;</span>     <span class="p">|</span> <span class="nv">Back</span> <span class="s s-Atom">to</span> <span class="s s-Atom">line</span> <span class="s s-Atom">in</span> <span class="s s-Atom">current</span> <span class="s s-Atom">buffer</span> <span class="s s-Atom">where</span> <span class="s s-Atom">jumped</span> <span class="s s-Atom">from</span>     <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="s s-Atom">\</span><span class="err">`</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span>   <span class="p">|</span> <span class="nv">Back</span> <span class="s s-Atom">to</span> <span class="s s-Atom">position</span> <span class="s s-Atom">in</span> <span class="s s-Atom">current</span> <span class="s s-Atom">buffer</span> <span class="s s-Atom">where</span> <span class="s s-Atom">jumped</span> <span class="s s-Atom">from</span> <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="p">[</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">To</span> <span class="s s-Atom">beginning</span> <span class="s s-Atom">of</span> <span class="s s-Atom">previously</span> <span class="s s-Atom">changed</span> <span class="s s-Atom">or</span> <span class="s s-Atom">yanked</span> <span class="s s-Atom">text</span>    <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="p">]</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">To</span> <span class="s s-Atom">end</span> <span class="s s-Atom">of</span> <span class="s s-Atom">previously</span> <span class="s s-Atom">changed</span> <span class="s s-Atom">or</span> <span class="s s-Atom">yanked</span> <span class="s s-Atom">text</span>          <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="s s-Atom">&amp;lt</span><span class="p">;</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span> <span class="p">|</span> <span class="nv">To</span> <span class="s s-Atom">beginning</span> <span class="s s-Atom">of</span> <span class="s s-Atom">last</span> <span class="s s-Atom">visual</span> <span class="s s-Atom">selection</span>                <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="s s-Atom">&amp;gt</span><span class="p">;</span><span class="s s-Atom">&lt;/code</span><span class="o">&gt;</span> <span class="p">|</span> <span class="nv">To</span> <span class="s s-Atom">end</span> <span class="s s-Atom">of</span> <span class="s s-Atom">last</span> <span class="s s-Atom">visual</span> <span class="s s-Atom">selection</span>                      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">ma</span><span class="err">`</span>                <span class="p">|</span> <span class="nv">Mark</span> <span class="s s-Atom">this</span> <span class="s s-Atom">cursor</span> <span class="s s-Atom">position</span> <span class="s s-Atom">as</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span>                     <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code&gt;\</span><span class="err">`</span><span class="s s-Atom">a&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">Jump</span> <span class="s s-Atom">to</span> <span class="s s-Atom">the</span> <span class="s s-Atom">cursor</span> <span class="s s-Atom">position</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span>                      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="s s-Atom">&#39;a`                | Jump to the beginning of the line with position `a`  |</span>
+<span class="s s-Atom">| &lt;code&gt;d&#39;a&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">Delete</span> <span class="s s-Atom">from</span> <span class="s s-Atom">current</span> <span class="s s-Atom">line</span> <span class="s s-Atom">to</span> <span class="s s-Atom">line</span> <span class="s s-Atom">of</span> <span class="s s-Atom">mark</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span>         <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code</span><span class="o">&gt;</span><span class="s s-Atom">d\</span><span class="err">`</span><span class="s s-Atom">a&lt;/code</span><span class="o">&gt;</span>   <span class="p">|</span> <span class="nv">Delete</span> <span class="s s-Atom">from</span> <span class="s s-Atom">current</span> <span class="s s-Atom">position</span> <span class="s s-Atom">to</span> <span class="s s-Atom">position</span> <span class="s s-Atom">of</span> <span class="s s-Atom">mark</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span> <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code</span><span class="o">&gt;</span><span class="s s-Atom">c</span><span class="err">&#39;</span><span class="s s-Atom">a&lt;/code</span><span class="o">&gt;</span>    <span class="p">|</span> <span class="nv">Change</span> <span class="s s-Atom">text</span> <span class="s s-Atom">from</span> <span class="s s-Atom">current</span> <span class="s s-Atom">line</span> <span class="s s-Atom">to</span> <span class="s s-Atom">line</span> <span class="s s-Atom">of</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span>         <span class="p">|</span>
+<span class="p">|</span> <span class="o">&lt;</span><span class="s s-Atom">code</span><span class="o">&gt;</span><span class="s s-Atom">y\</span><span class="err">`</span><span class="s s-Atom">a&lt;/code</span><span class="o">&gt;</span>   <span class="p">|</span> <span class="nv">Yank</span> <span class="s s-Atom">text</span> <span class="s s-Atom">from</span> <span class="s s-Atom">current</span> <span class="s s-Atom">position</span> <span class="s s-Atom">to</span> <span class="s s-Atom">position</span> <span class="s s-Atom">of</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span>   <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">marks</span><span class="err">`</span>            <span class="p">|</span> <span class="nv">List</span> <span class="s s-Atom">all</span> <span class="s s-Atom">current</span> <span class="s s-Atom">marks</span>                               <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">delm</span> <span class="s s-Atom">a</span><span class="err">`</span>           <span class="p">|</span> <span class="nv">Delete</span> <span class="s s-Atom">mark</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span>                                      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">delm</span> <span class="s s-Atom">a</span><span class="o">-</span><span class="s s-Atom">d</span><span class="err">`</span>         <span class="p">|</span> <span class="nv">Delete</span> <span class="s s-Atom">marks</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span><span class="p">,</span> <span class="err">`</span><span class="s s-Atom">b</span><span class="err">`</span><span class="p">,</span> <span class="err">`</span><span class="s s-Atom">c</span><span class="err">`</span><span class="p">,</span> <span class="err">`</span><span class="s s-Atom">d</span><span class="err">`</span>                      <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">delm</span> <span class="s s-Atom">abc</span><span class="err">`</span>         <span class="p">|</span> <span class="nv">Delete</span> <span class="s s-Atom">marks</span> <span class="err">`</span><span class="s s-Atom">a</span><span class="err">`</span><span class="p">,</span> <span class="err">`</span><span class="s s-Atom">b</span><span class="err">`</span><span class="p">,</span> <span class="err">`</span><span class="s s-Atom">c</span><span class="err">`</span>                           <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Calculator</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span>         <span class="p">|</span> <span class="nv">Description</span>      <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">----------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">--------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">r&gt;</span><span class="err">`</span> <span class="err">`</span><span class="s s-Atom">=</span><span class="err">`</span> <span class="mi">7</span><span class="s s-Atom">\*</span><span class="mi">7</span> <span class="p">|</span> <span class="nv">Shows</span> <span class="s s-Atom">the</span> <span class="s s-Atom">result</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">r&gt;</span><span class="err">`</span> <span class="err">`</span><span class="s s-Atom">=</span><span class="err">`</span> <span class="mi">10</span><span class="o">/</span><span class="mi">2</span> <span class="p">|</span> <span class="nv">Shows</span> <span class="s s-Atom">the</span> <span class="s s-Atom">result</span> <span class="p">|</span>
+
+
+
+<span class="nv">Do</span> <span class="s s-Atom">this</span> <span class="s s-Atom">in</span> <span class="nv">INSERT</span> <span class="s s-Atom">mode</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Shell</span>
+
+<span class="p">|</span> <span class="o">-</span>            <span class="p">|</span> <span class="o">-</span>                              <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">----------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="p">!</span><span class="o">&lt;</span><span class="s s-Atom">shell&gt;</span><span class="err">`</span>  <span class="p">|</span> <span class="nv">Interpret</span> <span class="nv">Shell</span> <span class="nv">Command</span>        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">r</span><span class="p">!</span><span class="o">&lt;</span><span class="s s-Atom">shell&gt;</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Read</span> <span class="s s-Atom">in</span> <span class="s s-Atom">output</span> <span class="s s-Atom">of</span> <span class="s s-Atom">shell</span>        <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="s s-Atom">r</span><span class="p">!</span><span class="s s-Atom">date</span><span class="err">`</span>    <span class="p">|</span> <span class="nv">Insert</span> <span class="s s-Atom">date</span>                    <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">:</span><span class="p">!!</span><span class="s s-Atom">date</span><span class="err">`</span>    <span class="p">|</span> <span class="nv">Replace</span> <span class="s s-Atom">current</span> <span class="s s-Atom">line</span> <span class="s s-Atom">with</span> <span class="s s-Atom">date</span> <span class="p">|</span>
+
+<span class="s s-Atom">###</span> <span class="nv">Command</span> <span class="s s-Atom">line</span>
+
+<span class="p">|</span> <span class="nv">Shortcut</span>     <span class="p">|</span> <span class="nv">Description</span>                               <span class="p">|</span>
+<span class="p">|</span> <span class="s s-Atom">------------</span> <span class="p">|</span> <span class="o">:-</span><span class="s s-Atom">---------------------------------------</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">r&gt;&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">w&gt;</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Insert</span> <span class="s s-Atom">current</span> <span class="s s-Atom">word</span> <span class="s s-Atom">into</span> <span class="s s-Atom">the</span> <span class="s s-Atom">command</span> <span class="s s-Atom">line</span> <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">r&gt;</span><span class="s2">&quot;`     | Paste from &quot;</span> <span class="s s-Atom">register</span>                     <span class="p">|</span>
+<span class="p">|</span> <span class="err">`</span><span class="o">&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">x&gt;&lt;</span><span class="nv">C</span><span class="o">-</span><span class="s s-Atom">f&gt;</span><span class="err">`</span> <span class="p">|</span> <span class="nv">Auto</span><span class="o">-</span><span class="s s-Atom">completion</span> <span class="s s-Atom">of</span> <span class="s s-Atom">path</span> <span class="s s-Atom">in</span> <span class="s s-Atom">insert</span> <span class="s s-Atom">mode</span>    <span class="p">|</span>
+
+
+
+<span class="s s-Atom">###</span> <span class="nv">Tricks</span>
+
+<span class="nv">Remove</span> <span class="s s-Atom">duplicate</span> <span class="s s-Atom">lines</span>
+
+<span class="err">```</span><span class="s s-Atom">shell</span> <span class="s s-Atom">script</span>
+<span class="o">:</span><span class="s s-Atom">sort</span> <span class="p">|</span> <span class="c1">%!uniq -u</span>
+</code></pre></div>
+
+<p>To number the lines in the file</p>
+<p>```shell script
+:%!cat -n</p>
+<div class="codehilite"><pre><span></span><code>Copy whole doc to clipboard
+
+```shell script
+:%w !pbcopy            # Mac OS X
+:%w !xclip -i -sel c   # GNU/Linux
+:%w !xsel -i -b        # GNU/Linux
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="also-see">
+<h2 id="also-see">Also see</h2>
+<div class="h3-wrap-list">
+<ul>
+<li><a href="https://devhints.io/vim">Devhints</a> <em>(devhints.io)</em></li>
+<li><a href="https://vim.rtorr.com/">Vim cheatsheet</a> <em>(vim.rotrr.com)</em></li>
+<li><a href="http://vimdoc.sourceforge.net/htmldoc/">Vim documentation</a> <em>(vimdoc.sourceforge.net)</em></li>
+<li><a href="http://openvim.com/">Interactive Vim tutorial</a> <em>(openvim.com)</em></li>
+</ul>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>

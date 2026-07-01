@@ -1,0 +1,2176 @@
+<!DOCTYPE html>
+<html lang="en" class="scrollbar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="ft.png" type="image/x-icon">
+  <title>RegEX Cheat Sheet — FlameTech</title>
+  <meta name="description" content="A quick reference for regular expressions (regex), including symbols, ranges, grouping, assertions and some sample patterns to get you started.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/flametech-light-mode.css">
+  <link rel="stylesheet" href="/flametech-dark-mode.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" id="hljs-light">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css" id="hljs-dark" disabled>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+    :root{--primary:#ff2a6d;--secondary:#05d9e8;--dark:#01012b;--darker:#000015;--light:#f0f0f0;--accent:#d1f7ff;--accent-color:#e56d2d}
+
+    body{background:linear-gradient(135deg,var(--darker),var(--dark));color:var(--light);min-height:100vh;overflow-x:hidden}
+
+    /* ── HEADER ── */
+    header{background:rgba(0,0,20,.95);backdrop-filter:blur(10px);position:sticky;top:0;width:100%;z-index:1000;padding:12px 0;border-bottom:2px solid rgba(255,42,109,.3);border-radius:30px}
+    .light-mode header{background:rgba(255,255,255,.95);border-bottom:2px solid rgba(214,215,219,.8)}
+    nav{display:flex;justify-content:space-between;align-items:center;width:92%;max-width:1300px;margin:0 auto;padding:0 10px}
+    .logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);text-decoration:none}
+    .logo i{color:var(--secondary);animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+    .nav-links{display:flex;list-style:none}
+    .nav-links li{margin-left:10px}
+    .nav-links a{text-decoration:none;color:var(--light);font-weight:600;font-size:13px;transition:color .3s;padding:4px 0;white-space:nowrap}
+    .nav-links a:hover,.nav-links a.active{color:var(--secondary)}
+    .light-mode .nav-links a{color:#101828}
+    .light-mode .nav-links a:hover,.light-mode .nav-links a.active{color:var(--secondary)}
+    .nav-actions{display:flex;align-items:center;gap:8px}
+    .theme-toggle{background:none;border:1.5px solid rgba(255,42,109,.4);color:var(--light);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+    .theme-toggle:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .theme-toggle{color:#101828;border-color:rgba(95,143,63,.4)}
+    .hamburger{display:none;background:none;border:none;color:var(--light);font-size:20px;cursor:pointer}
+    .light-mode .hamburger{color:#101828}
+
+    /* ── POST HEADER ── */
+    .post-hero{padding:40px 0 30px;text-align:center;position:relative}
+    .post-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(229,109,45,.1),transparent 70%);pointer-events:none}
+    .breadcrumb{font-size:13px;color:rgba(240,240,240,.45);margin-bottom:16px;display:flex;align-items:center;justify-content:center;gap:6px}
+    .breadcrumb a{color:rgba(240,240,240,.45);text-decoration:none;transition:color .2s}
+    .breadcrumb a:hover{color:var(--secondary)}
+    .light-mode .breadcrumb,.light-mode .breadcrumb a{color:#888}
+    .post-icon{width:64px;height:64px;border-radius:16px;background:var(--accent-color);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:24px;font-weight:700;color:#fff;font-family:'Segoe UI',sans-serif}
+    .post-hero h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;letter-spacing:-.02em;margin-bottom:12px}
+    .post-hero h1 span{opacity:.4;font-weight:300;font-size:.65em}
+    .post-intro{max-width:640px;margin:0 auto 20px;font-size:1rem;color:rgba(240,240,240,.65);line-height:1.7}
+    .light-mode .post-intro{color:#526071}
+    .post-meta{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+    .meta-tag{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(240,240,240,.6)}
+    .light-mode .meta-tag{background:rgba(95,143,63,.08);border-color:rgba(95,143,63,.2);color:#526071}
+    .back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:999px;border:1.5px solid rgba(255,42,109,.3);background:transparent;color:rgba(240,240,240,.7);font-size:13px;font-weight:600;text-decoration:none;transition:all .2s;cursor:pointer}
+    .back-btn:hover{border-color:var(--secondary);color:var(--secondary)}
+    .light-mode .back-btn{color:#526071;border-color:rgba(95,143,63,.3)}
+
+    /* ── LAYOUT ── */
+    .page-wrap{display:flex;width:92%;max-width:1300px;margin:0 auto;padding:20px 10px 60px;gap:28px}
+    .toc-sidebar{width:220px;flex-shrink:0;position:sticky;top:80px;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none}
+    .toc-sidebar::-webkit-scrollbar{display:none}
+    .toc-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(240,240,240,.4);margin-bottom:12px}
+    .light-mode .toc-title{color:#aaa}
+    .toc-list{list-style:none}
+    .toc-list li{margin-bottom:4px}
+    .toc-list a{font-size:13px;color:rgba(240,240,240,.5);text-decoration:none;display:block;padding:4px 8px;border-radius:6px;border-left:2px solid transparent;transition:all .2s;line-height:1.3}
+    .toc-list a:hover{color:var(--secondary);border-left-color:var(--secondary);background:rgba(5,217,232,.05)}
+    .toc-list a.active{color:var(--primary);border-left-color:var(--primary);background:rgba(255,42,109,.07)}
+    .light-mode .toc-list a{color:#888}
+    .light-mode .toc-list a:hover{color:#0f766e}
+    .light-mode .toc-list a.active{color:#5f8f3f}
+    .post-content{flex:1;min-width:0}
+
+    /* ── CHEATSHEET LAYOUT ── */
+    .mdLayout{color:var(--light);display:flex;flex-direction:column;gap:3rem}
+    .light-mode .mdLayout{color:#345}
+    .mdLayout .h2-wrap{border-radius:12px}
+    .mdLayout .h2-wrap > h2{font-size:1.1rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(5,217,232,.8);padding-bottom:10px;margin-bottom:16px;border-bottom:1px solid rgba(255,42,109,.15)}
+    .light-mode .mdLayout .h2-wrap > h2{color:#0f766e;border-bottom-color:rgba(95,143,63,.2)}
+    .mdLayout .h3-wrap-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+    .mdLayout .h2-wrap.cols-1 .h3-wrap-list{grid-template-columns:1fr}
+    .mdLayout .h2-wrap.cols-2 .h3-wrap-list{grid-template-columns:repeat(2,1fr)}
+    .mdLayout .h2-wrap.cols-3 .h3-wrap-list{grid-template-columns:repeat(3,1fr)}
+    .mdLayout .h2-wrap.cols-4 .h3-wrap-list{grid-template-columns:repeat(4,1fr)}
+    .mdLayout .h3-wrap{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
+    .light-mode .mdLayout .h3-wrap{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .mdLayout .h3-wrap > h3{font-size:.85rem;font-weight:700;padding:10px 14px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);color:rgba(240,240,240,.8);letter-spacing:.03em}
+    .light-mode .mdLayout .h3-wrap > h3{background:#f8f9fa;color:#344;border-bottom-color:rgba(0,0,0,.07)}
+    .mdLayout .section{padding:12px 14px;flex:1}
+    .mdLayout .section p{font-size:.875rem;line-height:1.6;margin-bottom:8px;color:rgba(240,240,240,.75)}
+    .light-mode .mdLayout .section p{color:#456}
+    .mdLayout .section ul,.mdLayout .section ol{margin:4px 0;padding-left:0;list-style:none}
+    .mdLayout .section ul > li{font-size:.85rem;padding:7px 12px 7px 26px;position:relative;border-bottom:1px solid rgba(255,255,255,.05);color:rgba(240,240,240,.8)}
+    .mdLayout .section ul > li:last-child{border-bottom:none}
+    .mdLayout .section ul > li::before{content:'';position:absolute;left:12px;top:50%;transform:translateY(-50%);width:5px;height:5px;background:var(--secondary);border-radius:50%;opacity:.6}
+    .light-mode .mdLayout .section ul > li{border-bottom-color:rgba(0,0,0,.06);color:#345}
+    .light-mode .mdLayout .section ul > li::before{background:#0f766e}
+    .mdLayout .section table{width:100%;table-layout:fixed;word-wrap:break-word;font-size:.83rem}
+    .mdLayout .section table td,.mdLayout .section table th{padding:7px 10px;text-align:left;border-bottom:1px solid rgba(255,255,255,.05)}
+    .mdLayout .section table tr:last-child td{border-bottom:none}
+    .mdLayout .section table thead{display:none}
+    .mdLayout .section table td:first-child{color:var(--secondary);font-family:monospace;font-size:.82rem;white-space:nowrap}
+    .light-mode .mdLayout .section table td{border-bottom-color:rgba(0,0,0,.06)}
+    .light-mode .mdLayout .section table td:first-child{color:#0f766e}
+    .mdLayout .section a{color:var(--secondary);text-decoration:none}
+    .mdLayout .section a:hover{text-decoration:underline}
+    .light-mode .mdLayout .section a{color:#0f766e}
+    kbd{letter-spacing:.05em;padding:2px 7px;border:1px solid rgba(255,255,255,.2);border-radius:4px;font-size:11px;display:inline-block;background:rgba(255,255,255,.08);box-shadow:0 1px 0 rgba(0,0,0,.3);color:var(--light);font-family:'Segoe UI',sans-serif;white-space:nowrap}
+    .light-mode kbd{border-color:#ccc;background:#f7f7f7;color:#303835;box-shadow:0 1px 0 rgba(0,0,0,.2)}
+
+    /* ── CODE BLOCKS ── */
+    .mdLayout pre{background:rgba(0,0,0,.4)!important;border-radius:8px;padding:14px 60px 14px 14px!important;overflow-x:auto;margin:8px 0;border:1px solid rgba(255,255,255,.08)}
+    .light-mode .mdLayout pre{background:#f6f8fa!important;border-color:rgba(0,0,0,.1)}
+    .mdLayout pre code{color:#e2e8f0!important;font-size:.82rem!important;line-height:1.55;font-family:'Cascadia Code','Fira Code',monospace;padding:0!important;background:transparent!important}
+    .light-mode .mdLayout pre code{color:#24292e!important}
+    .mdLayout code:not(pre code){color:var(--secondary);background:rgba(5,217,232,.08);padding:1px 6px;border-radius:4px;font-size:.85em;font-family:'Cascadia Code','Fira Code',monospace}
+    .light-mode .mdLayout code:not(pre code){color:#0f766e;background:rgba(15,118,110,.08)}
+    /* copy button */
+    .code-block-wrap{position:relative}
+    .copy-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);border-radius:6px;padding:4px 8px;font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+    .copy-btn:hover{background:rgba(5,217,232,.2);border-color:var(--secondary);color:var(--secondary)}
+    .copy-btn.copied{color:#4ade80;border-color:#4ade80}
+    .light-mode .copy-btn{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#666}
+    .light-mode .copy-btn:hover{background:rgba(15,118,110,.1);border-color:#0f766e;color:#0f766e}
+
+    /* ── BLOCKQUOTE ── */
+    .mdLayout blockquote{border-left:3px solid var(--secondary);background:rgba(5,217,232,.05);padding:12px 16px;border-radius:0 8px 8px 0;margin:8px 0}
+    .mdLayout blockquote p{color:rgba(240,240,240,.7);margin:0}
+    .light-mode .mdLayout blockquote{background:rgba(15,118,110,.06)}
+    .light-mode .mdLayout blockquote p{color:#456}
+
+    /* ── FOOTER ── */
+    .footer{border-top:1px solid rgba(255,42,109,.15);margin-top:60px;padding:28px 0 18px;text-align:center}
+    .light-mode .footer{border-top-color:rgba(95,143,63,.2)}
+    .footer-links{display:flex;justify-content:center;gap:28px;flex-wrap:wrap;margin-bottom:12px}
+    .footer-links a{color:rgba(240,240,240,.4);text-decoration:none;font-size:13px;transition:color .2s}
+    .footer-links a:hover{color:var(--secondary)}
+    .light-mode .footer-links a{color:#888}
+    .footer-copy{font-size:11px;color:rgba(240,240,240,.22)}
+    .light-mode .footer-copy{color:#bbb}
+
+    /* ── MOBILE ── */
+    @media(max-width:900px){
+      .toc-sidebar{display:none}
+      .mdLayout .h3-wrap-list{grid-template-columns:1fr!important}
+    }
+    @media(max-width:600px){
+      .nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(0,0,20,.97);flex-direction:column;padding:18px;gap:8px;border-radius:0 0 18px 18px;border-top:1px solid rgba(255,42,109,.2)}
+      .light-mode .nav-links{background:rgba(255,255,255,.98);border-top-color:rgba(95,143,63,.2)}
+      .nav-links.open{display:flex}
+      .nav-links li{margin:0}
+      .hamburger{display:block}
+      header{position:relative}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="Flametech.html" class="logo"><i class="fas fa-laptop-code"></i> FlameTech</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="h.html">Home</a></li>
+      <li><a href="AI.html">AI</a></li>
+      <li><a href="dev.html">Development</a></li>
+      <li><a href="codeL.html">Code Languages</a></li>
+      <li><a href="TT.html">Typing Practice</a></li>
+      <li><a href="/reference.html" class="active">Reference</a></li>
+      <li><a href="l-r.html">Login | Register</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" title="Toggle theme"><i class="fas fa-sun" id="themeIcon"></i></button>
+      <button class="hamburger" id="hamburger"><i class="fas fa-bars"></i></button>
+    </div>
+  </nav>
+</header>
+
+<section class="post-hero">
+  <div class="breadcrumb">
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+    <span>›</span>
+    <span>Toolkit</span>
+    <span>›</span>
+    <span>RegEX</span>
+  </div>
+  <div class="post-icon">RE</div>
+  <h1>RegEX <span>cheatsheet</span></h1>
+  <div class="post-intro"><p>A quick reference for regular expressions (regex), including symbols, ranges, grouping, assertions and some sample patterns to get you started.</p></div>
+  <div class="post-meta">
+    <span class="meta-tag"><i class="fas fa-folder"></i> Toolkit</span>
+    <span class="meta-tag">regular expression</span> <span class="meta-tag">regexp</span> <span class="meta-tag">pattern</span> <span class="meta-tag">Toolkit</span>
+    <a href="/reference.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Reference</a>
+  </div>
+</section>
+
+<div class="page-wrap">
+  <aside class="toc-sidebar">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list" id="tocList"></ul>
+  </aside>
+  <div class="post-content">
+    <div id="mdLayout" class="mdLayout">
+<!-- Editor's note: this page uses <yel> (yellow tailwind spans) to color matching text and <red> to color non-matching
+text -->
+
+<div class="h2-wrap" id="getting-started">
+<h2 id="getting-started">Getting Started</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="introduction">Introduction</h3>
+<div class="section">
+<p>This is a quick cheat sheet to getting started with regular expressions.</p>
+<ul>
+<li><a href="#regex-in-python">Regex in Python</a> <em>(cheatsheets.zip)</em></li>
+<li><a href="#regex-in-javascript">Regex in JavaScript</a> <em>(cheatsheets.zip)</em></li>
+<li><a href="#regex-in-php">Regex in PHP</a> <em>(cheatsheets.zip)</em></li>
+<li><a href="#regex-in-java">Regex in Java</a> <em>(cheatsheets.zip)</em></li>
+<li><a href="#regex-in-mysql">Regex in MySQL</a> <em>(cheatsheets.zip)</em></li>
+<li><a href="vim.html#search-and-replace">Regex in Vim</a> <em>(cheatsheets.zip)</em></li>
+<li><a href="emacs.html#search">Regex in Emacs</a> <em>(cheatsheets.zip)</em></li>
+<li><a href="https://regex101.com/">Online regex tester</a> <em>(regex101.com)</em></li>
+</ul>
+</div></div>
+<div class="h3-wrap">
+<h3 id="character-classes">Character Classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[abc]</code></td>
+<td style="text-align: left;">A single character of: <yel>a</yel>, <yel>b</yel> or <yel>c</yel></td>
+</tr>
+<tr>
+<td><code>[^abc]</code></td>
+<td style="text-align: left;">A character except: <yel>a</yel>, <yel>b</yel> or <yel>c</yel></td>
+</tr>
+<tr>
+<td><code>[a-z]</code></td>
+<td style="text-align: left;">A character in the range: <yel>a-z</yel></td>
+</tr>
+<tr>
+<td><code>[^a-z]</code></td>
+<td style="text-align: left;">A character not in the range: <red>a-z</red></td>
+</tr>
+<tr>
+<td><code>[0-9]</code></td>
+<td style="text-align: left;">A digit in the range: <yel>0-9</yel></td>
+</tr>
+<tr>
+<td><code>[a-zA-Z]</code></td>
+<td style="text-align: left;">A character in the range: <yel>a-z</yel> or <yel>A-Z</yel></td>
+</tr>
+<tr>
+<td><code>[a-zA-Z0-9]</code></td>
+<td style="text-align: left;">A character in the range: <yel>a-z</yel>, <yel>A-Z</yel> or <yel>0-9</yel></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="quantifiers">Quantifiers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a?</code></td>
+<td style="text-align: left;">Zero or one of a</td>
+</tr>
+<tr>
+<td><code>a*</code></td>
+<td style="text-align: left;">Zero or more of a</td>
+</tr>
+<tr>
+<td><code>a+</code></td>
+<td style="text-align: left;">One or more of a</td>
+</tr>
+<tr>
+<td><code>[0-9]+</code></td>
+<td style="text-align: left;">One or more of 0-9</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td style="text-align: left;">Exactly 3 of a</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td style="text-align: left;">3 or more of a</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td style="text-align: left;">Between 3 and 6 of a</td>
+</tr>
+<tr>
+<td><code>a*</code></td>
+<td style="text-align: left;">Greedy quantifier</td>
+</tr>
+<tr>
+<td><code>a*?</code></td>
+<td style="text-align: left;">Lazy quantifier</td>
+</tr>
+<tr>
+<td><code>a*+</code></td>
+<td style="text-align: left;">Possessive quantifier</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="common-metacharacters">Common Metacharacters</h3>
+<div class="section">
+<p>| Pattern | Description                                                  |
+| ------- | :----------------------------------------------------------- | -------------------------------------------- |
+| <code>^</code>     | Matches the start of a string.                               |
+| `</p>
+<p>Escape these special characters with <code>\</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="meta-sequences">Meta Sequences</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.</code></td>
+<td style="text-align: left;">Any single character</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td style="text-align: left;">Any whitespace character</td>
+</tr>
+<tr>
+<td><code>\S</code></td>
+<td style="text-align: left;">Any non-whitespace character</td>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td style="text-align: left;">Any digit, Same as [0-9]</td>
+</tr>
+<tr>
+<td><code>\D</code></td>
+<td style="text-align: left;">Any non-digit, Same as [^0-9]</td>
+</tr>
+<tr>
+<td><code>\w</code></td>
+<td style="text-align: left;">Any word character</td>
+</tr>
+<tr>
+<td><code>\W</code></td>
+<td style="text-align: left;">Any non-word character</td>
+</tr>
+<tr>
+<td><code>\X</code></td>
+<td style="text-align: left;">Any Unicode sequences, linebreaks included</td>
+</tr>
+<tr>
+<td><code>\C</code></td>
+<td style="text-align: left;">Match one data unit</td>
+</tr>
+<tr>
+<td><code>\R</code></td>
+<td style="text-align: left;">Unicode newlines</td>
+</tr>
+<tr>
+<td><code>\v</code></td>
+<td style="text-align: left;">Vertical whitespace character</td>
+</tr>
+<tr>
+<td><code>\V</code></td>
+<td style="text-align: left;">Negation of \v - anything except newlines and vertical tabs</td>
+</tr>
+<tr>
+<td><code>\h</code></td>
+<td style="text-align: left;">Horizontal whitespace character</td>
+</tr>
+<tr>
+<td><code>\H</code></td>
+<td style="text-align: left;">Negation of \h</td>
+</tr>
+<tr>
+<td><code>\K</code></td>
+<td style="text-align: left;">Reset match</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td style="text-align: left;">Match nth subpattern</td>
+</tr>
+<tr>
+<td><code>\pX</code></td>
+<td style="text-align: left;">Unicode property X</td>
+</tr>
+<tr>
+<td><code>\p</code></td>
+<td style="text-align: left;">Unicode property or script category</td>
+</tr>
+<tr>
+<td><code>\PX</code></td>
+<td style="text-align: left;">Negation of \pX</td>
+</tr>
+<tr>
+<td><code>\P</code></td>
+<td style="text-align: left;">Negation of \p</td>
+</tr>
+<tr>
+<td><code>\Q...\E</code></td>
+<td style="text-align: left;">Quote; treat as literals</td>
+</tr>
+<tr>
+<td><code>\k&lt;name&gt;</code></td>
+<td style="text-align: left;">Match subpattern <code>name</code></td>
+</tr>
+<tr>
+<td><code>\k'name'</code></td>
+<td style="text-align: left;">Match subpattern <code>name</code></td>
+</tr>
+<tr>
+<td><code>\k</code></td>
+<td style="text-align: left;">Match subpattern <code>name</code></td>
+</tr>
+<tr>
+<td><code>\gn</code></td>
+<td style="text-align: left;">Match nth subpattern</td>
+</tr>
+<tr>
+<td><code>\g</code></td>
+<td style="text-align: left;">Match nth subpattern</td>
+</tr>
+<tr>
+<td><code>\g&lt;n&gt;</code></td>
+<td style="text-align: left;">Recurse nth capture group</td>
+</tr>
+<tr>
+<td><code>\g'n'</code></td>
+<td style="text-align: left;">Recurses nth capture group.</td>
+</tr>
+<tr>
+<td><code>\g</code></td>
+<td style="text-align: left;">Match nth relative previous subpattern</td>
+</tr>
+<tr>
+<td><code>\g&lt;+n&gt;</code></td>
+<td style="text-align: left;">Recurse nth relative upcoming subpattern</td>
+</tr>
+<tr>
+<td><code>\g'+n'</code></td>
+<td style="text-align: left;">Match nth relative upcoming subpattern</td>
+</tr>
+<tr>
+<td><code>\g'letter'</code></td>
+<td style="text-align: left;">Recurse named capture group <code>letter</code></td>
+</tr>
+<tr>
+<td><code>\g</code></td>
+<td style="text-align: left;">Match previously-named capture group <code>letter</code></td>
+</tr>
+<tr>
+<td><code>\g&lt;letter&gt;</code></td>
+<td style="text-align: left;">Recurses named capture group <code>letter</code></td>
+</tr>
+<tr>
+<td><code>\xYY</code></td>
+<td style="text-align: left;">Hex character YY</td>
+</tr>
+<tr>
+<td><code>\x</code></td>
+<td style="text-align: left;">Hex character YYYY</td>
+</tr>
+<tr>
+<td><code>\ddd</code></td>
+<td style="text-align: left;">Octal character ddd</td>
+</tr>
+<tr>
+<td><code>\cY</code></td>
+<td style="text-align: left;">Control character Y</td>
+</tr>
+<tr>
+<td><code>[\b]</code></td>
+<td style="text-align: left;">Backspace character</td>
+</tr>
+<tr>
+<td><code>\</code></td>
+<td style="text-align: left;">Makes any character literal</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="anchors">Anchors</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\G</code></td>
+<td style="text-align: left;">Start of match</td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td style="text-align: left;">Start of string</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td style="text-align: left;">End of string</td>
+</tr>
+<tr>
+<td><code>\A</code></td>
+<td style="text-align: left;">Start of string</td>
+</tr>
+<tr>
+<td><code>\Z</code></td>
+<td style="text-align: left;">End of string</td>
+</tr>
+<tr>
+<td><code>\z</code></td>
+<td style="text-align: left;">Absolute end of string</td>
+</tr>
+<tr>
+<td><code>\b</code></td>
+<td style="text-align: left;">A word boundary</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td style="text-align: left;">Non-word boundary</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="substitution">Substitution</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\0</code></td>
+<td style="text-align: left;">Complete match contents</td>
+</tr>
+<tr>
+<td><code>\1</code></td>
+<td style="text-align: left;">Contents in capture group 1</td>
+</tr>
+<tr>
+<td><code>$1</code></td>
+<td style="text-align: left;">Contents in capture group 1</td>
+</tr>
+<tr>
+<td><code>$</code></td>
+<td style="text-align: left;">Contents in capture group <code>foo</code></td>
+</tr>
+<tr>
+<td><code>\x20</code></td>
+<td style="text-align: left;">Hexadecimal replacement values</td>
+</tr>
+<tr>
+<td><code>\x</code></td>
+<td style="text-align: left;">Hexadecimal replacement values</td>
+</tr>
+<tr>
+<td><code>\t</code></td>
+<td style="text-align: left;">Tab</td>
+</tr>
+<tr>
+<td><code>\r</code></td>
+<td style="text-align: left;">Carriage return</td>
+</tr>
+<tr>
+<td><code>\n</code></td>
+<td style="text-align: left;">Newline</td>
+</tr>
+<tr>
+<td><code>\f</code></td>
+<td style="text-align: left;">Form-feed</td>
+</tr>
+<tr>
+<td><code>\U</code></td>
+<td style="text-align: left;">Uppercase Transformation</td>
+</tr>
+<tr>
+<td><code>\L</code></td>
+<td style="text-align: left;">Lowercase Transformation</td>
+</tr>
+<tr>
+<td><code>\E</code></td>
+<td style="text-align: left;">Terminate any Transformation</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="group-constructs">Group Constructs</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(...)</code></td>
+<td style="text-align: left;">Capture everything enclosed</td>
+</tr>
+<tr>
+<td><code>(a|b)</code></td>
+<td style="text-align: left;">Match either a or b</td>
+</tr>
+<tr>
+<td><code>(?:...)</code></td>
+<td style="text-align: left;">Match everything enclosed</td>
+</tr>
+<tr>
+<td><code>(?&gt;...)</code></td>
+<td style="text-align: left;">Atomic group (non-capturing)</td>
+</tr>
+<tr>
+<td><code>(?|...)</code></td>
+<td style="text-align: left;">Duplicate subpattern group number</td>
+</tr>
+<tr>
+<td><code>(?#...)</code></td>
+<td style="text-align: left;">Comment</td>
+</tr>
+<tr>
+<td><code>(?'name'...)</code></td>
+<td style="text-align: left;">Named Capturing Group</td>
+</tr>
+<tr>
+<td><code>(?&lt;name&gt;...)</code></td>
+<td style="text-align: left;">Named Capturing Group</td>
+</tr>
+<tr>
+<td><code>(?P&lt;name&gt;...)</code></td>
+<td style="text-align: left;">Named Capturing Group</td>
+</tr>
+<tr>
+<td><code>(?imsxXU)</code></td>
+<td style="text-align: left;">Inline modifiers</td>
+</tr>
+<tr>
+<td><code>(?(DEFINE)...)</code></td>
+<td style="text-align: left;">Pre-define patterns before using them</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="assertions">Assertions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(?(1)yes|no)</code></td>
+<td style="text-align: left;">Conditional statement</td>
+</tr>
+<tr>
+<td><code>(?(R)yes|no)</code></td>
+<td style="text-align: left;">Conditional statement</td>
+</tr>
+<tr>
+<td><code>(?(R#)yes|no)</code></td>
+<td style="text-align: left;">Recursive Conditional statement</td>
+</tr>
+<tr>
+<td><code>(?(R&amp;name\yes|no)</code></td>
+<td style="text-align: left;">Conditional statement</td>
+</tr>
+<tr>
+<td><code>(?(?=...)yes|no)</code></td>
+<td style="text-align: left;">Lookahead conditional</td>
+</tr>
+<tr>
+<td><code>(?(?&lt;=...)yes|no)</code></td>
+<td style="text-align: left;">Lookbehind conditional</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lookarounds">Lookarounds</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(?=...)</code></td>
+<td style="text-align: left;">Positive Lookahead</td>
+</tr>
+<tr>
+<td><code>(?!...)</code></td>
+<td style="text-align: left;">Negative Lookahead</td>
+</tr>
+<tr>
+<td><code>(?&lt;=...)</code></td>
+<td style="text-align: left;">Positive Lookbehind</td>
+</tr>
+<tr>
+<td><code>(?&lt;!...)</code></td>
+<td style="text-align: left;">Negative Lookbehind</td>
+</tr>
+</tbody>
+</table>
+<p>Lookaround lets you match a group before (lookbehind) or after (lookahead) your main pattern without including it in the
+result.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="flagsmodifiers">Flags/Modifiers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>g</code></td>
+<td style="text-align: left;">Global</td>
+</tr>
+<tr>
+<td><code>m</code></td>
+<td style="text-align: left;">Multiline</td>
+</tr>
+<tr>
+<td><code>i</code></td>
+<td style="text-align: left;">Case insensitive</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td style="text-align: left;">Ignore whitespace</td>
+</tr>
+<tr>
+<td><code>s</code></td>
+<td style="text-align: left;">Single line</td>
+</tr>
+<tr>
+<td><code>u</code></td>
+<td style="text-align: left;">Unicode</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td style="text-align: left;">eXtended</td>
+</tr>
+<tr>
+<td><code>U</code></td>
+<td style="text-align: left;">Ungreedy</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td style="text-align: left;">Anchor</td>
+</tr>
+<tr>
+<td><code>J</code></td>
+<td style="text-align: left;">Duplicate group names</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="recurse">Recurse</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(?R)</code></td>
+<td style="text-align: left;">Recurse entire pattern</td>
+</tr>
+<tr>
+<td><code>(?1)</code></td>
+<td style="text-align: left;">Recurse first subpattern</td>
+</tr>
+<tr>
+<td><code>(?+1)</code></td>
+<td style="text-align: left;">Recurse first relative subpattern</td>
+</tr>
+<tr>
+<td><code>(?&amp;name)</code></td>
+<td style="text-align: left;">Recurse subpattern <code>name</code></td>
+</tr>
+<tr>
+<td><code>(?P=name)</code></td>
+<td style="text-align: left;">Match subpattern <code>name</code></td>
+</tr>
+<tr>
+<td><code>(?P&gt;name)</code></td>
+<td style="text-align: left;">Recurse subpattern <code>name</code></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="posix-character-classes">POSIX Character Classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Character Class</th>
+<th>Same as</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[[:alnum:]]</code></td>
+<td><code>[0-9A-Za-z]</code></td>
+<td style="text-align: left;">Letters and digits</td>
+</tr>
+<tr>
+<td><code>[[:alpha:]]</code></td>
+<td><code>[A-Za-z]</code></td>
+<td style="text-align: left;">Letters</td>
+</tr>
+<tr>
+<td><code>[[:ascii:]]</code></td>
+<td><code>[\x00-\x7F]</code></td>
+<td style="text-align: left;">ASCII codes 0-127</td>
+</tr>
+<tr>
+<td><code>[[:blank:]]</code></td>
+<td><code>[\t ]</code></td>
+<td style="text-align: left;">Space or tab only</td>
+</tr>
+<tr>
+<td><code>[[:cntrl:]]</code></td>
+<td><code>[\x00-\x1F\x7F]</code></td>
+<td style="text-align: left;">Control characters</td>
+</tr>
+<tr>
+<td><code>[[:digit:]]</code></td>
+<td><code>[0-9]</code></td>
+<td style="text-align: left;">Decimal digits</td>
+</tr>
+<tr>
+<td><code>[[:graph:]]</code></td>
+<td><code>[[:alnum:][:punct:]]</code></td>
+<td style="text-align: left;">Visible characters (not space)</td>
+</tr>
+<tr>
+<td><code>[[:lower:]]</code></td>
+<td><code>[a-z]</code></td>
+<td style="text-align: left;">Lowercase letters</td>
+</tr>
+<tr>
+<td><code>[[:print:]]</code></td>
+<td><code>[ -~] == [ [:graph:]]</code></td>
+<td style="text-align: left;">Visible characters</td>
+</tr>
+<tr>
+<td><code>[[:punct:]]</code></td>
+<td><code>[!"#$%&amp;’()*+,-./:;&lt;=&gt;?@[]^_`~]</code></td>
+<td style="text-align: left;">Visible punctuation characters</td>
+</tr>
+<tr>
+<td><code>[[:space:]]</code></td>
+<td><code>[\t\n\v\f\r ]</code></td>
+<td style="text-align: left;">Whitespace</td>
+</tr>
+<tr>
+<td><code>[[:upper:]]</code></td>
+<td><code>[A-Z]</code></td>
+<td style="text-align: left;">Uppercase letters</td>
+</tr>
+<tr>
+<td><code>[[:word:]]</code></td>
+<td><code>[0-9A-Za-z_]</code></td>
+<td style="text-align: left;">Word characters</td>
+</tr>
+<tr>
+<td><code>[[:xdigit:]]</code></td>
+<td><code>[0-9A-Fa-f]</code></td>
+<td style="text-align: left;">Hexadecimal digits</td>
+</tr>
+<tr>
+<td><code>[[:&lt;:]]</code></td>
+<td><code>[\b(?=\w)]</code></td>
+<td style="text-align: left;">Start of word</td>
+</tr>
+<tr>
+<td><code>[[:&gt;:]]</code></td>
+<td><code>[\b(?&lt;=\w)]</code></td>
+<td style="text-align: left;">End of word</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="control-verb">Control verb</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(*ACCEPT)</code></td>
+<td style="text-align: left;">Control verb</td>
+</tr>
+<tr>
+<td><code>(*FAIL)</code></td>
+<td style="text-align: left;">Control verb</td>
+</tr>
+<tr>
+<td><code>(*MARK:NAME)</code></td>
+<td style="text-align: left;">Control verb</td>
+</tr>
+<tr>
+<td><code>(*COMMIT)</code></td>
+<td style="text-align: left;">Control verb</td>
+</tr>
+<tr>
+<td><code>(*PRUNE)</code></td>
+<td style="text-align: left;">Control verb</td>
+</tr>
+<tr>
+<td><code>(*SKIP)</code></td>
+<td style="text-align: left;">Control verb</td>
+</tr>
+<tr>
+<td><code>(*THEN)</code></td>
+<td style="text-align: left;">Control verb</td>
+</tr>
+<tr>
+<td><code>(*UTF)</code></td>
+<td style="text-align: left;">Pattern modifier</td>
+</tr>
+<tr>
+<td><code>(*UTF8)</code></td>
+<td style="text-align: left;">Pattern modifier</td>
+</tr>
+<tr>
+<td><code>(*UTF16)</code></td>
+<td style="text-align: left;">Pattern modifier</td>
+</tr>
+<tr>
+<td><code>(*UTF32)</code></td>
+<td style="text-align: left;">Pattern modifier</td>
+</tr>
+<tr>
+<td><code>(*UCP)</code></td>
+<td style="text-align: left;">Pattern modifier</td>
+</tr>
+<tr>
+<td><code>(*CR)</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>(*LF)</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>(*CRLF)</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>(*ANYCRLF)</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>(*ANY)</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>\R</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>(*BSR_ANYCRLF)</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>(*BSR_UNICODE)</code></td>
+<td style="text-align: left;">Line break modifier</td>
+</tr>
+<tr>
+<td><code>(*LIMIT_MATCH=x)</code></td>
+<td style="text-align: left;">Regex engine modifier</td>
+</tr>
+<tr>
+<td><code>(*LIMIT_RECURSION=d)</code></td>
+<td style="text-align: left;">Regex engine modifier</td>
+</tr>
+<tr>
+<td><code>(*NO_AUTO_POSSESS)</code></td>
+<td style="text-align: left;">Regex engine modifier</td>
+</tr>
+<tr>
+<td><code>(*NO_START_OPT)</code></td>
+<td style="text-align: left;">Regex engine modifier</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="regex-examples">
+<h2 id="regex-examples">Regex examples</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="characters">Characters</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ring</code></td>
+<td style="text-align: left;">Match <yel>ring</yel> sp<yel>ring</yel>board etc.</td>
+</tr>
+<tr>
+<td><code>.</code></td>
+<td style="text-align: left;">Match <yel>a</yel>, <yel>9</yel>, <yel>+</yel> etc.</td>
+</tr>
+<tr>
+<td><code>h.o</code></td>
+<td style="text-align: left;">Match <yel>hoo</yel>, <yel>h2o</yel>, <yel>h/o</yel> etc.</td>
+</tr>
+<tr>
+<td><code>ring\?</code></td>
+<td style="text-align: left;">Match <yel>ring?</yel></td>
+</tr>
+<tr>
+<td><code>\(quiet\)</code></td>
+<td style="text-align: left;">Match <yel>(quiet)</yel></td>
+</tr>
+<tr>
+<td><code>c:\\windows</code></td>
+<td style="text-align: left;">Match <yel>c:\windows</yel></td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>\</code> to search for these special characters: <br> <code>[ \ ^ $ . | ? * + ( )</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="alternatives">Alternatives</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cat|dog</code></td>
+<td style="text-align: left;">Match <yel>cat</yel> or <yel>dog</yel></td>
+</tr>
+<tr>
+<td><code>id|identity</code></td>
+<td style="text-align: left;">Match <yel>id</yel> or <yel>id</yel>entity</td>
+</tr>
+<tr>
+<td><code>identity|id</code></td>
+<td style="text-align: left;">Match <yel>id</yel> or <yel>identity</yel></td>
+</tr>
+</tbody>
+</table>
+<p>Order longer to shorter when alternatives overlap</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="character-classes_1">Character classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[aeiou]</code></td>
+<td style="text-align: left;">Match any vowel</td>
+</tr>
+<tr>
+<td><code>[^aeiou]</code></td>
+<td style="text-align: left;">Match a NON vowel</td>
+</tr>
+<tr>
+<td><code>r[iau]ng</code></td>
+<td style="text-align: left;">Match <yel>ring</yel>, w<yel>rang</yel>le, sp<yel>rung</yel>, etc.</td>
+</tr>
+<tr>
+<td><code>gr[ae]y</code></td>
+<td style="text-align: left;">Match <yel>gray</yel> or <yel>grey</yel></td>
+</tr>
+<tr>
+<td><code>[a-zA-Z0-9]</code></td>
+<td style="text-align: left;">Match any letter or digit</td>
+</tr>
+<tr>
+<td><code>[\u3a00-\ufa99]</code></td>
+<td style="text-align: left;">Match any <a href="https://unicode.org/charts/unihan.html">Unicode Hàn (中文)</a></td>
+</tr>
+</tbody>
+</table>
+<p>In <code>[ ]</code> always escape <code>. \ ]</code> and sometimes <code>^ - .</code></p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="shorthand-classes">Shorthand classes</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\w</code></td>
+<td style="text-align: left;">"Word" character <br><em>(letter, digit, or underscore)</em></td>
+</tr>
+<tr>
+<td><code>\d</code></td>
+<td style="text-align: left;">Digit</td>
+</tr>
+<tr>
+<td><code>\s</code></td>
+<td style="text-align: left;">Whitespace <br><em>(space, tab, vtab, newline)</em></td>
+</tr>
+<tr>
+<td><code>\W, \D, or \S</code></td>
+<td style="text-align: left;">Not word, digit, or whitespace</td>
+</tr>
+<tr>
+<td><code>[\D\S]</code></td>
+<td style="text-align: left;">Means not digit or whitespace, both match</td>
+</tr>
+<tr>
+<td><code>[^\d\s]</code></td>
+<td style="text-align: left;">Disallow digit and whitespace</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="occurrences">Occurrences</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>colou?r</code></td>
+<td style="text-align: left;">Match <yel>color</yel> or <yel>colour</yel></td>
+</tr>
+<tr>
+<td><code>[BW]ill[ieamy's]*</code></td>
+<td style="text-align: left;">Match <yel>Bill</yel>, <yel>Willy</yel>, <yel>William's</yel> etc.</td>
+</tr>
+<tr>
+<td><code>[a-zA-Z]+</code></td>
+<td style="text-align: left;">Match 1 or more letters</td>
+</tr>
+<tr>
+<td><code>\d-\d-\d</code></td>
+<td style="text-align: left;">Match a SSN</td>
+</tr>
+<tr>
+<td><code>[a-z]\w</code></td>
+<td style="text-align: left;">Match a UW NetID</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="greedy-versus-lazy">Greedy versus lazy</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>*  +</code><br><em>greedy</em></td>
+<td style="text-align: left;">Match as much as possible</td>
+</tr>
+<tr>
+<td><code>&lt;.+&gt;</code></td>
+<td style="text-align: left;">Finds 1 big match in <yel>\<b>bold\&lt;\/b&gt;</yel></td>
+</tr>
+<tr>
+<td><code>*?  +? ?</code><br><em>lazy</em></td>
+<td style="text-align: left;">Match as little as possible</td>
+</tr>
+<tr>
+<td><code>&lt;.+?&gt;</code></td>
+<td style="text-align: left;">Finds 2 matches in \&lt;<yel>b</yel>&gt;bold\&lt;<yel>\/b</yel>&gt;</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="scope">Scope</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>\b</code></td>
+<td style="text-align: left;">"Word" edge (next to non "word" character)</td>
+</tr>
+<tr>
+<td><code>\bring</code></td>
+<td style="text-align: left;">Word starts with "ring", ex <yel>ringtone</yel></td>
+</tr>
+<tr>
+<td><code>ring\b</code></td>
+<td style="text-align: left;">Word ends with "ring", ex <yel>spring</yel></td>
+</tr>
+<tr>
+<td><code>\b9\b</code></td>
+<td style="text-align: left;">Match single digit <yel>9</yel>, not <red>19</red>, <red>91</red>, <red>99</red>, etc..</td>
+</tr>
+<tr>
+<td><code>\b[a-zA-Z]\b</code></td>
+<td style="text-align: left;">Match 6-letter words</td>
+</tr>
+<tr>
+<td><code>\B</code></td>
+<td style="text-align: left;">Not word edge</td>
+</tr>
+<tr>
+<td><code>\Bring\B</code></td>
+<td style="text-align: left;">Match <yel>springs</yel> and <yel>wringer</yel></td>
+</tr>
+<tr>
+<td><code>^\d*$</code></td>
+<td style="text-align: left;">Entire string must be digits</td>
+</tr>
+<tr>
+<td><code>^[a-zA-Z]$</code></td>
+<td style="text-align: left;">String must have 4-20 letters</td>
+</tr>
+<tr>
+<td><code>^[A-Z]</code></td>
+<td style="text-align: left;">String must begin with capital letter</td>
+</tr>
+<tr>
+<td><code>[\.!?"')]$</code></td>
+<td style="text-align: left;">String must end with terminal puncutation</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="modifiers">Modifiers</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(?i)</code>[a-z]*<code>(?-i)</code></td>
+<td style="text-align: left;">Ignore case ON / OFF</td>
+</tr>
+<tr>
+<td><code>(?s)</code>.*<code>(?-s)</code></td>
+<td style="text-align: left;">Match multiple lines (causes . to match newline)</td>
+</tr>
+<tr>
+<td><code>(?m)</code>^.*;$<code>(?-m)</code></td>
+<td style="text-align: left;"><yel>^</yel> &amp; <yel>$</yel> match lines not whole string</td>
+</tr>
+<tr>
+<td><code>(?x)</code></td>
+<td style="text-align: left;">#free-spacing mode, this EOL comment ignored</td>
+</tr>
+<tr>
+<td><code>(?-x)</code></td>
+<td style="text-align: left;">free-spacing mode OFF</td>
+</tr>
+<tr>
+<td>/regex/<code>ismx</code></td>
+<td style="text-align: left;">Modify mode for entire string</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="groups">Groups</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(in|out)put</code></td>
+<td style="text-align: left;">Match <yel>input</yel> or <yel>output</yel></td>
+</tr>
+<tr>
+<td><code>\d(-\d)?</code></td>
+<td style="text-align: left;">US zip code <em>("+ 4" optional)</em></td>
+</tr>
+</tbody>
+</table>
+<p>Parser tries EACH alternative if match fails after group. <br> Can lead to catastrophic backtracking.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="back-references">Back references</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Matches</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(to) (be) or not \1 \2</code></td>
+<td style="text-align: left;">Match <yel>to be or not to be</yel></td>
+</tr>
+<tr>
+<td><code>([^\s])\1</code></td>
+<td style="text-align: left;">Match non-space, then same twice more &nbsp; <yel>aaa</yel>, <yel>...</yel></td>
+</tr>
+<tr>
+<td><code>\b(\w+)\s+\1\b</code></td>
+<td style="text-align: left;">Match doubled words</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="non-capturing-group">Non-capturing group</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>on(?:click|load)</code></td>
+<td style="text-align: left;">Faster than: <br><code>on(click\|load)</code></td>
+</tr>
+</tbody>
+</table>
+<p>Use non-capturing or atomic groups when possible</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="atomic-groups">Atomic groups</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(?&gt;red|green|blue)</code></td>
+<td style="text-align: left;">Faster than non-capturing</td>
+</tr>
+<tr>
+<td><code>(?&gt;id|identity)\b</code></td>
+<td style="text-align: left;">Match <yel>id</yel>, but not <red>id</red>entity</td>
+</tr>
+</tbody>
+</table>
+<p>"id" matches, but <code>\b</code> fails after atomic group, parser doesn't backtrack into group to retry 'identity'</p>
+<p>If alternatives overlap, order longer to shorter.</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="lookaround">Lookaround</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th style="text-align: left;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>(?= )</code></td>
+<td style="text-align: left;">Lookahead, if you can find ahead</td>
+</tr>
+<tr>
+<td><code>(?! )</code></td>
+<td style="text-align: left;">Lookahead,if you can not find ahead</td>
+</tr>
+<tr>
+<td><code>(?&lt;= )</code></td>
+<td style="text-align: left;">Lookbehind, if you can find behind</td>
+</tr>
+<tr>
+<td><code>(?&lt;! )</code></td>
+<td style="text-align: left;">Lookbehind, if you can NOT find behind</td>
+</tr>
+<tr>
+<td><code>\b\w+?(?=ing\b)</code></td>
+<td style="text-align: left;">Match <yel>warbl</yel>ing, <yel>str</yel>ing, <yel>fish</yel>ing, ...</td>
+</tr>
+<tr>
+<td><code>\b(?!\w+ing\b)\w+\b</code></td>
+<td style="text-align: left;">Words NOT ending in <red>ing</red></td>
+</tr>
+<tr>
+<td><code>(?&lt;=\bpre).*?\b</code></td>
+<td style="text-align: left;">Match pre<yel>tend</yel>, pre<yel>sent</yel>, pre<yel>fix</yel>, ...</td>
+</tr>
+<tr>
+<td><code>\b\w(?&lt;!pre)\w*?\b</code></td>
+<td style="text-align: left;">Words NOT starting with <red>pre</red></td>
+</tr>
+<tr>
+<td><code>\b\w+(?&lt;!ing)\b</code></td>
+<td style="text-align: left;">Match words NOT ending in <red>ing</red></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="if-then-else">If-then-else</h3>
+<div class="section">
+<p>Match "Mr." or "Ms." if word "her" is later in string</p>
+<div class="codehilite"><pre><span></span><code>M(?(?=.*?\bher\b)s|r)\.
+</code></pre></div>
+
+<p>requires lookaround for IF condition</p>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="regex-in-python">
+<h2 id="regex-in-python">RegEx in Python</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="getting-started_1">Getting started</h3>
+<div class="section">
+<p>Import the regular expressions module</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples">Examples</h3>
+<div class="section">
+<h4 id="research">re.search()</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">sentence</span> <span class="o">=</span> <span class="s1">&#39;This is a sample string&#39;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;this&#39;</span><span class="p">,</span> <span class="n">sentence</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">I</span><span class="p">))</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="n">sentence</span><span class="p">))</span>
+<span class="kc">False</span>
+</code></pre></div>
+
+<h4 id="refindall">re.findall()</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\bs?pare?\b&#39;</span><span class="p">,</span> <span class="s1">&#39;par spar apparent spare part pare&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;par&#39;</span><span class="p">,</span> <span class="s1">&#39;spar&#39;</span><span class="p">,</span> <span class="s1">&#39;spare&#39;</span><span class="p">,</span> <span class="s1">&#39;pare&#39;</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\b0*[1-9]\d\b&#39;</span><span class="p">,</span> <span class="s1">&#39;0501 035 154 12 26 98234&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;0501&#39;</span><span class="p">,</span> <span class="s1">&#39;154&#39;</span><span class="p">,</span> <span class="s1">&#39;98234&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="refinditer">re.finditer()</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">m_iter</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[0-9]+&#39;</span><span class="p">,</span> <span class="s1">&#39;45 349 651 593 4 204&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">m_iter</span> <span class="k">if</span> <span class="nb">int</span><span class="p">(</span><span class="n">m</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">350</span><span class="p">]</span>
+<span class="p">[</span><span class="s1">&#39;45&#39;</span><span class="p">,</span> <span class="s1">&#39;349&#39;</span><span class="p">,</span> <span class="s1">&#39;4&#39;</span><span class="p">,</span> <span class="s1">&#39;204&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="resplit">re.split()</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d+&#39;</span><span class="p">,</span> <span class="s1">&#39;Sample123string42with777numbers&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="s1">&#39;Sample&#39;</span><span class="p">,</span> <span class="s1">&#39;string&#39;</span><span class="p">,</span> <span class="s1">&#39;with&#39;</span><span class="p">,</span> <span class="s1">&#39;numbers&#39;</span><span class="p">]</span>
+</code></pre></div>
+
+<h4 id="resub">re.sub()</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">ip_lines</span> <span class="o">=</span> <span class="s2">&quot;catapults</span><span class="se">\n</span><span class="s2">concatenate</span><span class="se">\n</span><span class="s2">cat&quot;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s1">&#39;* &#39;</span><span class="p">,</span> <span class="n">ip_lines</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">M</span><span class="p">))</span>
+<span class="o">*</span> <span class="n">catapults</span>
+<span class="o">*</span> <span class="n">concatenate</span>
+<span class="o">*</span> <span class="n">cat</span>
+</code></pre></div>
+
+<h4 id="recompile">re.compile()</h4>
+<div class="codehilite"><pre><span></span><code><span class="o">&gt;&gt;&gt;</span> <span class="n">pet</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;dog&#39;</span><span class="p">)</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">type</span><span class="p">(</span><span class="n">pet</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="err">&#39;</span><span class="nc">_sre</span><span class="o">.</span><span class="n">SRE_Pattern</span><span class="s1">&#39;&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">pet</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;They bought a dog&#39;</span><span class="p">))</span>
+<span class="kc">True</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">bool</span><span class="p">(</span><span class="n">pet</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;A cat crossed their path&#39;</span><span class="p">))</span>
+<span class="kc">False</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="functions">Functions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>re.findall</code></td>
+<td style="text-align: left;">Returns a list containing all matches</td>
+</tr>
+<tr>
+<td><code>re.finditer</code></td>
+<td style="text-align: left;">Return an iterable of match objects (one for each match)</td>
+</tr>
+<tr>
+<td><code>re.search</code></td>
+<td style="text-align: left;">Returns a Match object if there is a match anywhere in the string</td>
+</tr>
+<tr>
+<td><code>re.split</code></td>
+<td style="text-align: left;">Returns a list where the string has been split at each match</td>
+</tr>
+<tr>
+<td><code>re.sub</code></td>
+<td style="text-align: left;">Replaces one or many matches with a string</td>
+</tr>
+<tr>
+<td><code>re.compile</code></td>
+<td style="text-align: left;">Compile a regular expression pattern for later use</td>
+</tr>
+<tr>
+<td><code>re.escape</code></td>
+<td style="text-align: left;">Return string with all non-alphanumerics backslashed</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="flags">Flags</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>re.I</code></td>
+<td><code>re.IGNORECASE</code></td>
+<td style="text-align: left;">Ignore case</td>
+</tr>
+<tr>
+<td><code>re.M</code></td>
+<td><code>re.MULTILINE</code></td>
+<td style="text-align: left;">Multiline</td>
+</tr>
+<tr>
+<td><code>re.L</code></td>
+<td><code>re.LOCALE</code></td>
+<td style="text-align: left;">Make <code>\w</code>,<code>\b</code>,<code>\s</code> <em>locale dependent</em></td>
+</tr>
+<tr>
+<td><code>re.S</code></td>
+<td><code>re.DOTALL</code></td>
+<td style="text-align: left;">Dot matches all <em>(including newline)</em></td>
+</tr>
+<tr>
+<td><code>re.U</code></td>
+<td><code>re.UNICODE</code></td>
+<td style="text-align: left;">Make <code>\w</code>,<code>\b</code>,<code>\d</code>,<code>\s</code> <em>unicode dependent</em></td>
+</tr>
+<tr>
+<td><code>re.X</code></td>
+<td><code>re.VERBOSE</code></td>
+<td style="text-align: left;">Readable style</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</div></div>
+<div class="h2-wrap" id="regex-in-javascript">
+<h2 id="regex-in-javascript">Regex in JavaScript</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="test">test()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">textA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;I like APPles very much&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">textB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;I like APPles&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/apples$/i</span><span class="p">;</span>
+
+<span class="c1">// Output: false</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">textA</span><span class="p">));</span>
+
+<span class="c1">// Output: true</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">regex</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="nx">textB</span><span class="p">));</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="search">search()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;I like APPles very much&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">regexA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/apples/</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">regexB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/apples/i</span><span class="p">;</span>
+
+<span class="c1">// Output: -1</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">regexA</span><span class="p">));</span>
+
+<span class="c1">// Output: 7</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">search</span><span class="p">(</span><span class="nx">regexB</span><span class="p">));</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="exec">exec()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Do you like apples?&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/apples/</span><span class="p">;</span>
+
+<span class="c1">// Output: apples</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">text</span><span class="p">)[</span><span class="mf">0</span><span class="p">]);</span>
+
+<span class="c1">// Output: Do you like apples?</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">regex</span><span class="p">.</span><span class="nx">exec</span><span class="p">(</span><span class="nx">text</span><span class="p">).</span><span class="nx">input</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="match">match()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Here are apples and apPleS&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/apples/gi</span><span class="p">;</span>
+
+<span class="c1">// Output: [ &quot;apples&quot;, &quot;apPleS&quot; ]</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">regex</span><span class="p">));</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="split">split()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;This 593 string will be brok294en at places where d1gits are.&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/\d+/g</span><span class="p">;</span>
+
+<span class="c1">// Output: [ &quot;This &quot;, &quot; string will be brok&quot;, &quot;en at places where d&quot;, &quot;gits are.&quot; ]</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">text</span><span class="p">.</span><span class="nx">split</span><span class="p">(</span><span class="nx">regex</span><span class="p">));</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="matchall">matchAll()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/t(e)(st(\d?))/g</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;test1test2&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">array</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[...</span><span class="nx">text</span><span class="p">.</span><span class="nx">matchAll</span><span class="p">(</span><span class="nx">regex</span><span class="p">)];</span>
+
+<span class="c1">// Output: [&quot;test1&quot;, &quot;e&quot;, &quot;st1&quot;, &quot;1&quot;]</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span>
+
+<span class="c1">// Output: [&quot;test2&quot;, &quot;e&quot;, &quot;st2&quot;, &quot;2&quot;]</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">array</span><span class="p">[</span><span class="mf">1</span><span class="p">]);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="replace">replace()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Do you like aPPles?&#39;</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/apples/i</span><span class="p">;</span>
+
+<span class="c1">// Output: Do you like mangoes?</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">text</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">regex</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;mangoes&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="replaceall">replaceAll()</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span><span class="w"> </span><span class="nx">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sr">/apples/gi</span><span class="p">;</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Here are apples and apPleS&#39;</span><span class="p">;</span>
+
+<span class="c1">// Output: Here are mangoes and mangoes</span>
+<span class="kd">let</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">text</span><span class="p">.</span><span class="nx">replaceAll</span><span class="p">(</span><span class="nx">regex</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;mangoes&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="regex-in-php">
+<h2 id="regex-in-php">Regex in PHP</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="functions_1">Functions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>preg_match()</code></td>
+<td style="text-align: left;">Performs a regex match</td>
+</tr>
+<tr>
+<td><code>preg_match_all()</code></td>
+<td style="text-align: left;">Perform a global regular expression match</td>
+</tr>
+<tr>
+<td><code>preg_replace_callback()</code></td>
+<td style="text-align: left;">Perform a regular expression search and replace using a callback</td>
+</tr>
+<tr>
+<td><code>preg_replace()</code></td>
+<td style="text-align: left;">Perform a regular expression search and replace</td>
+</tr>
+<tr>
+<td><code>preg_split()</code></td>
+<td style="text-align: left;">Splits a string by regex pattern</td>
+</tr>
+<tr>
+<td><code>preg_grep()</code></td>
+<td style="text-align: left;">Returns array entries that match a pattern</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="preg_replace">preg_replace</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$str = &quot;Visit Microsoft!&quot;;</span>
+<span class="x">$regex = &quot;/microsoft/i&quot;;</span>
+
+<span class="x">// Output: Visit CheatSheets!</span>
+<span class="x">echo preg_replace($regex, &quot;CheatSheets&quot;, $str);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="preg_match">preg_match</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$str = &quot;Visit CheatSheets&quot;;</span>
+<span class="x">$regex = &quot;#cheatsheets#i&quot;;</span>
+
+<span class="x">// Output: 1</span>
+<span class="x">echo preg_match($regex, $str);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="preg_matchall">preg_matchall</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$regex = &quot;/[a-zA-Z]+ (\d+)/&quot;;</span>
+<span class="x">$input_str = &quot;June 24, August 13, and December 30&quot;;</span>
+<span class="x">if (preg_match_all($regex, $input_str, $matches_out)) </span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="preg_grep">preg_grep</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$arr = [&quot;Jane&quot;, &quot;jane&quot;, &quot;Joan&quot;, &quot;JANE&quot;];</span>
+<span class="x">$regex = &quot;/Jane/&quot;;</span>
+
+<span class="x">// Output: Jane</span>
+<span class="x">echo preg_grep($regex, $arr);</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="preg_split">preg_split</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="x">$str = &quot;Jane\tKate\nLucy Marion&quot;;</span>
+<span class="x">$regex = &quot;@\s@&quot;;</span>
+
+<span class="x">// Output: Array(&quot;Jane&quot;, &quot;Kate&quot;, &quot;Lucy&quot;, &quot;Marion&quot;)</span>
+<span class="x">print_r(preg_split($regex, $str));</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="regex-in-java">
+<h2 id="regex-in-java">Regex in Java</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="styles">Styles</h3>
+<div class="section">
+<h4 id="first-way">First way</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">Pattern</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">compile</span><span class="p">(</span><span class="s">&quot;.s&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">CASE_INSENSITIVE</span><span class="p">);</span>
+<span class="n">Matcher</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="na">matcher</span><span class="p">(</span><span class="s">&quot;aS&quot;</span><span class="p">);</span>
+<span class="kt">boolean</span><span class="w"> </span><span class="n">s1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="na">matches</span><span class="p">();</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s1</span><span class="p">);</span><span class="w">   </span><span class="c1">// Outputs: true</span>
+</code></pre></div>
+
+<h4 id="second-way">Second way</h4>
+<div class="codehilite"><pre><span></span><code><span class="kt">boolean</span><span class="w"> </span><span class="n">s2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">compile</span><span class="p">(</span><span class="s">&quot;[0-9]+&quot;</span><span class="p">).</span><span class="na">matcher</span><span class="p">(</span><span class="s">&quot;123&quot;</span><span class="p">).</span><span class="na">matches</span><span class="p">();</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s2</span><span class="p">);</span><span class="w">   </span><span class="c1">// Outputs: true</span>
+</code></pre></div>
+
+<h4 id="third-way">Third way</h4>
+<div class="codehilite"><pre><span></span><code><span class="kt">boolean</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">matches</span><span class="p">(</span><span class="s">&quot;.s&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;XXXX&quot;</span><span class="p">);</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">s3</span><span class="p">);</span><span class="w">   </span><span class="c1">// Outputs: false</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="pattern-fields">Pattern Fields</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>-</th>
+<th style="text-align: left;">-</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CANON_EQ</code></td>
+<td style="text-align: left;">Canonical equivalence</td>
+</tr>
+<tr>
+<td><code>CASE_INSENSITIVE</code></td>
+<td style="text-align: left;">Case-insensitive matching</td>
+</tr>
+<tr>
+<td><code>COMMENTS</code></td>
+<td style="text-align: left;">Permits whitespace and comments</td>
+</tr>
+<tr>
+<td><code>DOTALL</code></td>
+<td style="text-align: left;">Dotall mode</td>
+</tr>
+<tr>
+<td><code>MULTILINE</code></td>
+<td style="text-align: left;">Multiline mode</td>
+</tr>
+<tr>
+<td><code>UNICODE_CASE</code></td>
+<td style="text-align: left;">Unicode-aware case folding</td>
+</tr>
+<tr>
+<td><code>UNIX_LINES</code></td>
+<td style="text-align: left;">Unix lines mode</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="methods">Methods</h3>
+<div class="section">
+<h4 id="pattern">Pattern</h4>
+<ul>
+<li>Pattern compile(String regex [, int flags])</li>
+<li>boolean matches([String regex, ] CharSequence input)</li>
+<li>String[] split(String regex [, int limit])</li>
+<li>String quote(String s)</li>
+</ul>
+<h4 id="matcher">Matcher</h4>
+<ul>
+<li>int start([int group | String name])</li>
+<li>int end([int group | String name])</li>
+<li>boolean find([int start])</li>
+<li>String group([int group | String name])</li>
+<li>Matcher reset()</li>
+</ul>
+<h4 id="string">String</h4>
+<ul>
+<li>boolean matches(String regex)</li>
+<li>String replaceAll(String regex, String replacement)</li>
+<li>String[] split(String regex[, int limit])</li>
+</ul>
+<p>There are more methods ...</p>
+</div></div>
+<div class="h3-wrap">
+<h3 id="examples_1">Examples</h3>
+<div class="section">
+<p>Replace sentence:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;[A-Z\n]$&quot;</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;I like APP\nLE&quot;</span><span class="p">;</span>
+
+<span class="n">Pattern</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">MULTILINE</span><span class="p">);</span>
+<span class="n">Matcher</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="na">matcher</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+
+<span class="c1">// Outputs: I like Apple!</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">replaceAll</span><span class="p">(</span><span class="s">&quot;pple!&quot;</span><span class="p">));</span>
+</code></pre></div>
+
+<p>Array of all matches:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">String</span><span class="w"> </span><span class="n">str</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;She sells seashells by the Seashore&quot;</span><span class="p">;</span>
+<span class="n">String</span><span class="w"> </span><span class="n">regex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;\\w*se\\w*&quot;</span><span class="p">;</span>
+
+<span class="n">Pattern</span><span class="w"> </span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">compile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span><span class="w"> </span><span class="n">Pattern</span><span class="p">.</span><span class="na">CASE_INSENSITIVE</span><span class="p">);</span>
+<span class="n">Matcher</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">.</span><span class="na">matcher</span><span class="p">(</span><span class="n">str</span><span class="p">);</span>
+
+<span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="w"> </span><span class="n">matches</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ArrayList</span><span class="o">&lt;&gt;</span><span class="p">();</span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">m</span><span class="p">.</span><span class="na">find</span><span class="p">())</span><span class="w"> </span>
+
+<span class="c1">// Outputs: [sells, seashells, Seashore]</span>
+<span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span><span class="n">matches</span><span class="p">);</span>
+</code></pre></div>
+
+</div></div>
+</div></div>
+<div class="h2-wrap" id="regex-in-mysql">
+<h2 id="regex-in-mysql">Regex in MySQL</h2>
+<div class="h3-wrap-list">
+<div class="h3-wrap">
+<h3 id="functions_2">Functions</h3>
+<div class="section">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>REGEXP</code></td>
+<td style="text-align: left;">Whether string matches regex</td>
+</tr>
+<tr>
+<td><code>REGEXP_INSTR()</code></td>
+<td style="text-align: left;">Starting index of substring matching regex <br><em>(NOTE: Only MySQL 8.0+)</em></td>
+</tr>
+<tr>
+<td><code>REGEXP_LIKE()</code></td>
+<td style="text-align: left;">Whether string matches regex <br><em>(NOTE: Only MySQL 8.0+)</em></td>
+</tr>
+<tr>
+<td><code>REGEXP_REPLACE()</code></td>
+<td style="text-align: left;">Replace substrings matching regex <br><em>(NOTE: Only MySQL 8.0+)</em></td>
+</tr>
+<tr>
+<td><code>REGEXP_SUBSTR()</code></td>
+<td style="text-align: left;">Return substring matching regex <br><em>(NOTE: Only MySQL 8.0+)</em></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="h3-wrap">
+<h3 id="regexp">REGEXP</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="n">expr</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="n">pat</span>
+</code></pre></div>
+
+<h4 id="examples_2">Examples</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;abc&#39;</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="s1">&#39;^[a-d]&#39;</span><span class="p">;</span>
+<span class="mi">1</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cities</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="s1">&#39;^A&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cities</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="s1">&#39;^A&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">cities</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="s1">&#39;A|B|R&#39;</span><span class="p">;</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="s1">&#39;a&#39;</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;a&#39;</span><span class="w"> </span><span class="n">REGEXP</span><span class="w"> </span><span class="nb">BINARY</span><span class="w"> </span><span class="s1">&#39;A&#39;</span><span class="p">;</span>
+<span class="mi">1</span><span class="w">   </span><span class="mi">0</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="regexp_replace">REGEXP_REPLACE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">REGEXP_REPLACE</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span><span class="w"> </span><span class="nx">pat</span><span class="p">,</span><span class="w"> </span><span class="nx">repl</span><span class="p">[,</span><span class="w"> </span><span class="nx">pos</span><span class="p">[,</span><span class="w"> </span><span class="nx">occurrence</span><span class="p">[,</span><span class="w"> </span><span class="nx">match_type</span><span class="p">]]])</span>
+</code></pre></div>
+
+<h4 id="examples_3">Examples</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">REGEXP_REPLACE</span><span class="p">(</span><span class="s1">&#39;a b c&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;X&#39;</span><span class="p">);</span>
+<span class="n">a</span><span class="w"> </span><span class="n">X</span><span class="w"> </span><span class="k">c</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">REGEXP_REPLACE</span><span class="p">(</span><span class="s1">&#39;abc ghi&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;[a-z]+&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;X&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="n">abc</span><span class="w"> </span><span class="n">X</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="regexp_substr">REGEXP_SUBSTR</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">REGEXP_SUBSTR</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span><span class="w"> </span><span class="nx">pat</span><span class="p">[,</span><span class="w"> </span><span class="nx">pos</span><span class="p">[,</span><span class="w"> </span><span class="nx">occurrence</span><span class="p">[,</span><span class="w"> </span><span class="nx">match_type</span><span class="p">]]])</span>
+</code></pre></div>
+
+<h4 id="examples_4">Examples</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">REGEXP_SUBSTR</span><span class="p">(</span><span class="s1">&#39;abc def ghi&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;[a-z]+&#39;</span><span class="p">);</span>
+<span class="n">abc</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">REGEXP_SUBSTR</span><span class="p">(</span><span class="s1">&#39;abc def ghi&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;[a-z]+&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="n">ghi</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="regexp_like">REGEXP_LIKE</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">REGEXP_LIKE</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span><span class="w"> </span><span class="nx">pat</span><span class="p">[,</span><span class="w"> </span><span class="nx">match_type</span><span class="p">])</span>
+</code></pre></div>
+
+<h4 id="examples_5">Examples</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_like</span><span class="p">(</span><span class="s1">&#39;aba&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b+&#39;</span><span class="p">)</span>
+<span class="mi">1</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_like</span><span class="p">(</span><span class="s1">&#39;aba&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="mi">0</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="n">i</span><span class="p">:</span><span class="w"> </span><span class="k">case</span><span class="o">-</span><span class="k">insensitive</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_like</span><span class="p">(</span><span class="s1">&#39;Abba&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;ABBA&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;i&#39;</span><span class="p">);</span>
+<span class="mi">1</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="o">#</span><span class="w"> </span><span class="n">m</span><span class="p">:</span><span class="w"> </span><span class="n">multi</span><span class="o">-</span><span class="n">line</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_like</span><span class="p">(</span><span class="s1">&#39;a\nb\nc&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;^b$&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;m&#39;</span><span class="p">);</span>
+<span class="mi">1</span>
+</code></pre></div>
+
+</div></div>
+<div class="h3-wrap">
+<h3 id="regexp_instr">REGEXP_INSTR</h3>
+<div class="section">
+<div class="codehilite"><pre><span></span><code><span class="nx">REGEXP_INSTR</span><span class="p">(</span><span class="nx">expr</span><span class="p">,</span><span class="w"> </span><span class="nx">pat</span><span class="p">[,</span><span class="w"> </span><span class="nx">pos</span><span class="p">[,</span><span class="w"> </span><span class="nx">occurrence</span><span class="p">[,</span><span class="w"> </span><span class="nx">return_option</span><span class="p">[,</span><span class="w"> </span><span class="nx">match_type</span><span class="p">]]]])</span>
+</code></pre></div>
+
+<h4 id="examples_6">Examples</h4>
+<div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_instr</span><span class="p">(</span><span class="s1">&#39;aa aaa aaaa&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;a&#39;</span><span class="p">);</span>
+<span class="mi">2</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_instr</span><span class="p">(</span><span class="s1">&#39;abba&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="mi">2</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_instr</span><span class="p">(</span><span class="s1">&#39;abbabba&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<span class="mi">5</span>
+<span class="n">mysql</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="n">regexp_instr</span><span class="p">(</span><span class="s1">&#39;abbabba&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="mi">7</span>
+</code></pre></div>
+</div></div>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-links">
+    <a href="h.html"><i class="fas fa-house"></i> Home</a>
+    <a href="AI.html"><i class="fas fa-robot"></i> AI Tools</a>
+    <a href="dev.html"><i class="fas fa-code"></i> Dev</a>
+    <a href="/reference.html"><i class="fas fa-book-open"></i> Reference</a>
+  </div>
+  <div class="footer-copy">FlameTech · Cheat sheet data from <a href="https://cheatsheets.zip" target="_blank" style="color:inherit">cheatsheets.zip</a> (MIT)</div>
+</footer>
+
+<script>
+// ─── Theme Toggle ───
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const icon = themeToggle.querySelector('i');
+ 
+    const savedTheme = localStorage.getItem('flametech-theme') || 'dark';
+    if (savedTheme === 'light') {
+        body.classList.add('light-mode');
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+    }
+    
+    // Toggle theme on button click
+    themeToggle.addEventListener('click', function() {
+        body.classList.toggle('light-mode');
+        
+        if (body.classList.contains('light-mode')) {
+            localStorage.setItem('flametech-theme', 'light');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        } else {
+            localStorage.setItem('flametech-theme', 'dark');
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+        }
+        });
+document.getElementById('hamburger').addEventListener('click',()=>{document.getElementById('navLinks').classList.toggle('open');});
+
+// ── HIGHLIGHT.JS ──
+document.querySelectorAll('pre code').forEach(el=>{
+  hljs.highlightElement(el);
+  // wrap for copy button
+  const pre=el.parentElement;
+  const wrap=document.createElement('div');
+  wrap.className='code-block-wrap';
+  pre.parentNode.insertBefore(wrap,pre);
+  wrap.appendChild(pre);
+  const btn=document.createElement('button');
+  btn.className='copy-btn';btn.textContent='Copy';
+  btn.onclick=()=>{navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent='Copied!';btn.classList.add('copied');setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},1800);});};
+  wrap.appendChild(btn);
+});
+
+// ── TOC ──
+(function(){
+  const h2s=document.querySelectorAll('.h2-wrap > h2');
+  const toc=document.getElementById('tocList');
+  if(!h2s.length)return;
+  h2s.forEach(h=>{
+    const li=document.createElement('li');
+    const a=document.createElement('a');
+    a.href='#'+h.id;
+    a.textContent=h.textContent;
+    a.addEventListener('click',e=>{e.preventDefault();document.getElementById(h.id)?.scrollIntoView({behavior:'smooth',block:'start'});});
+    li.appendChild(a);toc.appendChild(li);
+  });
+  const links=toc.querySelectorAll('a');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const active=[...links].find(l=>l.getAttribute('href')==='#'+e.target.id);
+        if(active)active.classList.add('active');
+      }
+    });
+  },{rootMargin:'-10% 0px -85% 0px'});
+  h2s.forEach(h=>obs.observe(h));
+})();
+</script>
+</body>
+</html>
