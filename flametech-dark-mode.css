@@ -27,16 +27,16 @@ body:not(.light-mode) {
   --code-amber: #fbbf24 !important;
   --code-line: rgba(16, 185, 129, 0.07) !important;
   --code-panel: rgba(15, 23, 42, 0.88) !important;
+  --bg-background:linear-gradient(rgba(16,185,129,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,168,132,.035) 1px, transparent 1px),
+    radial-gradient(ellipse at 30% 50%, rgba(16,185,129,.12), transparent 60%),
+    radial-gradient(ellipse at 70% 50%, rgba(0,168,132,.10), transparent 60%) !important;
 }
  
 body:not(.light-mode),
 body:not(.light-mode),
 body:not(.light-mode) .hero::before {
-  background:
-    linear-gradient(rgba(16,185,129,.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,168,132,.035) 1px, transparent 1px),
-    radial-gradient(ellipse at 30% 50%, rgba(16,185,129,.12), transparent 60%),
-    radial-gradient(ellipse at 70% 50%, rgba(0,168,132,.10), transparent 60%) !important;
+  background:var(--bg-background);
   background-size: 28px 28px, 28px 28px, auto, auto !important;
 }
  
