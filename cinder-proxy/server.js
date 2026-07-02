@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 app.use(express.static(SITE_ROOT));
 
 
-const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openai/gpt-oss-120b:free';
+const OPENROUTER_MODEL = process.env.OPENROUTER_MODEL || 'openrouter/free';
 
 app.post('/api/chat', async (req, res) => {
   if (!process.env.OPENROUTER_API_KEY) {
