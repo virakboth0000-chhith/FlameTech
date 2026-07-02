@@ -904,7 +904,10 @@
 
     // Point this at your backend proxy (see server.js) — never call
     // api.anthropic.com directly from the browser with a real key.
-    const API_ENDPOINT = 'http://localhost:3001/api/chat';
+    // LOCAL: http://localhost:3001 | PRODUCTION: update to your Render URL
+const API_ENDPOINT = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3001/api/chat'
+  : '/api/chat';
 
     const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
     const newConversation = () => ({ id: uid(), title: 'New chat', messages: [], updatedAt: Date.now() });
