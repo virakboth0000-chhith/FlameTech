@@ -1029,3 +1029,176 @@ body.light-mode .sidebar-toggle-btn:hover,
     box-shadow: 0 18px 42px rgba(15, 23, 42, 0.12) !important;
   }
 }
+
+/* ── REFERENCE CHEATSHEET CARDS (ENLARGED) ── */
+.light-mode .mdLayout {
+  gap: 3.5rem !important;
+}
+
+.light-mode .mdLayout .h2-wrap > h2 {
+  font-size: 1.4rem !important;
+  letter-spacing: 0.07em !important;
+  padding-bottom: 16px !important;
+  margin-bottom: 26px !important;
+  color: #0f766e !important;
+  border-bottom-color: rgba(95, 143, 63, 0.22) !important;
+}
+
+.light-mode .mdLayout .h3-wrap-list {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: flex-start !important;
+  gap: 26px !important;
+}
+
+/* default cards: flexible width, text wraps normally */
+.light-mode .mdLayout .h3-wrap {
+  flex: 1 1 320px !important;
+  max-width: 100% !important;
+}
+
+/* cards holding code or tables: size to fit their longest line instead of squeezing it */
+.light-mode .mdLayout .h3-wrap:has(pre),
+.light-mode .mdLayout .h3-wrap:has(table) {
+  flex: 0 1 auto !important;
+  width: max-content !important;
+  min-width: 320px !important;
+}
+
+.light-mode .mdLayout .h2-wrap.cols-1 .h3-wrap {
+  flex-basis: 100% !important;
+  width: 100% !important;
+}
+
+.light-mode .mdLayout .h3-wrap {
+  border-radius: 16px !important;
+  background:
+    linear-gradient(90deg, var(--code-line) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 252, 255, 0.92)) !important;
+  border: 1px solid rgba(95, 143, 63, 0.16) !important;
+  box-shadow: 0 14px 34px rgba(16, 24, 40, 0.07) !important;
+}
+
+.light-mode .mdLayout .h3-wrap > h3 {
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+  padding: 20px 24px !important;
+  letter-spacing: 0.03em !important;
+  background: rgba(95, 143, 63, 0.07) !important;
+  border-bottom: 1px solid rgba(95, 143, 63, 0.16) !important;
+  color: #101828 !important;
+}
+
+.light-mode .mdLayout .section {
+  padding: 24px 26px !important;
+  overflow-x: auto !important;
+}
+
+.light-mode .mdLayout .section h4 {
+  font-size: 1.08rem !important;
+  font-weight: 700 !important;
+  margin: 18px 0 10px !important;
+  color: #101828 !important;
+}
+
+.light-mode .mdLayout .section h4:first-child {
+  margin-top: 0 !important;
+}
+
+.light-mode .mdLayout .section p {
+  font-size: 1.08rem !important;
+  line-height: 1.8 !important;
+  margin-bottom: 14px !important;
+}
+
+.light-mode .mdLayout .section ul,
+.light-mode .mdLayout .section ol {
+  margin: 6px 0 !important;
+}
+
+.light-mode .mdLayout .section ul > li,
+.light-mode .mdLayout .section ol > li {
+  font-size: 1.05rem !important;
+  padding: 13px 18px 13px 34px !important;
+}
+
+.light-mode .mdLayout .section ul > li::before {
+  width: 7px !important;
+  height: 7px !important;
+  left: 14px !important;
+  background: #0f766e !important;
+}
+
+.light-mode .mdLayout .section table {
+  font-size: 1.05rem !important;
+  table-layout: auto !important;
+  min-width: 460px !important;
+}
+
+.light-mode .mdLayout .section table td,
+.light-mode .mdLayout .section table th {
+  padding: 14px 18px !important;
+  vertical-align: top !important;
+  overflow-wrap: break-word !important;
+}
+
+.light-mode .mdLayout .section table td:first-child {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  white-space: normal !important;
+  color: #0f766e !important;
+}
+
+.light-mode .mdLayout .section table code:not(pre code) {
+  white-space: nowrap !important;
+}
+
+.light-mode kbd {
+  font-size: 13px !important;
+  padding: 4px 11px !important;
+  border-radius: 5px !important;
+}
+
+.light-mode .mdLayout pre {
+  padding: 22px 76px 22px 22px !important;
+  border-radius: 12px !important;
+  margin: 14px 0 !important;
+}
+
+.light-mode .mdLayout pre code {
+  font-size: 1.05rem !important;
+  line-height: 1.75 !important;
+}
+
+.light-mode .mdLayout code:not(pre code) {
+  font-size: 0.98em !important;
+  padding: 3px 10px !important;
+  border-radius: 5px !important;
+}
+
+.light-mode .copy-btn {
+  font-size: 13px !important;
+  padding: 6px 13px !important;
+  border-radius: 7px !important;
+  top: 12px !important;
+  right: 12px !important;
+}
+
+.light-mode .mdLayout blockquote {
+  padding: 18px 22px !important;
+  border-radius: 0 12px 12px 0 !important;
+  margin: 14px 0 !important;
+}
+
+.light-mode .mdLayout blockquote p {
+  font-size: 1.05rem !important;
+  line-height: 1.75 !important;
+}
+
+@media (max-width: 900px) {
+  .light-mode .mdLayout .h3-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
